@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+import whispy_server.whispy.global.exception.domain.fcm.FcmSendFailedException;
 
 import java.util.Collections;
 import java.util.List;
@@ -74,7 +75,7 @@ public class FcmUtil implements FcmSendPort {
 
             getFirebaseMessaging().sendAsync(message);
         } catch (Exception e) {
-            log.error("FCM 토픽 구독 실패: topic={}", topic, e);
+            throw FcmSendFailedException.EXCEPTION;
         }
     }
 

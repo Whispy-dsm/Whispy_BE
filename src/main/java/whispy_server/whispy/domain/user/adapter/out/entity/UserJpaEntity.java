@@ -23,19 +23,19 @@ import whispy_server.whispy.domain.user.model.types.Gender;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserJpaEntity extends BaseTimeEntity {
+public class lUserJpaEntity extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", columnDefinition = "CHAR(70)")
+    @Column(name = "password", columnDefinition = "CНAR(70)")
     private String password;
 
-    @Column(name = "name", columnDefinition = "CHAR(30)", nullable = false)
+    @Column(name = "name", columnDefinition = "CНAR(30)", nullable = false)
     private String name;
 
     @Column(name = "profile_image_url", nullable = false)

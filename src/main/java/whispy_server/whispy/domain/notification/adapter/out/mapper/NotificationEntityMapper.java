@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.notification.adapter.out.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public interface NotificationEntityMapper {
 
     NotificationJpaEntity toEntity(Notification notification);
+    
     Notification toModel(NotificationJpaEntity notificationJpaEntity);
 
     List<Notification> toModelList(List<NotificationJpaEntity> notificationJpaEntityList);
