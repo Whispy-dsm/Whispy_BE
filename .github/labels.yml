@@ -1,0 +1,21 @@
+- name: 👾 BUG
+  color: d73a4a
+  description: 버그가 발생한 경우
+- name: 🤔 defer
+  color: dbdbdb
+  description: 보류중일 경우
+- name: 🧑‍💻 feat
+  color: 0052CC
+  description: 새로운 기능을 추가 할 경우
+- name: ⬆ improvement
+  color: D4C5F9
+  description: 성능을 개선 할 경우
+- name: ♻️ refactor
+  color: 0E8A16
+  description: 코드를 리펙토링 할 경우
+- name: ⚙️ setting
+  color: 7DA583
+  description: 프로젝트의 기본적인 세팅을 할 경우
+- name: 🧪 test
+  color: C5DEF5
+  description: 테스트를 추가 할 경우
