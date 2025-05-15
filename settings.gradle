@@ -1,1 +1,4 @@
 rootProject.name = 'Whispy_BE'
+
+include 'Whispy-domain'
+include 'Whispy-infrastructure'

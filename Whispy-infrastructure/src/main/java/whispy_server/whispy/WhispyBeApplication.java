@@ -1,4 +1,4 @@
-package dsm.hs.kr.whispy_be;
+package whispy_server.whispy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
