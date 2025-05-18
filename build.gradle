@@ -1,23 +1,46 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.5'
+    id 'org.springframework.boot' version '3.4.5' apply false
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'dsm.hs.kr'
-version = '0.0.1-SNAPSHOT'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+    group = 'whispy_server.whispy'
+    version = '0.0.1-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.5"
+        }
+    }
+
+    // 모든 서브프로젝트에 공통으로 적용되는 의존성
+    dependencies {
+        compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
+
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-
-}
-
+jar.enabled = false
