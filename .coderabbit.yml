@@ -1,5 +1,5 @@
 language: "ko-KR"  # 사용 언어를 한국어로 설정
-early_access: false  #  접근 프로그램에 참여하지 않음
+early_access: false  # 접근 프로그램에 참여하지 않음
 reviews:  # 리뷰 설정
   profile: "chill"  # 리뷰 프로필 설정 (편안한 스타일)
   request_changes_workflow: true  # 변경 요청을 위한 워크플로우 비활성화
@@ -10,5 +10,8 @@ reviews:  # 리뷰 설정
   auto_review:  # 자동 리뷰 설정
     enabled: true  # 자동 리뷰 기능 활성화
     drafts: false  # 초안에 대한 자동 리뷰 비활성화
+    branches:
+      include:
+        - "*"  # 모든 브랜치 포함
 chat:  # 채팅 관련 설정
   auto_reply: true  # 자동 응답 기능 활성화
