@@ -16,6 +16,6 @@ public class CustomAdminDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email){
         User user = userFacadeUseCase.getUserByEmail(email);
-        return new CustomUserDetails(user.id().toString(),user.role().name());
+        return new AuthDetails(user.id().toString(),user.role().name());
     }
 }
