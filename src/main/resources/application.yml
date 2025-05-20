@@ -1,0 +1,6 @@
+jwt:
+  header: Authorization
+  prefix: Bearer
+  secret: ${JWT_SECRET_KEY}
+  accessExpiration: 3600
+  refreshExpiration: 604800
