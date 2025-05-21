@@ -3,17 +3,15 @@ early_access: false
 
 reviews:
   profile: "chill"
-  request_changes_workflow: true
+  request_changes_workflow: false
   high_level_summary: true
   poem: true
   review_status: true
   collapse_walkthrough: false
-
-auto_review:
-  enabled: true
-  drafts: false
-  base_branches:
-    - ".*"   # 모든 브랜치 포함
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches: ["*"]
 
 chat:
   auto_reply: true
