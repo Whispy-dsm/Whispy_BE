@@ -10,10 +10,15 @@ import lombok.Getter;
 public enum ErrorCode {
 
 
-    INTERNAL_SERVER_ERROR(500, "서버 오류 발생");
+    INTERNAL_SERVER_ERROR(500, "서버 오류 발생"),
 
+    USER_NOT_FOUND(404, "일치하는 유저를 찾을 수 없습니다"),
+    ADMIN_NOT_FOUND(404, "일치하는 어드민을 찾을 수 없습니다"),
 
-
+    FEIGN_UNAUTHORIZED(401, "Feign UnAuthorized"),
+    PASSWORD_MISS_MATCH(401, "Password Miss Match"),
+    INVALID_TOKEN(401, "Invalid Token"),
+    EXPIRED_TOKEN(401, "Expired Token");
 
 
 
