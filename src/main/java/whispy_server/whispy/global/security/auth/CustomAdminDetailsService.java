@@ -5,9 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.admin.domain.Admin;
-import whispy_server.whispy.domain.port.in.AdminFacadeUseCase;
-import whispy_server.whispy.domain.user.domain.User;
-import whispy_server.whispy.domain.user.port.in.UserFacadeUseCase;
+import whispy_server.whispy.domain.admin.port.in.AdminFacadeUseCase;
 
 @Component
 @RequiredArgsConstructor
