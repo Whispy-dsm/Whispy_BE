@@ -1,6 +1,7 @@
 package whispy_server.whispy.global.security.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,6 +21,8 @@ import whispy_server.whispy.domain.auth.adapter.in.web.dto.response.TokenRespons
 import whispy_server.whispy.domain.auth.adapter.out.entity.RefreshToken;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
 import whispy_server.whispy.domain.auth.adapter.out.persistence.repository.RefreshTokenRepository;
+import whispy_server.whispy.global.exception.domain.security.ExpiredTokenException;
+import whispy_server.whispy.global.exception.domain.security.InvalidJwtException;
 import whispy_server.whispy.global.security.auth.CustomAdminDetailsService;
 import whispy_server.whispy.global.security.auth.CustomUserDetailsService;
 
@@ -85,10 +88,10 @@ public class JwtTokenProvider {
 
     public TokenResponse reissue(String refreshToken){
         if(!isRefreshToken(refreshToken)){
-            throw new IllegalArgumentException("일단 커스텀 나중에");
+            throw InvalidJwtException.EXCEPTION;
         }
         RefreshToken token = refreshTokenRepository.findByToken(refreshToken)
-                .orElseThrow(() -> new IllegalArgumentException("나중에 커스텀 exception으로"));
+                .orElseThrow(() -> InvalidJwtException.EXCEPTION);
 
         String id = token.getId();
         String role = getRole(token.getToken());
@@ -126,8 +129,10 @@ public class JwtTokenProvider {
                     .setSigningKey(getSecretKey())
                     .build()
                     .parseClaimsJws(token);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("나중에 커스텀 추가", e);
+        } catch (ExpiredJwtException e) {
+            throw ExpiredTokenException.EXCEPTION;
+        }catch (Exception e) {
+            throw InvalidJwtException.EXCEPTION;
         }
     }
 

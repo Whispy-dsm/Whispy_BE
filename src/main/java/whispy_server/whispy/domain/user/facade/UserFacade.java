@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.user.domain.User;
 import whispy_server.whispy.domain.user.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.port.out.QueryUserPort;
+import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 
 
 @Component
@@ -25,7 +26,7 @@ public class UserFacade implements UserFacadeUseCase {
     public User getUserByEmail(String email) {
         User user = queryUserPort.findByEmail(email);
         if(user == null){
-            throw new UsernameNotFoundException("User not found");
+            throw UserNotFoundException.EXCEPTION;
         }
             return user;
     }
