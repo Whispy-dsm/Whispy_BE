@@ -13,7 +13,7 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(WhispyException.class)
-    public ResponseEntity<ErrorResponse> handlePluckException(WhispyException e) {
+    public ResponseEntity<ErrorResponse> handleWhispyException(WhispyException e) {
 
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse response = ErrorResponse.of(errorCode, errorCode.getMessage(), e);

@@ -44,7 +44,7 @@ public class JwtTokenProvider {
 
     public TokenResponse generateToken(String id, String role){
         String accessToken = generateAccessToken(id, role, ACCESS_TOKEN, jwtProperties.accessExpiration());
-        String refreshToken = generateRefreshToken(id, role, REFRESH_TOKEN, jwtProperties.refreshExpiration());
+        String refreshToken = generateRefreshToken(role, REFRESH_TOKEN, jwtProperties.refreshExpiration());
         refreshTokenRepository.save(
                 new RefreshToken(id, refreshToken, jwtProperties.refreshExpiration())
         );
@@ -70,12 +70,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    private String generateRefreshToken(String id, String role, String type, Long exp){
+    private String generateRefreshToken(String role, String type, Long exp){
 
         Date now = new Date();
 
         return Jwts.builder()
-                .setSubject(id)
                 .claim("type", type)
                 .claim("role", role)
                 .setIssuedAt(now)
@@ -107,21 +106,16 @@ public class JwtTokenProvider {
         return getJwt(token).getBody().get("role").toString();
     }
 
-    private Boolean isRefreshToken(String token){
-        if(token == null || token.isEmpty()){
+    private Boolean isRefreshToken(String token) {
+        if (token == null || token.isEmpty()) {
             return false;
         }
 
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(getSecretKey())
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-
+            Claims claims = getJwt(token).getBody();
             String type = claims.get("type", String.class);
-            return "refreshToken".equals(type);
-        }catch (Exception e){
+            return REFRESH_TOKEN.equals(type);
+        } catch (Exception e) {
             return false;
         }
     }
@@ -142,7 +136,7 @@ public class JwtTokenProvider {
 
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(jwtProperties.prefix())
         && bearerToken.length() > jwtProperties.prefix().length() + 1){
-            return bearerToken.substring(7);
+            return bearerToken.substring(jwtProperties.prefix().length() +1);
         }
         return null;
     }
@@ -157,11 +151,10 @@ public class JwtTokenProvider {
     private UserDetails getDetails(Claims body){
         String role = body.get("role").toString();
 
-        if(Role.USER.toString().equals("role") || Role.PREMIUM_USER.toString().equals(role)){
+        if(Role.ADMIN.toString().equals(role)){
             return customAdminDetailsService.loadUserByUsername(body.getSubject());
         }else{
             return customUserDetailsService.loadUserByUsername(body.getSubject());
         }
     }
-
 }
