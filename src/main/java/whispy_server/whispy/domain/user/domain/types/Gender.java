@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.user.adapter.out.entity.types;
+package whispy_server.whispy.domain.user.domain.types;
 
 public enum Gender {
     UNKNOWN,
