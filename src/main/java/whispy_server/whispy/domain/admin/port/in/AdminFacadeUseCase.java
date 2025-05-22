@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.port.in;
+package whispy_server.whispy.domain.admin.port.in;
 
 import whispy_server.whispy.domain.admin.domain.Admin;
 import whispy_server.whispy.global.annotation.UseCase;

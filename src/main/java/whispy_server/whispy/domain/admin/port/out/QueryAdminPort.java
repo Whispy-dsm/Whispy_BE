@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.port.out;
+package whispy_server.whispy.domain.admin.port.out;
 
 import whispy_server.whispy.domain.admin.domain.Admin;
 
