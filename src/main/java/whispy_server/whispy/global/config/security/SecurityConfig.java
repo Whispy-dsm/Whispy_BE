@@ -36,8 +36,10 @@ public class SecurityConfig {  // SecurityFilterChain 상속 제거
                 )
 
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
-                        .accessDeniedHandler((request, response, accessDeniedException) ->  response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied"))
+                        .authenticationEntryPoint((request, response, authException) -> response.
+                                sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+                        .accessDeniedHandler((request, response, accessDeniedException) ->  response.
+                                sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied"))
                 )
 
                 .with(new FilterConfig(jwtTokenProvider, objectMapper), Customizer.withDefaults());
