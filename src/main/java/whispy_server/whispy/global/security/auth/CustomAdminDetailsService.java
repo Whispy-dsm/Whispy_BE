@@ -16,6 +16,6 @@ public class CustomAdminDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String adminId){
         Admin admin = adminFacadeUseCase.getAdminByAdminId(adminId);
-        return new AuthDetails(admin.adminId(),admin.role().name());
+        return new AuthDetails(admin.adminId(),admin.role().name(), AuthDetails.EMPTY_ATTRIBUTES);
     }
 }
