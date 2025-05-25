@@ -38,10 +38,5 @@ public class OauthSuccessHandler implements AuthenticationSuccessHandler {
 
         response.sendRedirect(redirectUrl);
 
-
     }
-
-
-
-
 }
