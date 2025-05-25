@@ -8,7 +8,7 @@ public interface QueryUserPort {
 
     User findByEmail(String email);
 
-    List<User> userAll();
+    List<User> findUserAll();
 
 
 
