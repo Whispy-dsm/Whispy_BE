@@ -3,17 +3,24 @@ package whispy_server.whispy.global.security.auth;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 public record AuthDetails(
         String id,
-        String role
-) implements UserDetails {
+        String role,
+        Map<String,Object> attributes
+
+) implements UserDetails, OAuth2User {
+
+    public static final Map<String, Object> EMPTY_ATTRIBUTES = Collections.emptyMap();
+    private static final String ROLE_PREFIX = "ROLE_";
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role));
+        return Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + role));
     }
 
     @Override
@@ -23,7 +30,7 @@ public record AuthDetails(
 
     @Override
     public String getPassword() {
-        return null;
+        return "";
     }
 
     @Override
@@ -42,6 +49,16 @@ public record AuthDetails(
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes != null ? attributes : EMPTY_ATTRIBUTES;
+    }
+
+    @Override
+    public String getName() {
+        return id;
     }
 
 }

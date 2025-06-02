@@ -18,7 +18,10 @@ public enum ErrorCode {
     FEIGN_UNAUTHORIZED(401, "Feign UnAuthorized"),
     PASSWORD_MISS_MATCH(401, "Password Miss Match"),
     INVALID_TOKEN(401, "Invalid Token"),
-    EXPIRED_TOKEN(401, "Expired Token");
+    EXPIRED_TOKEN(401, "Expired Token"),
+    OAUTH_AUTHENTICATION_FAILED(401, "OAuth2 인증에 실패했습니다"),
+
+    UNSUPPORTED_OAUTH_PROVIDER(400, "지원하지 않는 OAuth2 제공자입니다");
 
 
 

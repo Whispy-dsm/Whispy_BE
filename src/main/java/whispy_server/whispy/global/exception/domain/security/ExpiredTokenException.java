@@ -5,7 +5,7 @@ import whispy_server.whispy.global.exception.error.ErrorCode;
 
 public class ExpiredTokenException extends WhispyException {
 
-    public final static WhispyException EXCEPTION = new ExpiredTokenException();
+    public static final WhispyException EXCEPTION = new ExpiredTokenException();
 
     public ExpiredTokenException(){
         super(ErrorCode.EXPIRED_TOKEN);
