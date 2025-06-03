@@ -82,7 +82,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public TokenResponse reissue(String refreshToken){
+    public TokenResponse    reissue(String refreshToken){
         if(!isRefreshToken(refreshToken)){
             throw InvalidJwtException.EXCEPTION;
         }
@@ -102,7 +102,7 @@ public class JwtTokenProvider {
     }
 
     private String getRole(String token){
-        return getJwt(token).getBody().get("role").toString();
+        return getJws(token).getBody().get("role").toString();
     }
 
     private Boolean isRefreshToken(String token) {
@@ -111,7 +111,7 @@ public class JwtTokenProvider {
         }
 
         try {
-            Claims claims = getJwt(token).getBody();
+            Claims claims = getJws(token).getBody();
             String type = claims.get("type", String.class);
             return REFRESH_TOKEN.equals(type);
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public class JwtTokenProvider {
         }
     }
 
-    private Jws<Claims> getJwt(String token) {
+    private Jws<Claims> getJws(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(getSecretKey())
@@ -143,7 +143,7 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token){
-        Claims body = getJwt(token).getBody();
+        Claims body = getJws(token).getBody();
         UserDetails userDetails = getDetails(body);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 
