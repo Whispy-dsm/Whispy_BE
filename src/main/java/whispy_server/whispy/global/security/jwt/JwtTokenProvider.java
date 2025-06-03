@@ -6,18 +6,14 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import io.netty.util.internal.StringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
-import org.antlr.v4.runtime.Token;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import whispy_server.whispy.domain.auth.adapter.in.web.dto.response.TokenResponse;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.auth.adapter.out.entity.RefreshToken;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
 import whispy_server.whispy.domain.auth.adapter.out.persistence.repository.RefreshTokenRepository;
@@ -86,7 +82,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public TokenResponse reissue(String refreshToken){
+    public TokenResponse    reissue(String refreshToken){
         if(!isRefreshToken(refreshToken)){
             throw InvalidJwtException.EXCEPTION;
         }
@@ -106,7 +102,7 @@ public class JwtTokenProvider {
     }
 
     private String getRole(String token){
-        return getJwt(token).getBody().get("role").toString();
+        return getJws(token).getBody().get("role").toString();
     }
 
     private Boolean isRefreshToken(String token) {
@@ -115,7 +111,7 @@ public class JwtTokenProvider {
         }
 
         try {
-            Claims claims = getJwt(token).getBody();
+            Claims claims = getJws(token).getBody();
             String type = claims.get("type", String.class);
             return REFRESH_TOKEN.equals(type);
         } catch (Exception e) {
@@ -123,7 +119,7 @@ public class JwtTokenProvider {
         }
     }
 
-    private Jws<Claims> getJwt(String token) {
+    private Jws<Claims> getJws(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(getSecretKey())
@@ -147,7 +143,7 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token){
-        Claims body = getJwt(token).getBody();
+        Claims body = getJws(token).getBody();
         UserDetails userDetails = getDetails(body);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 

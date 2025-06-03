@@ -8,13 +8,14 @@ import whispy_server.whispy.domain.user.domain.vo.Profile;
 import java.util.UUID;
 
 public record OauthUserInfo(String name, String email, String profileImage) {
+    private static final String DEFAULT_PASSWORD = "OAUTH_USER";
 
     public User toUserInfo(String provider) {
         return new User(
                 UUID.randomUUID(),
                 email,
-                null,
-                new Profile(name,profileImage,Gender.UNKNOWN),
+                DEFAULT_PASSWORD,
+                new Profile(name, profileImage,Gender.UNKNOWN),
                 Role.USER,
                 true,
                 0,

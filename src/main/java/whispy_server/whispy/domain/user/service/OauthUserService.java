@@ -18,11 +18,12 @@ public class OauthUserService implements OauthUserUseCase {
     private final UserSavePort userSavePort;
 
     @Override
-    public User findOrCreateOauthUser(OauthUserInfo oauthUserInfo, String provider){
-        try{
-            return queryUserPort.findByEmail(oauthUserInfo.email());
-        }catch (Exception e){
-            return userSavePort.save(oauthUserInfo.toUserInfo(provider))
-        }
+    public User findOrCreateOauthUser(OauthUserInfo oauthUserInfo, String provider) {
+        return queryUserPort.findByEmail(oauthUserInfo.email())
+                .orElseGet(() -> {
+                    User newUser = oauthUserInfo.toUserInfo(provider);
+                    userSavePort.save(newUser);
+                    return newUser;
+                });
     }
 }
