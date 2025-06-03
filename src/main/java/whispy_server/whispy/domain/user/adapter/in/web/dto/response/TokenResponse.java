@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.auth.adapter.in.web.dto.response;
+package whispy_server.whispy.domain.user.adapter.in.web.dto.response;
 
 public record TokenResponse(
         String accessToken,
