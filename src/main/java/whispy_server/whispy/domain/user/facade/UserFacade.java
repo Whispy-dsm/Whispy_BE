@@ -24,10 +24,7 @@ public class UserFacade implements UserFacadeUseCase {
 
     @Override
     public User getUserByEmail(String email) {
-        User user = queryUserPort.findByEmail(email);
-        if(user == null){
-            throw UserNotFoundException.EXCEPTION;
-        }
-            return user;
+        return queryUserPort.findByEmail(email)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 }
