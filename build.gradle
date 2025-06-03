@@ -1,22 +1,15 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.5' apply false
+    id 'org.springframework.boot' version '3.4.5'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-
-
-allprojects {
     repositories {
         mavenCentral()
     }
+
     group = 'whispy_server.whispy'
     version = '0.0.1-SNAPSHOT'
-}
-
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'io.spring.dependency-management'
 
     java {
         toolchain {
@@ -30,17 +23,51 @@ subprojects {
         }
     }
 
-    // 모든 서브프로젝트에 공통으로 적용되는 의존성
     dependencies {
-        compileOnly "org.projectlombok:lombok"
-        annotationProcessor "org.projectlombok:lombok"
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        runtimeOnly 'com.mysql:mysql-connector-j'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+        //lombok
+        compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
+
+        //security
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+
+        //oauth
+        implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+        //mapstruct
+        implementation 'org.mapstruct:mapstruct:1.6.0'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
+
+        //validation
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        //redis
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+        //jwt
+        implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+        runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+        runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+        //swagger
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+
+
+
+
     }
 
     test {
         useJUnitPlatform()
     }
-}
-jar.enabled = false
