@@ -38,7 +38,7 @@ public class UserController implements UserApiDocument {
         userRegisterUseCase.register(request);
     }
 
-    @PutMapping("reissue")
+    @PutMapping("/reissue")
     public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String token) {
         return userTokenReissueUseCase.reissue(token);
     }
