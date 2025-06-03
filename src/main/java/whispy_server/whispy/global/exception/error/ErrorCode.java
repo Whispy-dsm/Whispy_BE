@@ -16,11 +16,10 @@ public enum ErrorCode {
     ADMIN_NOT_FOUND(404, "일치하는 어드민을 찾을 수 없습니다"),
 
     FEIGN_UNAUTHORIZED(401, "Feign UnAuthorized"),
-    PASSWORD_MISS_MATCH(401, "Password Miss Match"),
     INVALID_TOKEN(401, "Invalid Token"),
     EXPIRED_TOKEN(401, "Expired Token"),
     OAUTH_AUTHENTICATION_FAILED(401, "OAuth2 인증에 실패했습니다"),
-    PASSWORD_MISS_MATCH_EXCEPTION(401, "비밀번호가 일치하지 않습니다"),
+    PASSWORD_MISS_MATCH(401, "비밀번호가 일치하지 않습니다"),
 
     UNSUPPORTED_OAUTH_PROVIDER(400, "지원하지 않는 OAuth2 제공자입니다"),
 
