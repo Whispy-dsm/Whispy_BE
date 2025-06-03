@@ -30,7 +30,7 @@ public class UserJpaEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", columnDefinition = "CHAR(60)", nullable = false)
