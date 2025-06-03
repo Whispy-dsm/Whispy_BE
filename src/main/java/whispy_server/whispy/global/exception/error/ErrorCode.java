@@ -20,8 +20,12 @@ public enum ErrorCode {
     INVALID_TOKEN(401, "Invalid Token"),
     EXPIRED_TOKEN(401, "Expired Token"),
     OAUTH_AUTHENTICATION_FAILED(401, "OAuth2 인증에 실패했습니다"),
+    PASSWORD_MISS_MATCH_EXCEPTION(401, "비밀번호가 일치하지 않습니다"),
 
-    UNSUPPORTED_OAUTH_PROVIDER(400, "지원하지 않는 OAuth2 제공자입니다");
+    UNSUPPORTED_OAUTH_PROVIDER(400, "지원하지 않는 OAuth2 제공자입니다"),
+
+    USER_ALREADY_EXIST(409, "유저가 이미 존재합니다");
+
 
 
 
