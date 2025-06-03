@@ -24,8 +24,7 @@ plugins {
     }
 
     dependencies {
-        compileOnly "org.projectlombok:lombok"
-        annotationProcessor "org.projectlombok:lombok"
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
         testImplementation 'org.junit.jupiter:junit-jupiter'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -35,21 +34,36 @@ plugins {
         runtimeOnly 'com.mysql:mysql-connector-j'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+        //lombok
+        compileOnly "org.projectlombok:lombok"
+        annotationProcessor "org.projectlombok:lombok"
+
+        //security
         implementation 'org.springframework.boot:spring-boot-starter-security'
 
+        //oauth
         implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-
+        //mapstruct
         implementation 'org.mapstruct:mapstruct:1.6.0'
         annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
 
+        //validation
         implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+        //redis
         implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+        //jwt
         implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
         runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
         runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+        //swagger
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+
+
 
 
     }
