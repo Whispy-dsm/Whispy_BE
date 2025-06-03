@@ -4,5 +4,5 @@ import whispy_server.whispy.domain.user.domain.User;
 
 public interface UserSavePort {
 
-    User save(User user);
+    void save(User user);
 }
