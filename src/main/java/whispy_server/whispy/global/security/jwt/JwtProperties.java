@@ -1,6 +1,5 @@
 package whispy_server.whispy.global.security.jwt;
 
-import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 
