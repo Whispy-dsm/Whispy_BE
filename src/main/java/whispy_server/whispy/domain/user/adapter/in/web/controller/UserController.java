@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
-import whispy_server.whispy.domain.user.port.in.UserLoginUseCase;
-import whispy_server.whispy.domain.user.port.in.UserRegisterUseCase;
-import whispy_server.whispy.domain.user.port.in.UserTokenReissueUseCase;
+import whispy_server.whispy.domain.user.application.port.in.UserLoginUseCase;
+import whispy_server.whispy.domain.user.application.port.in.UserRegisterUseCase;
+import whispy_server.whispy.domain.user.application.port.in.UserTokenReissueUseCase;
 import whispy_server.whispy.global.document.api.user.UserApiDocument;
 
 @RestController
