@@ -3,9 +3,9 @@ package whispy_server.whispy.domain.admin.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.domain.admin.domain.Admin;
-import whispy_server.whispy.domain.admin.port.in.AdminFacadeUseCase;
-import whispy_server.whispy.domain.admin.port.out.QueryAdminPort;
+import whispy_server.whispy.domain.admin.model.Admin;
+import whispy_server.whispy.domain.admin.application.port.in.AdminFacadeUseCase;
+import whispy_server.whispy.domain.admin.application.port.out.QueryAdminPort;
 import whispy_server.whispy.global.exception.domain.admin.AdminNotFoundException;
 
 @Component

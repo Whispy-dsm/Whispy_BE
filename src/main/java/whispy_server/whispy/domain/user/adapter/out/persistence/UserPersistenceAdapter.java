@@ -3,9 +3,9 @@ package whispy_server.whispy.domain.user.adapter.out.persistence;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.user.adapter.out.persistence.repository.UserRepository;
-import whispy_server.whispy.domain.user.domain.User;
-import whispy_server.whispy.domain.user.mapper.UserEntityMapper;
-import whispy_server.whispy.domain.user.port.out.UserPort;
+import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.domain.user.adapter.out.mapper.UserEntityMapper;
+import whispy_server.whispy.domain.user.application.port.out.UserPort;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class UserPersistenceAdapter implements UserPort {
     @Override
     public List<User> findUserAll() {
         return userRepository.findAll().stream()
-                .map(userEntityMapper::toDomain)
+                .map(userEntityMapper::toModel)
                 .toList();
     }
 
