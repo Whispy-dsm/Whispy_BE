@@ -17,11 +17,14 @@ spring:
 
   data:
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
   jackson:
     property-naming-strategy : SNAKE_CASE
+
+  oauth:
+    default-password: ${OAUTH_DEFAULT_PASSWORD}
 
   jwt:
     header: ${JWT_HEADER}
@@ -29,6 +32,12 @@ spring:
     secret: ${JWT_SECRET}
     accessExpiration: 3600
     refreshExpiration: 604800
+
+  whispy:
+    file:
+      upload-path: ${user.home}/whispy/uploads
+      base-url: http://localhost:8080
+      profile-image-folder: profile
 
   servlet:
     multipart:
@@ -49,7 +58,7 @@ spring:
           kakao:
             client-id: ${KAKAO_CLIENT}
             client-secret: ${KAKAO_SECRET}
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: ${KAKAO_REDIRECT_URI}
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             scope:
