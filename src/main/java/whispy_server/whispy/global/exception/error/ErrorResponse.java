@@ -3,7 +3,6 @@ package whispy_server.whispy.global.exception.error;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
-import javax.print.DocFlavor;
 import java.time.LocalDateTime;
 
 @Builder
