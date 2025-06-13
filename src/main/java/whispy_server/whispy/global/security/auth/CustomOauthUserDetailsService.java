@@ -1,4 +1,4 @@
-package whispy_server.whispy.global.security.oauth;
+package whispy_server.whispy.global.security.auth;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +11,10 @@ import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 import whispy_server.whispy.global.oauth.parser.factory.OauthUserInfoParserFactory;
-import whispy_server.whispy.global.security.auth.AuthDetails;
 
 @RequiredArgsConstructor
 @Service
-public class CustomOauthUserService extends DefaultOAuth2UserService {
+public class CustomOauthUserDetailsService extends DefaultOAuth2UserService {
 
     private final OauthUserUseCase oauthUserUseCase;
 
