@@ -1,8 +1,8 @@
 package whispy_server.whispy.domain.user.application.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
 import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;

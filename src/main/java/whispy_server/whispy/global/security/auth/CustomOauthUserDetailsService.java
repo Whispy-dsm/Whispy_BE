@@ -1,12 +1,12 @@
 package whispy_server.whispy.global.security.auth;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;

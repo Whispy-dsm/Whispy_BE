@@ -1,10 +1,10 @@
 package whispy_server.whispy.domain.user.application.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;

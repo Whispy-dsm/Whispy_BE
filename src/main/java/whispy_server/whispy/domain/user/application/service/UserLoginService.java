@@ -1,9 +1,9 @@
 package whispy_server.whispy.domain.user.application.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
