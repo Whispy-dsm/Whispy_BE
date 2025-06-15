@@ -1,13 +1,12 @@
 package whispy_server.whispy.domain.user.application.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
-import whispy_server.whispy.domain.user.adapter.out.persistence.repository.UserRepository;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.application.port.in.UserLoginUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
@@ -19,7 +18,6 @@ import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 @RequiredArgsConstructor
 public class UserLoginService implements UserLoginUseCase {
 
-    private final UserRepository  userRepository;
     private final JwtTokenProvider  jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final QueryUserPort queryUserPort;

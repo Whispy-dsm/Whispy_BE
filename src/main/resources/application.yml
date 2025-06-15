@@ -8,20 +8,23 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true #false 로
     properties:
       hibernate:
         format_sql: true
-    open-in-view: false
+    open-in-view: true # false로
     database: mysql
 
   data:
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
   jackson:
     property-naming-strategy : SNAKE_CASE
+
+  oauth:
+    default-password: ${OAUTH_DEFAULT_PASSWORD}
 
   jwt:
     header: ${JWT_HEADER}
@@ -29,6 +32,12 @@ spring:
     secret: ${JWT_SECRET}
     accessExpiration: 3600
     refreshExpiration: 604800
+
+  whispy:
+    file:
+      upload-path: ${user.home}/whispy/uploads
+      base-url: http://localhost:8080
+      profile-image-folder: profile
 
   servlet:
     multipart:
@@ -46,21 +55,21 @@ spring:
               - profile
               - email
 
-          kakao:
-            client-id: ${KAKAO_CLIENT}
-            client-secret: ${KAKAO_SECRET}
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-            client-authentication-method: client_secret_post
-            authorization-grant-type: authorization_code
-            scope:
-              - profile_nickname
-              - profile_image
-              - account_email
-            client-name: kakao
+        #  kakao:
+        #    client-id: ${KAKAO_CLIENT}
+        #    client-secret: ${KAKAO_SECRET}
+        #    redirect-uri: ${KAKAO_REDIRECT_URI}
+        #    client-authentication-method: client_secret_post
+        #    authorization-grant-type: authorization_code
+        #    scope:
+        #      - profile_nickname
+        #      - profile_image
+        #      - account_email
+        #    client-name: kakao
 
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
+        # provider:
+        #   kakao:
+        #     authorization-uri: https://kauth.kakao.com/oauth/authorize
+        #     token-uri: https://kauth.kakao.com/oauth/token
+        #     user-info-uri: https://kapi.kakao.com/v2/user/me
+        #     user-name-attribute: id
