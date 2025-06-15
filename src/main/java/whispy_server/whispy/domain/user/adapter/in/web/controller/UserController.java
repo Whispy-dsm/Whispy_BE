@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
+import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserLoginUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserRegisterUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserTokenReissueUseCase;
@@ -26,6 +28,7 @@ public class UserController implements UserApiDocument {
     private final UserLoginUseCase userLoginUseCase;
     private final UserRegisterUseCase userRegisterUseCase;
     private final UserTokenReissueUseCase userTokenReissueUseCase;
+    private final KakaoOauthUseCase kakaoOauthUseCase;
 
     @PostMapping("/login")
     public TokenResponse login(@Valid  @RequestBody UserLoginRequest request) {
@@ -38,12 +41,13 @@ public class UserController implements UserApiDocument {
         userRegisterUseCase.register(request);
     }
 
+    @PostMapping("/oauth/kakao")
+    public TokenResponse authenticateWithKakaoToken(@Valid @RequestBody KakaoOauthTokenRequest request){
+        return kakaoOauthUseCase.loginWithKakao(request.accessToken());
+    }
+
     @PutMapping("/reissue")
     public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String token) {
         return userTokenReissueUseCase.reissue(token);
     }
-
-
-
-
 }
