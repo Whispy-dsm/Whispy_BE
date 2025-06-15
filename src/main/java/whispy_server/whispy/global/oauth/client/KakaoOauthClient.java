@@ -1,53 +1,48 @@
-package whispy_server.whispy.global.oauth.service;
+package whispy_server.whispy.global.oauth.client;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
+import whispy_server.whispy.global.exception.domain.oauth.InvalidKakaoAccessTokenException;
+import whispy_server.whispy.global.exception.domain.oauth.InvalidKakaoOauthResponseException;
 
 import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class KakaoTokenValidator {
+public class KakaoOauthClient {
 
     private final RestTemplate restTemplate;
+
     private static final String USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
 
-    public Map<String, Object> validateTokenAndGetUserInfo(String accessToken) {
+    public Map<String, Object> fetchUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
 
         try {
-
             ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                     USER_INFO_URL,
                     HttpMethod.GET,
-                    entity,
-                    new ParameterizedTypeReference<Map<String, Object>>() {
-                    }
+                    request,
+                    new ParameterizedTypeReference<Map<String, Object>>() {}
             );
 
             Map<String, Object> userInfo = response.getBody();
-            if (userInfo == null) {
-                throw new IllegalArgumentException("dd");
+            if (userInfo == null || userInfo.isEmpty()) {
+                throw InvalidKakaoOauthResponseException.EXCEPTION;
             }
             return userInfo;
 
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                throw new IllegalArgumentException("d");
-            }
-            throw new IllegalArgumentException("dd");
+        } catch (HttpClientErrorException.Unauthorized e) {
+            throw InvalidKakaoAccessTokenException.EXCEPTION;
         }
     }
 }
