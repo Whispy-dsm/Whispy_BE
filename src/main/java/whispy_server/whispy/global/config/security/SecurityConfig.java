@@ -17,7 +17,7 @@ import whispy_server.whispy.global.config.filter.FilterConfig;
 import whispy_server.whispy.global.oauth.handler.OauthFailureHandler;
 import whispy_server.whispy.global.oauth.handler.OauthSuccessHandler;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
-import whispy_server.whispy.global.security.oauth.CustomOauthUserService;
+import whispy_server.whispy.global.security.auth.CustomOauthUserDetailsService;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final OauthSuccessHandler oauthSuccessHandler;
     private final OauthFailureHandler oauthFailureHandler;
-    private final CustomOauthUserService customOauthUserService;
+    private final CustomOauthUserDetailsService customOauthUserService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -63,8 +63,9 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
+                        .requestMatchers("/oauth2/authorization/google", "/login/oauth2/code/google").permitAll()
                         .requestMatchers("/users/login","/users/register","/users/reissue").permitAll()
+                        .requestMatchers("/users/oauth/kakao").permitAll()
                         .requestMatchers("/oauth/success/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
                         .requestMatchers("/").permitAll()
