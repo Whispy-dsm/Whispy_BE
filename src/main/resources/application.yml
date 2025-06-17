@@ -12,7 +12,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    open-in-view: true # false로
+    open-in-view: false
     database: mysql
 
   data:
@@ -35,14 +35,14 @@ spring:
 
   whispy:
     file:
-      upload-path: ${user.home}/whispy/uploads
-      base-url: http://localhost:8080
-      profile-image-folder: profile
+      upload-path: ${UPLOAD_PATH}
+      base-url: ${BASE_URL}
+      profile-image-folder: ${PROFILE_IMAGE_FOLDER}
 
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
+      max-file-size: 50MB
+      max-request-size: 50MB
 
   security:
     oauth2:
