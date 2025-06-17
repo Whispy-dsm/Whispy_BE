@@ -66,6 +66,7 @@ public class SecurityConfig {
                         .requestMatchers("/oauth2/authorization/google", "/login/oauth2/code/google").permitAll()
                         .requestMatchers("/users/login","/users/register","/users/reissue").permitAll()
                         .requestMatchers("/users/oauth/kakao").permitAll()
+                        .requestMatchers("/files/**").permitAll()
                         .requestMatchers("/oauth/success/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
                         .requestMatchers("/").permitAll()
