@@ -15,11 +15,12 @@ import java.nio.file.Paths;
 public class FileDeleteService implements FileDeleteUseCase {
 
     private final FileProperties fileProperties;
+    private final FileValidator fileValidator;
 
     @Override
-    public void deleteFile(ImageFolder imageFolder, String fileName){
+    public boolean deleteFile(ImageFolder imageFolder, String fileName){
         try {
-            Files.deleteIfExists(Paths.get(fileProperties.uploadPath(), imageFolder.toString().toLowerCase(), fileName));
+            return Files.deleteIfExists(Paths.get(fileProperties.uploadPath(), imageFolder.toString().toLowerCase(), fileName));
         } catch (IOException e) {
             throw new RuntimeException("파일 삭제에 실패했습니다: " + e.getMessage(), e);
         }
