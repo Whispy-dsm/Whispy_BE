@@ -26,13 +26,12 @@ public class FileController {
 
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
-    public FileUploadResponse uploadFile(@RequestPart("file")MultipartFile file, @RequestParam("folder") ImageFolder folder){
+    public FileUploadResponse uploadFile(@RequestPart("file") MultipartFile file, @RequestParam("folder") ImageFolder folder){
         return fileUploadUseCase.uploadFile(file, folder);
     }
 
-    @DeleteMapping("/{fileName}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFile(@RequestParam ImageFolder folder, @PathVariable String fileName){
-        fileDeleteUseCase.deleteFile(folder, fileName);
+    @DeleteMapping
+    public boolean deleteFile(@RequestParam ImageFolder folder, @RequestParam String fileName){
+        return fileDeleteUseCase.deleteFile(folder, fileName);
     }
 }
