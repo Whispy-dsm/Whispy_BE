@@ -7,14 +7,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
-import whispy_server.whispy.domain.user.domain.types.Gender;
+import whispy_server.whispy.domain.user.model.types.Gender;
 
 
 import java.util.UUID;
@@ -33,7 +32,7 @@ public class UserJpaEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", columnDefinition = "CHAR(60)", nullable = false)
+    @Column(name = "password", columnDefinition = "CHAR(70)", nullable = false)
     private String password;
 
     @Column(name = "name", columnDefinition = "CHAR(30)", nullable = false)

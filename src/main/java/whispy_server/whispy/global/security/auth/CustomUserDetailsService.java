@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.domain.user.domain.User;
-import whispy_server.whispy.domain.user.port.in.UserFacadeUseCase;
+import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 
 @Component
 @RequiredArgsConstructor
