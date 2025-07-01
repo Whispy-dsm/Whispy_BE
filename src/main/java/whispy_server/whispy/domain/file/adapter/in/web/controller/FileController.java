@@ -31,7 +31,8 @@ public class FileController {
     }
 
     @DeleteMapping
-    public boolean deleteFile(@RequestParam ImageFolder folder, @RequestParam String fileName){
-        return fileDeleteUseCase.deleteFile(folder, fileName);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFile(@RequestParam ImageFolder folder, @RequestParam String fileName){
+        fileDeleteUseCase.deleteFile(folder, fileName);
     }
 }
