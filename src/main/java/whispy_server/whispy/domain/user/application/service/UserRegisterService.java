@@ -43,12 +43,11 @@ public class UserRegisterService implements UserRegisterUseCase {
         );
 
         User user = new User(
-                UUID.randomUUID(),
+                null,
                 request.email(),
                 encodedPassword,
                 profile,
                 Role.USER,
-                true,
                 0,
                 DEFAULT_PROVIDER
         );
