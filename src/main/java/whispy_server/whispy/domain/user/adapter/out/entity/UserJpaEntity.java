@@ -49,9 +49,6 @@ public class UserJpaEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "calender_enabled", nullable = false)
-    private boolean calenderEnabled;
-
     @Column(name = "coin", nullable = false)
     private int coin;
 

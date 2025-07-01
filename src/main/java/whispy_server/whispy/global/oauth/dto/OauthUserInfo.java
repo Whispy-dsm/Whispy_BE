@@ -15,7 +15,6 @@ public record OauthUserInfo(String name, String email, String profileImage) {
                 defaultPassword,
                 new Profile(name, profileImage, Gender.UNKNOWN),
                 Role.USER,
-                true,
                 0,
                 provider.toUpperCase()
         );
