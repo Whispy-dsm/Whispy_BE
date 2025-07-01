@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import whispy_server.whispy.domain.file.adapter.in.web.dto.FileUploadResponse;
 import whispy_server.whispy.domain.file.application.port.in.FileUploadUseCase;
 import whispy_server.whispy.domain.file.type.ImageFolder;
+import whispy_server.whispy.global.exception.domain.file.FileUploadFailedException;
 import whispy_server.whispy.global.file.FileProperties;
 
 import java.io.File;
@@ -39,7 +40,7 @@ public class FileUploadService implements FileUploadUseCase {
             return new FileUploadResponse(fileUrl);
 
         }catch (IOException e){
-            throw new RuntimeException("파일 업로드에 실패했습니다: " + e.getMessage(), e);
+            throw FileUploadFailedException.EXCEPTION;
         }
     }
 
@@ -57,7 +58,7 @@ public class FileUploadService implements FileUploadUseCase {
     }
 
     private String generateFileUrl(String folder, String fileName) {
-        return fileProperties.baseUrl() + "/files/" + folder + "/" + fileName;
+        return fileProperties.baseUrl() + "/file/" + folder + "/" + fileName;
     }
 
 }
