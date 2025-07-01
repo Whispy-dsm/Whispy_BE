@@ -5,5 +5,5 @@ import whispy_server.whispy.global.annotation.UseCase;
 
 @UseCase
 public interface FileDeleteUseCase {
-    boolean deleteFile(ImageFolder imageFolder, String fileName);
+    void deleteFile(ImageFolder imageFolder, String fileName);
 }

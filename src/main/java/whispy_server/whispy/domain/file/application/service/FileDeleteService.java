@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.file.application.port.in.FileDeleteUseCase;
 import whispy_server.whispy.domain.file.type.ImageFolder;
+import whispy_server.whispy.global.exception.domain.file.FileDeleteFailedException;
+import whispy_server.whispy.global.exception.domain.file.FileNotFoundException;
 import whispy_server.whispy.global.file.FileProperties;
 
 import java.io.IOException;
@@ -18,11 +20,15 @@ public class FileDeleteService implements FileDeleteUseCase {
     private final FileValidator fileValidator;
 
     @Override
-    public boolean deleteFile(ImageFolder imageFolder, String fileName){
+    public void deleteFile(ImageFolder imageFolder, String fileName){
+
         try {
-            return Files.deleteIfExists(Paths.get(fileProperties.uploadPath(), imageFolder.toString().toLowerCase(), fileName));
+            boolean deleted = Files.deleteIfExists(Paths.get(fileProperties.uploadPath(), imageFolder.toString().toLowerCase(), fileName));
+            if (!deleted) {
+                throw FileNotFoundException.EXCEPTION;
+            }
         } catch (IOException e) {
-            throw new RuntimeException("파일 삭제에 실패했습니다: " + e.getMessage(), e);
+            throw FileDeleteFailedException.EXCEPTION;
         }
     }
 }
