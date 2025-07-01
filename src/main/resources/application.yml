@@ -39,11 +39,6 @@ spring:
       base-url: ${BASE_URL}
       profile-image-folder: ${PROFILE_IMAGE_FOLDER}
 
-  servlet:
-    multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
-
   security:
     oauth2:
       client:
