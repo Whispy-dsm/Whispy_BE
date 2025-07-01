@@ -82,7 +82,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public TokenResponse    reissue(String refreshToken){
+    public TokenResponse reissue(String refreshToken){
         if(!isRefreshToken(refreshToken)){
             throw InvalidJwtException.EXCEPTION;
         }

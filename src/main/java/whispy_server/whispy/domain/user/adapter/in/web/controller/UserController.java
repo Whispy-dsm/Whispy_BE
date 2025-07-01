@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.user.adapter.in.web.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +17,10 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequ
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserLoginUseCase;
+import whispy_server.whispy.domain.user.application.port.in.UserLogoutUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserRegisterUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserTokenReissueUseCase;
+import whispy_server.whispy.domain.user.application.port.in.UserWithdrawalUseCase;
 import whispy_server.whispy.global.document.api.user.UserApiDocument;
 
 @RestController
@@ -29,6 +32,8 @@ public class UserController implements UserApiDocument {
     private final UserRegisterUseCase userRegisterUseCase;
     private final UserTokenReissueUseCase userTokenReissueUseCase;
     private final KakaoOauthUseCase kakaoOauthUseCase;
+    private final UserLogoutUseCase userLogoutUseCase;
+    private final UserWithdrawalUseCase userWithdrawalUseCase;
 
     @PostMapping("/login")
     public TokenResponse login(@Valid  @RequestBody UserLoginRequest request) {
@@ -49,5 +54,16 @@ public class UserController implements UserApiDocument {
     @PutMapping("/reissue")
     public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String token) {
         return userTokenReissueUseCase.reissue(token);
+    }
+
+    @PostMapping("/logout")
+    public void logout(){
+        userLogoutUseCase.logout();
+    }
+
+    @DeleteMapping("/withdrawal")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void withdrawal(){
+        userWithdrawalUseCase.withdrawal();
     }
 }

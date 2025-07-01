@@ -13,7 +13,6 @@ public record User(
         String password,
         Profile profile,
         Role role,
-        boolean calenderEnabled,
         int coin,
         String provider
 

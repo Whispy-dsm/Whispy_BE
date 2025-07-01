@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.user.application.port.out.UserPort;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -37,5 +38,10 @@ public class UserPersistenceAdapter implements UserPort {
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void deleteByUUID(UUID id){
+        userRepository.deleteById(id);
     }
 }
