@@ -1,7 +1,16 @@
 package whispy_server.whispy.domain.file.application.service;
 
+import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import whispy_server.whispy.global.exception.domain.file.FileInvalidExtensionException;
+import whispy_server.whispy.global.exception.domain.file.FileInvalidMimeTypeException;
+import whispy_server.whispy.global.exception.domain.file.FileNameContainsPathException;
+import whispy_server.whispy.global.exception.domain.file.FileNameEmptyException;
+import whispy_server.whispy.global.exception.domain.file.FileNameInvalidCharException;
+import whispy_server.whispy.global.exception.domain.file.FileNameTooLongException;
+import whispy_server.whispy.global.exception.domain.file.FileNoExtensionException;
+import whispy_server.whispy.global.exception.domain.file.FileSizeExceededException;
 
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -24,17 +33,16 @@ public class FileValidator {
     private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]+$");
 
 
+
     public void validateFile(MultipartFile file) {
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("파일이 비어있습니다");
-        }
+
+        validateFileName(file);
+
         validateFileExtension(file);
 
         validateMimeType(file);
 
         validateFileSize(file);
-
-        validateFileName(file);
 
 
     }
@@ -44,43 +52,43 @@ public class FileValidator {
         String originalFileName = file.getOriginalFilename();
 
         if(originalFileName == null || originalFileName.trim().isEmpty()){
-            throw new IllegalArgumentException("파일명이 비어있습니다.");
+            throw FileNameEmptyException.EXCEPTION;
         }
 
         if (originalFileName.contains("..") || originalFileName.contains("/") || originalFileName.contains("\\")) {
-            throw new IllegalArgumentException("파일명에 경로 문자가 포함되어 있습니다.");
+            throw FileNameContainsPathException.EXCEPTION;
         }
 
         if (!SAFE_FILENAME_PATTERN.matcher(originalFileName).matches()) {
-            throw new IllegalArgumentException("파일명에 허용되지 않은 문자가 포함되어 있습니다.");
+            throw FileNameInvalidCharException.EXCEPTION;
         }
 
         if (originalFileName.length() > 255) {
-            throw new IllegalArgumentException("파일명이 너무 깁니다.");
+            throw FileNameTooLongException.EXCEPTION;
         }
     }
 
     private void validateFileExtension(MultipartFile file){
         String originalFileName = file.getOriginalFilename();
         if(!originalFileName.contains(".")){
-            throw new IllegalArgumentException("<UNK> <UNK> <UNK> <UNK> <UNK>.");
+            throw FileNoExtensionException.EXCEPTION;
         }
         String extension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
         if(!VALID_EXTENSIONS.contains(extension)){
-            throw new IllegalArgumentException("dd");
+            throw FileInvalidExtensionException.EXCEPTION;
         }
     }
 
     private void validateMimeType(MultipartFile file){
         String contentType = file.getContentType();
         if (contentType == null || !VALID_MIME_TYPES.contains(contentType)) {
-            throw new IllegalArgumentException("지원하지 않는 파일 타입입니다: " + contentType);
+            throw FileInvalidMimeTypeException.EXCEPTION;
         }
     }
 
     private void validateFileSize(MultipartFile file) {
         if (file.getSize() > MAX_FILE_SIZE) {
-            throw new IllegalArgumentException("파일 크기가 너무 큽니다. 최대 5MB까지 가능합니다");
+            throw FileSizeExceededException.EXCEPTION;
         }
     }
 }
