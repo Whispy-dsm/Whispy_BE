@@ -7,7 +7,9 @@ import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import whispy_server.whispy.global.exception.ErrorNotificationHandler;
 import whispy_server.whispy.global.exception.GlobalExceptionFilter;
+import whispy_server.whispy.global.webhook.DiscordNotificationService;
 import whispy_server.whispy.global.security.jwt.JwtTokenFilter;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 
@@ -16,13 +18,14 @@ import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 public class FilterConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     private final JwtTokenProvider jwtTokenProvider;
-
     private final ObjectMapper objectMapper;
+    private final DiscordNotificationService discordNotificationService;
+    private final ErrorNotificationHandler errorNotificationHandler;
 
     @Override
     public void configure(HttpSecurity http){
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider);
-        GlobalExceptionFilter globalExceptionFilter = new GlobalExceptionFilter(objectMapper);
+        GlobalExceptionFilter globalExceptionFilter = new GlobalExceptionFilter(objectMapper, discordNotificationService, errorNotificationHandler);
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(globalExceptionFilter, JwtTokenFilter.class);
