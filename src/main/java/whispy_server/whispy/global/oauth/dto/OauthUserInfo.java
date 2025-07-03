@@ -12,7 +12,7 @@ public record OauthUserInfo(String name, String email, String profileImage) {
         return new User(
                 null,
                 email,
-                defaultPassword,
+                defaultPassword, //todo 이거 나중에 바꾸기
                 new Profile(name, profileImage, Gender.UNKNOWN),
                 Role.USER,
                 0,
