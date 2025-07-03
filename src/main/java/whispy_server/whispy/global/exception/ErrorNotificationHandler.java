@@ -22,7 +22,6 @@ public class ErrorNotificationHandler {
             discordNotificationService.sendErrorNotification(e);
         } else {
             log.error(e.toString());
-            e.printStackTrace();
         }
     }
 
