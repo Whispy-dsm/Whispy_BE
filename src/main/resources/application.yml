@@ -39,6 +39,10 @@ spring:
       base-url: ${BASE_URL}
       profile-image-folder: ${PROFILE_IMAGE_FOLDER}
 
+  discord:
+    webhook:
+      url: ${DISCORD_WEBHOOK}
+
   security:
     oauth2:
       client:
@@ -49,6 +53,11 @@ spring:
             scope:
               - profile
               - email
+
+sentry:
+  dsn: ${DSN_KEY}
+  enable-tracing: true
+  environment: development
 
         #  kakao:
         #    client-id: ${KAKAO_CLIENT}
@@ -68,3 +77,4 @@ spring:
         #     token-uri: https://kauth.kakao.com/oauth/token
         #     user-info-uri: https://kapi.kakao.com/v2/user/me
         #     user-name-attribute: id
+
