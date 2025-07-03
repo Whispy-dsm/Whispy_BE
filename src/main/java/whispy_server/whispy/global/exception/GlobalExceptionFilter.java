@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
 import whispy_server.whispy.global.exception.error.ErrorCode;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
+import whispy_server.whispy.global.webhook.DiscordNotificationService;
 
 import java.io.IOException;
 
@@ -16,6 +17,8 @@ import java.io.IOException;
 public class GlobalExceptionFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
+    private final DiscordNotificationService discordNotificationService;
+    private final ErrorNotificationHandler errorNotificationHandler;
 
     @Override
     protected void doFilterInternal(
@@ -27,10 +30,14 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
         try{
             filterChain.doFilter(request,response);
         }catch (WhispyException e){
+            errorNotificationHandler.handleWhispyException(e);
+
             ErrorCode errorCode = e.getErrorCode();
             writeErrorResponse(response, errorCode.getStatusCode(), ErrorResponse.of(errorCode, errorCode.getMessage(), e));
         } catch (Exception e){
+            errorNotificationHandler.handleExceptionException(e);
             e.printStackTrace();
+
             writeErrorResponse(response, response.getStatus(), ErrorResponse.of(response.getStatus(),e.getMessage(), e));
         }
 

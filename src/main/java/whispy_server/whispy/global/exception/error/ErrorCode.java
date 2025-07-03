@@ -29,7 +29,6 @@ public enum ErrorCode {
     ADMIN_NOT_FOUND(404, "일치하는 어드민을 찾을 수 없습니다"),
     FILE_NOT_FOUND(404, "파일을 찾을 수 없습니다"),
 
-    FEIGN_UNAUTHORIZED(401, "Feign UnAuthorized"),
     INVALID_TOKEN(401, "Invalid Token"),
     INVALID_KAKAO_ACCESS_TOKEN(401, "유효하지 않은 kakao access 토큰입니다."),
     EXPIRED_TOKEN(401, "토큰이 만료 되었습니다."),

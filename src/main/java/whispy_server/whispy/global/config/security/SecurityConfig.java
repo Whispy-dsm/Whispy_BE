@@ -14,6 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import whispy_server.whispy.global.config.filter.FilterConfig;
+import whispy_server.whispy.global.exception.ErrorNotificationHandler;
+import whispy_server.whispy.global.webhook.DiscordNotificationService;
 import whispy_server.whispy.global.oauth.handler.OauthFailureHandler;
 import whispy_server.whispy.global.oauth.handler.OauthSuccessHandler;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
@@ -29,6 +31,8 @@ public class SecurityConfig {
     private final OauthSuccessHandler oauthSuccessHandler;
     private final OauthFailureHandler oauthFailureHandler;
     private final CustomOauthUserDetailsService customOauthUserService;
+    private final DiscordNotificationService discordNotificationService;
+    private final ErrorNotificationHandler errorNotificationHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -73,7 +77,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                .with(new FilterConfig(jwtTokenProvider, objectMapper), Customizer.withDefaults());
+                .with(new FilterConfig(jwtTokenProvider, objectMapper, discordNotificationService, errorNotificationHandler), Customizer.withDefaults());
 
 
                 return http.build();
