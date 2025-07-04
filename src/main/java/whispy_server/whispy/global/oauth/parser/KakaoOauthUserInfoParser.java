@@ -3,7 +3,7 @@ package whispy_server.whispy.global.oauth.parser;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 import java.util.Map;
 
-public class KakaoOauthUserInfoParser implements OauthUserInfoParser {
+public final class KakaoOauthUserInfoParser implements OauthUserInfoParser {
 
     @Override
     public OauthUserInfo parse(Map<String, Object> attributes) {

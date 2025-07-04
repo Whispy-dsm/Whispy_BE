@@ -4,7 +4,7 @@ import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 
 import java.util.Map;
 
-public class GoogleOauthUserInfoParser implements OauthUserInfoParser {
+public final class GoogleOauthUserInfoParser implements OauthUserInfoParser {
 
     @Override
     public OauthUserInfo parse(Map<String, Object> attributes) {
