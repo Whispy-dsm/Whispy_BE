@@ -4,7 +4,8 @@ import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 
 import java.util.Map;
 
-public interface OauthUserInfoParser {
+public sealed interface OauthUserInfoParser
+    permits GoogleOauthUserInfoParser, KakaoOauthUserInfoParser {
 
     OauthUserInfo parse(Map<String, Object> attribute);
 
