@@ -1,4 +1,4 @@
-package whispy_server.whispy.global.webhook;
+package whispy_server.whispy.global.webhook.discord;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import whispy_server.whispy.global.exception.WhispyException;
 import whispy_server.whispy.global.exception.error.ErrorCode;
-import whispy_server.whispy.global.webhook.dto.DiscordEmbed;
-import whispy_server.whispy.global.webhook.dto.DiscordPayload;
+import whispy_server.whispy.global.webhook.discord.dto.DiscordEmbed;
+import whispy_server.whispy.global.webhook.discord.dto.DiscordPayload;
 
 import java.util.List;
 

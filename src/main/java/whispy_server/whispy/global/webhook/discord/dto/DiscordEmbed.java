@@ -1,4 +1,4 @@
-package whispy_server.whispy.global.webhook.dto;
+package whispy_server.whispy.global.webhook.discord.dto;
 
 public record DiscordEmbed(
         String title,
