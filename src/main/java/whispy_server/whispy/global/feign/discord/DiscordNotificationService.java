@@ -1,4 +1,4 @@
-package whispy_server.whispy.global.webhook.discord;
+package whispy_server.whispy.global.feign.discord;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import whispy_server.whispy.global.exception.WhispyException;
 import whispy_server.whispy.global.exception.error.ErrorCode;
-import whispy_server.whispy.global.webhook.discord.dto.DiscordEmbed;
-import whispy_server.whispy.global.webhook.discord.dto.DiscordPayload;
+import whispy_server.whispy.global.feign.discord.client.DiscordBugClient;
+import whispy_server.whispy.global.feign.discord.dto.DiscordEmbed;
+import whispy_server.whispy.global.feign.discord.dto.DiscordPayload;
 
 import java.util.List;
 
@@ -21,11 +22,7 @@ import java.util.List;
 @Slf4j
 public class DiscordNotificationService {
 
-    @Value("${spring.discord.webhook.url}")
-    private String webhookUrl;
-
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final DiscordBugClient discordBugClient;
 
     public void sendErrorNotification(Exception exception) {
         String errorMessage = getErrorMessage(exception);
@@ -33,12 +30,7 @@ public class DiscordNotificationService {
         try {
             DiscordEmbed embeds = new DiscordEmbed("🚨 서버 에러 발생", errorMessage, 15158332);
             DiscordPayload payload = new DiscordPayload(List.of(embeds));
-            String json = objectMapper.writeValueAsString(payload);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<String> request = new HttpEntity<>(json, headers);
-            restTemplate.postForEntity(webhookUrl, request, String.class);
+            discordBugClient.sendWebhook(payload);
 
         } catch (Exception e) {
             log.error("Discord 알림 전송 실패", e);
@@ -59,11 +51,10 @@ public class DiscordNotificationService {
             );
         }
         return String.format(
-                        "**예외 타입**: `%s`\n" +
+                "**예외 타입**: `%s`\n" +
                         "**메시지**: %s",
                 exception.getClass().getSimpleName(),
                 exception.getMessage() != null ? exception.getMessage() : "메시지 없음"
         );
     }
-
 }
