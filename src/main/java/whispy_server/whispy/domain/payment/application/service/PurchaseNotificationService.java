@@ -2,7 +2,6 @@ package whispy_server.whispy.domain.payment.application.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -24,7 +23,6 @@ import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PurchaseNotificationService implements ProcessPurchaseNotificationUseCase {
 
     private final SubscriptionSavePort subscriptionSavePort;
@@ -49,7 +47,6 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
             }
 
         } catch (Exception e) {
-            log.error("Failed to process pub/sub message", e);
             throw new RuntimeException("Failed to process notification", e);
         }
     }
@@ -64,7 +61,7 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
             case 6 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.GRACE_PERIOD);
             case 12 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.REVOKED);
             case 13 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.EXPIRED);
-            default -> log.warn("Unknown notification type: {}", notification.notificationType());
+            default -> throw new IllegalArgumentException("dd");
         }
     }
 
@@ -77,20 +74,23 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
         String email = subscriptionInfo.obfuscatedExternalAccountId();
 
         if (!StringUtils.hasText(subscriptionInfo.linkedPurchaseToken())) {
-            Subscription newSubscription = subscriptionFactory.createNewSubscription(email,
+            Subscription newSubscription = subscriptionFactory.createNewSubscription(
+                    email,
                     notification.purchaseToken(),
                     notification.subscriptionId(),
                     subscriptionInfo
             );
             subscriptionSavePort.save(newSubscription);
 
-        } else {
+        }else {
 
             querySubscriptionPort.findByPurchaseToken(subscriptionInfo.linkedPurchaseToken())
-                            .ifPresent(old -> {
-                                Subscription upgraded = subscriptionFactory.upgradeFrom(old);
-                                subscriptionSavePort.save(upgraded);
-                            });
+                    .filter(Subscription::isActive)
+                    .ifPresent(old -> {
+                        Subscription upgraded = subscriptionFactory.upgradeFrom(old);
+                        subscriptionSavePort.save(upgraded);
+                    });
+
             Subscription newSubscription = subscriptionFactory.createNewSubscription(email,
                     notification.purchaseToken(),
                     notification.subscriptionId(),
@@ -98,7 +98,6 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
             );
             subscriptionSavePort.save(newSubscription);
         }
-
         googlePlayApiPort.acknowledgeSubscription(notification.subscriptionId(), notification.purchaseToken());
     }
 
@@ -108,7 +107,13 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
                 notification.purchaseToken()
         );
 
-        querySubscriptionPort.findByPurchaseToken(notification.purchaseToken()).ifPresent(subscription -> {
+        querySubscriptionPort.findByPurchaseToken(notification.purchaseToken())
+                .filter(subscription -> {
+                    return subscription.subscriptionState() == SubscriptionState.ACTIVE ||
+                            subscription.subscriptionState() == SubscriptionState.GRACE_PERIOD ||
+                            subscription.subscriptionState() == SubscriptionState.ON_HOLD;
+                })
+                .ifPresent(subscription -> {
            Subscription renewed = subscriptionFactory.renewedFrom(subscription,
                    LocalDateTime.ofEpochSecond(subscriptionInfo.expiryTimeMillis() / 1000, 0, ZoneOffset.UTC)
            );
