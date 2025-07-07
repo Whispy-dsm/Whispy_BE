@@ -4,7 +4,7 @@ import io.sentry.Sentry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.global.webhook.DiscordNotificationService;
+import whispy_server.whispy.global.feign.discord.DiscordNotificationService;
 
 @Slf4j
 @Component

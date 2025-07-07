@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import whispy_server.whispy.global.config.filter.FilterConfig;
 import whispy_server.whispy.global.exception.ErrorNotificationHandler;
-import whispy_server.whispy.global.webhook.DiscordNotificationService;
+import whispy_server.whispy.global.feign.discord.DiscordNotificationService;
 import whispy_server.whispy.global.oauth.handler.OauthFailureHandler;
 import whispy_server.whispy.global.oauth.handler.OauthSuccessHandler;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
