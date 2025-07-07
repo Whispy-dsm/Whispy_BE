@@ -30,8 +30,7 @@ public class SubscriptionPersistenceAdapter implements SubscriptionSavePort, Que
 
     @Override
     public Optional<Subscription> findByPurchaseToken(String purchaseToken) {
-        return subscriptionJpaRepository.findByPurchaseToken(purchaseToken)
-                .map(subscriptionEntityMapper::toModel);
+        return subscriptionEntityMapper.toOptionalModel(subscriptionJpaRepository.findByPurchaseToken(purchaseToken));
     }
 
     @Override
@@ -43,8 +42,7 @@ public class SubscriptionPersistenceAdapter implements SubscriptionSavePort, Que
                 .where(QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(email))
                 .fetchFirst();
 
-        return Optional.ofNullable(entity)
-                .map(subscriptionEntityMapper::toModel);
+        return subscriptionEntityMapper.toOptionalModel(Optional.ofNullable(entity));
     }
 
     @Override
@@ -59,7 +57,6 @@ public class SubscriptionPersistenceAdapter implements SubscriptionSavePort, Que
                 )
                 .fetchFirst();
 
-        return Optional.ofNullable(entity)
-                .map(subscriptionEntityMapper::toModel);
+        return subscriptionEntityMapper.toOptionalModel(Optional.ofNullable(entity));
     }
 }
