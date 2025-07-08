@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.user.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.model.User;
@@ -12,8 +13,7 @@ import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 
 @RequiredArgsConstructor
-@Transactional
-@Service
+@Component
 public class OauthUserService implements OauthUserUseCase {
 
     private final QueryUserPort queryUserPort;
@@ -23,6 +23,7 @@ public class OauthUserService implements OauthUserUseCase {
     private String defaultPassword;
 
     @Override
+    @Transactional
     public User findOrCreateOauthUser(OauthUserInfo oauthUserInfo, String provider) {
         return queryUserPort.findByEmail(oauthUserInfo.email())
                 .orElseGet(() -> {
