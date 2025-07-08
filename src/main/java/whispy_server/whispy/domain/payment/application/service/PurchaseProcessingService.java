@@ -25,24 +25,28 @@ public class PurchaseProcessingService {
     private final GooglePlayApiPort googlePlayApiPort;
 
     @Transactional
-    public ValidatePurchaseResponse processValidatedPurchase(ValidatePurchaseRequest request,
-                                                             GooglePlaySubscriptionInfo subscriptionInfo) {
-        Optional<Subscription> existingSubscription = querySubscriptionPort.findByPurchaseToken(request.purchaseToken());
+    public ValidatePurchaseResponse processValidatedPurchase(
+            String email,
+            String purchaseToken,
+            String subscriptionId,
+            GooglePlaySubscriptionInfo subscriptionInfo) {
+
+        Optional<Subscription> existingSubscription = querySubscriptionPort.findByPurchaseToken(purchaseToken);
         if (existingSubscription.isPresent()) {
             return new ValidatePurchaseResponse(true, "Purchase already processed");
         }
 
         Subscription subscription = subscriptionFactory.createNewSubscription(
-                request.email(),
-                request.purchaseToken(),
-                request.subscriptionId(),
+                email,
+                purchaseToken,
+                subscriptionId,
                 subscriptionInfo
         );
 
         subscriptionSavePort.save(subscription);
 
         try {
-            googlePlayApiPort.acknowledgeSubscription(request.subscriptionId(), request.purchaseToken());
+            googlePlayApiPort.acknowledgeSubscription(subscriptionId, purchaseToken);
         } catch (Exception e) {
             // acknowledge 실패해도 구독은 이미 저장됨
         }

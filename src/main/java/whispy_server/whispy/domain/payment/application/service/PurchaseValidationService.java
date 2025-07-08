@@ -7,6 +7,8 @@ import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.ValidateP
 import whispy_server.whispy.domain.payment.application.port.in.ValidatePurchaseUseCase;
 import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPort;
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
+import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.domain.user.model.User;
 
 
 @Service
@@ -15,12 +17,20 @@ public class PurchaseValidationService implements ValidatePurchaseUseCase {
 
     private final GooglePlayApiPort googlePlayApiPort;
     private final PurchaseProcessingService purchaseProcessingService;
+    private final UserFacadeUseCase userFacadeUseCase;
 
     @Override
     public ValidatePurchaseResponse validateAndProcessPurchase(ValidatePurchaseRequest request) {
 
-            GooglePlaySubscriptionInfo subscriptionInfo = validateWithGooglePlay(request);
-            return purchaseProcessingService.processValidatedPurchase(request, subscriptionInfo);
+        User currentUser = userFacadeUseCase.currentUser();
+
+        GooglePlaySubscriptionInfo subscriptionInfo = validateWithGooglePlay(request);
+        return purchaseProcessingService.processValidatedPurchase(
+                currentUser.email(),
+                request.purchaseToken(),
+                request.subscriptionId(),
+                subscriptionInfo
+        );
     }
 
     private GooglePlaySubscriptionInfo validateWithGooglePlay(ValidatePurchaseRequest request){
@@ -34,5 +44,4 @@ public class PurchaseValidationService implements ValidatePurchaseUseCase {
         }
         return subscriptionInfo;
     }
-
 }
