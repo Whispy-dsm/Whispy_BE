@@ -20,6 +20,7 @@ plugins {
     dependencyManagement {
         imports {
             mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.5"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:2024.0.0"
         }
     }
 
@@ -75,8 +76,7 @@ plugins {
         implementation 'com.google.auth:google-auth-library-oauth2-http:1.19.0'
 
         //feign
-        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
-        implementation 'org.springframework.cloud:spring-cloud-commons:4.1.1'
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     }
 
