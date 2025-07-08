@@ -25,19 +25,6 @@ public class SubscriptionFactory {
         );
     }
 
-    public Subscription upgradeFrom(Subscription old){
-        return new Subscription(
-                old.id(),
-                old.email(),
-                old.purchaseToken(),
-                old.productType(),
-                old.purchaseTime(),
-                SubscriptionState.UPGRADED,
-                old.autoRenewing(),
-                old.expiryTime()
-        );
-    }
-
     public Subscription renewedFrom(Subscription subscription, LocalDateTime newExpiryTime){
         return new Subscription(
                 subscription.id(),

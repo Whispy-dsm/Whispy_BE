@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,49 +57,14 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
             case 1 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.ACTIVE);
             case 2 -> handleSubscriptionRenewed(notification);
             case 3 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.CANCELED);
-            case 4 -> handleSubscriptionPurchased(notification);
+            case 4 -> { }
             case 5 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.ON_HOLD);
             case 6 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.GRACE_PERIOD);
+            case 10 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.PAUSED);
             case 12 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.REVOKED);
             case 13 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.EXPIRED);
             default -> throw new IllegalArgumentException("dd");
         }
-    }
-
-    private void handleSubscriptionPurchased(SubscriptionNotification notification) {
-        GooglePlaySubscriptionInfo subscriptionInfo = googlePlayApiPort.getSubscriptionInfo(
-                notification.subscriptionId(),
-                notification.purchaseToken()
-        );
-
-        String email = subscriptionInfo.obfuscatedExternalAccountId();
-
-        if (!StringUtils.hasText(subscriptionInfo.linkedPurchaseToken())) {
-            Subscription newSubscription = subscriptionFactory.createNewSubscription(
-                    email,
-                    notification.purchaseToken(),
-                    notification.subscriptionId(),
-                    subscriptionInfo
-            );
-            subscriptionSavePort.save(newSubscription);
-
-        }else {
-
-            querySubscriptionPort.findByPurchaseToken(subscriptionInfo.linkedPurchaseToken())
-                    .filter(Subscription::isActive)
-                    .ifPresent(old -> {
-                        Subscription upgraded = subscriptionFactory.upgradeFrom(old);
-                        subscriptionSavePort.save(upgraded);
-                    });
-
-            Subscription newSubscription = subscriptionFactory.createNewSubscription(email,
-                    notification.purchaseToken(),
-                    notification.subscriptionId(),
-                    subscriptionInfo
-            );
-            subscriptionSavePort.save(newSubscription);
-        }
-        googlePlayApiPort.acknowledgeSubscription(notification.subscriptionId(), notification.purchaseToken());
     }
 
     private void handleSubscriptionRenewed(SubscriptionNotification notification) {
