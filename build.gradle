@@ -73,7 +73,7 @@ plugins {
         annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 
         // Google 인증 라이브러리 (Service Account 용)
-        implementation 'com.google.auth:google-auth-library-oauth2-http:1.19.0'
+        implementation 'com.google.auth:google-auth-library-oauth2-http:1.37.1'
 
         //feign
         implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
