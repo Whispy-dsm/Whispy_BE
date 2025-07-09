@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.global.config.google.GooglePlayConfig;
+import whispy_server.whispy.global.exception.domain.payment.GooglePlayApiException;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -27,8 +28,9 @@ public class GooglePlayAccessTokenProvider {
 
             credentials.refresh();
             return credentials.getAccessToken().getTokenValue();
+
         } catch (IOException e) {
-        throw new RuntimeException("펑");
+        throw GooglePlayApiException.EXCEPTION;
 
         }
     }

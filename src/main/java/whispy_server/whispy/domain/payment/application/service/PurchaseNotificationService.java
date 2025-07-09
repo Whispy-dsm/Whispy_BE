@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionUpdater;
 import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionFactory;
+import whispy_server.whispy.global.exception.domain.payment.InvalidSubscriptionNotificationException;
+import whispy_server.whispy.global.exception.domain.payment.PurchaseNotificationProcessingFailedException;
 import whispy_server.whispy.global.feign.google.dto.*;
 import whispy_server.whispy.domain.payment.application.port.in.ProcessPurchaseNotificationUseCase;
 import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPort;
@@ -20,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Base64;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +38,8 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
     public void processPubSubMessage(PubSubMessage pubSubMessage) {
         try {
             String data = pubSubMessage.message().data();
-            byte[] decodedData = Base64.getDecoder().decode(data);
-            String jsonString = new String(decodedData, StandardCharsets.UTF_8);
+            byte[] decodedBytes = Base64.getDecoder().decode(data);
+            String jsonString = new String(decodedBytes, StandardCharsets.UTF_8);
 
             DeveloperNotification notification = objectMapper.readValue(jsonString, DeveloperNotification.class);
 
@@ -48,22 +48,22 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to process notification", e);
+            throw PurchaseNotificationProcessingFailedException.EXCEPTION;
         }
     }
 
     private void handleSubscriptionNotification(SubscriptionNotification notification) {
         switch (notification.notificationType()) {
-            case 1 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.ACTIVE);
-            case 2 -> handleSubscriptionRenewed(notification);
-            case 3 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.CANCELED);
-            case 4 -> { }
-            case 5 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.ON_HOLD);
-            case 6 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.GRACE_PERIOD);
-            case 10 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.PAUSED);
-            case 12 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.REVOKED);
-            case 13 -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.EXPIRED);
-            default -> throw new IllegalArgumentException("dd");
+            case NOTIFICATION_TYPE_RECOVERED -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.ACTIVE);
+            case NOTIFICATION_TYPE_RENEWED -> handleSubscriptionRenewed(notification);
+            case NOTIFICATION_TYPE_CANCELED -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.CANCELED);
+            case NOTIFICATION_TYPE_PURCHASED -> { }
+            case NOTIFICATION_TYPE_ON_HOLD -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.ON_HOLD);
+            case NOTIFICATION_TYPE_IN_GRACE_PERIOD -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.GRACE_PERIOD);
+            case NOTIFICATION_TYPE_PAUSED -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.PAUSED);
+            case NOTIFICATION_TYPE_REVOKED -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.REVOKED);
+            case NOTIFICATION_TYPE_EXPIRED -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.EXPIRED);
+            default -> throw InvalidSubscriptionNotificationException.EXCEPTION;
         }
     }
 
@@ -87,4 +87,14 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
         });
 
     }
+
+    private static final int NOTIFICATION_TYPE_RECOVERED = 1;
+    private static final int NOTIFICATION_TYPE_RENEWED = 2;
+    private static final int NOTIFICATION_TYPE_CANCELED = 3;
+    private static final int NOTIFICATION_TYPE_PURCHASED = 4;
+    private static final int NOTIFICATION_TYPE_ON_HOLD = 5;
+    private static final int NOTIFICATION_TYPE_IN_GRACE_PERIOD = 6;
+    private static final int NOTIFICATION_TYPE_PAUSED = 10;
+    private static final int NOTIFICATION_TYPE_REVOKED = 12;
+    private static final int NOTIFICATION_TYPE_EXPIRED = 13;
 }

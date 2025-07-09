@@ -5,6 +5,7 @@ import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.payment.model.Subscription;
 import whispy_server.whispy.domain.payment.model.type.ProductType;
 import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
+import whispy_server.whispy.global.exception.domain.payment.UnknownProductIdException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -54,7 +55,7 @@ public class SubscriptionFactory {
         private ProductType getProductTypeFromGooglePlayId (String googlePlayId){
             return switch (googlePlayId) {
                 case "monthly_basic" -> ProductType.MONTHLY;
-                default -> throw new IllegalArgumentException("Unknown product ID: " + googlePlayId);
+                default -> throw UnknownProductIdException.EXCEPTION;
             };
         }
 

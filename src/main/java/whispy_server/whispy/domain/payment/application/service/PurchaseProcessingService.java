@@ -12,6 +12,8 @@ import whispy_server.whispy.domain.payment.application.port.out.SubscriptionSave
 import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionFactory;
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.payment.model.Subscription;
+import whispy_server.whispy.global.exception.domain.payment.PurchaseNotificationProcessingFailedException;
+import whispy_server.whispy.global.exception.domain.payment.SubscriptionAcknowledgmentFailedException;
 
 import java.util.Optional;
 
@@ -49,6 +51,7 @@ public class PurchaseProcessingService {
             googlePlayApiPort.acknowledgeSubscription(subscriptionId, purchaseToken);
         } catch (Exception e) {
             // acknowledge 실패해도 구독은 이미 저장됨
+            throw SubscriptionAcknowledgmentFailedException.EXCEPTION;
         }
 
         return new ValidatePurchaseResponse(true, "Purchase validated successfully");

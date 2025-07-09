@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPor
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.exception.domain.payment.InvalidPaymentStateException;
 
 
 @Service
@@ -40,7 +41,7 @@ public class PurchaseValidationService implements ValidatePurchaseUseCase {
         );
 
         if(subscriptionInfo.paymentState() != 1){
-            throw new IllegalArgumentException("dd");
+            throw InvalidPaymentStateException.EXCEPTION;
         }
         return subscriptionInfo;
     }
