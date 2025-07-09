@@ -37,7 +37,7 @@ public class SubscriptionPersistenceAdapter implements SubscriptionSavePort, Que
     public Optional<Subscription> findByEmail(String email) {
         SubscriptionJpaEntity entity = jpaQueryFactory
                 .selectFrom(QSubscriptionJpaEntity.subscriptionJpaEntity)
-                .join(QUserJpaEntity.userJpaEntity)
+                .innerJoin(QUserJpaEntity.userJpaEntity)
                 .on(QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(QUserJpaEntity.userJpaEntity.email))
                 .where(QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(email))
                 .fetchFirst();
@@ -49,7 +49,7 @@ public class SubscriptionPersistenceAdapter implements SubscriptionSavePort, Que
     public Optional<Subscription> findActiveSubscriptionByEmail(String email) {
         SubscriptionJpaEntity entity = jpaQueryFactory
                 .selectFrom(QSubscriptionJpaEntity.subscriptionJpaEntity)
-                .join(QUserJpaEntity.userJpaEntity)
+                .innerJoin(QUserJpaEntity.userJpaEntity)
                 .on(QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(QUserJpaEntity.userJpaEntity.email))
                 .where(
                         QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(email)

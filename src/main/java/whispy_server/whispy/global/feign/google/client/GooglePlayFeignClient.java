@@ -4,7 +4,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.global.feign.config.GooglePlayFeignConfig;
 import whispy_server.whispy.global.feign.google.dto.response.GooglePlaySubscriptionInfoResponse;
 
