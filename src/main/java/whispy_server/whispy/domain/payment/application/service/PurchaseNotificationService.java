@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.DeveloperNotificationRequest;
+import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.PubSubMessageRequest;
+import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.SubscriptionNotificationRequest;
 import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionUpdater;
 import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionFactory;
 import whispy_server.whispy.global.exception.domain.payment.InvalidSubscriptionNotificationException;
 import whispy_server.whispy.global.exception.domain.payment.PurchaseNotificationProcessingFailedException;
-import whispy_server.whispy.global.feign.google.dto.*;
 import whispy_server.whispy.domain.payment.application.port.in.ProcessPurchaseNotificationUseCase;
 import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPort;
 import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
@@ -35,13 +37,13 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
 
     @Transactional
     @Override
-    public void processPubSubMessage(PubSubMessage pubSubMessage) {
+    public void processPubSubMessage(PubSubMessageRequest pubSubMessage) {
         try {
             String data = pubSubMessage.message().data();
             byte[] decodedBytes = Base64.getDecoder().decode(data);
             String jsonString = new String(decodedBytes, StandardCharsets.UTF_8);
 
-            DeveloperNotification notification = objectMapper.readValue(jsonString, DeveloperNotification.class);
+            DeveloperNotificationRequest notification = objectMapper.readValue(jsonString, DeveloperNotificationRequest.class);
 
             if (notification.subscriptionNotification() != null) {
                 handleSubscriptionNotification(notification.subscriptionNotification());
@@ -52,7 +54,7 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
         }
     }
 
-    private void handleSubscriptionNotification(SubscriptionNotification notification) {
+    private void handleSubscriptionNotification(SubscriptionNotificationRequest notification) {
         switch (notification.notificationType()) {
             case NOTIFICATION_TYPE_RECOVERED -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.ACTIVE);
             case NOTIFICATION_TYPE_RENEWED -> handleSubscriptionRenewed(notification);
@@ -67,7 +69,7 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
         }
     }
 
-    private void handleSubscriptionRenewed(SubscriptionNotification notification) {
+    private void handleSubscriptionRenewed(SubscriptionNotificationRequest notification) {
         GooglePlaySubscriptionInfo subscriptionInfo = googlePlayApiPort.getSubscriptionInfo(
                 notification.subscriptionId(),
                 notification.purchaseToken()

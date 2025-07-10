@@ -1,6 +1,6 @@
-package whispy_server.whispy.global.feign.google.dto;
+package whispy_server.whispy.domain.payment.adapter.in.web.dto.request;
 
-public record SubscriptionNotification(
+public record SubscriptionNotificationRequest(
         String version,
         Integer notificationType,
         String purchaseToken,
