@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPort;
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
-import whispy_server.whispy.global.config.google.GooglePlayConfig;
+import whispy_server.whispy.global.google.GooglePlayProperties;
 import whispy_server.whispy.global.feign.google.client.GooglePlayFeignClient;
 import whispy_server.whispy.global.feign.google.dto.response.GooglePlaySubscriptionInfoResponse;
 
@@ -13,12 +13,12 @@ import whispy_server.whispy.global.feign.google.dto.response.GooglePlaySubscript
 public class GooglePlayApiAdapter implements GooglePlayApiPort {
 
     private final GooglePlayFeignClient googlePlayFeignClient;
-    private final GooglePlayConfig googlePlayConfig;
+    private final GooglePlayProperties googlePlayProperties;
 
     @Override
     public GooglePlaySubscriptionInfo getSubscriptionInfo(String subscriptionId, String purchaseToken) {
         GooglePlaySubscriptionInfoResponse response = googlePlayFeignClient.getSubscriptionInfo(
-                googlePlayConfig.getPackageName(),
+                googlePlayProperties.packageName(),
                 subscriptionId,
                 purchaseToken
         );
@@ -36,7 +36,7 @@ public class GooglePlayApiAdapter implements GooglePlayApiPort {
     @Override
     public void acknowledgeSubscription(String subscriptionId, String purchaseToken) {
         googlePlayFeignClient.acknowledgeSubscription(
-                googlePlayConfig.getPackageName(),
+                googlePlayProperties.packageName(),
                 subscriptionId,
                 purchaseToken
         );
