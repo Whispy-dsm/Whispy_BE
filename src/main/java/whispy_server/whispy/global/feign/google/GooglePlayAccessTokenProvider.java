@@ -30,8 +30,7 @@ public class GooglePlayAccessTokenProvider {
             return credentials.getAccessToken().getTokenValue();
 
         } catch (IOException e) {
-        throw GooglePlayApiException.EXCEPTION;
-
+            throw GooglePlayApiException.EXCEPTION;
         }
     }
 }
