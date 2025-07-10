@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
 import whispy_server.whispy.global.exception.error.ErrorCode;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
-import whispy_server.whispy.global.webhook.DiscordNotificationService;
+import whispy_server.whispy.global.feign.discord.DiscordNotificationService;
 
 import java.io.IOException;
 

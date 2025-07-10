@@ -12,7 +12,6 @@ import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class OauthUserService implements OauthUserUseCase {
 
@@ -23,6 +22,7 @@ public class OauthUserService implements OauthUserUseCase {
     private String defaultPassword;
 
     @Override
+    @Transactional
     public User findOrCreateOauthUser(OauthUserInfo oauthUserInfo, String provider) {
         return queryUserPort.findByEmail(oauthUserInfo.email())
                 .orElseGet(() -> {
