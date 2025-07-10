@@ -7,7 +7,7 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenRespons
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
 import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.global.oauth.client.KakaoOauthClient;
+import whispy_server.whispy.domain.user.adapter.out.external.KakaoUserInfoAdapter;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 import whispy_server.whispy.global.oauth.parser.KakaoOauthUserInfoParser;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
@@ -18,14 +18,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KakaoOauthService implements KakaoOauthUseCase {
 
-    private final KakaoOauthClient kakaoOauthClient;
+    private final KakaoUserInfoAdapter kakaoUserInfoAdapter;
     private final OauthUserUseCase oauthUserUseCase;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     @Transactional
     public TokenResponse loginWithKakao(String accessToken){
-        Map<String, Object> userAttribute = kakaoOauthClient.fetchUserInfo(accessToken) ;
+        Map<String, Object> userAttribute = kakaoUserInfoAdapter.fetchUserInfo(accessToken) ;
         OauthUserInfo oauthUserInfo = new KakaoOauthUserInfoParser().parse(userAttribute);
         User user = oauthUserUseCase.findOrCreateOauthUser(oauthUserInfo, "kakao");
 
