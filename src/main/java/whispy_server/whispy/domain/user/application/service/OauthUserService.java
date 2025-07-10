@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
+import whispy_server.whispy.domain.user.model.types.Gender;
+import whispy_server.whispy.domain.user.model.vo.Profile;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 
 @RequiredArgsConstructor
@@ -26,7 +29,15 @@ public class OauthUserService implements OauthUserUseCase {
     public User findOrCreateOauthUser(OauthUserInfo oauthUserInfo, String provider) {
         return queryUserPort.findByEmail(oauthUserInfo.email())
                 .orElseGet(() -> {
-                    User newUser = oauthUserInfo.toUserInfo(provider, defaultPassword);
+                    User newUser = new User(
+                            null,
+                            oauthUserInfo.email(),
+                            defaultPassword,
+                            new Profile(oauthUserInfo.name(), oauthUserInfo.profileImage(), Gender.UNKNOWN),
+                            Role.USER,
+                            0,
+                            provider.toUpperCase()
+                    );
                     userSavePort.save(newUser);
                     return newUser;
                 });
