@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import whispy_server.whispy.global.exception.error.ErrorCode;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
-import whispy_server.whispy.global.webhook.DiscordNotificationService;
+import whispy_server.whispy.global.feign.discord.DiscordNotificationService;
 
 @Slf4j
 @RestControllerAdvice

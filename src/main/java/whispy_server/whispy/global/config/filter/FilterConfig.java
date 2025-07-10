@@ -9,7 +9,7 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import whispy_server.whispy.global.exception.ErrorNotificationHandler;
 import whispy_server.whispy.global.exception.GlobalExceptionFilter;
-import whispy_server.whispy.global.webhook.DiscordNotificationService;
+import whispy_server.whispy.global.feign.discord.DiscordNotificationService;
 import whispy_server.whispy.global.security.jwt.JwtTokenFilter;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 

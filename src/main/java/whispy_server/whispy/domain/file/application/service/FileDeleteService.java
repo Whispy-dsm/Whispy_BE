@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 public class FileDeleteService implements FileDeleteUseCase {
 
     private final FileProperties fileProperties;
-    private final FileValidator fileValidator;
 
     @Override
     public void deleteFile(ImageFolder imageFolder, String fileName){
