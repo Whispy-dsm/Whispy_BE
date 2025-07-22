@@ -9,12 +9,13 @@ import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.CheckUser
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.GetUserSubscriptionsResponse;
 import whispy_server.whispy.domain.payment.application.port.in.CheckUserSubscriptionStatusUseCase;
 import whispy_server.whispy.domain.payment.application.port.in.GetUserSubscriptionsUseCase;
+import whispy_server.whispy.global.document.api.payment.SubscriptionApiDocument;
 
 
 @RestController
 @RequestMapping("/subscriptions")
 @RequiredArgsConstructor
-public class SubscriptionController {
+public class SubscriptionController implements SubscriptionApiDocument {
 
     private final GetUserSubscriptionsUseCase getUserSubscriptionsUseCase;
     private final CheckUserSubscriptionStatusUseCase checkUserSubscriptionStatusUseCase;
