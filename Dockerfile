@@ -1,6 +1,8 @@
 FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
+ARG JAR_FILE=build/libs/*.jar
+
 COPY . .
 
 RUN if [ ! -f build/libs/*.jar ]; then \
@@ -8,6 +10,6 @@ RUN if [ ! -f build/libs/*.jar ]; then \
         ./gradlew clean build -x test --no-daemon; \
     fi
 
-RUN cp build/libs/*.jar app.jar
+COPY ${JAR_FILE} app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
