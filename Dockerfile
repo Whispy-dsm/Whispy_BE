@@ -1,7 +1,9 @@
 FROM openjdk:21-jdk
 
-ARG JAR_FILE=./build/libs/*.jar
+WORKDIR /app
+COPY . .
 
-COPY ${JAR_FILE} app.jar
+RUN ./gradlew clean build -x test --no-daemon
+RUN cp build/libs/*.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
