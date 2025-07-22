@@ -1,6 +1,6 @@
 FROM openjdk:21-jdk
 
-RUN apt-get update && apt-get install -y findutils && rm -rf /var/lib/apt/lists/*
+RUN yum update -y && yum install -y findutils && yum clean all
 
 WORKDIR /app
 ARG JAR_FILE=build/libs/*.jar
