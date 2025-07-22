@@ -1,6 +1,6 @@
 FROM openjdk:21-jdk
 
-RUN yum update -y && yum install -y findutils && yum clean all
+RUN apk update && apk add --no-cache findutils
 
 WORKDIR /app
 ARG JAR_FILE=build/libs/*.jar
