@@ -15,11 +15,12 @@ import whispy_server.whispy.domain.file.adapter.in.web.dto.FileUploadResponse;
 import whispy_server.whispy.domain.file.application.port.in.FileDeleteUseCase;
 import whispy_server.whispy.domain.file.application.port.in.FileUploadUseCase;
 import whispy_server.whispy.domain.file.type.ImageFolder;
+import whispy_server.whispy.global.document.api.file.FileApiDocument;
 
 @RestController
 @RequestMapping("/files")
 @RequiredArgsConstructor
-public class FileController {
+public class FileController implements FileApiDocument {
 
     private final FileUploadUseCase fileUploadUseCase;
     private final FileDeleteUseCase fileDeleteUseCase;

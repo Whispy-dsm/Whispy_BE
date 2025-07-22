@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.PubSubMessageRequest;
 import whispy_server.whispy.domain.payment.application.port.in.ProcessPurchaseNotificationUseCase;
+import whispy_server.whispy.global.document.api.payment.GooglePlayWebhookApiDocument;
 
 @RestController
 @RequestMapping("/webhook")
 @RequiredArgsConstructor
-public class GooglePlayWebhookController {
+public class GooglePlayWebhookController implements GooglePlayWebhookApiDocument {
 
     private final ProcessPurchaseNotificationUseCase processPurchaseNotificationUseCase;
 
