@@ -1,7 +1,13 @@
-FROM openjdk:21-jdk
+FROM eclipse-temurin:21-jdk
 
-ARG JAR_FILE=./build/libs/*.jar
+WORKDIR /app
+COPY . .
 
-COPY ${JAR_FILE} app.jar
+RUN if [ ! -f build/libs/*.jar ]; then \
+        chmod +x ./gradlew && \
+        ./gradlew clean build -x test --no-daemon; \
+    fi && \
+    JAR_FILE=$(ls build/libs/*.jar | head -1) && \
+    cp "$JAR_FILE" app.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
