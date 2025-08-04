@@ -50,8 +50,8 @@ jobs:
 
       - name: Docker build & push
         run: |
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/hacker .
-          docker push ${{ secrets.DOCKER_REPO }}/hacker
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/whispy_be .
+          docker push ${{ secrets.DOCKER_REPO }}/whispy_be
 
       - name: Deploy to home server
         uses: appleboy/ssh-action@master
@@ -63,6 +63,6 @@ jobs:
           port: 2223
           script: |
             sudo docker rm -f whispy-springboot || true          # [수정] 기존 앱 컨테이너만 삭제 (없으면 무시)
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/hacker
-            sudo docker run -d --name whispy-springboot -p 8880:8080 ${{ secrets.DOCKER_REPO }}/hacker   # [수정] 컨테이너 이름 명시 및 포트 매핑
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/whispy_be
+            sudo docker run -d --name whispy-springboot -p 8880:8080 ${{ secrets.DOCKER_REPO }}/whispy_be   # [수정] 컨테이너 이름 명시 및 포트 매핑
             sudo docker image prune -f
