@@ -62,7 +62,8 @@ jobs:
           key: ${{ secrets.HOME_SSH_KEY }}
           port: 2223
           script: |
-            docker rm -f whispy-springboot || true          # [수정] 기존 앱 컨테이너만 삭제 (없으면 무시)
+            echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            docker rm -f whispy-springboot || true          
             docker pull ${{ secrets.DOCKER_REPO }}/whispy_be
-            docker run -d --name whispy-springboot -p 8880:8080 ${{ secrets.DOCKER_REPO }}/whispy_be   # [수정] 컨테이너 이름 명시 및 포트 매핑
+            docker run -d --name whispy-springboot -p 8880:8080 ${{ secrets.DOCKER_REPO }}/whispy_be  
             docker image prune -f
