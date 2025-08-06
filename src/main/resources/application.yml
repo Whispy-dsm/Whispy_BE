@@ -19,6 +19,7 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
 
   jackson:
     property-naming-strategy : SNAKE_CASE
@@ -58,6 +59,9 @@ sentry:
   dsn: ${DSN_KEY}
   enable-tracing: true
   environment: development
+
+fcm:
+  service-account-key: I dont know
 
         #  kakao:
         #    client-id: ${KAKAO_CLIENT}
