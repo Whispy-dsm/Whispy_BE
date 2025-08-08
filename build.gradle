@@ -78,6 +78,9 @@ plugins {
         //feign
         implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
+        //fcm
+        implementation 'com.google.firebase:firebase-admin:9.5.0'
+
     }
 
     test {
