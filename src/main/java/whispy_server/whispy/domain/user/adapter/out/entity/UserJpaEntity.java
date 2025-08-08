@@ -55,5 +55,8 @@ public class UserJpaEntity {
     @Column(name = "provider", nullable = false)
     private String provider;
 
+    @Column(name = "fcm_token", nullable = false)
+    private String fcmToken;
+
 }
 
