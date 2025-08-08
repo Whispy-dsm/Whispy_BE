@@ -1,0 +1,16 @@
+package whispy_server.whispy.domain.fcm.application.port.out;
+
+import whispy_server.whispy.domain.fcm.model.Notification;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface QueryNotificationPort {
+    Optional<Notification> findById(UUID notificationId);
+    List<Notification> findByOrderByCreatedAtDesc(String email);
+    List<Notification> findByEmailAndIsReadFalseOrderByCreatedAtDesc(String email);
+    List<Notification> findByEmailAndIsReadFalse(String email);
+    int countByEmailAndIsReadFalse(String email);
+
+}
