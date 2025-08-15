@@ -6,6 +6,7 @@ import org.mapstruct.ReportingPolicy;
 import whispy_server.whispy.domain.fcm.adapter.out.entity.NotificationJpaEntity;
 import whispy_server.whispy.domain.fcm.model.Notification;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -13,6 +14,8 @@ public interface NotificationEntityMapper {
 
     NotificationJpaEntity toEntity(Notification notification);
     Notification toModel(NotificationJpaEntity notificationJpaEntity);
+
+    List<Notification> toModelList(List<NotificationJpaEntity> notificationJpaEntityList);
 
     default Optional<Notification> toOptionalModel(Optional<NotificationJpaEntity> optionalEntity) {
         return optionalEntity.map(this::toModel);
