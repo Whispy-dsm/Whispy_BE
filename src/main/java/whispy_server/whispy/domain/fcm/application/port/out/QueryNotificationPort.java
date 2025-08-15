@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface QueryNotificationPort {
     Optional<Notification> findById(UUID notificationId);
-    List<Notification> findByOrderByCreatedAtDesc(String email);
+    List<Notification> findByEmailOrderByCreatedAtDesc(String email);
     List<Notification> findByEmailAndIsReadFalseOrderByCreatedAtDesc(String email);
     List<Notification> findByEmailAndIsReadFalse(String email);
     int countByEmailAndIsReadFalse(String email);
