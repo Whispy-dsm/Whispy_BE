@@ -9,6 +9,8 @@ public record UserLoginRequest(
     @Email
     String email,
     @NotBlank
-    String password
+    String password,
+    @NotBlank
+    String fcmToken
 ) {
 }

@@ -2,6 +2,7 @@ package whispy_server.whispy.domain.user.adapter.in.web.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import whispy_server.whispy.domain.user.model.types.Gender;
@@ -24,6 +25,9 @@ public record RegisterRequest(
         String profileImageUrl,
 
         @Schema(name = "gender", description = "자신의 성 ( ENUM 형태 ) ")
-        Gender gender
+        Gender gender,
+
+        @NotBlank
+        String fcmToken
 ) {
 }
