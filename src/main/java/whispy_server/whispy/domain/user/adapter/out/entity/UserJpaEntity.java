@@ -55,7 +55,7 @@ public class UserJpaEntity {
     @Column(name = "provider", nullable = false)
     private String provider;
 
-    @Column(name = "fcm_token", nullable = false)
+    @Column(name = "fcm_token", nullable = true)
     private String fcmToken;
 
 }
