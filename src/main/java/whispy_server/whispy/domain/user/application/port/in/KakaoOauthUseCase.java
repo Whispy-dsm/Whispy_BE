@@ -4,5 +4,5 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenRespons
 
 public interface KakaoOauthUseCase {
 
-    TokenResponse loginWithKakao(String accessToken);
+    TokenResponse loginWithKakao(String accessToken, String fcmToken);
 }

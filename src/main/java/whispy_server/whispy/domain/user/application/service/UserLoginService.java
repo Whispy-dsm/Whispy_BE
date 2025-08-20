@@ -5,8 +5,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
+import whispy_server.whispy.domain.fcm.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
+import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.application.port.in.UserLoginUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
@@ -21,6 +23,8 @@ public class UserLoginService implements UserLoginUseCase {
     private final JwtTokenProvider  jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final QueryUserPort queryUserPort;
+    private final UserSavePort userSavePort;
+    private final InitializeTopicsUseCase initializeTopicsUseCase;
 
     @Transactional
     @Override
@@ -35,6 +39,13 @@ public class UserLoginService implements UserLoginUseCase {
 
         if(!passwordEncoder.matches(request.password(), user.password())){
                 throw PasswordMissMatchException.EXCEPTION;
+        }
+
+        if(request.fcmToken() != null && !request.fcmToken().equals(user.fcmToken())){
+            User updatedUser = user.updateFcmToken(request.fcmToken());
+            userSavePort.save(updatedUser);
+
+            initializeTopicsUseCase.execute(user.email(), request.fcmToken());
         }
     }
 

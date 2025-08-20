@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
+import whispy_server.whispy.domain.fcm.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.vo.Profile;
@@ -23,6 +24,7 @@ public class UserRegisterService implements UserRegisterUseCase {
     private final UserSavePort userSavePort;
     private final ExistsUserPort existsUserPort;
     private final PasswordEncoder passwordEncoder;
+    private final InitializeTopicsUseCase initializeTopicsUseCase;
 
     private static final String DEFAULT_PROVIDER = "일반 로그인";
 
@@ -49,9 +51,14 @@ public class UserRegisterService implements UserRegisterUseCase {
                 profile,
                 Role.USER,
                 0,
-                DEFAULT_PROVIDER
+                DEFAULT_PROVIDER,
+                request.fcmToken()
         );
 
         userSavePort.save(user);
+
+        if(request.fcmToken() != null){
+            initializeTopicsUseCase.execute(user.email(), request.fcmToken());
+        }
     }
 }

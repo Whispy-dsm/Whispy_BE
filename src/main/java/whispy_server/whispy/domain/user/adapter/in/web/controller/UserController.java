@@ -48,7 +48,7 @@ public class UserController implements UserApiDocument {
 
     @PostMapping("/oauth/kakao")
     public TokenResponse authenticateWithKakaoToken(@Valid @RequestBody KakaoOauthTokenRequest request){
-        return kakaoOauthUseCase.loginWithKakao(request.accessToken());
+        return kakaoOauthUseCase.loginWithKakao(request.accessToken(), request.fcmToken());
     }
 
     @PutMapping("/reissue")

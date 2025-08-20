@@ -19,5 +19,18 @@ public record User(
 
 ) {
 
+    public User updateFcmToken(String newFcmToken) {
+        return new User(
+                this.id,
+                this.email,
+                this.password,
+                this.profile,
+                this.role,
+                this.coin,
+                this.provider,
+                newFcmToken
+        );
+    }
+
 }
 

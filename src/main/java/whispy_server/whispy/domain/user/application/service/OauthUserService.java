@@ -36,7 +36,8 @@ public class OauthUserService implements OauthUserUseCase {
                             new Profile(oauthUserInfo.name(), oauthUserInfo.profileImage(), Gender.UNKNOWN),
                             Role.USER,
                             0,
-                            provider.toUpperCase()
+                            provider.toUpperCase(),
+                            null
                     );
                     userSavePort.save(newUser);
                     return newUser;
