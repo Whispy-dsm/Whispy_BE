@@ -6,6 +6,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,7 +47,7 @@ public class NotificationJpaEntity extends BaseTimeEntity {
     @Column(name = "topic", nullable = false)
     private NotificationTopic topic;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "notification_data", joinColumns = @JoinColumn(name = "notification_id"))
     @MapKeyColumn(name = "data_key")
     @Column(name = "data_value")
