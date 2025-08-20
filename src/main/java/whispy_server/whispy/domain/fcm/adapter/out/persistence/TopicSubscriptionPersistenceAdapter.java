@@ -45,4 +45,11 @@ public class TopicSubscriptionPersistenceAdapter implements TopicSubscriptionPor
         TopicSubscriptionJpaEntity savedEntity = topicSubscriptionRepository.save(entity);
         return mapper.toModel(savedEntity);
     }
+
+    @Override
+    public List<TopicSubscription> saveAll(List<TopicSubscription> subscriptions) {
+        List<TopicSubscriptionJpaEntity> entities = mapper.toEntityList(subscriptions);
+        List<TopicSubscriptionJpaEntity> savedEntities = topicSubscriptionRepository.saveAll(entities);
+        return mapper.toModelList(savedEntities);
+    }
 }

@@ -57,4 +57,11 @@ public class NotificationPersistenceAdapter implements NotificationPort {
         return mapper.toModel(saveEntity);
     }
 
+    @Override
+    public List<Notification> saveAll(List<Notification> notifications) {
+        List<NotificationJpaEntity> entities = mapper.toEntityList(notifications);
+        List<NotificationJpaEntity> savedEntities = notificationRepository.saveAll(entities);
+        return mapper.toModelList(savedEntities);
+    }
+
 }
