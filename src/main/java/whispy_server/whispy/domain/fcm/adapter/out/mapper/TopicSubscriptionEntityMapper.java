@@ -16,6 +16,7 @@ public interface TopicSubscriptionEntityMapper {
     TopicSubscriptionJpaEntity toEntity(TopicSubscription topicSubscription);
 
     List<TopicSubscription> toModelList(List<TopicSubscriptionJpaEntity> topicSubscriptionJpaEntityList);
+    List<TopicSubscriptionJpaEntity> toEntityList(List<TopicSubscription> subscriptions);
 
     default Optional<TopicSubscription> toOptionalModel(Optional<TopicSubscriptionJpaEntity> topicSubscriptionJpaEntity) {
         return topicSubscriptionJpaEntity.map(this::toModel);

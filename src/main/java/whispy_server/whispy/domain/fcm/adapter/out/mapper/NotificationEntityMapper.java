@@ -16,6 +16,7 @@ public interface NotificationEntityMapper {
     Notification toModel(NotificationJpaEntity notificationJpaEntity);
 
     List<Notification> toModelList(List<NotificationJpaEntity> notificationJpaEntityList);
+    List<NotificationJpaEntity> toEntityList(List<Notification> notifications);
 
     default Optional<Notification> toOptionalModel(Optional<NotificationJpaEntity> optionalEntity) {
         return optionalEntity.map(this::toModel);
