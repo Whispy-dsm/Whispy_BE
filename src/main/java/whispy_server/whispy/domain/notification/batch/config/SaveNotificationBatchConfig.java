@@ -9,7 +9,9 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -17,6 +19,9 @@ import whispy_server.whispy.domain.topic.adapter.out.entity.TopicSubscriptionJpa
 import whispy_server.whispy.domain.notification.batch.dto.NotificationJobParameters;
 import whispy_server.whispy.domain.notification.batch.processor.SaveNotificationItemProcessor;
 import whispy_server.whispy.domain.notification.batch.writer.SaveNotificationItemWriter;
+import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 
 import java.util.Map;
 
@@ -27,37 +32,46 @@ public class SaveNotificationBatchConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
-    private final EntityManagerFactory entityManagerFactory;
     private final SaveNotificationItemWriter saveNotificationItemWriter;
     private final SaveNotificationItemProcessor saveNotificationItemProcessor;
 
     private static final int CHUNK_SIZE = 1000;
 
     @Bean("saveNotificationJob")
-    public Job saveNotificationBatchJob() {
+    public Job saveNotificationBatchJob(
+            @Qualifier("saveNotificationStep") Step saveNotificationBatchStep) {
         return new JobBuilder("saveNotificationJob", jobRepository)
-                .start(saveNotificationBatchStep())
+                .start(saveNotificationBatchStep)
                 .build();
     }
 
+
     @Bean("saveNotificationStep")
-    public Step saveNotificationBatchStep() {
+    public Step saveNotificationBatchStep(
+            ItemReader<TopicSubscriptionJpaEntity> topicSubscriberItemReader) {
         return new StepBuilder("saveNotificationStep", jobRepository)
                 .<TopicSubscriptionJpaEntity, NotificationJobParameters>chunk(CHUNK_SIZE, platformTransactionManager)
-                .reader(topicSubscriberItemReader())
+                .reader(topicSubscriberItemReader)
                 .processor(saveNotificationItemProcessor)
                 .writer(saveNotificationItemWriter)
                 .build();
     }
 
-    @Bean("topicSubscriberItemReader")
-    public ItemReader<TopicSubscriptionJpaEntity> topicSubscriberItemReader() {
-        return new JpaPagingItemReaderBuilder<TopicSubscriptionJpaEntity>()
-                .name("topicSubscriberItemReader")
-                .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.isSubscribed = true ORDER BY ts.id")
-                .parameterValues(Map.of("topic", "#{jobParameters['topic']}"))
-                .pageSize(CHUNK_SIZE)
-                .build();
+    @Bean
+    @StepScope
+    public JpaPagingItemReader<TopicSubscriptionJpaEntity> topicSubscriberItemReader(
+            @Value("#{jobParameters['topic']}") String topicParam,
+            EntityManagerFactory entityManagerFactory
+    ) throws Exception {
+        NotificationTopic topicEnum = NotificationTopic.valueOf(topicParam);
+
+        JpaPagingItemReader<TopicSubscriptionJpaEntity> reader = new JpaPagingItemReader<>();
+        reader.setQueryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.isSubscribed = true ORDER BY ts.id");
+        reader.setParameterValues(Map.of("topic", topicEnum));
+        reader.setEntityManagerFactory(entityManagerFactory);
+        reader.setPageSize(CHUNK_SIZE);
+        reader.afterPropertiesSet();
+        return reader;
     }
+
 }
