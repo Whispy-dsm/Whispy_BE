@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,8 @@ import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
 import java.util.UUID;
 
-@Entity(name = "tbl_topic_subscription")
+@Entity(name = "TopicSubscriptionJpaEntity")
+@Table(name = "tbl_topic_subscription")
 @Getter
 @Builder
 @AllArgsConstructor
