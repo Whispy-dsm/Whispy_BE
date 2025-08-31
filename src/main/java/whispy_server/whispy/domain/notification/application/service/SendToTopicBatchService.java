@@ -9,7 +9,6 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
@@ -19,7 +18,6 @@ import java.util.Collections;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class SendToTopicBatchService implements SendToTopicUseCase {
 
     private final FcmSendPort fcmSendPort;
