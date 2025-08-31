@@ -19,7 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
-public class FcmController {
+public class NotificationController {
 
     private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
     private final SendToTopicUseCase sendToTopicUseCase;
