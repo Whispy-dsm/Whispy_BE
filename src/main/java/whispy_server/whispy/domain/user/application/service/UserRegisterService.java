@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
-import whispy_server.whispy.domain.fcm.application.port.in.InitializeTopicsUseCase;
+import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.vo.Profile;

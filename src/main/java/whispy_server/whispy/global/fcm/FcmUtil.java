@@ -9,8 +9,8 @@ import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.domain.fcm.application.port.out.FcmSendPort;
-import whispy_server.whispy.domain.fcm.model.types.NotificationTopic;
+import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
+import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +29,12 @@ public class FcmUtil implements FcmSendPort {
 
     @Override
     public void sendMulticast(List<String> deviceTokens, String title, String body, Map<String, String> data){
+
+        if (deviceTokens == null || deviceTokens.isEmpty()) {
+                log.warn("FCM Token 목록이 비어 있어 알림을 발송하지 않습니다.");
+                return;
+            }
+
         List<String> validTokens = deviceTokens.stream()
                 .filter(token -> token != null && !token.trim().isEmpty())
                 .toList();

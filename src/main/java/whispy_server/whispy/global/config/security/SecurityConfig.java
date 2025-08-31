@@ -72,6 +72,7 @@ public class SecurityConfig {
                         .requestMatchers("/users/oauth/kakao").permitAll()
                         .requestMatchers("/oauth/success/**").permitAll()
                         .requestMatchers("/file/**").permitAll()
+                        .requestMatchers("/api/admin/fcm/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()

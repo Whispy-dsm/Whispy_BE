@@ -3,27 +3,24 @@ package whispy_server.whispy.global.config.fcm;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
 @Configuration
-@RequiredArgsConstructor
 public class FcmConfig {
 
-    @Value("${fcm.service-account-key}")
-    private final String serviceAccountKey;
+    private static final String FCM_PATH = "firebase/whispy-app-service-d58a0439d4aa.json";
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
-        if(FirebaseApp.getApps().isEmpty()) {
-            var serviceAccount = new FileInputStream(serviceAccountKey);
+        if (FirebaseApp.getApps().isEmpty()) {
+            ClassPathResource resource = new ClassPathResource(FCM_PATH);
             var option = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
                     .build();
             return FirebaseApp.initializeApp(option);
         }

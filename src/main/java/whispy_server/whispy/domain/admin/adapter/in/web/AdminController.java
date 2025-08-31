@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import whispy_server.whispy.domain.fcm.adapter.in.web.dto.request.AddNewTopicRequest;
-import whispy_server.whispy.domain.fcm.application.port.in.AddNewTopicForAllUsersUseCase;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.AddNewTopicRequest;
+import whispy_server.whispy.domain.topic.application.port.in.AddNewTopicForAllUsersUseCase;
 
 @RestController
 @RequestMapping("/admin")
@@ -19,7 +19,7 @@ public class AdminController {
 
     private final AddNewTopicForAllUsersUseCase addNewTopicForAllUsersUseCase;
 
-    @PostMapping("/fcm/add")
+    @PostMapping("/topics/add")
     @ResponseStatus(HttpStatus.CREATED)
     public void addNewTopicToAllUsers(@RequestBody @Valid AddNewTopicRequest request) {
         addNewTopicForAllUsersUseCase.execute(request.topic(), request.defaultSubscribed());
