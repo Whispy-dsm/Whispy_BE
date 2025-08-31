@@ -33,7 +33,7 @@ public class TopicSubscriptionJpaEntity {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "topic", nullable = false)
+    @Column(name = "topic", nullable = false, length = 50)
     private NotificationTopic topic;
 
     @Column(name = "is_subscribed", nullable = false)
