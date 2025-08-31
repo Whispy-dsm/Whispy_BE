@@ -53,7 +53,7 @@ public class AddNewTopicBatchConfig {
         return new JpaPagingItemReaderBuilder<UserJpaEntity>()
                 .name("userItemReader")
                 .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT u FROM UserJpaEntity ORDER BY u.id")
+                .queryString("SELECT u FROM UserJpaEntity u ORDER BY u.id")
                 .pageSize(CHUNK_SIZE)
                 .build();
     }
