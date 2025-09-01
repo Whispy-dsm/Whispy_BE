@@ -1,17 +1,19 @@
-package whispy_server.whispy.global.fcm;
+package whispy_server.whispy.global.fcm.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "fcm.key")
-public class FcmProperties {
-    private String type;
-    private String projectId;
-    private String privateKeyId;
-    private String privateKey;
-    private String clientEmail;
-    private String clientId;
-    private String authUri;
-    private String tokenUri;
-    private String authProviderX509CertUrl;
-    private String clientX509CertUrl;
-}
+public record FcmProperties(
+        String type,
+        String projectId,
+        String privateKeyId,
+        String privateKey,
+        String clientEmail,
+        String clientId,
+        String authUri,
+        String tokenUri,
+        String authProviderX509CertUrl,
+        String clientX509CertUrl,
+        String universeDomain
+) {}
+
