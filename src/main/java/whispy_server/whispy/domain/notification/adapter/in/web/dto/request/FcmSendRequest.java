@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public record FcmSendRequest(
+        String email,
         List<String> deviceTokens,
         NotificationTopic topic,
         String title,
