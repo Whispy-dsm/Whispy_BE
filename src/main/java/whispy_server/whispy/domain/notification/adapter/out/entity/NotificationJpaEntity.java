@@ -44,7 +44,7 @@ public class NotificationJpaEntity extends BaseTimeEntity {
     private String body;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "topic", nullable = false)
+    @Column(name = "topic", nullable = false, length = 50)
     private NotificationTopic topic;
 
     @ElementCollection(fetch = FetchType.LAZY)
