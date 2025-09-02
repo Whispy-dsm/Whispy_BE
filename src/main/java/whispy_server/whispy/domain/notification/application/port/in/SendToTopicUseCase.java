@@ -1,9 +1,10 @@
 package whispy_server.whispy.domain.notification.application.port.in;
 
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmSendRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmTopicSendRequest;
 import whispy_server.whispy.global.annotation.UseCase;
 
 @UseCase
 public interface SendToTopicUseCase {
-    void execute(FcmSendRequest request);
+    void execute(FcmTopicSendRequest request);
 }
