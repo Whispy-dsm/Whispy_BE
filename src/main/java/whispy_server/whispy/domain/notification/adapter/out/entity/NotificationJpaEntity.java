@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,8 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
 import java.util.Map;
 import java.util.UUID;
 
-@Entity(name = "tbl_notification")
+@Entity(name = "NotificationJpaEntity")
+@Table(name = "tbl_notification")
 @Getter
 @Builder
 @AllArgsConstructor
