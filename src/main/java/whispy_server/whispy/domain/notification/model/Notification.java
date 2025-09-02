@@ -14,7 +14,7 @@ public record Notification(
         String body,
         NotificationTopic topic,
         Map<String, String> data,
-        boolean isRead
+        boolean read
 ) {
 
     public Notification markAsRead() {

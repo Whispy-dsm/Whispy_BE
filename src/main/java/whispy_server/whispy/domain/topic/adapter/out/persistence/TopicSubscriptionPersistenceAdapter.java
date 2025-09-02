@@ -35,7 +35,7 @@ public class TopicSubscriptionPersistenceAdapter implements TopicSubscriptionPor
 
     @Override
     public List<TopicSubscription> findSubscribedUserByTopic(NotificationTopic topic){
-        List<TopicSubscriptionJpaEntity> entities = topicSubscriptionRepository.findByTopicAndIsSubscribedTrue(topic);
+        List<TopicSubscriptionJpaEntity> entities = topicSubscriptionRepository.findByTopicAndSubscribedTrue(topic);
         return mapper.toModelList(entities);
     }
 

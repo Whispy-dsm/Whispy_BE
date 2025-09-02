@@ -1,6 +1,8 @@
 package whispy_server.whispy.domain.notification.adapter.in.web.dto.response;
 
 import whispy_server.whispy.domain.notification.model.Notification;
+import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -9,9 +11,9 @@ public record NotificationResponse(
         String email,
         String title,
         String body,
-        whispy_server.whispy.domain.topic.model.types.NotificationTopic topic,
+        NotificationTopic topic,
         Map<String, String> data,
-        boolean isRead
+        boolean Read
 ) {
 
     public static NotificationResponse from(Notification notification) {
@@ -22,7 +24,7 @@ public record NotificationResponse(
                 notification.body(),
                 notification.topic(),
                 notification.data(),
-                notification.isRead()
+                notification.read()
         );
     }
 }

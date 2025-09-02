@@ -14,5 +14,5 @@ public interface TopicSubscriptionRepository extends JpaRepository<TopicSubscrip
 
     Optional<TopicSubscriptionJpaEntity> findByEmailAndTopic(String email, NotificationTopic topic);
 
-    List<TopicSubscriptionJpaEntity> findByTopicAndIsSubscribedTrue(NotificationTopic topic);
+    List<TopicSubscriptionJpaEntity> findByTopicAndSubscribedTrue(NotificationTopic topic);
 }

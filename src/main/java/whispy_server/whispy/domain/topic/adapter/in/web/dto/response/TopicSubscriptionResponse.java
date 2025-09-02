@@ -9,7 +9,7 @@ public record TopicSubscriptionResponse(
         UUID id,
         String email,
         NotificationTopic topic,
-        boolean isSubscribed
+        boolean Subscribed
 ){
 
     public static TopicSubscriptionResponse from(TopicSubscription subscription) {
@@ -17,7 +17,7 @@ public record TopicSubscriptionResponse(
                 subscription.id(),
                 subscription.email(),
                 subscription.topic(),
-                subscription.isSubscribed()
+                subscription.subscribed()
         );
     }
 }

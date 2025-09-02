@@ -34,20 +34,20 @@ public class NotificationPersistenceAdapter implements NotificationPort {
     }
 
     @Override
-    public List<Notification> findByEmailAndIsReadFalseOrderByCreatedAtDesc(String email){
-        List<NotificationJpaEntity> entities = notificationRepository.findByEmailAndIsReadFalseOrderByCreatedAtDesc(email);
+    public List<Notification> findByEmailAndReadFalseOrderByCreatedAtDesc(String email){
+        List<NotificationJpaEntity> entities = notificationRepository.findByEmailAndReadFalseOrderByCreatedAtDesc(email);
         return mapper.toModelList(entities);
     }
 
     @Override
     public List<Notification> findByEmailAndIsReadFalse(String email){
-        List<NotificationJpaEntity> entities = notificationRepository.findByEmailAndIsReadFalse(email);
+        List<NotificationJpaEntity> entities = notificationRepository.findByEmailAndReadFalse(email);
         return mapper.toModelList(entities);
     }
 
     @Override
     public int countByEmailAndIsReadFalse(String email){
-        return notificationRepository.countByEmailAndIsReadFalse(email);
+        return notificationRepository.countByEmailAndReadFalse(email);
     }
 
     @Override

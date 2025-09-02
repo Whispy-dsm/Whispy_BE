@@ -10,7 +10,7 @@ public record TopicSubscription(
         UUID id,
         String email,
         NotificationTopic topic,
-        boolean isSubscribed
+        boolean subscribed
 
 ) {
     public TopicSubscription updateSubscription(boolean isSubscribed) {
@@ -18,7 +18,7 @@ public record TopicSubscription(
                 this.id,
                 this.email,
                 this.topic,
-                isSubscribed
+                subscribed
         );
     }
 }

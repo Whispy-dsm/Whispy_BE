@@ -59,7 +59,7 @@ public class InitializeTopicsService implements InitializeTopicsUseCase {
 
     private void reRegisterFcmTokenForExistingUser(List<TopicSubscription> subscriptions, String fcmToken) {
         subscriptions.forEach(subscription -> {
-            if (subscription.isSubscribed() && fcmToken != null) {
+            if (subscription.subscribed() && fcmToken != null) {
                 fcmSendPort.subscribeToTopic(fcmToken, subscription.topic());
             }
         });

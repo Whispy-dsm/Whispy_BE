@@ -36,6 +36,6 @@ public class TopicSubscriptionJpaEntity {
     @Column(name = "topic", nullable = false, length = 50)
     private NotificationTopic topic;
 
-    @Column(name = "is_subscribed", nullable = false)
-    private boolean isSubscribed;
+    @Column(name = "subscribed", nullable = false)
+    private boolean subscribed; // IsSubscribed -> Subscribed로 변경 ( mapstruct 이슈 )
 }

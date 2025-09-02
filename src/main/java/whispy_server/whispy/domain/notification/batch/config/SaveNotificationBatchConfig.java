@@ -66,7 +66,7 @@ public class SaveNotificationBatchConfig {
         NotificationTopic topicEnum = NotificationTopic.valueOf(topicParam);
 
         JpaPagingItemReader<TopicSubscriptionJpaEntity> reader = new JpaPagingItemReader<>();
-        reader.setQueryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.isSubscribed = true ORDER BY ts.id");
+        reader.setQueryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.subscribed = true ORDER BY ts.id");
         reader.setParameterValues(Map.of("topic", topicEnum));
         reader.setEntityManagerFactory(entityManagerFactory);
         reader.setPageSize(CHUNK_SIZE);
