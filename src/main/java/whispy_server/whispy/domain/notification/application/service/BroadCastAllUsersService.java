@@ -18,7 +18,6 @@ public class BroadCastAllUsersService implements BroadCastToAllUsersUseCase {
     public void execute(FcmTopicSendRequest request){
 
         FcmTopicSendRequest fcmTopicSendrequest = new FcmTopicSendRequest(
-                request.deviceTokens(),
                 NotificationTopic.BROADCAST_ANNOUNCEMENT,
                 request.title(),
                 request.body(),
