@@ -28,9 +28,10 @@ public class MarkAllNotificationsAsReadService implements MarkAllNotificationsAs
                 currentUser.email()
         );
 
-        unreadNotifications.forEach(notification -> {
-            Notification readNotification = notification.markAsRead();
-            saveNotificationPort.save(readNotification);
-        });
+        List<Notification> readNotifications = unreadNotifications.stream()
+                .map(Notification::markAsRead)
+                .toList();
+
+        saveNotificationPort.saveAll(readNotifications);
     }
 }
