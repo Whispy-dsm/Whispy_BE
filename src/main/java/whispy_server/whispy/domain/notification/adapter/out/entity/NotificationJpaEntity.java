@@ -55,7 +55,7 @@ public class NotificationJpaEntity extends BaseTimeEntity {
     @Column(name = "data_value")
     private Map<String, String> data;
 
-    @Column(name = "'read'", nullable = false)
+    @Column(name = "`read`", nullable = false)
     private boolean read; // isRead -> read로 바꿈 ( mapStruct 이슈 )
 
 }
