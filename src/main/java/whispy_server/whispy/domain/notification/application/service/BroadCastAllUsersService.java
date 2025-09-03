@@ -2,8 +2,7 @@ package whispy_server.whispy.domain.notification.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmSendRequest;
-import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmTopicSendRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
@@ -15,15 +14,15 @@ public class BroadCastAllUsersService implements BroadCastToAllUsersUseCase {
     private final SendToTopicUseCase sendToTopicUseCase;
 
     @Override
-    public void execute(FcmTopicSendRequest request){
+    public void execute(NotificationTopicSendRequest request){
 
-        FcmTopicSendRequest fcmTopicSendrequest = new FcmTopicSendRequest(
+        NotificationTopicSendRequest notificationTopicSendrequest = new NotificationTopicSendRequest(
                 NotificationTopic.BROADCAST_ANNOUNCEMENT,
                 request.title(),
                 request.body(),
                 request.data()
         );
 
-        sendToTopicUseCase.execute(fcmTopicSendrequest);
+        sendToTopicUseCase.execute(notificationTopicSendrequest);
     }
 }

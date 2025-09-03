@@ -9,8 +9,7 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmSendRequest;
-import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmTopicSendRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 
@@ -30,7 +29,7 @@ public class SendToTopicBatchService implements SendToTopicUseCase {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void execute(FcmTopicSendRequest request) {
+    public void execute(NotificationTopicSendRequest request) {
         try {
 
             fcmSendPort.sendToTopic(

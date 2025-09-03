@@ -3,8 +3,8 @@ package whispy_server.whispy.domain.notification.adapter.in.web.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmSendRequest;
-import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmTopicSendRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.response.NotificationResponse;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.response.UnreadCountResponse;
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
@@ -32,17 +32,17 @@ public class NotificationController {
     private final MarkAllNotificationsAsReadUseCase markAllNotificationsAsReadUseCase;
 
     @PostMapping("/send")
-    public void sendNotification(@RequestBody @Valid FcmSendRequest request) {
+    public void sendNotification(@RequestBody @Valid NotificationSendRequest request) {
         sendToDeviceTokensUseCase.execute(request);
     }
 
     @PostMapping("/topic/send")
-    public void sendToTopic(@RequestBody @Valid FcmTopicSendRequest request) {
+    public void sendToTopic(@RequestBody @Valid NotificationTopicSendRequest request) {
         sendToTopicUseCase.execute(request);
     }
 
     @PostMapping("/broadcast")
-    public void broadcastToAllUsers(@RequestBody @Valid FcmTopicSendRequest request) {
+    public void broadcastToAllUsers(@RequestBody @Valid NotificationTopicSendRequest request) {
         broadCastToAllUsersUseCase.execute(request);
     }
 

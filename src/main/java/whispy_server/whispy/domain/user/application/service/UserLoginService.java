@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
 import whispy_server.whispy.domain.auth.adapter.out.persistence.repository.RefreshTokenRepository;
-import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmSendRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
@@ -76,7 +76,7 @@ public class UserLoginService implements UserLoginUseCase {
 
     private void sendLogoutNotification(String oldToken, String email) {
         try {
-            FcmSendRequest request = new FcmSendRequest(
+            NotificationSendRequest request = new NotificationSendRequest(
                     email,
                     List.of(oldToken),
                     NotificationTopic.SYSTEM_ANNOUNCEMENT,

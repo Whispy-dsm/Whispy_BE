@@ -3,7 +3,7 @@ package whispy_server.whispy.domain.notification.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.FcmSendRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.notification.application.port.out.SaveNotificationPort;
@@ -18,7 +18,7 @@ public class SendToDeviceTokensService implements SendToDeviceTokensUseCase {
     private final SaveNotificationPort saveNotificationPort;
 
     @Override
-    public void execute(FcmSendRequest request){
+    public void execute(NotificationSendRequest request){
         fcmSendPort.sendMulticast(
                 request.deviceTokens(),
                 request.title(),
