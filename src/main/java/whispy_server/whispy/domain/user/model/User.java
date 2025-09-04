@@ -14,9 +14,23 @@ public record User(
         Profile profile,
         Role role,
         int coin,
-        String provider
+        String provider,
+        String fcmToken
 
 ) {
+
+    public User updateFcmToken(String newFcmToken) {
+        return new User(
+                this.id,
+                this.email,
+                this.password,
+                this.profile,
+                this.role,
+                this.coin,
+                this.provider,
+                newFcmToken
+        );
+    }
 
 }
 

@@ -1,0 +1,5 @@
+package whispy_server.whispy.domain.topic.adapter.in.web.dto.request;
+
+public record UpdateFcmTokenRequest(
+        String fcmToken
+) {}
