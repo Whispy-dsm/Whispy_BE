@@ -71,7 +71,7 @@ public class SecurityConfig {
                         .requestMatchers("/users/login","/users/register","/users/reissue").permitAll()
                         .requestMatchers("/users/oauth/kakao").permitAll()
                         .requestMatchers("/oauth/success/**").permitAll()
-                        .requestMatchers("/files/**", "https://whispy.parkjoowon.site/file/profile_image_folder/**").permitAll()
+                        .requestMatchers("/files/**", "/file/profile_image_folder/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
 
                         .requestMatchers("/").permitAll()
