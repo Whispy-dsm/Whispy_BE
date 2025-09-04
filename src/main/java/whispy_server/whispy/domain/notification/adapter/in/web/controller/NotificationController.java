@@ -16,6 +16,7 @@ import whispy_server.whispy.domain.notification.application.port.in.MarkNotifica
 import whispy_server.whispy.domain.notification.application.port.in.QueryMyNotificationsUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
+import whispy_server.whispy.global.document.api.notification.NotificationApiDocument;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
-public class NotificationController {
+public class NotificationController implements NotificationApiDocument {
 
     private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
     private final SendToTopicUseCase sendToTopicUseCase;
