@@ -60,4 +60,14 @@ public class NotificationPersistenceAdapter implements NotificationPort {
         notificationRepository.saveAll(mapper.toEntityList(notifications));
     }
 
+    @Override
+    public void deleteById(UUID id) {
+        notificationRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllByEmail(String email) {
+        notificationRepository.deleteAllByEmail(email);
+    }
+
 }

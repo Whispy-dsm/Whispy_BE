@@ -8,6 +8,8 @@ import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.Notif
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.response.NotificationResponse;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.response.UnreadCountResponse;
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
+import whispy_server.whispy.domain.notification.application.port.in.DeleteAllNotificationsUseCase;
+import whispy_server.whispy.domain.notification.application.port.in.DeleteNotificationUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.GetUnreadCountUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.MarkAllNotificationsAsReadUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.MarkNotificationAsReadUseCase;
@@ -30,6 +32,8 @@ public class NotificationController {
     private final GetUnreadCountUseCase getUnReadCountUseCase;
     private final MarkNotificationAsReadUseCase markNotificationAsReadUseCase;
     private final MarkAllNotificationsAsReadUseCase markAllNotificationsAsReadUseCase;
+    private final DeleteNotificationUseCase deleteNotificationUseCase;
+    private final DeleteAllNotificationsUseCase deleteAllNotificationsUseCase;
 
     @PostMapping("/send")
     public void sendNotification(@RequestBody @Valid NotificationSendRequest request) {
@@ -64,6 +68,16 @@ public class NotificationController {
     @PatchMapping("/read-all")
     public void markAllAsRead() {
         markAllNotificationsAsReadUseCase.execute();
+    }
+
+    @DeleteMapping("/{notificationId}")
+    public void deleteNotification(@PathVariable UUID notificationId) {
+        deleteNotificationUseCase.execute(notificationId);
+    }
+
+    @DeleteMapping
+    public void deleteAllNotifications() {
+        deleteAllNotificationsUseCase.execute();
     }
 
 }

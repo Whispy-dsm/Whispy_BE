@@ -16,4 +16,5 @@ public interface NotificationRepository extends JpaRepository<NotificationJpaEnt
     @EntityGraph(attributePaths = {"data"})
     List<NotificationJpaEntity> findByEmailAndReadFalse(String email);
     int countByEmailAndReadFalse(String email);
+    void deleteAllByEmail(String email);
 }
