@@ -10,7 +10,8 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "tbl_subscription")
+@Entity(name = "SubscriptionJpaEntity")
+@Table(name = "tbl_subscription")
 @Getter
 @Builder
 @AllArgsConstructor

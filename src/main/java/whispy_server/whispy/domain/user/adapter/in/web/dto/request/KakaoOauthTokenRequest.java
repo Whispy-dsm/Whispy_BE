@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record KakaoOauthTokenRequest(
         @NotBlank
-        String accessToken
+        String accessToken,
+        String fcmToken
 ) {
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 public final class KakaoOauthUserInfoParser implements OauthUserInfoParser {
 
+    @SuppressWarnings("unchecked")
     @Override
     public OauthUserInfo parse(Map<String, Object> attributes) {
         Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");

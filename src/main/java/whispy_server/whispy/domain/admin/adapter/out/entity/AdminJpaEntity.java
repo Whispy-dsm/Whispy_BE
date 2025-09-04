@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,8 @@ import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
 
 import java.util.UUID;
 
-@Entity(name = "tbl_admin")
+@Entity(name = "AdminJpaEntity")
+@Table(name = "tbl_admin")
 @Getter
 @Builder
 @AllArgsConstructor
