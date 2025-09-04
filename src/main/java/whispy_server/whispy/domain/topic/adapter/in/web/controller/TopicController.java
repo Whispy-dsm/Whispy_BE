@@ -6,13 +6,14 @@ import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.TopicSubscri
 import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.UpdateFcmTokenRequest;
 import whispy_server.whispy.domain.topic.adapter.in.web.dto.response.TopicSubscriptionResponse;
 import whispy_server.whispy.domain.topic.application.port.in.*;
+import whispy_server.whispy.global.document.api.topic.TopicApiDocument;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/topics")
 @RequiredArgsConstructor
-public class TopicController {
+public class TopicController implements TopicApiDocument {
 
     private final SubscriptionTopicUseCase subscriptionTopicUseCase;
     private final UnSubscribeTopicUseCase unSubscribeTopicUseCase;
