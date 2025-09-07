@@ -5,6 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.auth.application.port.out.EmailSendPort;
+import whispy_server.whispy.global.exception.domain.auth.EmailSendFailedException;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class EmailSendAdapter implements EmailSendPort {
             mailSender.send(message);
 
         } catch (Exception e) {
-            throw new RuntimeException("이메일 전송에 실패했습니다.", e);
+            throw EmailSendFailedException.EXCEPTION;
         }
     }
 }
