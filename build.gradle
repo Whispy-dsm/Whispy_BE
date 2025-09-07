@@ -85,6 +85,9 @@ plugins {
         // Spring Batch
         implementation 'org.springframework.boot:spring-boot-starter-batch'
 
+        //email
+        implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     }
 
     test {

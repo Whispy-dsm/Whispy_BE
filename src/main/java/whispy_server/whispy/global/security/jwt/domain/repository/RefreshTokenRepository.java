@@ -1,7 +1,7 @@
-package whispy_server.whispy.domain.auth.adapter.out.persistence.repository;
+package whispy_server.whispy.global.security.jwt.domain.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import whispy_server.whispy.domain.auth.adapter.out.entity.RefreshToken;
+import whispy_server.whispy.global.security.jwt.domain.entity.RefreshToken;
 
 import java.util.Optional;
 

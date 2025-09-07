@@ -40,6 +40,9 @@ public enum ErrorCode {
 
     USER_ALREADY_EXIST(409, "유저가 이미 존재합니다"),
     PURCHASE_ALREADY_PROCESSED(409, "이미 처리된 구매입니다"),
+    EMAIL_ALREADY_SENT(409, "이미 발송된 인증 코드가 있습니다. 발송된 인증 코드를 입력하거나 5분 후 다시 요청해주세요."),
+
+    EMAIL_RATE_LIMIT_EXCEEDED(429, "이메일 발송 요청이 너무 빈번합니다. 1분 후 다시 시도해주세요."),
 
     INTERNAL_SERVER_ERROR(500, "서버 오류 발생"),
     FILE_DELETE_FAILED(500, "파일 삭제에 실패했습니다"),
@@ -47,6 +50,7 @@ public enum ErrorCode {
     GOOGLE_PLAY_API_ERROR(500, "Google Play API 호출 중 오류가 발생했습니다"),
     PURCHASE_NOTIFICATION_PROCESSING_FAILED(500, "구매 알림 처리 중 오류가 발생했습니다"),
     SUBSCRIPTION_ACKNOWLEDGMENT_FAILED(500, "구독 승인 처리 중 오류가 발생했습니다"),
+    EMAIL_SEND_FAILED(500, "이메일 발송에 실패했습니다. 다시 시도해주세요."),
     FCM_SEND_FAILED(500, "FCM 메시지 전송에 실패했습니다.");
 
 

@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.auth.adapter.out.entity;
+package whispy_server.whispy.global.security.jwt.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
