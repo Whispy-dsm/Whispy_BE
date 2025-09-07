@@ -2,7 +2,7 @@ package whispy_server.whispy.domain.user.model;
 
 import java.util.UUID;
 
-import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
+import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.domain.user.model.vo.Profile;
 import whispy_server.whispy.global.annotation.Aggregate;
 

@@ -1,6 +1,5 @@
 package whispy_server.whispy.domain.admin.adapter.out.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import whispy_server.whispy.domain.auth.adapter.out.entity.types.Role;
+import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 
 import java.util.UUID;
 

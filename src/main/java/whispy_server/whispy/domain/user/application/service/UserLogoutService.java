@@ -2,11 +2,10 @@ package whispy_server.whispy.domain.user.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import whispy_server.whispy.domain.auth.adapter.out.persistence.repository.RefreshTokenRepository;
+import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserLogoutUseCase;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.global.annotation.UseCase;
 
 
 @Service

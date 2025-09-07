@@ -3,7 +3,7 @@ package whispy_server.whispy.domain.user.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import whispy_server.whispy.domain.auth.adapter.out.persistence.repository.RefreshTokenRepository;
+import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
