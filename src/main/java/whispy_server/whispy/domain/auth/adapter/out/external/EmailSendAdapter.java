@@ -4,13 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+import whispy_server.whispy.domain.auth.application.port.out.EmailSendPort;
 
 @Component
 @RequiredArgsConstructor
-public class EmailSendAdapter {
+public class EmailSendAdapter implements EmailSendPort {
 
     private final JavaMailSender mailSender;
 
+    @Override
     public void sendVerificationCode(String email, String code) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();

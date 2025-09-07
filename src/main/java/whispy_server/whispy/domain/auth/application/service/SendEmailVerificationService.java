@@ -3,8 +3,8 @@ package whispy_server.whispy.domain.auth.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.SendEmailVerificationRequest;
-import whispy_server.whispy.domain.auth.adapter.out.external.EmailSendAdapter;
 import whispy_server.whispy.domain.auth.application.port.in.SendEmailVerificationUseCase;
+import whispy_server.whispy.domain.auth.application.port.out.EmailSendPort;
 import whispy_server.whispy.global.exception.domain.auth.EmailAlreadySentException;
 import whispy_server.whispy.global.exception.domain.auth.EmailRateLimitExceededException;
 import whispy_server.whispy.global.exception.domain.auth.EmailSendFailedException;
@@ -19,7 +19,7 @@ public class SendEmailVerificationService implements SendEmailVerificationUseCas
 
     private final RedisUtil redisUtil;
     private final SecureRandom secureRandom = new SecureRandom();
-    private final EmailSendAdapter emailSendAdapter;
+    private final EmailSendPort emailSendPort;
 
     private static final String VERIFICATION_CODE_KEY = "email:verification:code:";
     private static final String RATE_LIMIT_KEY = "email:rate:limit:";
@@ -44,7 +44,7 @@ public class SendEmailVerificationService implements SendEmailVerificationUseCas
             redisUtil.set(codeKey, code, CODE_EXPIRATION);
             redisUtil.set(rateLimitKey, "sent", RATE_LIMIT_DURATION);
 
-            emailSendAdapter.sendVerificationCode(email, code);
+            emailSendPort.sendVerificationCode(email, code);
             
         } catch (Exception e) {
             // 발송 실패 시 Redis 롤백
