@@ -71,7 +71,8 @@ public class SecurityConfig {
                         .requestMatchers("/users/login","/users/register","/users/reissue").permitAll()
                         .requestMatchers("/users/oauth/kakao").permitAll()
                         .requestMatchers("/oauth/success/**").permitAll()
-                        .requestMatchers("/files/**", "/file/profile_image_folder/**").permitAll()
+                        .requestMatchers("/file/profile_image_folder/**").permitAll()
+                        .requestMatchers("/auth/email/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
 
                         .requestMatchers("/").permitAll()
