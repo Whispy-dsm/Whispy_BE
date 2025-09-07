@@ -32,4 +32,9 @@ public class RedisUtil {
     public long getExpire(String key, TimeUnit timeUnit) {
         return stringRedisTemplate.getExpire(key, timeUnit);
     }
+
+    public boolean setIfAbsent(String key, String value, Duration duration) {
+        Boolean result = stringRedisTemplate.opsForValue().setIfAbsent(key, value, duration);
+        return Boolean.TRUE.equals(result);
+    }
 }

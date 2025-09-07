@@ -29,20 +29,18 @@ public class SendEmailVerificationService implements SendEmailVerificationUseCas
     @Override
     public void execute(SendEmailVerificationRequest request) {
         String email = request.email();
-        
-        // 1. Rate Limiting 체크
-        validateRateLimit(email);
-        
-        // 2. 중복 요청 체크
-        validateDuplicateRequest(email);
-
         String code = generateVerificationCode();
         String codeKey = VERIFICATION_CODE_KEY + email;
         String rateLimitKey = RATE_LIMIT_KEY + email;
+
+        if (!redisUtil.setIfAbsent(rateLimitKey, "sent", RATE_LIMIT_DURATION)) {
+            throw EmailRateLimitExceededException.EXCEPTION;
+        }
         
         try {
-            redisUtil.set(codeKey, code, CODE_EXPIRATION);
-            redisUtil.set(rateLimitKey, "sent", RATE_LIMIT_DURATION);
+            if (!redisUtil.setIfAbsent(codeKey, code, CODE_EXPIRATION)) {
+                throw EmailAlreadySentException.EXCEPTION;
+            }
 
             emailSendPort.sendVerificationCode(email, code);
             
@@ -54,19 +52,19 @@ public class SendEmailVerificationService implements SendEmailVerificationUseCas
         }
     }
 
-    private void validateRateLimit(String email) {
-        String rateLimitKey = RATE_LIMIT_KEY + email;
-        if (redisUtil.hasKey(rateLimitKey)) {
-            throw EmailRateLimitExceededException.EXCEPTION;
-        }
-    }
-
-    private void validateDuplicateRequest(String email) {
-        String codeKey = VERIFICATION_CODE_KEY + email;
-        if (redisUtil.hasKey(codeKey)) {
-            throw EmailAlreadySentException.EXCEPTION;
-        }
-    }
+//    private void validateRateLimit(String email) {
+//        String rateLimitKey = RATE_LIMIT_KEY + email;
+//        if (redisUtil.hasKey(rateLimitKey)) {
+//            throw EmailRateLimitExceededException.EXCEPTION;
+//        }
+//    }
+//
+//    private void validateDuplicateRequest(String email) {
+//        String codeKey = VERIFICATION_CODE_KEY + email;
+//        if (redisUtil.hasKey(codeKey)) {
+//            throw EmailAlreadySentException.EXCEPTION;
+//        }
+//    }
 
     private String generateVerificationCode() {
         return String.format("%06d", secureRandom.nextInt(1000000));
