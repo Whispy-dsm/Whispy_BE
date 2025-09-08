@@ -64,7 +64,7 @@ public class FileValidator {
 
     private void validateImageExtension(MultipartFile file) {
         String extension = getFileExtension(file);
-        Set<String> validExtensions = Set.of(".jpg", ".jpeg", ".png", ".heic", ".heif", ".svg", ".webp", ".gif");
+        Set<String> validExtensions = Set.of(".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp", ".gif");
 
         if (!validExtensions.contains(extension)) {
             throw FileInvalidExtensionException.EXCEPTION;
@@ -82,8 +82,7 @@ public class FileValidator {
     private void validateImageMimeType(MultipartFile file) {
         String contentType = file.getContentType();
         Set<String> validMimeTypes = Set.of(
-                "image/jpeg", "image/png", "image/heic",
-                "image/svg+xml", "image/webp", "image/gif", "image/heif"
+                "image/jpeg", "image/png", "image/heic", "image/webp", "image/gif", "image/heif"
         );
 
         if (contentType == null || !validMimeTypes.contains(contentType)) {
