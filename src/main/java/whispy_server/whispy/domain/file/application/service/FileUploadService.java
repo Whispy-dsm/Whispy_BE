@@ -25,7 +25,7 @@ public class FileUploadService implements FileUploadUseCase {
 
     @Override
     public FileUploadResponse uploadFile(MultipartFile file, ImageFolder imageFolder) {
-        fileValidator.validateFile(file);
+        fileValidator.validateFile(file, imageFolder);
 
         String fileName = generateFileName(file.getOriginalFilename());
         String folder = imageFolder.toString().toLowerCase();
