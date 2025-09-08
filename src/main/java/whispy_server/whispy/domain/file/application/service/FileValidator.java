@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.file.application.service;
 import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import whispy_server.whispy.domain.file.type.ImageFolder;
 import whispy_server.whispy.global.exception.domain.file.FileInvalidExtensionException;
 import whispy_server.whispy.global.exception.domain.file.FileInvalidMimeTypeException;
 import whispy_server.whispy.global.exception.domain.file.FileNameContainsPathException;
@@ -18,35 +19,16 @@ import java.util.regex.Pattern;
 @Component
 public class FileValidator {
 
-    private static final Set<String> VALID_EXTENSIONS = Set.of(
-            ".jpg", ".jpeg", ".png", ".heic",".heif", ".svg", ".webp", ".gif"
-    );
-
-    // 허용할 MIME 타입
-    private static final Set<String> VALID_MIME_TYPES = Set.of(
-            "image/jpeg", "image/png", "image/heic",
-            "image/svg+xml", "image/webp", "image/gif", "image/heif"
-    );
-
-    private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;
-
     private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]+$");
 
-
-
-    public void validateFile(MultipartFile file) {
-
+    public void validateFile(MultipartFile file, ImageFolder folder) {
         validateFileName(file);
 
-        validateFileExtension(file);
-
-        validateMimeType(file);
-
-        validateFileSize(file);
-
-
+        switch (folder) {
+            case PROFILE_IMAGE_FOLDER, MUSIC_BANNER_IMAGE_FOLDER -> validateImageFile(file);
+            case MUSIC_FOLDER -> validateMusicFile(file);
+        }
     }
-
 
     private void validateFileName(MultipartFile file) {
         String originalFileName = file.getOriginalFilename();
@@ -68,27 +50,77 @@ public class FileValidator {
         }
     }
 
-    private void validateFileExtension(MultipartFile file){
-        String originalFileName = file.getOriginalFilename();
-        if(!originalFileName.contains(".")){
-            throw FileNoExtensionException.EXCEPTION;
-        }
-        String extension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
-        if(!VALID_EXTENSIONS.contains(extension)){
+    private void validateImageFile(MultipartFile file) {
+        validateImageExtension(file);
+        validateImageMimeType(file);
+        validateImageSize(file);
+    }
+
+    private void validateMusicFile(MultipartFile file) {
+        validateMusicExtension(file);
+        validateMusicMimeType(file);
+        validateMusicSize(file);
+    }
+
+    private void validateImageExtension(MultipartFile file) {
+        String extension = getFileExtension(file);
+        Set<String> validExtensions = Set.of(".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp", ".gif");
+
+        if (!validExtensions.contains(extension)) {
             throw FileInvalidExtensionException.EXCEPTION;
         }
     }
 
-    private void validateMimeType(MultipartFile file){
+    private void validateMusicExtension(MultipartFile file) {
+        String extension = getFileExtension(file);
+        Set<String> validExtensions = Set.of(".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a");
+
+        if (!validExtensions.contains(extension)) {
+            throw FileInvalidExtensionException.EXCEPTION;
+        }
+    }
+    private void validateImageMimeType(MultipartFile file) {
         String contentType = file.getContentType();
-        if (contentType == null || !VALID_MIME_TYPES.contains(contentType)) {
+        Set<String> validMimeTypes = Set.of(
+                "image/jpeg", "image/png", "image/heic", "image/webp", "image/gif", "image/heif"
+        );
+
+        if (contentType == null || !validMimeTypes.contains(contentType)) {
             throw FileInvalidMimeTypeException.EXCEPTION;
         }
     }
 
-    private void validateFileSize(MultipartFile file) {
-        if (file.getSize() > MAX_FILE_SIZE) {
+    private void validateMusicMimeType(MultipartFile file) {
+        String contentType = file.getContentType();
+        Set<String> validMimeTypes = Set.of(
+                "audio/mpeg", "audio/wav", "audio/flac",
+                "audio/aac", "audio/ogg", "audio/mp4"
+        );
+
+        if (contentType == null || !validMimeTypes.contains(contentType)) {
+            throw FileInvalidMimeTypeException.EXCEPTION;
+        }
+    }
+
+    private void validateImageSize(MultipartFile file) {
+        long maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.getSize() > maxSize) {
             throw FileSizeExceededException.EXCEPTION;
         }
+    }
+
+    private void validateMusicSize(MultipartFile file) {
+        long maxSize = 50 * 1024 * 1024; // 50MB
+        if (file.getSize() > maxSize) {
+            throw FileSizeExceededException.EXCEPTION;
+        }
+    }
+
+    private String getFileExtension(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        if (originalFileName == null || !originalFileName.contains(".")) {
+            throw FileNoExtensionException.EXCEPTION;
+        }
+        return originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
     }
 }
