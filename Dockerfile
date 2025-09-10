@@ -11,3 +11,4 @@ RUN if [ ! -f build/libs/*.jar ]; then \
     cp "$JAR_FILE" app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"] 
+ 
