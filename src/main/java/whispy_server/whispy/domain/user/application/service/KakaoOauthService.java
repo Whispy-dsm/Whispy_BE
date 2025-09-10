@@ -3,8 +3,10 @@ package whispy_server.whispy.domain.user.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
+import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
+import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
-import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
@@ -29,7 +31,7 @@ public class KakaoOauthService implements KakaoOauthUseCase {
     private final InitializeTopicsUseCase initializeTopicsUseCase;
     private final UserSavePort userSavePort;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final FcmSendPort fcmSendPort;
+    private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
 
     @Override
     @Transactional
@@ -41,7 +43,7 @@ public class KakaoOauthService implements KakaoOauthUseCase {
         if (fcmToken != null && !fcmToken.equals(user.fcmToken())) {
 
             if (user.fcmToken() != null && !user.fcmToken().trim().isEmpty()) {
-                sendLogoutNotification(user.fcmToken());
+                sendLogoutNotification(user.fcmToken(), user.email());
             }
 
             User updatedUser = user.updateFcmToken(fcmToken);
@@ -57,14 +59,18 @@ public class KakaoOauthService implements KakaoOauthUseCase {
         return jwtTokenProvider.generateToken(user.email(), user.role().name());
     }
 
-    private void sendLogoutNotification(String oldToken) {
+    private void sendLogoutNotification(String oldToken, String email) {
         try {
-            fcmSendPort.sendMulticast(
+            NotificationSendRequest request = new NotificationSendRequest(
+                    email,
                     List.of(oldToken),
+                    NotificationTopic.SYSTEM_ANNOUNCEMENT,
                     "로그아웃",
-                    "다른 기기에서 로그인하여 자동 로그아웃되었습니다.",
-                    Map.of("type", "forced_logout")
+                    "다른 기기에서 로그인하여 자동 로그아웃 되었습니다.",
+                    null
             );
+
+            sendToDeviceTokensUseCase.execute(request);
         } catch (Exception e) {
             // 알림 전송 실패해도 로그인은 계속 진행
         }
