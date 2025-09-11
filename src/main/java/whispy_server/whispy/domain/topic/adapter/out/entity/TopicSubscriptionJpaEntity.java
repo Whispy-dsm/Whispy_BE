@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,11 @@ import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import java.util.UUID;
 
 @Entity(name = "TopicSubscriptionJpaEntity")
-@Table(name = "tbl_topic_subscription")
+@Table(name = "tbl_topic_subscription", indexes = {
+        @Index(name = "idx_topic_sub_email", columnList = "email"),
+        @Index(name = "idx_topic_sub_topic_subscribed", columnList = "topic, subscribed"),
+        @Index(name = "idx_topic_sub_email_topic", columnList = "email, topic")
+})
 @Getter
 @Builder
 @AllArgsConstructor
