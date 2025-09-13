@@ -6,9 +6,8 @@ import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public interface TopicSubscriptionRepository extends JpaRepository<TopicSubscriptionJpaEntity, UUID> {
+public interface TopicSubscriptionRepository extends JpaRepository<TopicSubscriptionJpaEntity, Long> {
 
     List<TopicSubscriptionJpaEntity> findByEmail(String email);
 

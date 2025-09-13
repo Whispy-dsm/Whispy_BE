@@ -7,7 +7,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +17,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
-import java.util.UUID;
-
 @Entity(name = "TopicSubscriptionJpaEntity")
-@Table(name = "tbl_topic_subscription")
+@Table(name = "tbl_topic_subscription", indexes = {
+        @Index(name = "idx_topic_sub_email", columnList = "email"),
+        @Index(name = "idx_topic_sub_topic_subscribed", columnList = "topic, subscribed")
+    },
+        uniqueConstraints = {
+            @UniqueConstraint(name = "uk_topic_sub_email_topic", columnNames = {"email", "topic"})
+    }
+)
 @Getter
 @Builder
 @AllArgsConstructor
@@ -26,8 +33,8 @@ import java.util.UUID;
 public class TopicSubscriptionJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "email", nullable = false)
     private String email;

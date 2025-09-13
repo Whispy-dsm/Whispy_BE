@@ -4,10 +4,9 @@ import whispy_server.whispy.domain.notification.model.Notification;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
 import java.util.Map;
-import java.util.UUID;
 
 public record NotificationResponse(
-        UUID id,
+        Long id,
         String email,
         String title,
         String body,

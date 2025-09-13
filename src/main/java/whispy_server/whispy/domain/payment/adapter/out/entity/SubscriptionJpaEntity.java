@@ -1,9 +1,19 @@
 package whispy_server.whispy.domain.payment.adapter.out.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import whispy_server.whispy.domain.payment.model.type.ProductType;
 import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
 import whispy_server.whispy.global.entity.BaseTimeEntity;
@@ -11,7 +21,10 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
 import java.time.LocalDateTime;
 
 @Entity(name = "SubscriptionJpaEntity")
-@Table(name = "tbl_subscription")
+@Table(name = "tbl_subscription", indexes = {
+        @Index(name = "idx_subscription_email", columnList = "email"),
+        @Index(name = "idx_subscription_email_state", columnList = "email, subscription_state")
+})
 @Getter
 @Builder
 @AllArgsConstructor

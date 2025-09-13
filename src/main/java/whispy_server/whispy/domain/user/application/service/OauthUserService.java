@@ -35,7 +35,6 @@ public class OauthUserService implements OauthUserUseCase {
                             defaultPassword,
                             new Profile(oauthUserInfo.name(), oauthUserInfo.profileImage(), Gender.UNKNOWN),
                             Role.USER,
-                            0,
                             provider.toUpperCase(),
                             null
                     );

@@ -35,28 +35,13 @@ public class SubscriptionPersistenceAdapter implements SubscriptionSavePort, Que
 
     @Override
     public Optional<Subscription> findByEmail(String email) {
-        SubscriptionJpaEntity entity = jpaQueryFactory
-                .selectFrom(QSubscriptionJpaEntity.subscriptionJpaEntity)
-                .innerJoin(QUserJpaEntity.userJpaEntity)
-                .on(QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(QUserJpaEntity.userJpaEntity.email))
-                .where(QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(email))
-                .fetchFirst();
-
-        return subscriptionEntityMapper.toOptionalModel(Optional.ofNullable(entity));
+        return subscriptionEntityMapper.toOptionalModel(subscriptionJpaRepository.findByEmail(email));
     }
 
     @Override
     public Optional<Subscription> findActiveSubscriptionByEmail(String email) {
-        SubscriptionJpaEntity entity = jpaQueryFactory
-                .selectFrom(QSubscriptionJpaEntity.subscriptionJpaEntity)
-                .innerJoin(QUserJpaEntity.userJpaEntity)
-                .on(QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(QUserJpaEntity.userJpaEntity.email))
-                .where(
-                        QSubscriptionJpaEntity.subscriptionJpaEntity.email.eq(email)
-                                .and(QSubscriptionJpaEntity.subscriptionJpaEntity.subscriptionState.eq(SubscriptionState.ACTIVE))
-                )
-                .fetchFirst();
-
-        return subscriptionEntityMapper.toOptionalModel(Optional.ofNullable(entity));
+        return subscriptionEntityMapper.toOptionalModel(
+                subscriptionJpaRepository.findByEmailAndSubscriptionState(email, SubscriptionState.ACTIVE)
+        );
     }
 }

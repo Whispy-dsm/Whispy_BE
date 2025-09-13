@@ -16,9 +16,6 @@ import lombok.NoArgsConstructor;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.domain.user.model.types.Gender;
 
-
-import java.util.UUID;
-
 @Entity(name = "UserJpaEntity")
 @Table(name = "tbl_user")
 @Getter
@@ -28,8 +25,8 @@ import java.util.UUID;
 public class UserJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -50,9 +47,6 @@ public class UserJpaEntity {
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Column(name = "coin", nullable = false)
-    private int coin;
 
     @Column(name = "provider", nullable = false)
     private String provider;

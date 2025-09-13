@@ -4,10 +4,9 @@ import whispy_server.whispy.domain.notification.model.Notification;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface QueryNotificationPort {
-    Optional<Notification> findById(UUID notificationId);
+    Optional<Notification> findById(Long notificationId);
     List<Notification> findByEmailOrderByCreatedAtDesc(String email);
     List<Notification> findByEmailAndReadFalseOrderByCreatedAtDesc(String email);
     List<Notification> findByEmailAndIsReadFalse(String email);

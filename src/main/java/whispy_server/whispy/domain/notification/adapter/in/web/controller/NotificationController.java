@@ -19,7 +19,6 @@ import whispy_server.whispy.domain.notification.application.port.in.SendToTopicU
 import whispy_server.whispy.global.document.api.notification.NotificationApiDocument;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/notifications")
@@ -62,7 +61,7 @@ public class NotificationController implements NotificationApiDocument {
     }
 
     @PatchMapping("/{notificationId}/read")
-    public void markAsRead(@PathVariable UUID notificationId) {
+    public void markAsRead(@PathVariable Long notificationId) {
         markNotificationAsReadUseCase.execute(notificationId);
     }
 
@@ -72,7 +71,7 @@ public class NotificationController implements NotificationApiDocument {
     }
 
     @DeleteMapping("/{notificationId}")
-    public void deleteNotification(@PathVariable UUID notificationId) {
+    public void deleteNotification(@PathVariable Long notificationId) {
         deleteNotificationUseCase.execute(notificationId);
     }
 

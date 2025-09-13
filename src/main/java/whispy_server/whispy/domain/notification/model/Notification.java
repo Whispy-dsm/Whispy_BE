@@ -4,11 +4,10 @@ import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.global.annotation.Aggregate;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Aggregate
 public record Notification(
-        UUID id,
+        Long id,
         String email,
         String title,
         String body,

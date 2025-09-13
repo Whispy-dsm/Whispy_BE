@@ -73,7 +73,7 @@ public interface NotificationApiDocument {
             @ApiResponse(responseCode = "404", description = "알림을 찾을 수 없습니다"),
             @ApiResponse(responseCode = "500", description = "서버 오류 발생")
     })
-    void markAsRead(@Parameter(description = "알림 ID", required = true, in = ParameterIn.PATH) UUID notificationId);
+    void markAsRead(@Parameter(description = "알림 ID", required = true, in = ParameterIn.PATH) Long notificationId);
 
     @Operation(summary = "모든 알림 읽음 처리", description = "현재 사용자의 모든 알림을 읽음 상태로 변경합니다.")
     @ApiResponses({
@@ -91,7 +91,7 @@ public interface NotificationApiDocument {
             @ApiResponse(responseCode = "404", description = "알림을 찾을 수 없습니다"),
             @ApiResponse(responseCode = "500", description = "서버 오류 발생")
     })
-    void deleteNotification(@Parameter(description = "알림 ID", required = true, in = ParameterIn.PATH) UUID notificationId);
+    void deleteNotification(@Parameter(description = "알림 ID", required = true, in = ParameterIn.PATH) Long notificationId);
 
     @Operation(summary = "모든 알림 삭제", description = "현재 사용자의 모든 알림을 삭제합니다.")
     @ApiResponses({
