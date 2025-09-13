@@ -11,7 +11,6 @@ import whispy_server.whispy.domain.notification.model.Notification;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class NotificationPersistenceAdapter implements NotificationPort {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Optional<Notification> findById(UUID id){
+    public Optional<Notification> findById(Long id){
         Optional<NotificationJpaEntity> optionalEntity = notificationRepository.findById(id);
         return mapper.toOptionalModel(optionalEntity);
     }
@@ -61,7 +60,7 @@ public class NotificationPersistenceAdapter implements NotificationPort {
     }
 
     @Override
-    public void deleteById(UUID id) {
+    public void deleteById(Long id) {
         notificationRepository.deleteById(id);
     }
 

@@ -16,8 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
-import java.util.UUID;
-
 @Entity(name = "TopicSubscriptionJpaEntity")
 @Table(name = "tbl_topic_subscription", indexes = {
         @Index(name = "idx_topic_sub_email", columnList = "email"),
@@ -30,8 +28,8 @@ import java.util.UUID;
 public class TopicSubscriptionJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "email", nullable = false)
     private String email;
