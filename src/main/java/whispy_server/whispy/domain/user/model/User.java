@@ -23,7 +23,6 @@ public record User(
                 this.password,
                 this.profile,
                 this.role,
-                this.coin,
                 this.provider,
                 newFcmToken
         );
