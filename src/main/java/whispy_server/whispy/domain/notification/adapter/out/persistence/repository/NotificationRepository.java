@@ -5,9 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import whispy_server.whispy.domain.notification.adapter.out.entity.NotificationJpaEntity;
 
 import java.util.List;
-import java.util.UUID;
 
-public interface NotificationRepository extends JpaRepository<NotificationJpaEntity, UUID> {
+public interface NotificationRepository extends JpaRepository<NotificationJpaEntity, Long> {
 
     @EntityGraph(attributePaths = {"data"})
     List<NotificationJpaEntity> findByEmailOrderByCreatedAtDesc(String email);

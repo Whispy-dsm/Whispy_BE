@@ -11,4 +11,8 @@ import java.util.Optional;
 public interface SubscriptionJpaRepository extends JpaRepository<SubscriptionJpaEntity, Long> {
 
     Optional<SubscriptionJpaEntity> findByPurchaseToken(String purchaseToken);
+
+    Optional<SubscriptionJpaEntity> findByEmail(String email);
+
+    Optional<SubscriptionJpaEntity> findByEmailAndSubscriptionState(String email, SubscriptionState state);
 }
