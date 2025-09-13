@@ -26,11 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity(name = "NotificationJpaEntity")
-@Table(name = "tbl_notification", indexes = {
-        @Index(name = "idx_notification_email", columnList = "email"),
-        @Index(name = "idx_notification_email_read", columnList = "email, `read`"),
-        @Index(name = "idx_notification_email_created_at", columnList = "email, created_at")
-})
+@Table(name = "tbl_notification")
 @Getter
 @Builder
 @AllArgsConstructor
