@@ -22,6 +22,6 @@ public class UserWithdrawalService implements UserWithdrawalUseCase {
     public void withdrawal(){
         User currentUser = userFacadeUseCase.currentUser();
         refreshTokenRepository.deleteById(currentUser.email());
-        userDeletePort.deleteByUUID(currentUser.id());
+        userDeletePort.deleteById(currentUser.id());
     }
 }
