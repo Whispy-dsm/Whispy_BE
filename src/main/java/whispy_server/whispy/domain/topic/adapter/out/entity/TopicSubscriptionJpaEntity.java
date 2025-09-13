@@ -21,8 +21,7 @@ import java.util.UUID;
 @Entity(name = "TopicSubscriptionJpaEntity")
 @Table(name = "tbl_topic_subscription", indexes = {
         @Index(name = "idx_topic_sub_email", columnList = "email"),
-        @Index(name = "idx_topic_sub_topic_subscribed", columnList = "topic, subscribed"),
-        @Index(name = "idx_topic_sub_email_topic", columnList = "email, topic")
+        @Index(name = "idx_topic_sub_topic_subscribed", columnList = "topic, subscribed")
 })
 @Getter
 @Builder

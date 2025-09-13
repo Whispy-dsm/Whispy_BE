@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Entity(name = "SubscriptionJpaEntity")
 @Table(name = "tbl_subscription", indexes = {
         @Index(name = "idx_subscription_email", columnList = "email"),
-        @Index(name = "idx_subscription_purchase_token", columnList = "purchase_token"),
         @Index(name = "idx_subscription_email_state", columnList = "email, subscription_state")
 })
 @Getter
