@@ -51,9 +51,6 @@ public class UserJpaEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "coin", nullable = false)
-    private int coin;
-
     @Column(name = "provider", nullable = false)
     private String provider;
 

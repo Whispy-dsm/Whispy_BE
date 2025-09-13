@@ -48,7 +48,6 @@ public class UserRegisterService implements UserRegisterUseCase {
                 encodedPassword,
                 profile,
                 Role.USER,
-                0,
                 DEFAULT_PROVIDER,
                 request.fcmToken()
         );

@@ -11,7 +11,6 @@ public record User(
         String password,
         Profile profile,
         Role role,
-        int coin,
         String provider,
         String fcmToken
 
