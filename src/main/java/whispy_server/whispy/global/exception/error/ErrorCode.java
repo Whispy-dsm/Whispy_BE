@@ -31,6 +31,7 @@ public enum ErrorCode {
     PURCHASE_NOT_FOUND(404, "구매 정보를 찾을 수 없습니다"),
     TOPIC_SUBSCRIPTION_NOT_FOUND(404, "토픽 구독 정보를 찾을 수 없습니다."),
     NOTIFICATION_NOT_FOUND(404, "알림을 찾을 수 없습니다."),
+    MUSIC_NOT_FOUND(404, "음악을 찾을 수 없습니다."),
 
     INVALID_TOKEN(401, "Invalid Token"),
     INVALID_KAKAO_ACCESS_TOKEN(401, "유효하지 않은 kakao access 토큰입니다."),
