@@ -18,8 +18,10 @@ public class MusicPersistenceAdapter implements MusicPort {
     private final MusicMapper musicMapper;
 
     @Override
-    public void save(Music music) {
-        musicJpaRepository.save(musicMapper.toEntity(music));
+    public Music save(Music music) {
+        MusicJpaEntity entity = musicMapper.toEntity(music);
+        MusicJpaEntity savedEntity = musicJpaRepository.save(entity);
+        return musicMapper.toModel(savedEntity);
     }
 
     @Override

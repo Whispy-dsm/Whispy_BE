@@ -1,18 +1,22 @@
 package whispy_server.whispy.domain.music.application.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.music.application.port.in.DeleteMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicPort;
+import whispy_server.whispy.domain.search.music.application.port.out.SearchMusicPort;
 import whispy_server.whispy.global.annotation.UseCase;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DeleteMusicService implements DeleteMusicUseCase {
 
     private final MusicPort musicPort;
+    private final SearchMusicPort searchMusicPort;
 
     @Transactional
     @Override
@@ -22,5 +26,11 @@ public class DeleteMusicService implements DeleteMusicUseCase {
         }
         
         musicPort.deleteById(id);
+
+        try {
+            searchMusicPort.deleteFromIndex(id);
+        } catch (Exception e) {
+            log.warn("Failed to delete music from index: {}", e.getMessage());
+        }
     }
 }

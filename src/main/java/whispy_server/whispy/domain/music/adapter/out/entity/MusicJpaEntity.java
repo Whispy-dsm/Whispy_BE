@@ -10,12 +10,12 @@ import whispy_server.whispy.domain.music.model.type.MusicCategory;
 import whispy_server.whispy.global.entity.BaseTimeEntity;
 
 @Entity
-@Table(name = "music")
+@Table(name = "tbl_music")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MusicJpaEntity extends BaseTimeEntity {
+public class MusicJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
