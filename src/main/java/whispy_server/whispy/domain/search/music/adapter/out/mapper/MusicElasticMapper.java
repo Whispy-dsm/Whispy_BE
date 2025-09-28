@@ -17,9 +17,9 @@ public interface MusicElasticMapper {
 
     @Mapping(target = "id", expression = "java(entity.getId() != null ? Long.valueOf(entity.getId()) : null)")
     @Mapping(target = "category", expression = "java(whispy_server.whispy.domain.music.model.type.MusicCategory.valueOf(entity.getCategory()))")
-    Music toMusic(MusicElasticsearchEntity entity);
+    Music toModel(MusicElasticsearchEntity entity);
 
     default Page<Music> toMusicPage(Page<MusicElasticsearchEntity> entityPage) {
-        return entityPage.map(this::toMusic);
+        return entityPage.map(this::toModel);
     }
 }

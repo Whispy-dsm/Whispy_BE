@@ -8,17 +8,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.music.model.Music;
-import whispy_server.whispy.domain.search.music.application.port.in.SearchMusicUseCase;
+import whispy_server.whispy.domain.music.model.type.MusicCategory;
+import whispy_server.whispy.domain.search.music.application.port.in.SearchMusicCategoryUseCase;
+import whispy_server.whispy.domain.search.music.application.port.in.SearchMusicTitleUseCase;
 
 @RestController
 @RequestMapping("/search")
 @RequiredArgsConstructor
 public class MusicSearchController {
 
-    private final SearchMusicUseCase searchMusicUseCase;
+    private final SearchMusicTitleUseCase searchMusicTitleUseCase;
+    private final SearchMusicCategoryUseCase searchMusicCategoryUseCase;
 
     @GetMapping("/music")
     public Page<Music> searchMusic(@RequestParam String keyword, Pageable pageable) {
-        return searchMusicUseCase.searchMusic(keyword, pageable);
+        return searchMusicTitleUseCase.searchMusic(keyword, pageable);
+    }
+
+    @GetMapping("/music/category")
+    public Page<Music> searchByMusicCategory(@RequestParam MusicCategory musicCategory, Pageable pageable) {
+        return searchMusicCategoryUseCase.searchByMusicCategory(musicCategory, pageable);
     }
 }

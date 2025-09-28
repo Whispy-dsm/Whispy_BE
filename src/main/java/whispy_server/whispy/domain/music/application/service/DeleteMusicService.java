@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.music.application.port.in.DeleteMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicPort;
+import whispy_server.whispy.domain.search.music.application.port.out.DeleteIndexPort;
 import whispy_server.whispy.domain.search.music.application.port.out.SearchMusicPort;
 import whispy_server.whispy.global.annotation.UseCase;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
@@ -16,7 +17,7 @@ import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException
 public class DeleteMusicService implements DeleteMusicUseCase {
 
     private final MusicPort musicPort;
-    private final SearchMusicPort searchMusicPort;
+    private final DeleteIndexPort deleteIndexPort;
 
     @Transactional
     @Override
@@ -28,7 +29,7 @@ public class DeleteMusicService implements DeleteMusicUseCase {
         musicPort.deleteById(id);
 
         try {
-            searchMusicPort.deleteFromIndex(id);
+            deleteIndexPort.deleteFromIndex(id);
         } catch (Exception e) {
             log.warn("Failed to delete music from index: {}", e.getMessage());
         }
