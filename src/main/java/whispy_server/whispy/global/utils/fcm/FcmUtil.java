@@ -1,4 +1,4 @@
-package whispy_server.whispy.global.fcm;
+package whispy_server.whispy.global.utils.fcm;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.AndroidConfig;

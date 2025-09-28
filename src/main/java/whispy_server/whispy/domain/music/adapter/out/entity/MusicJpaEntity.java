@@ -28,7 +28,7 @@ public class MusicJpaEntity {
     private String filePath;
 
     @Column(nullable = false)
-    private Integer duration;
+    private int duration;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
