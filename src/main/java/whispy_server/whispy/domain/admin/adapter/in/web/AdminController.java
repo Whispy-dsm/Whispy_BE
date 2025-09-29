@@ -45,8 +45,8 @@ public class AdminController {
 
     @PatchMapping("/music/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateMusic(@PathVariable Long id, @RequestBody @Valid UpdateMusicRequest request) {
-        updateMusicUseCase.execute(id, request);
+    public void updateMusic(@RequestBody @Valid UpdateMusicRequest request) {
+        updateMusicUseCase.execute(request);
     }
 
     @DeleteMapping("/music/{id}")
