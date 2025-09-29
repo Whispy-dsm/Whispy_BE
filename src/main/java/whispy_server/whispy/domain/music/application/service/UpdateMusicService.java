@@ -23,8 +23,8 @@ public class UpdateMusicService implements UpdateMusicUseCase {
 
     @Transactional
     @Override
-    public void execute(Long id, UpdateMusicRequest request) {
-        Music existingMusic = musicPort.findById(id)
+    public void execute(UpdateMusicRequest request) {
+        Music existingMusic = musicPort.findById(request.id())
                 .orElseThrow(() -> MusicNotFoundException.EXCEPTION);
 
         Music updatedMusic = existingMusic.update(request);

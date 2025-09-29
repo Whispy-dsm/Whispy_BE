@@ -5,5 +5,5 @@ import whispy_server.whispy.global.annotation.UseCase;
 
 @UseCase
 public interface UpdateMusicUseCase {
-    void execute(Long id, UpdateMusicRequest request);
+    void execute(UpdateMusicRequest request);
 }
