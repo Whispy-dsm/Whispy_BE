@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.search.music.adapter.in;
+package whispy_server.whispy.domain.search.music.adapter.in.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.music.model.Music;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;
+import whispy_server.whispy.domain.search.music.adapter.in.web.dto.response.MusicSearchResponse;
 import whispy_server.whispy.domain.search.music.application.port.in.SearchMusicCategoryUseCase;
 import whispy_server.whispy.domain.search.music.application.port.in.SearchMusicTitleUseCase;
 
@@ -21,12 +22,12 @@ public class MusicSearchController {
     private final SearchMusicCategoryUseCase searchMusicCategoryUseCase;
 
     @GetMapping("/music")
-    public Page<Music> searchMusic(@RequestParam String keyword, Pageable pageable) {
+    public Page<MusicSearchResponse> searchMusic(@RequestParam String keyword, Pageable pageable) {
         return searchMusicTitleUseCase.searchMusic(keyword, pageable);
     }
 
     @GetMapping("/music/category")
-    public Page<Music> searchByMusicCategory(@RequestParam MusicCategory musicCategory, Pageable pageable) {
+    public Page<MusicSearchResponse> searchByMusicCategory(@RequestParam MusicCategory musicCategory, Pageable pageable) {
         return searchMusicCategoryUseCase.searchByMusicCategory(musicCategory, pageable);
     }
 }
