@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import whispy_server.whispy.domain.music.application.port.in.DeleteMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicPort;
 import whispy_server.whispy.domain.search.music.application.port.out.DeleteIndexPort;
@@ -25,13 +27,18 @@ public class DeleteMusicService implements DeleteMusicUseCase {
         if (!musicPort.existsById(id)) {
             throw MusicNotFoundException.EXCEPTION;
         }
-        
+
         musicPort.deleteById(id);
 
-        try {
-            deleteIndexPort.deleteFromIndex(id);
-        } catch (Exception e) {
-            log.warn("Failed to delete music from index: {}", e.getMessage());
-        }
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                try {
+                    deleteIndexPort.deleteFromIndex(id);
+                } catch (Exception e) {
+                    log.warn("Failed to delete music from index", e);
+                }
+            }
+        });
     }
 }
