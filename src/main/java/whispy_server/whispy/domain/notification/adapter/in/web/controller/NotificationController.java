@@ -2,6 +2,7 @@ package whispy_server.whispy.domain.notification.adapter.in.web.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
@@ -36,16 +37,19 @@ public class NotificationController implements NotificationApiDocument {
     private final DeleteAllNotificationsUseCase deleteAllNotificationsUseCase;
 
     @PostMapping("/send")
+    @ResponseStatus(HttpStatus.CREATED)
     public void sendNotification(@RequestBody @Valid NotificationSendRequest request) {
         sendToDeviceTokensUseCase.execute(request);
     }
 
     @PostMapping("/topic/send")
+    @ResponseStatus(HttpStatus.CREATED)
     public void sendToTopic(@RequestBody @Valid NotificationTopicSendRequest request) {
         sendToTopicUseCase.execute(request);
     }
 
     @PostMapping("/broadcast")
+    @ResponseStatus(HttpStatus.CREATED)
     public void broadcastToAllUsers(@RequestBody @Valid NotificationTopicSendRequest request) {
         broadCastToAllUsersUseCase.execute(request);
     }
@@ -71,11 +75,13 @@ public class NotificationController implements NotificationApiDocument {
     }
 
     @DeleteMapping("/{notificationId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNotification(@PathVariable Long notificationId) {
         deleteNotificationUseCase.execute(notificationId);
     }
 
     @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAllNotifications() {
         deleteAllNotificationsUseCase.execute();
     }

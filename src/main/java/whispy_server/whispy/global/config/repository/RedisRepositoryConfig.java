@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
-@EnableRedisRepositories(basePackages = "whispy_server.whispy.domain.auth.adapter.out.persistence.repository")
-
+@EnableRedisRepositories(basePackages = "whispy_server.whispy.global.security.jwt.domain.repository")
 public class RedisRepositoryConfig {
 }

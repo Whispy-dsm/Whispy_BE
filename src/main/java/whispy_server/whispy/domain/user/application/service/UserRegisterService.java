@@ -9,7 +9,6 @@ import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.domain.user.model.vo.Profile;
 import whispy_server.whispy.domain.user.application.port.in.UserRegisterUseCase;
 import whispy_server.whispy.domain.user.application.port.out.ExistsUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
@@ -36,17 +35,13 @@ public class UserRegisterService implements UserRegisterUseCase {
 
         String encodedPassword = passwordEncoder.encode(request.password());
 
-        Profile profile = new Profile(
-                request.name(),
-                request.profileImageUrl(),
-                request.gender()
-        );
-
         User user = new User(
                 null,
                 request.email(),
                 encodedPassword,
-                profile,
+                request.name(),
+                request.profileImageUrl(),
+                request.gender(),
                 Role.USER,
                 DEFAULT_PROVIDER,
                 request.fcmToken()

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.VerifyEmailCodeRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.response.VerifyEmailCodeResponse;
 import whispy_server.whispy.domain.auth.application.port.in.VerifyEmailCodeUseCase;
-import whispy_server.whispy.global.redis.RedisUtil;
+import whispy_server.whispy.global.utils.redis.RedisUtil;
 
 import java.time.Duration;
 
