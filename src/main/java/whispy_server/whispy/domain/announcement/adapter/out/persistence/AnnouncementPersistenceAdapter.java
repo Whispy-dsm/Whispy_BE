@@ -31,9 +31,7 @@ public class AnnouncementPersistenceAdapter implements AnnouncementPort {
 
     @Override
     public List<Announcement> findAll() {
-        return announcementJpaRepository.findAll().stream()
-                .map(announcementMapper::toModel)
-                .toList();
+        return announcementMapper.toModelList(announcementJpaRepository.findAll());
     }
 
     @Override
