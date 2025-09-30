@@ -2,12 +2,10 @@ package whispy_server.whispy.domain.announcement.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.domain.announcement.adapter.out.entity.AnnouncementJpaEntity;
 import whispy_server.whispy.domain.announcement.adapter.out.mapper.AnnouncementMapper;
 import whispy_server.whispy.domain.announcement.adapter.out.persistence.repository.AnnouncementJpaRepository;
 import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
 import whispy_server.whispy.domain.announcement.model.Announcement;
-import whispy_server.whispy.global.exception.domain.announcement.AnnouncementNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
