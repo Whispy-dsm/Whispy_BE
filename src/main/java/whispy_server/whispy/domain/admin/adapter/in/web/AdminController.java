@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import whispy_server.whispy.domain.admin.adapter.in.web.dto.request.AdminLoginRequest;
+import whispy_server.whispy.domain.admin.application.port.in.AdminLoginUseCase;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.CreateAnnouncementRequest;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.UpdateAnnouncementRequest;
 import whispy_server.whispy.domain.announcement.application.port.in.CreateAnnouncementUseCase;
@@ -25,6 +27,7 @@ import whispy_server.whispy.domain.music.application.port.in.DeleteMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.in.UpdateMusicUseCase;
 import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.AddNewTopicRequest;
 import whispy_server.whispy.domain.topic.application.port.in.AddNewTopicForAllUsersUseCase;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.global.document.api.admin.AdminApiDocument;
 
 @RestController
@@ -39,6 +42,13 @@ public class AdminController implements AdminApiDocument {
     private final CreateAnnouncementUseCase createAnnouncementUseCase;
     private final UpdateAnnouncementUseCase updateAnnouncementUseCase;
     private final DeleteAnnouncementUseCase deleteAnnouncementUseCase;
+    private final AdminLoginUseCase adminLoginUseCase;
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public TokenResponse login(@RequestBody @Valid AdminLoginRequest request) {
+        return adminLoginUseCase.execute(request);
+    }
 
     @PostMapping("/topics/add")
     @ResponseStatus(HttpStatus.CREATED)
@@ -53,7 +63,7 @@ public class AdminController implements AdminApiDocument {
     }
 
     @PatchMapping("/musics")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateMusic(@RequestBody @Valid UpdateMusicRequest request) {
         updateMusicUseCase.execute(request);
     }

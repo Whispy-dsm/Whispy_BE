@@ -7,6 +7,8 @@ import whispy_server.whispy.domain.admin.model.Admin;
 import whispy_server.whispy.domain.admin.adapter.out.mapper.AdminEntityMapper;
 import whispy_server.whispy.domain.admin.application.port.out.AdminPort;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class AdminPersistenceAdapter implements AdminPort {
@@ -15,7 +17,7 @@ public class AdminPersistenceAdapter implements AdminPort {
     private final AdminRepository adminRepository;
 
     @Override
-    public Admin findByAdminId(String adminId) {
-        return adminEntityMapper.toDomain(adminRepository.findByAdminId(adminId));
+    public Optional<Admin> findByAdminId(String adminId) {
+        return adminEntityMapper.toOptionalModel(adminRepository.findByAdminId(adminId));
     }
 }
