@@ -39,6 +39,11 @@ public class MusicLikePersistenceAdapter implements MusicLikePort {
     }
 
     @Override
+    public void deleteAllByMusicId(Long musicId) {
+        musicLikeJpaRepository.deleteAllByMusicId(musicId);
+    }
+
+    @Override
     public List<MusicLike> findAllByUserId(Long userId) {
         return musicLikeMapper.toModelList(musicLikeJpaRepository.findAllByUserId(userId));
     }

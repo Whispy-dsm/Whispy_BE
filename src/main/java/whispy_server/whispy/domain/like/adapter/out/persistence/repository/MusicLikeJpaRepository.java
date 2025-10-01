@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface MusicLikeJpaRepository extends JpaRepository<MusicLikeJpaEntity, Long> {
     boolean existsByUserIdAndMusicId(Long userId, Long musicId);
     void deleteByUserIdAndMusicId(Long userId, Long musicId);
+    void deleteAllByMusicId(Long musicId);
     List<MusicLikeJpaEntity> findAllByUserId(Long userId);
     Optional<MusicLikeJpaEntity> findByUserIdAndMusicId(Long userId, Long musicId);
 }
