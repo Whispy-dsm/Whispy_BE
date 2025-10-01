@@ -9,7 +9,5 @@ import java.util.UUID;
 public record Admin(
         UUID id,
         String adminId,
-        String password,
-        Role role,
-        String name
+        String password
 ){}
