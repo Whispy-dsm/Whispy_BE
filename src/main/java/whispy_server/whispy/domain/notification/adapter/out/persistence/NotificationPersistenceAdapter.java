@@ -1,11 +1,10 @@
 package whispy_server.whispy.domain.notification.adapter.out.persistence;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.domain.notification.adapter.out.entity.NotificationJpaEntity;
 import whispy_server.whispy.domain.notification.adapter.out.mapper.NotificationEntityMapper;
 import whispy_server.whispy.domain.notification.adapter.out.persistence.repository.NotificationRepository;
 import whispy_server.whispy.domain.notification.application.port.out.NotificationPort;
