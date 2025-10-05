@@ -19,7 +19,7 @@ public interface MusicSearchApiDocument {
     @Operation(summary = "키워드로 음악 검색", description = "음악 제목에 포함된 키워드로 음악을 검색합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "음악 검색 성공",
-                    content = @Content(schema = @Schema(implementation = Page.class))),
+                    content = @Content(schema = @Schema(implementation = MusicSearchResponse.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청 (예: 파라미터 타입 불일치)",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
@@ -37,7 +37,7 @@ public interface MusicSearchApiDocument {
     @Operation(summary = "카테고리로 음악 검색", description = "지정된 카테고리로 음악을 검색합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "음악 검색 성공",
-                    content = @Content(schema = @Schema(implementation = Page.class))),
+                    content = @Content(schema = @Schema(implementation = MusicSearchResponse.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청 (예: 유효하지 않은 카테고리)",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
