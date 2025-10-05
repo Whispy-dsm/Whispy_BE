@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.music.adapter.out.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 import whispy_server.whispy.domain.music.adapter.out.entity.MusicJpaEntity;
 import whispy_server.whispy.domain.music.model.Music;
 import whispy_server.whispy.domain.user.model.User;
@@ -19,4 +20,9 @@ public interface MusicMapper {
     default Optional<Music> toOptionalModel(Optional<MusicJpaEntity> optionalEntity){
         return optionalEntity.map(this::toModel);
     }
+
+    default Page<Music> toPageModel(Page<MusicJpaEntity> pageEntity){
+        return pageEntity.map(this::toModel);
+    }
 }
+

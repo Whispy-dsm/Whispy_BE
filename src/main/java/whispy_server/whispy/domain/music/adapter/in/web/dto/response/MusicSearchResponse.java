@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.search.music.adapter.in.web.dto.response;
+package whispy_server.whispy.domain.music.adapter.in.web.dto.response;
 
 import whispy_server.whispy.domain.music.model.Music;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;

@@ -4,10 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
-import whispy_server.whispy.domain.music.model.Music;
 import whispy_server.whispy.domain.notification.adapter.out.entity.NotificationJpaEntity;
 import whispy_server.whispy.domain.notification.model.Notification;
-import whispy_server.whispy.domain.search.music.adapter.out.entity.MusicElasticsearchEntity;
 
 import java.util.List;
 import java.util.Optional;
