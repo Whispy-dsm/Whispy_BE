@@ -1,13 +1,12 @@
-package whispy_server.whispy.domain.search.music.application.service;
+package whispy_server.whispy.domain.music.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import whispy_server.whispy.domain.search.music.adapter.in.web.dto.response.MusicSearchResponse;
-import whispy_server.whispy.domain.search.music.application.port.in.SearchMusicTitleUseCase;
-import whispy_server.whispy.domain.search.music.application.port.out.SearchMusicPort;
-import whispy_server.whispy.domain.music.model.Music;
+import whispy_server.whispy.domain.music.adapter.in.web.dto.response.MusicSearchResponse;
+import whispy_server.whispy.domain.music.application.port.in.SearchMusicTitleUseCase;
+import whispy_server.whispy.domain.music.application.port.out.SearchMusicPort;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +16,7 @@ public class SearchMusicTitleService implements SearchMusicTitleUseCase {
 
     @Override
     public Page<MusicSearchResponse> searchMusic(String keyword, Pageable pageable) {
-        return searchMusicPort.searchByKeyword(keyword, pageable)
+        return searchMusicPort.searchByTitle(keyword, pageable)
                 .map(MusicSearchResponse::from);
     }
 }

@@ -7,16 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.request.CreateMusicRequest;
 import whispy_server.whispy.domain.music.application.port.in.CreateMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicPort;
+import whispy_server.whispy.domain.music.application.port.out.MusicSavePort;
 import whispy_server.whispy.domain.music.model.Music;
-import whispy_server.whispy.domain.search.music.application.port.out.IndexMusicPort;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class CreateMusicService implements CreateMusicUseCase {
 
-    private final MusicPort musicPort;
-    private final IndexMusicPort indexMusicPort;
+    private final MusicSavePort musicSavePort;
 
     @Transactional
     @Override
@@ -28,13 +27,8 @@ public class CreateMusicService implements CreateMusicUseCase {
                 request.duration(),
                 request.category()
         );
-        
-        Music savedMusic = musicPort.save(music);
 
-        try {
-            indexMusicPort.indexMusic(savedMusic);
-        } catch (Exception e) {
-            log.warn("Failed to index music: {}", e.getMessage());
-        }
+        musicSavePort.save(music);
     }
 }
+
