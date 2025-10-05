@@ -39,6 +39,7 @@ public enum ErrorCode {
     EXPIRED_TOKEN(401, "토큰이 만료 되었습니다."),
     OAUTH_AUTHENTICATION_FAILED(401, "OAuth2 인증에 실패했습니다"),
     PASSWORD_MISS_MATCH(401, "비밀번호가 일치하지 않습니다"),
+    EMAIL_NOT_VERIFIED(401, "이메일 인증이 되지 않았습니다."),
 
     USER_ALREADY_EXIST(409, "유저가 이미 존재합니다"),
     PURCHASE_ALREADY_PROCESSED(409, "이미 처리된 구매입니다"),

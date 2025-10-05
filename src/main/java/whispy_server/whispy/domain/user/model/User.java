@@ -32,5 +32,19 @@ public record User(
         );
     }
 
+    public User updatePassword(String newPassword) {
+        return new User(
+                this.id,
+                this.email,
+                newPassword,
+                this.name,
+                this.profileImageUrl,
+                this.gender,
+                this.role,
+                this.provider,
+                this.fcmToken
+        );
+    }
+
 }
 

@@ -17,7 +17,7 @@ public class VerifyEmailCodeService implements VerifyEmailCodeUseCase {
 
     private static final String VERIFICATION_CODE_KEY = "email:verification:code:";
     private static final String VERIFICATION_STATUS_KEY = "email:verification:status:";
-    private static final Duration STATUS_EXPIRATION = Duration.ofHours(24);
+    private static final Duration STATUS_EXPIRATION = Duration.ofMinutes(10);
 
     @Override
     public VerifyEmailCodeResponse execute(VerifyEmailCodeRequest request) {
