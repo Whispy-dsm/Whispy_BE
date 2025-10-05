@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangePasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UpdateFcmTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
+import whispy_server.whispy.domain.user.application.port.in.ChangePasswordUseCase;
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
+import whispy_server.whispy.domain.user.application.port.in.ResetPasswordUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UpdateFcmTokenUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserLoginUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserLogoutUseCase;
@@ -38,9 +42,11 @@ public class UserController implements UserApiDocument {
     private final UserLogoutUseCase userLogoutUseCase;
     private final UserWithdrawalUseCase userWithdrawalUseCase;
     private final UpdateFcmTokenUseCase updateFcmTokenUseCase;
+    private final ChangePasswordUseCase changePasswordUseCase;
+    private final ResetPasswordUseCase resetPasswordUseCase;
 
     @PostMapping("/login")
-    public TokenResponse login(@Valid  @RequestBody UserLoginRequest request) {
+    public TokenResponse login(@Valid @RequestBody UserLoginRequest request) {
         return userLoginUseCase.login(request);
     }
 
@@ -74,5 +80,17 @@ public class UserController implements UserApiDocument {
     @PatchMapping("/fcm-token")
     public void updateFcmToken(@Valid @RequestBody UpdateFcmTokenRequest request) {
         updateFcmTokenUseCase.execute(request.fcmToken());
+    }
+
+    @PostMapping("/password/change")
+    @ResponseStatus(HttpStatus.OK)
+    public void changePassword(@Valid @RequestBody ChangePasswordRequest request) {
+        changePasswordUseCase.execute(request);
+    }
+
+    @PatchMapping("/password/reset")
+    @ResponseStatus(HttpStatus.OK)
+    public void resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        resetPasswordUseCase.execute(request);
     }
 }

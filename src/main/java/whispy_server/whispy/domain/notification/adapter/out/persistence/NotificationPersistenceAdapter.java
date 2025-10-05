@@ -1,9 +1,10 @@
 package whispy_server.whispy.domain.notification.adapter.out.persistence;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.domain.notification.adapter.out.entity.NotificationJpaEntity;
 import whispy_server.whispy.domain.notification.adapter.out.mapper.NotificationEntityMapper;
 import whispy_server.whispy.domain.notification.adapter.out.persistence.repository.NotificationRepository;
 import whispy_server.whispy.domain.notification.application.port.out.NotificationPort;
@@ -18,30 +19,25 @@ public class NotificationPersistenceAdapter implements NotificationPort {
 
     private final NotificationRepository notificationRepository;
     private final NotificationEntityMapper mapper;
-    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public Optional<Notification> findById(Long id){
-        Optional<NotificationJpaEntity> optionalEntity = notificationRepository.findById(id);
-        return mapper.toOptionalModel(optionalEntity);
+        return mapper.toOptionalModel(notificationRepository.findById(id));
     }
 
     @Override
-    public List<Notification> findByEmailOrderByCreatedAtDesc(String email){
-        List<NotificationJpaEntity> entities = notificationRepository.findByEmailOrderByCreatedAtDesc(email);
-        return mapper.toModelList(entities);
+    public Page<Notification> findByEmailOrderByCreatedAtDesc(String email, Pageable pageable){
+        return mapper.toModelPage(notificationRepository.findByEmailOrderByCreatedAtDesc(email, pageable));
     }
 
     @Override
     public List<Notification> findByEmailAndReadFalseOrderByCreatedAtDesc(String email){
-        List<NotificationJpaEntity> entities = notificationRepository.findByEmailAndReadFalseOrderByCreatedAtDesc(email);
-        return mapper.toModelList(entities);
+        return mapper.toModelList(notificationRepository.findByEmailAndReadFalseOrderByCreatedAtDesc(email));
     }
 
     @Override
     public List<Notification> findByEmailAndIsReadFalse(String email){
-        List<NotificationJpaEntity> entities = notificationRepository.findByEmailAndReadFalse(email);
-        return mapper.toModelList(entities);
+        return mapper.toModelList(notificationRepository.findByEmailAndReadFalse(email));
     }
 
     @Override

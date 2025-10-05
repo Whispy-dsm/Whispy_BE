@@ -11,7 +11,6 @@ import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.types.Gender;
-import whispy_server.whispy.domain.user.model.vo.Profile;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 
 @RequiredArgsConstructor
@@ -33,7 +32,9 @@ public class OauthUserService implements OauthUserUseCase {
                             null,
                             oauthUserInfo.email(),
                             defaultPassword,
-                            new Profile(oauthUserInfo.name(), oauthUserInfo.profileImage(), Gender.UNKNOWN),
+                            oauthUserInfo.name(),
+                            oauthUserInfo.profileImage(),
+                            Gender.UNKNOWN,
                             Role.USER,
                             provider.toUpperCase(),
                             null

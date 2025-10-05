@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.CheckEmailVerificationRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.response.CheckEmailVerificationResponse;
 import whispy_server.whispy.domain.auth.application.port.in.CheckEmailVerificationUseCase;
-import whispy_server.whispy.global.redis.RedisUtil;
+import whispy_server.whispy.global.utils.redis.RedisUtil;
 
 @Service
 @RequiredArgsConstructor

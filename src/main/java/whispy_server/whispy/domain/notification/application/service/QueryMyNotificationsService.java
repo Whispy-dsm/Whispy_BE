@@ -1,6 +1,8 @@
 package whispy_server.whispy.domain.notification.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.response.NotificationResponse;
@@ -20,13 +22,12 @@ public class QueryMyNotificationsService implements QueryMyNotificationsUseCase 
     private final UserFacadeUseCase userFacadeUseCase;
 
     @Override
-    public List<NotificationResponse> execute(){
-        List<Notification> notifications = queryNotificationPort.findByEmailOrderByCreatedAtDesc(
-                userFacadeUseCase.currentUser().email()
+    public Page<NotificationResponse> execute(Pageable pageable){
+        Page<Notification> notifications = queryNotificationPort.findByEmailOrderByCreatedAtDesc(
+                userFacadeUseCase.currentUser().email(),
+                pageable
         );
 
-        return notifications.stream()
-                .map(NotificationResponse::from)
-                .toList();
+        return notifications.map(NotificationResponse::from);
     }
 }

@@ -22,11 +22,7 @@ public class AdminFacade implements AdminFacadeUseCase {
 
     @Override
     public Admin getAdminByAdminId(String adminId){
-        Admin admin = queryAdminPort.findByAdminId(adminId);
-        if(admin == null){
-            throw AdminNotFoundException.EXCEPTION;
-        }
-        return admin;
-
+        return queryAdminPort.findByAdminId(adminId)
+                .orElseThrow(() -> AdminNotFoundException.EXCEPTION );
     }
 }

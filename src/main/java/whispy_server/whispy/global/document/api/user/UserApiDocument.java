@@ -8,8 +8,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangePasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 
@@ -79,4 +81,23 @@ public interface UserApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생")
     })
     void withdrawal();
+
+    @Operation(summary = "비밀번호 변경", description = "로그인된 사용자의 비밀번호를 변경합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "비밀번호 변경 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 유효성 검사 실패"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자 또는 현재 비밀번호 불일치"),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+    })
+    void changePassword(ChangePasswordRequest request);
+
+    @Operation(summary = "비밀번호 재설정", description = "이메일 인증 완료 후 비밀번호를 재설정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "비밀번호 재설정 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 유효성 검사 실패"),
+            @ApiResponse(responseCode = "401", description = "이메일 인증이 완료되지 않았습니다."),
+            @ApiResponse(responseCode = "404", description = "일치하는 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+    })
+    void resetPassword(ResetPasswordRequest request);
 }

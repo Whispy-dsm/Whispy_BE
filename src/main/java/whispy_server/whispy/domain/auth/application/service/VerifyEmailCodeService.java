@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.VerifyEmailCodeRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.response.VerifyEmailCodeResponse;
 import whispy_server.whispy.domain.auth.application.port.in.VerifyEmailCodeUseCase;
-import whispy_server.whispy.global.redis.RedisUtil;
+import whispy_server.whispy.global.utils.redis.RedisUtil;
 
 import java.time.Duration;
 
@@ -17,7 +17,7 @@ public class VerifyEmailCodeService implements VerifyEmailCodeUseCase {
 
     private static final String VERIFICATION_CODE_KEY = "email:verification:code:";
     private static final String VERIFICATION_STATUS_KEY = "email:verification:status:";
-    private static final Duration STATUS_EXPIRATION = Duration.ofHours(24);
+    private static final Duration STATUS_EXPIRATION = Duration.ofMinutes(10);
 
     @Override
     public VerifyEmailCodeResponse execute(VerifyEmailCodeRequest request) {

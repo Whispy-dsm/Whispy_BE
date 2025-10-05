@@ -8,7 +8,7 @@ import whispy_server.whispy.domain.auth.application.port.out.EmailSendPort;
 import whispy_server.whispy.global.exception.domain.auth.EmailAlreadySentException;
 import whispy_server.whispy.global.exception.domain.auth.EmailRateLimitExceededException;
 import whispy_server.whispy.global.exception.domain.auth.EmailSendFailedException;
-import whispy_server.whispy.global.redis.RedisUtil;
+import whispy_server.whispy.global.utils.redis.RedisUtil;
 
 import java.security.SecureRandom;
 import java.time.Duration;

@@ -31,12 +31,15 @@ public enum ErrorCode {
     PURCHASE_NOT_FOUND(404, "구매 정보를 찾을 수 없습니다"),
     TOPIC_SUBSCRIPTION_NOT_FOUND(404, "토픽 구독 정보를 찾을 수 없습니다."),
     NOTIFICATION_NOT_FOUND(404, "알림을 찾을 수 없습니다."),
+    MUSIC_NOT_FOUND(404, "음악을 찾을 수 없습니다."),
+    ANNOUNCEMENT_NOT_FOUND(404, "공지사항을 찾을 수 없습니다."),
 
     INVALID_TOKEN(401, "Invalid Token"),
     INVALID_KAKAO_ACCESS_TOKEN(401, "유효하지 않은 kakao access 토큰입니다."),
     EXPIRED_TOKEN(401, "토큰이 만료 되었습니다."),
     OAUTH_AUTHENTICATION_FAILED(401, "OAuth2 인증에 실패했습니다"),
     PASSWORD_MISS_MATCH(401, "비밀번호가 일치하지 않습니다"),
+    EMAIL_NOT_VERIFIED(401, "이메일 인증이 되지 않았습니다."),
 
     USER_ALREADY_EXIST(409, "유저가 이미 존재합니다"),
     PURCHASE_ALREADY_PROCESSED(409, "이미 처리된 구매입니다"),

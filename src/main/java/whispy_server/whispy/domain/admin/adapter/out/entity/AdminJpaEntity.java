@@ -29,11 +29,4 @@ public class AdminJpaEntity {
     private String adminId;
 
     private String password;
-
-    private Role role;
-
-    private String name;
-
-
-
 }

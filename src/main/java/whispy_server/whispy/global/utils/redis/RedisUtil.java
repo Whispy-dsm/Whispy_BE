@@ -1,4 +1,4 @@
-package whispy_server.whispy.global.redis;
+package whispy_server.whispy.global.utils.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

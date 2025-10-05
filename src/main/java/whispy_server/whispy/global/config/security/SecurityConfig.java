@@ -69,6 +69,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/oauth2/authorization/google", "/login/oauth2/code/google").permitAll()
                         .requestMatchers("/users/login","/users/register","/users/reissue").permitAll()
+                        .requestMatchers("/admin/login").permitAll()
                         .requestMatchers("/users/oauth/kakao").permitAll()
                         .requestMatchers("/oauth/success/**").permitAll()
                         .requestMatchers("/file/profile_image_folder/**",
@@ -79,6 +80,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
 
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
 
