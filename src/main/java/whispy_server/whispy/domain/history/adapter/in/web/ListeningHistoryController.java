@@ -1,5 +1,6 @@
 package whispy_server.whispy.domain.history.adapter.in.web;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +22,8 @@ public class ListeningHistoryController implements ListeningHistoryApiDocument {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void recordListening(@RequestBody RecordListeningRequest request) {
-        recordListeningUseCase.execute(request.musicId());
+    public void recordListening(@PathVariable Long musicId) {
+        recordListeningUseCase.execute(musicId);
     }
 
     @GetMapping("/my")

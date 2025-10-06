@@ -26,7 +26,7 @@ public interface ListeningHistoryApiDocument {
     })
     void recordListening(
             @Parameter(description = "청취 기록 요청", required = true)
-            RecordListeningRequest request
+            Long musicId
     );
 
     @Operation(summary = "내 청취 기록 조회", description = "현재 사용자의 음악 청취 기록을 최신순으로 조회합니다. 페이징을 지원합니다.")
