@@ -25,7 +25,7 @@ public class ListeningHistoryController implements ListeningHistoryApiDocument {
         recordListeningUseCase.execute(request.musicId());
     }
 
-    @GetMapping
+    @GetMapping("/my")
     public Page<ListeningHistoryResponse> getMyHistory(Pageable pageable) {
         return queryListeningHistoryUseCase.execute(pageable);
     }
