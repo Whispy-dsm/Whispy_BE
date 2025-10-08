@@ -67,4 +67,9 @@ public class ListeningHistoryPersistenceAdapter implements ListeningHistoryPort 
     public Optional<ListeningHistory> findByUserIdAndMusicId(Long userId, Long musicId) {
         return mapper.toOptionalModel(listeningHistoryRepository.findByUserIdAndMusicId(userId, musicId));
     }
+
+    @Override
+    public void deleteAllByMusicId(Long musicId) {
+        listeningHistoryRepository.deleteAllByMusicId(musicId);
+    }
 }
