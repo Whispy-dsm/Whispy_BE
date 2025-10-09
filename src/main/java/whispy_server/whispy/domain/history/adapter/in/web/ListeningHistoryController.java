@@ -20,7 +20,7 @@ public class ListeningHistoryController implements ListeningHistoryApiDocument {
     private final RecordListeningUseCase recordListeningUseCase;
     private final QueryListeningHistoryUseCase queryListeningHistoryUseCase;
 
-    @PostMapping
+    @PostMapping("/{musicId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void recordListening(@PathVariable Long musicId) {
         recordListeningUseCase.execute(musicId);
