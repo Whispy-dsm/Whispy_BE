@@ -12,7 +12,7 @@ public record NotificationResponse(
         String body,
         NotificationTopic topic,
         Map<String, String> data,
-        boolean Read
+        boolean read
 ) {
 
     public static NotificationResponse from(Notification notification) {
