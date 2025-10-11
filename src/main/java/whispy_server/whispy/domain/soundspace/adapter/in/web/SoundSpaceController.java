@@ -2,6 +2,7 @@ package whispy_server.whispy.domain.soundspace.adapter.in.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import whispy_server.whispy.domain.soundspace.adapter.in.web.dto.response.MusicI
 import whispy_server.whispy.domain.soundspace.adapter.in.web.dto.response.SoundSpaceMusicResponse;
 import whispy_server.whispy.domain.soundspace.application.port.in.CheckMusicInSoundSpaceUseCase;
 import whispy_server.whispy.domain.soundspace.application.port.in.GetSoundSpaceMusicsUseCase;
+import whispy_server.whispy.domain.soundspace.application.port.in.RemoveMusicFromSoundSpaceUseCase;
 import whispy_server.whispy.domain.soundspace.application.port.in.ToggleSoundSpaceMusicUseCase;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class SoundSpaceController {
     private final GetSoundSpaceMusicsUseCase getSoundSpaceMusicsUseCase;
     private final ToggleSoundSpaceMusicUseCase toggleSoundSpaceMusicUseCase;
     private final CheckMusicInSoundSpaceUseCase checkMusicInSoundSpaceUseCase;
+    private final RemoveMusicFromSoundSpaceUseCase removeMusicFromSoundSpaceUseCase;
 
     @GetMapping("/music")
     public List<SoundSpaceMusicResponse> getSoundSpaceMusics() {
@@ -36,8 +39,14 @@ public class SoundSpaceController {
         toggleSoundSpaceMusicUseCase.execute(musicId);
     }
 
-    @GetMapping("/music/{musicId}/exists")
+    @GetMapping("/exists/{musicId}")
     public MusicInSoundSpaceCheckResponse checkMusicInSoundSpace(@PathVariable Long musicId) {
         return checkMusicInSoundSpaceUseCase.execute(musicId);
+    }
+
+    @DeleteMapping("/{musicId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeMusicFromSoundSpace(@PathVariable Long musicId) {
+        removeMusicFromSoundSpaceUseCase.execute(musicId);
     }
 }
