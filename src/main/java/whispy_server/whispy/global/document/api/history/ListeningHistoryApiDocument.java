@@ -25,9 +25,7 @@ public interface ListeningHistoryApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생")
     })
     void recordListening(
-            @Parameter(description = "청취 기록 요청", required = true)
-            Long musicId
-    );
+            @Parameter(description = "음악 ID", required = true, in = ParameterIn.PATH) Long musicId);
 
     @Operation(summary = "내 청취 기록 조회", description = "현재 사용자의 음악 청취 기록을 최신순으로 조회합니다. 페이징을 지원합니다.")
     @ApiResponses({
@@ -37,7 +35,5 @@ public interface ListeningHistoryApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생")
     })
     Page<ListeningHistoryResponse> getMyHistory(
-            @Parameter(description = "페이징 정보 (page, size)", in = ParameterIn.QUERY)
-            Pageable pageable
-    );
+            @Parameter(description = "페이징 정보 (page, size)", in = ParameterIn.QUERY) Pageable pageable);
 }
