@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface QueryAnnouncementPort {
     Optional<Announcement> findById(Long id);
-    List<Announcement> findAll();
+    List<Announcement> findAllByOrderByCreatedAtDesc();
 }

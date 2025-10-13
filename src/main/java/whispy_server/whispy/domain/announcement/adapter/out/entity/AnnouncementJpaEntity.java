@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "AnnouncementJpaEntity")
 @Table(name = "tbl_announcement")
 @Builder
@@ -28,4 +30,6 @@ public class AnnouncementJpaEntity {
     private String content;
 
     private String bannerImageUrl;
+
+    private LocalDateTime createdAt;
 }

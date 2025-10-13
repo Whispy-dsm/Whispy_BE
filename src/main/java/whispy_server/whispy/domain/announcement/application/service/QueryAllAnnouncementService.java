@@ -18,7 +18,8 @@ public class QueryAllAnnouncementService implements QueryAllAnnouncementUseCase 
     @Transactional(readOnly = true)
     @Override
     public List<QueryAllAnnouncementResponse> execute() {
-        return announcementPort.findAll().stream()
+        return announcementPort.findAllByOrderByCreatedAtDesc()
+                .stream()
                 .map(announcement -> new QueryAllAnnouncementResponse(
                         announcement.id(),
                         announcement.title(),

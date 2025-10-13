@@ -28,8 +28,8 @@ public class AnnouncementPersistenceAdapter implements AnnouncementPort {
     }
 
     @Override
-    public List<Announcement> findAll() {
-        return announcementMapper.toModelList(announcementJpaRepository.findAll());
+    public List<Announcement> findAllByOrderByCreatedAtDesc() {
+        return announcementMapper.toModelList(announcementJpaRepository.findAllByOrderByCreatedAtDesc());
     }
 
     @Override

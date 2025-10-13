@@ -8,6 +8,8 @@ import whispy_server.whispy.domain.announcement.application.port.in.CreateAnnoun
 import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
 import whispy_server.whispy.domain.announcement.model.Announcement;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class CreateAnnouncementService implements CreateAnnouncementUseCase {
@@ -21,7 +23,8 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
                 null,
                 request.title(),
                 request.content(),
-                request.bannerImageUrl()
+                request.bannerImageUrl(),
+                LocalDateTime.now()
         );
 
         announcementPort.save(announcement);
