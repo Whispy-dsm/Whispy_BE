@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.like.application.port.out.DeleteMusicLikePort
 import whispy_server.whispy.domain.music.application.port.in.DeleteMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicDeletePort;
 import whispy_server.whispy.domain.music.application.port.out.QueryMusicPort;
+import whispy_server.whispy.domain.soundspace.application.port.out.DeleteSoundSpaceMusicPort;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
 @Service
@@ -20,6 +21,7 @@ public class DeleteMusicService implements DeleteMusicUseCase {
     private final MusicDeletePort musicDeletePort;
     private final DeleteMusicLikePort deleteMusicLikePort;
     private final DeleteListeningHistoryPort deleteListeningHistoryPort;
+    private final DeleteSoundSpaceMusicPort deleteSoundSpaceMusicPort;
 
     @Transactional
     @Override
@@ -30,6 +32,7 @@ public class DeleteMusicService implements DeleteMusicUseCase {
 
         deleteMusicLikePort.deleteAllByMusicId(id); // (논리적 외래키 처리)
         deleteListeningHistoryPort.deleteAllByMusicId(id); // (논리적 외래키 처리)
+        deleteSoundSpaceMusicPort.deleteAllByMusicId(id); // (논리적 외래키 처리)
         musicDeletePort.deleteById(id);
     }
 }

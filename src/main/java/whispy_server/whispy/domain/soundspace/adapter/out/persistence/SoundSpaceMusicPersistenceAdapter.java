@@ -57,4 +57,8 @@ public class SoundSpaceMusicPersistenceAdapter implements SoundSpaceMusicPort {
                 .orderBy(soundSpaceMusic.addedAt.desc())
                 .fetch();
     }
+    @Override
+    public void deleteAllByMusicId(Long musicId) {
+        soundSpaceMusicJpaRepository.deleteAllByMusicId(musicId);
+    }
 }
