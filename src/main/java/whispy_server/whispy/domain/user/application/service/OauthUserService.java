@@ -13,6 +13,8 @@ import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Service
 public class OauthUserService implements OauthUserUseCase {
@@ -34,6 +36,7 @@ public class OauthUserService implements OauthUserUseCase {
                             Gender.UNKNOWN,
                             Role.USER,
                             provider.toUpperCase(),
+                            null,
                             null
                     );
                     userSavePort.save(newUser);

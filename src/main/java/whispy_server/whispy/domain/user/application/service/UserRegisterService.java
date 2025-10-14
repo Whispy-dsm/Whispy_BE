@@ -14,6 +14,8 @@ import whispy_server.whispy.domain.user.application.port.out.ExistsUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.global.exception.domain.user.UserAlreadyExistException;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class UserRegisterService implements UserRegisterUseCase {
@@ -44,7 +46,8 @@ public class UserRegisterService implements UserRegisterUseCase {
                 request.gender(),
                 Role.USER,
                 DEFAULT_PROVIDER,
-                request.fcmToken()
+                request.fcmToken(),
+                null
         );
 
         userSavePort.save(user);
