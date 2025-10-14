@@ -32,9 +32,6 @@ spring:
   jackson:
     property-naming-strategy : SNAKE_CASE
 
-  oauth:
-    default-password: ${OAUTH_DEFAULT_PASSWORD}
-
   jwt:
     header: ${JWT_HEADER}
     prefix: ${JWT_PREFIX}

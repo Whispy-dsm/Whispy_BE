@@ -31,7 +31,7 @@ public class UserJpaEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", columnDefinition = "CHAR(70)", nullable = false)
+    @Column(name = "password", columnDefinition = "CHAR(70)")
     private String password;
 
     @Column(name = "name", columnDefinition = "CHAR(30)", nullable = false)

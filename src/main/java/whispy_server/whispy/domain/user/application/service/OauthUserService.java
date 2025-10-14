@@ -20,9 +20,6 @@ public class OauthUserService implements OauthUserUseCase {
     private final QueryUserPort queryUserPort;
     private final UserSavePort userSavePort;
 
-    @Value("${spring.oauth.default-password}")
-    private String defaultPassword;
-
     @Override
     @Transactional
     public User findOrCreateOauthUser(OauthUserInfo oauthUserInfo, String provider) {
@@ -31,7 +28,7 @@ public class OauthUserService implements OauthUserUseCase {
                     User newUser = new User(
                             null,
                             oauthUserInfo.email(),
-                            defaultPassword,
+                            null,
                             oauthUserInfo.name(),
                             oauthUserInfo.profileImage(),
                             Gender.UNKNOWN,
