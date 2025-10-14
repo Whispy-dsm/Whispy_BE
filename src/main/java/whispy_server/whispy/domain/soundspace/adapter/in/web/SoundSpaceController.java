@@ -15,35 +15,40 @@ import whispy_server.whispy.domain.soundspace.application.port.in.CheckMusicInSo
 import whispy_server.whispy.domain.soundspace.application.port.in.GetSoundSpaceMusicsUseCase;
 import whispy_server.whispy.domain.soundspace.application.port.in.RemoveMusicFromSoundSpaceUseCase;
 import whispy_server.whispy.domain.soundspace.application.port.in.ToggleSoundSpaceMusicUseCase;
+import whispy_server.whispy.global.document.api.soundspace.SoundSpaceApiDocument;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/soundspace")
 @RequiredArgsConstructor
-public class SoundSpaceController {
+public class SoundSpaceController implements SoundSpaceApiDocument {
 
     private final GetSoundSpaceMusicsUseCase getSoundSpaceMusicsUseCase;
     private final ToggleSoundSpaceMusicUseCase toggleSoundSpaceMusicUseCase;
     private final CheckMusicInSoundSpaceUseCase checkMusicInSoundSpaceUseCase;
     private final RemoveMusicFromSoundSpaceUseCase removeMusicFromSoundSpaceUseCase;
 
+    @Override
     @GetMapping("/music")
     public List<SoundSpaceMusicResponse> getSoundSpaceMusics() {
         return getSoundSpaceMusicsUseCase.execute();
     }
 
+    @Override
     @PostMapping("/toggle/{musicId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void toggleSoundSpaceMusic(@PathVariable Long musicId) {
         toggleSoundSpaceMusicUseCase.execute(musicId);
     }
 
+    @Override
     @GetMapping("/exists/{musicId}")
     public MusicInSoundSpaceCheckResponse checkMusicInSoundSpace(@PathVariable Long musicId) {
         return checkMusicInSoundSpaceUseCase.execute(musicId);
     }
 
+    @Override
     @DeleteMapping("/{musicId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeMusicFromSoundSpace(@PathVariable Long musicId) {
