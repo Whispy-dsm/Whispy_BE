@@ -13,6 +13,8 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTok
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyAccountInfoResponse;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileResponse;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 
 @Tag(name = "USER API", description = "사용자 관련 API")
@@ -100,4 +102,22 @@ public interface UserApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생")
     })
     void resetPassword(ResetPasswordRequest request);
+
+    @Operation(summary = "내 프로필 조회", description = "프로필 화면에 표시할 간단한 사용자 정보를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "프로필 조회 성공",
+                    content = @Content(schema = @Schema(implementation = MyProfileResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+    })
+    MyProfileResponse getMyProfile();
+
+    @Operation(summary = "내 계정 정보 조회", description = "계정 정보 화면에 표시할 전체 사용자 정보를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "계정 정보 조회 성공",
+                    content = @Content(schema = @Schema(implementation = MyAccountInfoResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+    })
+    MyAccountInfoResponse getMyAccountInfo();
 }
