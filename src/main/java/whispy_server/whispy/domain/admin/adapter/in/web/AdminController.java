@@ -80,7 +80,7 @@ public class AdminController implements AdminApiDocument {
         createAnnouncementUseCase.execute(request);
     }
 
-    @PutMapping("/announcements")
+    @PatchMapping("/announcements")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAnnouncement(@RequestBody @Valid UpdateAnnouncementRequest request) {
         updateAnnouncementUseCase.execute(request);
