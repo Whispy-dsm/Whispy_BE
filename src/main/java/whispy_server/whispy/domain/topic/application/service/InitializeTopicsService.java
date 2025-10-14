@@ -40,18 +40,17 @@ public class InitializeTopicsService implements InitializeTopicsUseCase {
 
     private void createAllTopicsForNewUser(String email, String fcmToken) {
         Arrays.stream(NotificationTopic.values())
+                .filter(topic -> topic != NotificationTopic.ONLY_ADMIN)
                 .forEach(topic -> {
-                    boolean defaultSubscribed = (topic == NotificationTopic.GENERAL_ANNOUNCEMENT);
-
                     TopicSubscription subscription = new TopicSubscription(
                             null,
                             email,
                             topic,
-                            defaultSubscribed
+                            true
                     );
                     saveTopicSubscriptionPort.save(subscription);
 
-                    if (defaultSubscribed && fcmToken != null) {
+                    if (fcmToken != null) {
                         fcmSendPort.subscribeToTopic(fcmToken, topic);
                     }
                 });
