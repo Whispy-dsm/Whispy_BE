@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,8 +19,12 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterReque
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UpdateFcmTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyAccountInfoResponse;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileResponse;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.ChangePasswordUseCase;
+import whispy_server.whispy.domain.user.application.port.in.GetMyAccountInfoUseCase;
+import whispy_server.whispy.domain.user.application.port.in.GetMyProfileUseCase;
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
 import whispy_server.whispy.domain.user.application.port.in.ResetPasswordUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UpdateFcmTokenUseCase;
@@ -44,6 +49,8 @@ public class UserController implements UserApiDocument {
     private final UpdateFcmTokenUseCase updateFcmTokenUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
+    private final GetMyProfileUseCase getMyProfileUseCase;
+    private final GetMyAccountInfoUseCase getMyAccountInfoUseCase;
 
     @PostMapping("/login")
     public TokenResponse login(@Valid @RequestBody UserLoginRequest request) {
@@ -92,5 +99,15 @@ public class UserController implements UserApiDocument {
     @ResponseStatus(HttpStatus.OK)
     public void resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         resetPasswordUseCase.execute(request);
+    }
+
+    @GetMapping("/profile")
+    public MyProfileResponse getMyProfile() {
+        return getMyProfileUseCase.execute();
+    }
+
+    @GetMapping("/account")
+    public MyAccountInfoResponse getMyAccountInfo() {
+        return getMyAccountInfoUseCase.execute();
     }
 }

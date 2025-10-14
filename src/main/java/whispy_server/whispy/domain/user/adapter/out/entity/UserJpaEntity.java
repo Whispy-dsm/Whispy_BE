@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import whispy_server.whispy.global.entity.BaseTimeEntity;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.domain.user.model.types.Gender;
 
@@ -22,7 +23,7 @@ import whispy_server.whispy.domain.user.model.types.Gender;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserJpaEntity {
+public class UserJpaEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,4 +56,3 @@ public class UserJpaEntity {
     private String fcmToken;
 
 }
-
