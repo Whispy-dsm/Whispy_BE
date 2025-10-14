@@ -4,6 +4,9 @@ import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.annotation.Aggregate;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Aggregate
 public record User(
         Long id,
@@ -14,7 +17,8 @@ public record User(
         Gender gender,
         Role role,
         String provider,
-        String fcmToken
+        String fcmToken,
+        LocalDateTime createdAt
 
 ) {
 
@@ -28,7 +32,8 @@ public record User(
                 this.gender,
                 this.role,
                 this.provider,
-                newFcmToken
+                newFcmToken,
+                this.createdAt
         );
     }
 
@@ -42,9 +47,13 @@ public record User(
                 this.gender,
                 this.role,
                 this.provider,
-                this.fcmToken
+                this.fcmToken,
+                this.createdAt
         );
     }
 
-}
+    public long getDaysSinceRegistration() {
+        return ChronoUnit.DAYS.between(this.createdAt, LocalDateTime.now());
+    }
 
+}
