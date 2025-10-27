@@ -6,7 +6,7 @@ import whispy_server.whispy.global.exception.error.ErrorCode;
 
 @Getter
 @RequiredArgsConstructor
-public class WhispyException extends RuntimeException{
+public class WhispyException extends RuntimeΕxception{
 
     private final ErrorCode errorCode;
 }
