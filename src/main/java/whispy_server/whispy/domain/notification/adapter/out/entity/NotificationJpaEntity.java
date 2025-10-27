@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.global.entity.BaseTimeEntity;
 
@@ -27,7 +28,7 @@ import java.util.UUID;
 @Entity(name = "NotificationJpaEntity")
 @Table(name = "tbl_notification")
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NotificationJpaEntity extends BaseTimeEntity {

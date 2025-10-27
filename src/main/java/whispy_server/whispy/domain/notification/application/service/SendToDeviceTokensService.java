@@ -33,7 +33,8 @@ public class SendToDeviceTokensService implements SendToDeviceTokensUseCase {
                 request.body(),
                 request.topic(),
                 request.data(),
-                false
+                false,
+                null
         );
         saveNotificationPort.save(notification);
     }

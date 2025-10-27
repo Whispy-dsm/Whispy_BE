@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.notification.adapter.in.web.dto.response;
 import whispy_server.whispy.domain.notification.model.Notification;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public record NotificationResponse(
@@ -12,7 +13,8 @@ public record NotificationResponse(
         String body,
         NotificationTopic topic,
         Map<String, String> data,
-        boolean read
+        boolean read,
+        LocalDateTime createdAt
 ) {
 
     public static NotificationResponse from(Notification notification) {
@@ -23,7 +25,8 @@ public record NotificationResponse(
                 notification.body(),
                 notification.topic(),
                 notification.data(),
-                notification.read()
+                notification.read(),
+                notification.createdAt()
         );
     }
 }

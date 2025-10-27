@@ -73,5 +73,4 @@ public class SaveNotificationBatchConfig {
         reader.afterPropertiesSet();
         return reader;
     }
-
 }

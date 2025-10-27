@@ -9,7 +9,7 @@ public record Music(
         Long id,
         String title,
         String filePath,
-        Integer duration,
+        int duration,
         MusicCategory category
 ) {
 
