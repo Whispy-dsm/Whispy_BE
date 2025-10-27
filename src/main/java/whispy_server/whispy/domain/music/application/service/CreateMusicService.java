@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.request.CreateMusicRequest;
 import whispy_server.whispy.domain.music.application.port.in.CreateMusicUseCase;
-import whispy_server.whispy.domain.music.application.port.out.MusicPort;
 import whispy_server.whispy.domain.music.application.port.out.MusicSavePort;
 import whispy_server.whispy.domain.music.model.Music;
 

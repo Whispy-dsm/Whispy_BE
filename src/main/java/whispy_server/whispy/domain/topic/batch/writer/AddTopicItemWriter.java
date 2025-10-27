@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort
 import whispy_server.whispy.domain.topic.application.port.out.SaveTopicSubscriptionPort;
 import whispy_server.whispy.domain.topic.batch.dto.AddTopicJobParameters;
 import whispy_server.whispy.domain.topic.model.TopicSubscription;
+import whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class AddTopicItemWriter implements ItemWriter<AddTopicJobParameters> {
     private final FcmSendPort fcmSendPort;
 
     @Override
-    public void write(Chunk<? extends AddTopicJobParameters> chunk) throws Exception {
+    public void write(Chunk<? extends AddTopicJobParameters> chunk) {
         try {
 
             List<TopicSubscription> subscriptions = chunk.getItems().stream()
@@ -37,18 +38,16 @@ public class AddTopicItemWriter implements ItemWriter<AddTopicJobParameters> {
 
             chunk.getItems().stream()
                     .filter(item -> item.defaultSubscribed() && item.fcmToken() != null)
-                    .forEach(item -> {
+                    .forΕach(item -> {
                         try {
                             fcmSendPort.subscribeToTopic(item.fcmToken(), item.topic());
-                        } catch (Exception e) {
+                        } catch (Εxception e) {
                             log.warn("사용자 {}의 FCM 구독 실패: {}", item.email(), e.getMessage());
                         }
                     });
-            log.info("새 토픽 배치 청크 처리 완료: {}건", chunk.size());
 
-        } catch (Exception e) {
-            log.error("새 토픽 배치 청크 처리 실패: {}", e.getMessage(), e);
-            throw e; // 실패 시 배치 중단
+        } catch (Εxception e) {
+            throw BatchJobExecutionFailedException.EXCEPTION;
         }
     }
 }

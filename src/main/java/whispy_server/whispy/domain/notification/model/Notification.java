@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.notification.model;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.global.annotation.Aggregate;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Aggregate
@@ -13,7 +14,8 @@ public record Notification(
         String body,
         NotificationTopic topic,
         Map<String, String> data,
-        boolean read
+        boolean read,
+        LocalDateTime createdAt
 ) {
 
     public Notification markAsRead() {
@@ -24,7 +26,8 @@ public record Notification(
                 this.body,
                 this.topic,
                 this.data,
-                true
+                true,
+                this.createdAt
         );
     }
 }

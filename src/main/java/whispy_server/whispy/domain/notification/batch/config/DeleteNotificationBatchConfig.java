@@ -1,0 +1,71 @@
+package whispy_server.whispy.domain.notification.batch.config;
+
+import jakarta.persistence.EntityManagerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
+import whispy_server.whispy.domain.notification.adapter.out.entity.NotificationJpaEntity;
+import whispy_server.whispy.domain.notification.batch.dto.DeleteOldNotificationJobParameters;
+import whispy_server.whispy.domain.notification.batch.processor.DeleteOldNotificationItemProcessor;
+import whispy_server.whispy.domain.notification.batch.writer.DeleteOldNotificationItemWriter;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Slf4j
+@Configuration
+@RequiredArgsConstructor
+public class DeleteNotificationBatchConfig {
+
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager platformTransactionManager;
+    private final EntityManagerFactory entityManagerFactory;
+    private final DeleteOldNotificationItemWriter deleteOldNotificationItemWriter;
+    private final DeleteOldNotificationItemProcessor deleteOldNotificationItemProcessor;
+
+    private static final int CHUNK_SIZE = 1000;
+
+    @Bean("deleteOldNotificationJob")
+    public Job deleteOldNotificationJob(
+            @Qualifier("deleteOldNotificationStep") Step deleteOldNotificationStep) {
+        return new JobBuilder("deleteOldNotificationJob", jobRepository)
+                .start(deleteOldNotificationStep)
+                .build();
+    }
+
+    @Bean("deleteOldNotificationStep")
+    public Step deleteOldNotificationStep(ItemReader<NotificationJpaEntity> oldNotificationReader) {
+        return new StepBuilder("deleteOldNotificationStep", jobRepository)
+                .<NotificationJpaEntity, DeleteOldNotificationJobParameters>chunk(CHUNK_SIZE, platformTransactionManager)
+                .reader(oldNotificationReader)
+                .processor(deleteOldNotificationItemProcessor)
+                .writer(deleteOldNotificationItemWriter)
+                .build();
+    }
+
+    @Bean
+    @StepScope
+    public ItemReader<NotificationJpaEntity> oldNotificationReader() throws Exception {
+        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+
+        return new JpaPagingItemReaderBuilder<NotificationJpaEntity>()
+                .name("oldNotificationReader")
+                .entityManagerFactory(entityManagerFactory)
+                .queryString("SELECT n FROM NotificationJpaEntity n WHERE n.createdAt < :thirtyDaysAgo")
+                .parameterValues(Map.of("thirtyDaysAgo", thirtyDaysAgo))
+                .pageSize(CHUNK_SIZE)
+                .build();
+    }
+}

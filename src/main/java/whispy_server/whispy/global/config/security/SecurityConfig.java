@@ -52,9 +52,9 @@ public class SecurityConfig {
                 )
 
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) -> response.
+                        .authenticationEntryPoint((request, response, authΕxception) -> response.
                                 sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
-                        .accessDeniedHandler((request, response, accessDeniedException) ->  response.
+                        .accessDeniedHandler((request, response, accessDeniedΕxception) ->  response.
                                 sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied"))
                 )
 

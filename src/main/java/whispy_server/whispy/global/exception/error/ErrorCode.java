@@ -23,6 +23,12 @@ public enum ErrorCode {
     UNKNOWN_PRODUCT_ID(400, "알 수 없는 상품 ID입니다"),
     INVALID_PURCHASE_TOKEN(400, "유효하지 않은 구매 토큰입니다"),
     INVALID_SUBSCRIPTION_NOTIFICATION(400, "유효하지 않은 구독 알림입니다"),
+    INVALID_FOCUS_SESSION_TIME_RANGE(400, "종료시간이 시작시간보다 이를 수 없습니다."),
+    FOCUS_SESSION_DURATION_EXCEEDED(400, "집중시간이 전체 시간을 초과할 수 없습니다."),
+    INVALID_FOCUS_SESSION_DURATION(400, "집중시간은 1초 이상이어야 합니다."),
+    INVALID_SLEEP_SESSION_TIME_RANGE(400, "종료시간이 시작시간보다 이를 수 없습니다."),
+    SLEEP_SESSION_DURATION_EXCEEDED(400, "수면시간이 전체 시간을 초과할 수 없습니다."),
+    INVALID_SLEEP_SESSION_DURATION(400, "수면시간은 1초 이상이어야 합니다."),
 
     USER_NOT_FOUND(404, "일치하는 유저를 찾을 수 없습니다"),
     ADMIN_NOT_FOUND(404, "일치하는 어드민을 찾을 수 없습니다"),
@@ -54,7 +60,8 @@ public enum ErrorCode {
     PURCHASE_NOTIFICATION_PROCESSING_FAILED(500, "구매 알림 처리 중 오류가 발생했습니다"),
     SUBSCRIPTION_ACKNOWLEDGMENT_FAILED(500, "구독 승인 처리 중 오류가 발생했습니다"),
     EMAIL_SEND_FAILED(500, "이메일 발송에 실패했습니다. 다시 시도해주세요."),
-    FCM_SEND_FAILED(500, "FCM 메시지 전송에 실패했습니다.");
+    FCM_SEND_FAILED(500, "FCM 메시지 전송에 실패했습니다."),
+    BATCH_JOB_EXECUTION_FAILED(500, "배치 작업 실행에 실패했습니다.");
 
 
     private final int statusCode;

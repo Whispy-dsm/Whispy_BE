@@ -12,6 +12,9 @@ import java.util.Optional;
 public interface SubscriptionEntityMapper {
 
     Subscription toModel(SubscriptionJpaEntity entity);
+    
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "modifiedAt", ignore = true)
     SubscriptionJpaEntity toEntity(Subscription subscription);
 
     default Optional<Subscription> toOptionalModel(Optional<SubscriptionJpaEntity> optionalEntity){
