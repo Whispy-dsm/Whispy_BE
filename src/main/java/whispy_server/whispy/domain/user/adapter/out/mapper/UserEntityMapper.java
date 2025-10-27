@@ -12,7 +12,10 @@ import java.util.Optional;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserEntityMapper {
 
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "modifiedAt", ignore = true)
     UserJpaEntity toEntity(User userModel);
+    
     User toModel(UserJpaEntity entity);
 
     default Optional<User> toOptionalDomain(Optional<UserJpaEntity> optionalEntity){
