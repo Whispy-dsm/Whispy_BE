@@ -9,17 +9,39 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import whispy_server.whispy.domain.admin.adapter.in.web.dto.request.AdminLoginRequest;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.CreateAnnouncementRequest;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.UpdateAnnouncementRequest;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.request.CreateMusicRequest;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.request.UpdateMusicRequest;
 import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.AddNewTopicRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
 @Tag(name = "ADMIN API", description = "관리자 API")
 public interface AdminApiDocument {
+
+    @Operation(
+            summary = "관리자 로그인",
+            description = "관리자 계정으로 로그인합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "로그인 성공",
+                    content = @Content(schema = @Schema(implementation = TokenResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    TokenResponse login(
+            @RequestBody(description = "관리자 로그인 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = AdminLoginRequest.class)))
+            AdminLoginRequest request
+    );
 
     @Operation(
             summary = "모든 유저에게 새 토픽 추가",
