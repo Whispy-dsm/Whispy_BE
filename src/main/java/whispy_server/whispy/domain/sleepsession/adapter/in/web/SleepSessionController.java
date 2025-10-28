@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.request.SaveSleepSessionRequest;
 import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.response.SleepSessionResponse;
 import whispy_server.whispy.domain.sleepsession.application.port.in.SaveSleepSessionUseCase;
+import whispy_server.whispy.global.document.api.sleepsession.SleepSessionApiDocument;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sleep-sessions")
-public class SleepSessionController {
+public class SleepSessionController implements SleepSessionApiDocument {
 
     private final SaveSleepSessionUseCase saveSleepSessionUseCase;
 

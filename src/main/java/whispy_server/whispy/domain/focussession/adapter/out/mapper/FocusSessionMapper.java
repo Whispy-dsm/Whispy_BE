@@ -10,7 +10,6 @@ import whispy_server.whispy.domain.focussession.model.FocusSession;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface FocusSessionMapper {
 
-    @Mapping(target = "createdAt", source = "createdAt")
     FocusSession toModel(FocusSessionJpaEntity entity);
 
     @Mapping(target = "createdAt", ignore = true)

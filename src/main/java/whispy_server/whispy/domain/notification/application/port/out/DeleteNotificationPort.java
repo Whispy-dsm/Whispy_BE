@@ -5,6 +5,5 @@ import java.util.List;
 public interface DeleteNotificationPort {
     void deleteById(Long id);
     void deleteAllByEmail(String email);
-    long deleteAllByIdInBatch(List<Long> ids);
-    long deleteAllByEmailBatch(String email);
+    void deleteAllByIdInBatch(List<Long> ids);
 }

@@ -38,15 +38,15 @@ public class AddTopicItemWriter implements ItemWriter<AddTopicJobParameters> {
 
             chunk.getItems().stream()
                     .filter(item -> item.defaultSubscribed() && item.fcmToken() != null)
-                    .forΕach(item -> {
+                    .forEach(item -> {
                         try {
                             fcmSendPort.subscribeToTopic(item.fcmToken(), item.topic());
-                        } catch (Εxception e) {
+                        } catch (Exception e) {
                             log.warn("사용자 {}의 FCM 구독 실패: {}", item.email(), e.getMessage());
                         }
                     });
 
-        } catch (Εxception e) {
+        } catch (Exception e) {
             throw BatchJobExecutionFailedException.EXCEPTION;
         }
     }

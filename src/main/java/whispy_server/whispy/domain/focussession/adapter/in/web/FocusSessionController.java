@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.focussession.adapter.in.web.dto.request.SaveFocusSessionRequest;
 import whispy_server.whispy.domain.focussession.adapter.in.web.dto.response.FocusSessionResponse;
 import whispy_server.whispy.domain.focussession.application.port.in.SaveFocusSessionUseCase;
+import whispy_server.whispy.global.document.api.focussession.FocusSessionApiDocument;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/focus-sessions")
-public class FocusSessionController {
+public class FocusSessionController implements FocusSessionApiDocument {
 
     private final SaveFocusSessionUseCase saveFocusSessionUseCase;
 

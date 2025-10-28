@@ -69,22 +69,12 @@ public class NotificationPersistenceAdapter implements NotificationPort {
     }
 
     @Override
-    public long deleteAllByIdInBatch(List<Long> ids) {
+    public void deleteAllByIdInBatch(List<Long> ids) {
         QNotificationJpaEntity notification = QNotificationJpaEntity.notificationJpaEntity;
 
-        return jpaQueryFactory
+            jpaQueryFactory
                 .delete(notification)
                 .where(notification.id.in(ids))
-                .execute();
-    }
-
-    @Override
-    public long deleteAllByEmailBatch(String email) {
-        QNotificationJpaEntity notification = QNotificationJpaEntity.notificationJpaEntity;
-
-        return jpaQueryFactory
-                .delete(notification)
-                .where(notification.email.eq(email))
                 .execute();
     }
 }
