@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.format.annotation.DateTimeFormat;
 import whispy_server.whispy.domain.statistics.adapter.in.web.dto.response.FocusStatisticsResponse;
+import whispy_server.whispy.domain.statistics.adapter.in.web.dto.response.PeriodComparisonResponse;
 import whispy_server.whispy.domain.statistics.model.types.PeriodType;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
@@ -61,6 +62,55 @@ public interface StatisticsApiDocument {
                             "DAILY: 해당 날짜의 통계, " +
                             "WEEKLY: 해당 날짜가 속한 주의 통계, " +
                             "MONTHLY: 해당 날짜가 속한 월의 통계",
+                    required = true,
+                    example = "2025-10-28"
+            )
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date
+    );
+
+    @Operation(
+            summary = "기간별 비교 통계 조회",
+            description = "현재 기간, 이전 기간, 이전이전 기간(2번째 이전)의 집중 시간을 비교합니다. " +
+                    "주간(WEEKLY), 월간(MONTHLY), 연간(YEARLY) 비교 통계를 제공합니다. " +
+                    "WEEKLY: 이번주/지난주/저저번주, " +
+                    "MONTHLY: 이번달/지난달/저저번달, " +
+                    "YEARLY: 올해/작년/재작년",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "비교 통계 조회 성공",
+                    content = @Content(schema = @Schema(implementation = PeriodComparisonResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청 (유효하지 않은 기간 타입 또는 날짜 형식)",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    PeriodComparisonResponse getPeriodComparison(
+            @Parameter(
+                    description = "비교 기간 타입 (WEEKLY: 주간, MONTHLY: 월간, YEARLY: 연간)",
+                    required = true,
+                    example = "WEEKLY"
+            )
+            PeriodType period,
+
+            @Parameter(
+                    description = "기준 날짜 (ISO 8601 형식: yyyy-MM-dd). " +
+                            "해당 날짜가 속한 기간을 기준으로 이전 기간들과 비교합니다.",
                     required = true,
                     example = "2025-10-28"
             )
