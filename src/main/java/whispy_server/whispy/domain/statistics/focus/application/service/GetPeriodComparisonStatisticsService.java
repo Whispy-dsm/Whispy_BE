@@ -1,14 +1,14 @@
-package whispy_server.whispy.domain.statistics.application.service;
+package whispy_server.whispy.domain.statistics.focus.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import whispy_server.whispy.domain.statistics.adapter.in.web.dto.response.PeriodComparisonResponse;
-import whispy_server.whispy.domain.statistics.adapter.out.dto.FocusSessionDto;
-import whispy_server.whispy.domain.statistics.application.port.in.GetPeriodComparisonStatisticsUseCase;
-import whispy_server.whispy.domain.statistics.application.port.out.QueryFocusStatisticsPort;
-import whispy_server.whispy.domain.statistics.model.PeriodComparisonStatistics;
-import whispy_server.whispy.domain.statistics.model.types.PeriodType;
+import whispy_server.whispy.domain.statistics.focus.adapter.in.web.dto.response.PeriodComparisonResponse;
+import whispy_server.whispy.domain.statistics.focus.adapter.out.dto.FocusSessionDto;
+import whispy_server.whispy.domain.statistics.focus.application.port.in.GetPeriodComparisonStatisticsUseCase;
+import whispy_server.whispy.domain.statistics.focus.application.port.out.QueryFocusStatisticsPort;
+import whispy_server.whispy.domain.statistics.focus.model.PeriodComparisonStatistics;
+import whispy_server.whispy.domain.statistics.focus.model.types.PeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
@@ -17,7 +17,6 @@ import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.MonthDay;
 import java.util.List;
 
 @Service

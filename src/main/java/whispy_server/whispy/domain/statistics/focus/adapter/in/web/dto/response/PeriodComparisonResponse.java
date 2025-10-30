@@ -1,6 +1,6 @@
-package whispy_server.whispy.domain.statistics.adapter.in.web.dto.response;
+package whispy_server.whispy.domain.statistics.focus.adapter.in.web.dto.response;
 
-import whispy_server.whispy.domain.statistics.model.PeriodComparisonStatistics;
+import whispy_server.whispy.domain.statistics.focus.model.PeriodComparisonStatistics;
 
 public record PeriodComparisonResponse(
         int currentPeriodMinutes,

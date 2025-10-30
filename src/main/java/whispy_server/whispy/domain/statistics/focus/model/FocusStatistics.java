@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.statistics.model;
+package whispy_server.whispy.domain.statistics.focus.model;
 
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
 import whispy_server.whispy.global.annotation.Aggregate;

@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.statistics.model.types;
+package whispy_server.whispy.domain.statistics.focus.model.types;
 
 public enum PeriodType {
     TODAY,

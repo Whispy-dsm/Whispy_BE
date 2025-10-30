@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.statistics.adapter.out.dto;
+package whispy_server.whispy.domain.statistics.focus.adapter.out.dto;
 
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
 

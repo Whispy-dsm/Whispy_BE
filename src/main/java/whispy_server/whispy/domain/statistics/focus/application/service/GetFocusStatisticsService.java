@@ -1,16 +1,16 @@
-package whispy_server.whispy.domain.statistics.application.service;
+package whispy_server.whispy.domain.statistics.focus.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
-import whispy_server.whispy.domain.statistics.adapter.in.web.dto.response.FocusStatisticsResponse;
-import whispy_server.whispy.domain.statistics.adapter.out.dto.FocusSessionDto;
-import whispy_server.whispy.domain.statistics.application.port.in.GetFocusStatisticsUseCase;
-import whispy_server.whispy.domain.statistics.application.port.out.QueryFocusStatisticsPort;
-import whispy_server.whispy.domain.statistics.model.FocusSessionSummary;
-import whispy_server.whispy.domain.statistics.model.FocusStatistics;
-import whispy_server.whispy.domain.statistics.model.types.PeriodType;
+import whispy_server.whispy.domain.statistics.focus.adapter.in.web.dto.response.FocusStatisticsResponse;
+import whispy_server.whispy.domain.statistics.focus.adapter.out.dto.FocusSessionDto;
+import whispy_server.whispy.domain.statistics.focus.application.port.in.GetFocusStatisticsUseCase;
+import whispy_server.whispy.domain.statistics.focus.application.port.out.QueryFocusStatisticsPort;
+import whispy_server.whispy.domain.statistics.focus.model.FocusSessionSummary;
+import whispy_server.whispy.domain.statistics.focus.model.FocusStatistics;
+import whispy_server.whispy.domain.statistics.focus.model.types.PeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;

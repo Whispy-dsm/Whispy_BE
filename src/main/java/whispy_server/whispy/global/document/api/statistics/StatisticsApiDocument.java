@@ -9,9 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.format.annotation.DateTimeFormat;
-import whispy_server.whispy.domain.statistics.adapter.in.web.dto.response.FocusStatisticsResponse;
-import whispy_server.whispy.domain.statistics.adapter.in.web.dto.response.PeriodComparisonResponse;
-import whispy_server.whispy.domain.statistics.model.types.PeriodType;
+import whispy_server.whispy.domain.statistics.focus.adapter.in.web.dto.response.FocusStatisticsResponse;
+import whispy_server.whispy.domain.statistics.focus.adapter.in.web.dto.response.PeriodComparisonResponse;
+import whispy_server.whispy.domain.statistics.focus.model.types.PeriodType;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import java.time.LocalDate;

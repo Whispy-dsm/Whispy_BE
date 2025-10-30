@@ -1,6 +1,6 @@
-package whispy_server.whispy.domain.statistics.application.port.out;
+package whispy_server.whispy.domain.statistics.focus.application.port.out;
 
-import whispy_server.whispy.domain.statistics.adapter.out.dto.FocusSessionDto;
+import whispy_server.whispy.domain.statistics.focus.adapter.out.dto.FocusSessionDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

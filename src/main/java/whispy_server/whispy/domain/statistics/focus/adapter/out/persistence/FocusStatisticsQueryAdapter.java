@@ -1,12 +1,12 @@
-package whispy_server.whispy.domain.statistics.adapter.out.persistence;
+package whispy_server.whispy.domain.statistics.focus.adapter.out.persistence;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.focussession.adapter.out.entity.QFocusSessionJpaEntity;
-import whispy_server.whispy.domain.statistics.adapter.out.dto.FocusSessionDto;
-import whispy_server.whispy.domain.statistics.application.port.out.QueryFocusStatisticsPort;
+import whispy_server.whispy.domain.statistics.focus.adapter.out.dto.FocusSessionDto;
+import whispy_server.whispy.domain.statistics.focus.application.port.out.QueryFocusStatisticsPort;
 
 import java.time.LocalDateTime;
 import java.util.List;
