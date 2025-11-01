@@ -36,6 +36,12 @@ spring:
   jackson:
     property-naming-strategy : SNAKE_CASE
 
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health, info, prometheus
+
   jwt:
     header: ${JWT_HEADER}
     prefix: ${JWT_PREFIX}
@@ -78,6 +84,9 @@ sentry:
   dsn: ${DSN_KEY}
   enable-tracing: true
   environment: development
+
+default:
+  profile: ${DEFAULT_PROFILE_IMAGE}
 
 fcm:
   key:
