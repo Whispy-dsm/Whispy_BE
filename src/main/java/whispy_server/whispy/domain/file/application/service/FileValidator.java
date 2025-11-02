@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 @Component
 public class FileValidator {
 
-    private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]+$");
+    private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9가-힣._-]+$");
 
     public void validateFile(MultipartFile file, ImageFolder folder) {
         validateFileName(file);
