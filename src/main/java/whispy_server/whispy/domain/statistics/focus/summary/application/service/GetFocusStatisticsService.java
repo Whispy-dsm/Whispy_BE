@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
+import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
 import whispy_server.whispy.domain.statistics.focus.summary.adapter.in.web.dto.response.FocusStatisticsResponse;
 import whispy_server.whispy.domain.statistics.focus.summary.application.port.in.GetFocusStatisticsUseCase;
@@ -67,19 +68,19 @@ public class GetFocusStatisticsService implements GetFocusStatisticsUseCase {
         return switch (period) {
             case TODAY -> new LocalDateTime[]{
                     date.atStartOfDay(),
-                    date.atTime(23, 59, 59)
+                    date.atTime(TimeConstants.END_OF_DAY)
             };
             case WEEK -> new LocalDateTime[]{
                     date.with(DayOfWeek.MONDAY).atStartOfDay(),
-                    date.with(DayOfWeek.SUNDAY).atTime(23, 59, 59)
+                    date.with(DayOfWeek.SUNDAY).atTime(TimeConstants.END_OF_DAY)
             };
             case MONTH -> new LocalDateTime[]{
                     date.withDayOfMonth(1).atStartOfDay(),
-                    date.withDayOfMonth(date.lengthOfMonth()).atTime(23, 59, 59)
+                    date.withDayOfMonth(date.lengthOfMonth()).atTime(TimeConstants.END_OF_DAY)
             };
             case YEAR -> new LocalDateTime[]{
                     date.withDayOfYear(1).atStartOfDay(),
-                    date.withDayOfYear(date.lengthOfYear()).atTime(23, 59, 59)
+                    date.withDayOfYear(date.lengthOfYear()).atTime(TimeConstants.END_OF_DAY)
             };
         };
     }

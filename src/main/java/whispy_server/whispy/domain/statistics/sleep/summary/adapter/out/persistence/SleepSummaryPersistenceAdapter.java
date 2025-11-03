@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.sleepsession.adapter.out.entity.QSleepSessionJpaEntity;
+import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepAggregationDto;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepSessionDto;
 import whispy_server.whispy.domain.statistics.sleep.summary.application.port.out.QuerySleepStatisticsPort;
@@ -74,7 +75,7 @@ public class SleepSummaryPersistenceAdapter implements QuerySleepStatisticsPort 
                         sleepSession.userId.eq(userId),
                         sleepSession.startedAt.between(
                                 date.atStartOfDay(),
-                                date.atTime(23, 59, 59)
+                                date.atTime(TimeConstants.END_OF_DAY)
                         )
                 )
                 .fetchOne();

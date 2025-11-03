@@ -3,13 +3,14 @@ package whispy_server.whispy.domain.statistics.focus.comparison.application.serv
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
 import whispy_server.whispy.domain.statistics.focus.comparison.adapter.in.web.dto.response.PeriodComparisonResponse;
+import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
 import whispy_server.whispy.domain.statistics.focus.comparison.application.port.in.GetPeriodComparisonStatisticsUseCase;
 import whispy_server.whispy.domain.statistics.focus.comparison.application.port.out.QueryFocusComparisonPort;
 import whispy_server.whispy.domain.statistics.focus.comparison.model.PeriodComparisonStatistics;
 import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
-import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
@@ -24,6 +25,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GetPeriodComparisonStatisticsService implements GetPeriodComparisonStatisticsUseCase {
 
+    private static final int CURRENT_PERIOD_OFFSET = 0;
+    private static final int PREVIOUS_PERIOD_OFFSET = 1;
+    private static final int TWO_PERIODS_AGO_OFFSET = 2;
+
     private final QueryFocusComparisonPort queryFocusComparisonPort;
     private final UserFacadeUseCase userFacadeUseCase;
     private final QueryUserPort queryUserPort;
@@ -37,9 +42,9 @@ public class GetPeriodComparisonStatisticsService implements GetPeriodComparison
         User user = queryUserPort.findByEmail(email)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        int currentMinutes = calculatePeriodMinutes(user.id(), period, date, 0);
-        int previousMinutes = calculatePeriodMinutes(user.id(), period, date, 1);
-        int twoPeriodAgoMinutes = calculatePeriodMinutes(user.id(), period, date, 2);
+        int currentMinutes = calculatePeriodMinutes(user.id(), period, date, CURRENT_PERIOD_OFFSET);
+        int previousMinutes = calculatePeriodMinutes(user.id(), period, date, PREVIOUS_PERIOD_OFFSET);
+        int twoPeriodAgoMinutes = calculatePeriodMinutes(user.id(), period, date, TWO_PERIODS_AGO_OFFSET);
 
         int difference = currentMinutes - previousMinutes;
 
@@ -62,7 +67,7 @@ public class GetPeriodComparisonStatisticsService implements GetPeriodComparison
         );
 
         return sessions.stream()
-                .mapToInt(s -> s.durationSeconds() / 60)
+                .mapToInt(s -> s.durationSeconds() / TimeConstants.SECONDS_PER_MINUTE)
                 .sum();
     }
 
@@ -77,19 +82,19 @@ public class GetPeriodComparisonStatisticsService implements GetPeriodComparison
         return switch (period) {
             case WEEK -> new LocalDateTime[]{
                     targetDate.with(DayOfWeek.MONDAY).atStartOfDay(),
-                    targetDate.with(DayOfWeek.SUNDAY).atTime(23, 59, 59)
+                    targetDate.with(DayOfWeek.SUNDAY).atTime(TimeConstants.END_OF_DAY)
             };
             case MONTH -> new LocalDateTime[]{
                     targetDate.withDayOfMonth(1).atStartOfDay(),
-                    targetDate.withDayOfMonth(targetDate.lengthOfMonth()).atTime(23, 59, 59)
+                    targetDate.withDayOfMonth(targetDate.lengthOfMonth()).atTime(TimeConstants.END_OF_DAY)
             };
             case YEAR -> new LocalDateTime[]{
                     targetDate.withDayOfYear(1).atStartOfDay(),
-                    targetDate.withDayOfYear(targetDate.lengthOfYear()).atTime(23, 59, 59)
+                    targetDate.withDayOfYear(targetDate.lengthOfYear()).atTime(TimeConstants.END_OF_DAY)
             };
             default -> new LocalDateTime[]{
                     targetDate.atStartOfDay(),
-                    targetDate.atTime(23, 59, 59)
+                    targetDate.atTime(TimeConstants.END_OF_DAY)
             };
         };
     }

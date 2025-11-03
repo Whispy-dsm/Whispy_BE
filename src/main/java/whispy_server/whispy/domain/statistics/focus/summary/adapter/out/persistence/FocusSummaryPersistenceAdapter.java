@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.focussession.adapter.out.entity.QFocusSessionJpaEntity;
+import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.focus.summary.application.port.out.QueryFocusStatisticsPort;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusAggregationDto;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
@@ -76,7 +77,7 @@ public class FocusSummaryPersistenceAdapter implements QueryFocusStatisticsPort 
                         focusSession.userId.eq(userId),
                         focusSession.startedAt.between(
                                 date.atStartOfDay(),
-                                date.atTime(23, 59, 59)
+                                date.atTime(TimeConstants.END_OF_DAY)
                         )
                 )
                 .fetchOne();

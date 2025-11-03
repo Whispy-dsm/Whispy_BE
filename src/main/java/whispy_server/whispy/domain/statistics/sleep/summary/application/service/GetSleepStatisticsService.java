@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.statistics.sleep.summary.application.service
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
 import whispy_server.whispy.domain.statistics.sleep.summary.adapter.in.web.dto.response.SleepStatisticsResponse;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepAggregationDto;
@@ -25,6 +26,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
+
+    private static final double MAX_CONSISTENCY_SCORE = 100.0;
+    private static final double MIN_CONSISTENCY_SCORE = 0.0;
+    private static final int MIN_SESSIONS_FOR_CONSISTENCY = 2;
+    private static final double VARIANCE_TO_SCORE_DIVISOR = 120.0;
+    private static final double VARIANCE_TO_SCORE_MULTIPLIER = 50.0;
+    private static final double SCORE_ROUNDING_PRECISION = 10.0;
 
     private final QuerySleepStatisticsPort querySleepStatisticsPort;
     private final UserFacadeUseCase userFacadeUseCase;
@@ -70,19 +78,19 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         return switch (period) {
             case WEEK -> new LocalDateTime[]{
                     date.with(DayOfWeek.MONDAY).atStartOfDay(),
-                    date.with(DayOfWeek.SUNDAY).atTime(23, 59, 59)
+                    date.with(DayOfWeek.SUNDAY).atTime(TimeConstants.END_OF_DAY)
             };
             case MONTH -> new LocalDateTime[]{
                     date.withDayOfMonth(1).atStartOfDay(),
-                    date.withDayOfMonth(date.lengthOfMonth()).atTime(23, 59, 59)
+                    date.withDayOfMonth(date.lengthOfMonth()).atTime(TimeConstants.END_OF_DAY)
             };
             case YEAR -> new LocalDateTime[]{
                     date.withDayOfYear(1).atStartOfDay(),
-                    date.withDayOfYear(date.lengthOfYear()).atTime(23, 59, 59)
+                    date.withDayOfYear(date.lengthOfYear()).atTime(TimeConstants.END_OF_DAY)
             };
             default -> new LocalDateTime[]{
                     date.atStartOfDay(),
-                    date.atTime(23, 59, 59)
+                    date.atTime(TimeConstants.END_OF_DAY)
             };
         };
     }
@@ -92,14 +100,14 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
             return 0;
         }
         int totalMinutes = sessions.stream()
-                .mapToInt(s -> s.durationSeconds() / 60)
+                .mapToInt(s -> s.durationSeconds() / TimeConstants.SECONDS_PER_MINUTE)
                 .sum();
         return totalMinutes / sessions.size();
     }
 
     private double calculateSleepConsistency(List<SleepSessionDto> sessions) {
-        if (sessions.size() < 2) {
-            return 100.0;
+        if (sessions.size() < MIN_SESSIONS_FOR_CONSISTENCY) {
+            return MAX_CONSISTENCY_SCORE;
         }
 
         List<LocalTime> bedTimes = sessions.stream()
@@ -108,8 +116,12 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
 
         double variance = calculateTimeVariance(bedTimes);
 
-        double score = Math.max(0, 100 - (variance / 120.0 * 50));
-        return Math.round(score * 10) / 10.0;
+        double score = Math.max(
+                MIN_CONSISTENCY_SCORE,
+                MAX_CONSISTENCY_SCORE - (variance / VARIANCE_TO_SCORE_DIVISOR * VARIANCE_TO_SCORE_MULTIPLIER)
+        );
+        
+        return Math.round(score * SCORE_ROUNDING_PRECISION) / SCORE_ROUNDING_PRECISION;
     }
 
     private double calculateTimeVariance(List<LocalTime> times) {
@@ -118,7 +130,7 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         }
 
         List<Integer> minutesFromMidnight = times.stream()
-                .map(time -> time.getHour() * 60 + time.getMinute())
+                .map(time -> time.getHour() * TimeConstants.MINUTES_PER_HOUR + time.getMinute())
                 .toList();
 
         double mean = minutesFromMidnight.stream()
@@ -140,12 +152,13 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         }
 
         double averageMinutes = sessions.stream()
-                .mapToInt(s -> s.startedAt().getHour() * 60 + s.startedAt().getMinute())
+                .mapToInt(s -> s.startedAt().getHour() * TimeConstants.MINUTES_PER_HOUR 
+                        + s.startedAt().getMinute())
                 .average()
                 .orElse(0.0);
 
-        int hours = (int) (averageMinutes / 60);
-        int minutes = (int) (averageMinutes % 60);
+        int hours = (int) (averageMinutes / TimeConstants.MINUTES_PER_HOUR);
+        int minutes = (int) (averageMinutes % TimeConstants.MINUTES_PER_HOUR);
 
         return LocalTime.of(hours, minutes);
     }
@@ -156,12 +169,13 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         }
 
         double averageMinutes = sessions.stream()
-                .mapToInt(s -> s.endedAt().getHour() * 60 + s.endedAt().getMinute())
+                .mapToInt(s -> s.endedAt().getHour() * TimeConstants.MINUTES_PER_HOUR 
+                        + s.endedAt().getMinute())
                 .average()
                 .orElse(0.0);
 
-        int hours = (int) (averageMinutes / 60);
-        int minutes = (int) (averageMinutes % 60);
+        int hours = (int) (averageMinutes / TimeConstants.MINUTES_PER_HOUR);
+        int minutes = (int) (averageMinutes % TimeConstants.MINUTES_PER_HOUR);
 
         return LocalTime.of(hours, minutes);
     }
