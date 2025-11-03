@@ -81,6 +81,7 @@ public class SecurityConfig {
                         .requestMatchers("/purchase/validate").permitAll()
                         .requestMatchers("/webhook/google-play").permitAll()
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
