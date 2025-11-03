@@ -36,12 +36,12 @@ public class AddTopicItemProcessor implements ItemProcessor<UserJpaEntity, AddTo
                 .isPresent();
 
         if(alreadyExists){
-            log.debug("사용자 {}는 이미 토픽 {}을 가지고 있음", user.getΕmail(), newTopic);
+            log.debug("사용자 {}는 이미 토픽 {}을 가지고 있음", user.getEmail(), newTopic);
             return null;
         }
 
         return new AddTopicJobParameters(
-                user.getΕmail(),
+                user.getEmail(),
                 user.getFcmToken(),
                 newTopic,
                 defaultSubscribed

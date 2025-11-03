@@ -6,31 +6,46 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.QueryAllAnnouncementResponse;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.QueryAnnouncementResponse;
+import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import java.util.List;
+
+import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
 @Tag(name = "ANNOUNCEMENT API", description = "공지사항 관련 API")
 public interface AnnouncementApiDocument {
 
-    @Operation(summary = "공지사항 단건 조회", description = "ID로 특정 공지사항을 조회합니다.")
+    @Operation(
+            summary = "공지사항 단건 조회",
+            description = "ID로 특정 공지사항을 조회합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "공지사항 조회 성공",
                     content = @Content(schema = @Schema(implementation = QueryAnnouncementResponse.class))),
-            @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음"),
-            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+            @ApiResponse(responseCode = "404", description = "공지사항을 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     QueryAnnouncementResponse getAnnouncement(
             @Parameter(description = "공지사항 ID", required = true) Long id
     );
 
-    @Operation(summary = "공지사항 전체 조회", description = "모든 공지사항을 조회합니다.")
+    @Operation(
+            summary = "공지사항 전체 조회",
+            description = "모든 공지사항을 조회합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "공지사항 목록 조회 성공",
                     content = @Content(schema = @Schema(implementation = QueryAllAnnouncementResponse.class))),
-            @ApiResponse(responseCode = "500", description = "서버 오류 발생")
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     List<QueryAllAnnouncementResponse> getAllAnnouncements();
 }

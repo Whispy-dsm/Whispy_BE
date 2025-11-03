@@ -8,6 +8,6 @@ public class BatchJobExecutionFailedException extends WhispyException {
     public static final WhispyException EXCEPTION = new BatchJobExecutionFailedException();
 
     public BatchJobExecutionFailedException() {
-        super(ErrorCode.BATCH_JOB_EXECUTION_ϜAILED);
+        super(ErrorCode.BATCH_JOB_EXECUTION_FAILED);
     }
 }

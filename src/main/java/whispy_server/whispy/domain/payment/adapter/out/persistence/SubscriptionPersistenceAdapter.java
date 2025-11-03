@@ -3,15 +3,12 @@ package whispy_server.whispy.domain.payment.adapter.out.persistence;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.domain.payment.adapter.out.entity.QSubscriptionJpaEntity;
-import whispy_server.whispy.domain.payment.adapter.out.entity.SubscriptionJpaEntity;
 import whispy_server.whispy.domain.payment.adapter.out.mapper.SubscriptionEntityMapper;
 import whispy_server.whispy.domain.payment.adapter.out.persistence.repository.SubscriptionJpaRepository;
 import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
 import whispy_server.whispy.domain.payment.application.port.out.SubscriptionSavePort;
 import whispy_server.whispy.domain.payment.model.Subscription;
 import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
-import whispy_server.whispy.domain.user.adapter.out.entity.QUserJpaEntity;
 
 import java.util.Optional;
 

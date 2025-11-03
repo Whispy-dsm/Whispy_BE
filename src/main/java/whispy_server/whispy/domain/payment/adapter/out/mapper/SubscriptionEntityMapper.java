@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.payment.adapter.out.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import whispy_server.whispy.domain.payment.adapter.out.entity.SubscriptionJpaEntity;

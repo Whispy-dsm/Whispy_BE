@@ -1,4 +1,4 @@
-name: CI/CD github Actions & Docker (Local Server)
+name: Whispy CI/CD 워크플로우
 
 on:
   push:

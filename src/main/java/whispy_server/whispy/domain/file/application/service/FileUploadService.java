@@ -20,12 +20,10 @@ import java.util.UUID;
 public class FileUploadService implements FileUploadUseCase {
 
     private final FileProperties fileProperties;
-    private final FileValidator fileValidator;
-
 
     @Override
     public FileUploadResponse uploadFile(MultipartFile file, ImageFolder imageFolder) {
-        fileValidator.validateFile(file, imageFolder);
+        FileValidator.validateFile(file, imageFolder);
 
         String fileName = generateFileName(file.getOriginalFilename());
         String folder = imageFolder.toString().toLowerCase();

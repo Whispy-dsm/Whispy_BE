@@ -30,7 +30,7 @@ public record RegisterRequest(
         @Schema(name = "gender", description = "자신의 성 ( ENUM 형태 ) ")
         Gender gender,
 
-        @Schema(name = "name", description = "fcm 토큰")
+        @Schema(name = "fcm_token", description = "fcm 토큰")
         String fcmToken
 ) {
 }

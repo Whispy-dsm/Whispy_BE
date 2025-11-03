@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.global.file.DefaultImageProperties;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
@@ -24,6 +25,7 @@ public class UserRegisterService implements UserRegisterUseCase {
     private final ExistsUserPort existsUserPort;
     private final PasswordEncoder passwordEncoder;
     private final InitializeTopicsUseCase initializeTopicsUseCase;
+    private final DefaultImageProperties defaultImageProperties;
 
     private static final String DEFAULT_PROVIDER = "일반 로그인";
 
@@ -36,13 +38,16 @@ public class UserRegisterService implements UserRegisterUseCase {
         }
 
         String encodedPassword = passwordEncoder.encode(request.password());
+        String profileImageUrl = request.profileImageUrl();
 
         User user = new User(
                 null,
                 request.email(),
                 encodedPassword,
                 request.name(),
-                request.profileImageUrl(),
+                profileImageUrl != null && !profileImageUrl.isEmpty()
+                        ? profileImageUrl
+                        : defaultImageProperties.defaultImageUrl(),
                 request.gender(),
                 Role.USER,
                 DEFAULT_PROVIDER,
