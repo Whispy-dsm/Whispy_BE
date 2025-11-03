@@ -17,6 +17,21 @@ import java.util.regex.Pattern;
 public final class FileValidator {
 
     private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9가-힣._-]+$");
+    
+    private static final int MAX_FILENAME_LENGTH = 255;
+    
+    private static final long IMAGE_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+    private static final long MUSIC_MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
+    
+    private static final Set<String> IMAGE_VALID_EXTENSIONS = Set.of(".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp", ".gif");
+    private static final Set<String> MUSIC_VALID_EXTENSIONS = Set.of(".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a");
+    
+    private static final Set<String> IMAGE_VALID_MIME_TYPES = Set.of(
+            "image/jpeg", "image/png", "image/heic", "image/webp", "image/gif", "image/heif"
+    );
+    private static final Set<String> MUSIC_VALID_MIME_TYPES = Set.of(
+            "audio/mpeg", "audio/wav", "audio/flac", "audio/aac", "audio/ogg", "audio/mp4"
+    );
 
     private FileValidator() {
         throw new AssertionError("유틸리티 클래스는 객체를 생성하지 않도록 설계해야 합니다.");
@@ -46,7 +61,7 @@ public final class FileValidator {
             throw FileNameInvalidCharException.EXCEPTION;
         }
 
-        if (originalFileName.length() > 255) {
+        if (originalFileName.length() > MAX_FILENAME_LENGTH) {
             throw FileNameTooLongException.EXCEPTION;
         }
     }
@@ -65,55 +80,44 @@ public final class FileValidator {
 
     private static void validateImageExtension(MultipartFile file) {
         String extension = getFileExtension(file);
-        Set<String> validExtensions = Set.of(".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp", ".gif");
 
-        if (!validExtensions.contains(extension)) {
+        if (!IMAGE_VALID_EXTENSIONS.contains(extension)) {
             throw FileInvalidExtensionException.EXCEPTION;
         }
     }
 
     private static void validateMusicExtension(MultipartFile file) {
         String extension = getFileExtension(file);
-        Set<String> validExtensions = Set.of(".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a");
 
-        if (!validExtensions.contains(extension)) {
+        if (!MUSIC_VALID_EXTENSIONS.contains(extension)) {
             throw FileInvalidExtensionException.EXCEPTION;
         }
     }
     
     private static void validateImageMimeType(MultipartFile file) {
         String contentType = file.getContentType();
-        Set<String> validMimeTypes = Set.of(
-                "image/jpeg", "image/png", "image/heic", "image/webp", "image/gif", "image/heif"
-        );
 
-        if (contentType == null || !validMimeTypes.contains(contentType)) {
+        if (contentType == null || !IMAGE_VALID_MIME_TYPES.contains(contentType)) {
             throw FileInvalidMimeTypeException.EXCEPTION;
         }
     }
 
     private static void validateMusicMimeType(MultipartFile file) {
         String contentType = file.getContentType();
-        Set<String> validMimeTypes = Set.of(
-                "audio/mpeg", "audio/wav", "audio/flac",
-                "audio/aac", "audio/ogg", "audio/mp4"
-        );
 
-        if (contentType == null || !validMimeTypes.contains(contentType)) {
+        if (contentType == null || !MUSIC_VALID_MIME_TYPES.contains(contentType)) {
             throw FileInvalidMimeTypeException.EXCEPTION;
         }
     }
 
     private static void validateImageSize(MultipartFile file) {
-        long maxSize = 5 * 1024 * 1024; // 5MB
-        if (file.getSize() > maxSize) {
+        if (file.getSize() > IMAGE_MAX_SIZE_BYTES) {
             throw FileSizeExceededException.EXCEPTION;
         }
     }
 
     private static void validateMusicSize(MultipartFile file) {
-        long maxSize = 50 * 1024 * 1024; // 50MB
-        if (file.getSize() > maxSize) {
+        if (file.getSize() > MUSIC_MAX_SIZE_BYTES) {
             throw FileSizeExceededException.EXCEPTION;
         }
     }
