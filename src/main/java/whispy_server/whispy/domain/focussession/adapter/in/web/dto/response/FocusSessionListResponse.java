@@ -9,7 +9,7 @@ public record FocusSessionListResponse(
         Long id,
         int durationMinutes,
         FocusTag tag,
-        LocalDateTime date
+        LocalDateTime startedAt
 
 ) {
     public static FocusSessionListResponse from(FocusSession focusSession) {
