@@ -36,12 +36,6 @@ spring:
   jackson:
     property-naming-strategy : SNAKE_CASE
 
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: health, info, prometheus
-
   jwt:
     header: ${JWT_HEADER}
     prefix: ${JWT_PREFIX}
@@ -101,6 +95,12 @@ fcm:
     auth_provider_x509_cert_url: ${AUTH_PROVIDER}
     client_x509_cert_url: ${CLIENT_URL}
     universe_domain: ${UNIVERSE_DOMAIN}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
 
         #  kakao:
         #    client-id: ${KAKAO_CLIENT}
