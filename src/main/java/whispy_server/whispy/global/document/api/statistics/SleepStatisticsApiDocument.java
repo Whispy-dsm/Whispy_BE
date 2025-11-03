@@ -9,30 +9,30 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.format.annotation.DateTimeFormat;
-import whispy_server.whispy.domain.statistics.focus.daily.adapter.in.web.dto.response.DailyFocusStatisticsResponse;
-import whispy_server.whispy.domain.statistics.focus.summary.adapter.in.web.dto.response.FocusStatisticsResponse;
-import whispy_server.whispy.domain.statistics.focus.comparison.adapter.in.web.dto.response.PeriodComparisonResponse;
-import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
+import whispy_server.whispy.domain.statistics.sleep.daily.adapter.in.web.dto.response.DailySleepStatisticsResponse;
+import whispy_server.whispy.domain.statistics.sleep.comparison.adapter.in.web.dto.response.SleepPeriodComparisonResponse;
+import whispy_server.whispy.domain.statistics.sleep.summary.adapter.in.web.dto.response.SleepStatisticsResponse;
+import whispy_server.whispy.domain.statistics.sleep.types.SleepPeriodType;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import java.time.LocalDate;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
-@Tag(name = "STATISTICS API", description = "통계 관련 API")
-public interface StatisticsApiDocument {
+@Tag(name = "SLEEP STATISTICS API", description = "수면 통계 관련 API")
+public interface SleepStatisticsApiDocument {
 
     @Operation(
-            summary = "포커스 세션 통계 조회",
-            description = "지정된 기간에 대한 포커스 세션 통계 데이터를 조회합니다. " +
-                    "일간(DAILY), 주간(WEEKLY), 월간(MONTHLY) 통계를 제공합니다.",
+            summary = "수면 통계 조회",
+            description = "지정된 기간에 대한 수면 세션 통계 데이터를 조회합니다. " +
+                    "오늘의 수면 시간, 평균 수면 시간, 수면 일정성, 평균 입면/기상 시간, 총 수면 시간을 제공합니다.",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "통계 조회 성공",
-                    content = @Content(schema = @Schema(implementation = FocusStatisticsResponse.class))
+                    description = "수면 통계 조회 성공",
+                    content = @Content(schema = @Schema(implementation = SleepStatisticsResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -50,40 +50,25 @@ public interface StatisticsApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    FocusStatisticsResponse getFocusStatistics(
-            @Parameter(
-                    description = "통계 기간 타입 (DAILY: 일간, WEEKLY: 주간, MONTHLY: 월간)",
-                    required = true,
-                    example = "WEEKLY"
-            )
-            FocusPeriodType period,
+    SleepStatisticsResponse getSleepStatistics(
+            @Parameter(description = "통계 기간 타입 (WEEK: 주간, MONTH: 월간, YEAR: 연간)", required = true, example = "WEEK")
+            SleepPeriodType period,
 
-            @Parameter(
-                    description = "기준 날짜 (ISO 8601 형식: yyyy-MM-dd). " +
-                            "DAILY: 해당 날짜의 통계, " +
-                            "WEEKLY: 해당 날짜가 속한 주의 통계, " +
-                            "MONTHLY: 해당 날짜가 속한 월의 통계",
-                    required = true,
-                    example = "2025-10-28"
-            )
+            @Parameter(description = "기준 날짜 (yyyy-MM-dd)", required = true, example = "2025-10-28")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate date
     );
 
     @Operation(
-            summary = "기간별 비교 통계 조회",
-            description = "현재 기간, 이전 기간, 이전이전 기간(2번째 이전)의 집중 시간을 비교합니다. " +
-                    "주간(WEEKLY), 월간(MONTHLY), 연간(YEARLY) 비교 통계를 제공합니다. " +
-                    "WEEKLY: 이번주/지난주/저저번주, " +
-                    "MONTHLY: 이번달/지난달/저저번달, " +
-                    "YEARLY: 올해/작년/재작년",
+            summary = "수면 기간별 비교 통계 조회",
+            description = "현재 기간, 이전 기간, 이전이전 기간의 수면 시간을 비교합니다.",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "비교 통계 조회 성공",
-                    content = @Content(schema = @Schema(implementation = PeriodComparisonResponse.class))
+                    content = @Content(schema = @Schema(implementation = SleepPeriodComparisonResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -101,28 +86,18 @@ public interface StatisticsApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    PeriodComparisonResponse getPeriodComparison(
-            @Parameter(
-                    description = "비교 기간 타입 (WEEKLY: 주간, MONTHLY: 월간, YEARLY: 연간)",
-                    required = true,
-                    example = "WEEKLY"
-            )
-            FocusPeriodType period,
+    SleepPeriodComparisonResponse getSleepPeriodComparison(
+            @Parameter(description = "비교 기간 타입 (WEEK: 주간, MONTH: 월간, YEAR: 연간)", required = true, example = "WEEK")
+            SleepPeriodType period,
 
-            @Parameter(
-                    description = "기준 날짜 (ISO 8601 형식: yyyy-MM-dd). " +
-                            "해당 날짜가 속한 기간을 기준으로 이전 기간들과 비교합니다.",
-                    required = true,
-                    example = "2025-10-28"
-            )
+            @Parameter(description = "기준 날짜 (yyyy-MM-dd)", required = true, example = "2025-10-28")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate date
     );
 
     @Operation(
-            summary = "일별/시간별/월별 포커스 통계 조회",
+            summary = "일별/월별 수면 통계 조회",
             description = "그래프 표시를 위한 집계 데이터를 조회합니다. " +
-                    "TODAY: 시간별(0~23시) 집계, " +
                     "WEEK: 요일별(월~일) 집계, " +
                     "MONTH: 날짜별(1~말일) 집계, " +
                     "YEAR: 월별(1~12월) 집계",
@@ -132,7 +107,7 @@ public interface StatisticsApiDocument {
             @ApiResponse(
                     responseCode = "200",
                     description = "일별 통계 조회 성공",
-                    content = @Content(schema = @Schema(implementation = DailyFocusStatisticsResponse.class))
+                    content = @Content(schema = @Schema(implementation = DailySleepStatisticsResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -150,13 +125,13 @@ public interface StatisticsApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    DailyFocusStatisticsResponse getDailyFocusStatistics(
+    DailySleepStatisticsResponse getDailySleepStatistics(
             @Parameter(
-                    description = "통계 기간 타입 (TODAY: 시간별, WEEK: 요일별, MONTH: 날짜별, YEAR: 월별)",
+                    description = "통계 기간 타입 (WEEK: 요일별, MONTH: 날짜별, YEAR: 월별)",
                     required = true,
                     example = "WEEK"
             )
-            FocusPeriodType period,
+            SleepPeriodType period,
 
             @Parameter(
                     description = "기준 날짜 (yyyy-MM-dd)",
