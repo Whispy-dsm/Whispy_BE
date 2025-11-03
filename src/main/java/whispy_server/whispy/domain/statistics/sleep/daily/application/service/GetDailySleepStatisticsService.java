@@ -1,0 +1,117 @@
+package whispy_server.whispy.domain.statistics.sleep.daily.application.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
+import whispy_server.whispy.domain.statistics.sleep.daily.adapter.in.web.dto.response.DailySleepStatisticsResponse;
+import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepSessionDto;
+import whispy_server.whispy.domain.statistics.sleep.daily.application.port.in.GetDailySleepStatisticsUseCase;
+import whispy_server.whispy.domain.statistics.sleep.daily.application.port.out.QuerySleepStatisticsPort;
+import whispy_server.whispy.domain.statistics.sleep.daily.model.DailySleepData;
+import whispy_server.whispy.domain.statistics.sleep.daily.model.DailySleepStatistics;
+import whispy_server.whispy.domain.statistics.sleep.daily.model.MonthlySleepData;
+import whispy_server.whispy.domain.statistics.sleep.types.SleepPeriodType;
+import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
+import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+@Service
+@RequiredArgsConstructor
+public class GetDailySleepStatisticsService implements GetDailySleepStatisticsUseCase {
+
+    private final QuerySleepStatisticsPort querySleepStatisticsPort;
+    private final UserFacadeUseCase userFacadeUseCase;
+    private final QueryUserPort queryUserPort;
+
+    @Override
+    @Transactional(readOnly = true)
+    public DailySleepStatisticsResponse execute(SleepPeriodType period, LocalDate date) {
+        DateValidator.validateNotFutureDate(date);
+        
+        String email = userFacadeUseCase.currentUser().email();
+        User user = queryUserPort.findByEmail(email)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        LocalDateTime[] range = calculatePeriodRange(period, date);
+        LocalDateTime start = range[0];
+        LocalDateTime end = range[1];
+
+        List<SleepSessionDto> sessions = querySleepStatisticsPort.findByUserIdAndPeriod(user.id(), start, end);
+
+        DailySleepStatistics statistics = switch (period) {
+            case WEEK, MONTH -> createDailyStatistics(sessions, start.toLocalDate(), end.toLocalDate());
+            case YEAR -> createMonthlyStatistics(sessions, date.getYear());
+        };
+
+        return DailySleepStatisticsResponse.from(statistics);
+    }
+
+    private DailySleepStatistics createDailyStatistics(
+            List<SleepSessionDto> sessions,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        Map<LocalDate, Integer> dailyMinutesMap = sessions.stream()
+                .collect(Collectors.groupingBy(
+                        s -> s.startedAt().toLocalDate(),
+                        Collectors.summingInt(s -> s.durationSeconds() / 60)
+                ));
+
+        List<DailySleepData> dailyDataList = startDate.datesUntil(endDate.plusDays(1))
+                .map(date -> new DailySleepData(
+                        date,
+                        date.getDayOfWeek(),
+                        date.getDayOfMonth(),
+                        dailyMinutesMap.getOrDefault(date, 0)
+                ))
+                .toList();
+
+        return DailySleepStatistics.ofDaily(dailyDataList);
+    }
+
+    private DailySleepStatistics createMonthlyStatistics(List<SleepSessionDto> sessions, int year) {
+        Map<Integer, Integer> monthlyMinutesMap = sessions.stream()
+                .collect(Collectors.groupingBy(
+                        s -> s.startedAt().getMonthValue(),
+                        Collectors.summingInt(s -> s.durationSeconds() / 60)
+                ));
+
+        List<MonthlySleepData> monthlyDataList = IntStream.rangeClosed(1, 12)
+                .mapToObj(month -> new MonthlySleepData(
+                        month,
+                        Month.of(month),
+                        monthlyMinutesMap.getOrDefault(month, 0)
+                ))
+                .toList();
+
+        return DailySleepStatistics.ofMonthly(monthlyDataList);
+    }
+
+    private LocalDateTime[] calculatePeriodRange(SleepPeriodType period, LocalDate date) {
+        return switch (period) {
+            case WEEK -> new LocalDateTime[]{
+                    date.with(DayOfWeek.MONDAY).atStartOfDay(),
+                    date.with(DayOfWeek.SUNDAY).atTime(23, 59, 59)
+            };
+            case MONTH -> new LocalDateTime[]{
+                    date.withDayOfMonth(1).atStartOfDay(),
+                    date.withDayOfMonth(date.lengthOfMonth()).atTime(23, 59, 59)
+            };
+            case YEAR -> new LocalDateTime[]{
+                    date.withDayOfYear(1).atStartOfDay(),
+                    date.withDayOfYear(date.lengthOfYear()).atTime(23, 59, 59)
+            };
+        };
+    }
+}
