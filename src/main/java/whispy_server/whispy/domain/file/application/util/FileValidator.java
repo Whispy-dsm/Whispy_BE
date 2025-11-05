@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.file.application.service;
+package whispy_server.whispy.domain.file.application.util;
 
 import org.springframework.web.multipart.MultipartFile;
 import whispy_server.whispy.domain.file.type.ImageFolder;
