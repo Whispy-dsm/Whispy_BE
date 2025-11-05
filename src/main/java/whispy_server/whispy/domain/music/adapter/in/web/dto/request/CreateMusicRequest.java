@@ -6,5 +6,6 @@ public record CreateMusicRequest(
         String title,
         String filePath,
         Integer duration,
-        MusicCategory category
+        MusicCategory category,
+        String bannerImageUrl
 ) {}
