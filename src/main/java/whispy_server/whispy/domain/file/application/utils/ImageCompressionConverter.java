@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.file.application.util;
+package whispy_server.whispy.domain.file.application.utils;
 
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.stereotype.Component;
