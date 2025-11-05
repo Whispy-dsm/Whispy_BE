@@ -73,6 +73,9 @@ jobs:
               --image ${{ secrets.DOCKER_REPO }}/whispy_be:${{ steps.vars.outputs.sha_short }} \
               --with-registry-auth \
               whispy-springboot
+              
+            echo "Waiting 5 seconds for old container to stop..."
+            sleep 5
 
             docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"  
             
