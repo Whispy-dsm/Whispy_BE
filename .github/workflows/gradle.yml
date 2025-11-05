@@ -36,6 +36,10 @@ jobs:
           touch ./application.yml
           echo "${{ secrets.YML }}" > ./application.yml
 
+      - name: Get Git SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -50,25 +54,24 @@ jobs:
 
       - name: Docker build & push
         run: |
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/whispy_be .
-          docker push ${{ secrets.DOCKER_REPO }}/whispy_be
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/whispy_be:${{ steps.vars.outputs.sha_short }} -t ${{ secrets.DOCKER_REPO }}/whispy_be:latest .
+          docker push ${{ secrets.DOCKER_REPO }}/whispy_be:${{ steps.vars.outputs.sha_short }}
+          docker push ${{ secrets.DOCKER_REPO }}/whispy_be:latest
 
       - name: Deploy to home server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOME_HOST }}       
+          host: ${{ secrets.HOME_HOST }}
           username: ${{ secrets.HOME_USER }}
           password: ${{ secrets.HOME_PASSWORD }}
           key: ${{ secrets.HOME_SSH_KEY }}
           port: 2223
           script: |
             echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            docker rm -f whispy-springboot || true          
-            docker pull ${{ secrets.DOCKER_REPO }}/whispy_be
-            docker run -d --name whispy-springboot -p 8880:8080 -v /opt/whispy/uploads:/opt/whispy/uploads \
-            --log-driver json-file \
-            --log-opt max-size=100m \
-            --log-opt max-file=3 \
-            ${{ secrets.DOCKER_REPO }}/whispy_be 
+            
+            docker service update \
+              --image ${{ secrets.DOCKER_REPO }}/whispy_be:${{ steps.vars.outputs.sha_short }} \
+              --with-registry-auth \
+              whispy-springboot
             
             docker image prune -f
