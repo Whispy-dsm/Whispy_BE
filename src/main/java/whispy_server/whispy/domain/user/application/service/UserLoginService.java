@@ -8,7 +8,6 @@ import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
-import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
@@ -34,7 +33,6 @@ public class UserLoginService implements UserLoginUseCase {
     private final InitializeTopicsUseCase initializeTopicsUseCase;
     private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final FcmSendPort fcmSendPort;
 
     @Transactional
     @Override
