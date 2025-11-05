@@ -76,4 +76,4 @@ jobs:
 
             docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"  
             
-            docker image prune -f
+            docker image prune -a -f
