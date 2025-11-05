@@ -10,7 +10,8 @@ public record Music(
         String title,
         String filePath,
         int duration,
-        MusicCategory category
+        MusicCategory category,
+        String bannerImageUrl
 ) {
 
     public Music update(UpdateMusicRequest request) {
@@ -19,7 +20,8 @@ public record Music(
                 request.title() != null ? request.title() : this.title,
                 request.filePath() != null ? request.filePath() : this.filePath,
                 request.duration() != null ? request.duration() : this.duration,
-                request.category() != null ? request.category() : this.category
+                request.category() != null ? request.category() : this.category,
+                request.bannerImageUrl() != null ? request.bannerImageUrl() : this.bannerImageUrl
         );
     }
 }

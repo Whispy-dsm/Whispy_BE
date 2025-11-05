@@ -10,7 +10,13 @@ import whispy_server.whispy.domain.music.model.type.MusicCategory;
 import whispy_server.whispy.global.entity.BaseTimeEntity;
 
 @Entity
-@Table(name = "tbl_music")
+@Table(
+        name = "tbl_music",
+        indexes = {
+                @Index(name = "idx_category", columnList = "category"),
+                @Index(name = "idx_title", columnList = "title")
+        }
+)
 @Getter
 @Builder
 @AllArgsConstructor
@@ -33,4 +39,7 @@ public class MusicJpaEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MusicCategory category;
+
+    @Column(length = 500)
+    private String bannerImageUrl;
 }
