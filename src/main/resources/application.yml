@@ -33,6 +33,10 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+  threads:
+    virtual:
+      enabled: true
+
   jackson:
     property-naming-strategy : SNAKE_CASE
 
