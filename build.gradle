@@ -91,6 +91,12 @@ plugins {
         //prometheus
         implementation 'io.micrometer:micrometer-registry-prometheus'
 
+        // 이미지 리사이즈
+        implementation 'net.coobird:thumbnailator:0.4.20'
+
+        // WebP 인코딩
+        implementation 'org.sejda.imageio:webp-imageio:0.1.6'
+
     }
 
     test {
