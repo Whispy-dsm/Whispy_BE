@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
 
 public final class FileValidator {
 
-    private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9가-힣._-]+$");
-    
+    private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9가-힣._\\-() ]+$");
+
     private static final int MAX_FILENAME_LENGTH = 255;
     
     private static final long IMAGE_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
