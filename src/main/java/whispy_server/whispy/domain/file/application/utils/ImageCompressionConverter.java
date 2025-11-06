@@ -28,31 +28,23 @@ public class ImageCompressionConverter {
 
     public InputStream compressImage(MultipartFile file) {
         try {
-            BufferedImage originalImage = ImageIO.read(file.getInputStream());
+            BufferedImage processedImage = Thumbnails.of(file.getInputStream())
+                    .size(MAX_WIDTH, MAX_HEIGHT)
+                    .useExifOrientation(true)
+                    .asBufferedImage();
 
-            if(originalImage == null) {
+            if (processedImage == null) {
                 throw ImageInvalidException.EXCEPTION;
             }
 
-            BufferedImage resizedImage = resizeImage(originalImage);
+            return convertToWebP(processedImage);
 
-            return convertToWebP(resizedImage);
         } catch (IOException e) {
+            if (e.getMessage() != null && e.getMessage().contains("No suitable ImageReader")) {
+                throw ImageInvalidException.EXCEPTION;
+            }
             throw FileUploadFailedException.EXCEPTION;
         }
-    }
-
-    private BufferedImage resizeImage(BufferedImage originalImage) throws IOException {
-        int originalWidth = originalImage.getWidth();
-        int originalHeight = originalImage.getHeight();
-
-        if (originalWidth <= MAX_WIDTH && originalHeight <= MAX_HEIGHT) {
-            return originalImage;
-        }
-
-        return Thumbnails.of(originalImage)
-                .size(MAX_WIDTH, MAX_HEIGHT)
-                .asBufferedImage();
     }
 
     private InputStream convertToWebP(BufferedImage image) throws IOException {
