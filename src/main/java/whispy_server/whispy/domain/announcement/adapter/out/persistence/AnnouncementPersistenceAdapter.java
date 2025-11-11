@@ -18,8 +18,10 @@ public class AnnouncementPersistenceAdapter implements AnnouncementPort {
     private final AnnouncementMapper announcementMapper;
 
     @Override
-    public void save(Announcement announcement) {
-        announcementJpaRepository.save(announcementMapper.toEntity(announcement));
+    public Announcement save(Announcement announcement) {
+        return announcementMapper.toModel(
+                announcementJpaRepository.save(announcementMapper.toEntity(announcement))
+        );
     }
 
     @Override
