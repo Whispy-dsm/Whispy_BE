@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
 import whispy_server.whispy.domain.statistics.sleep.summary.adapter.in.web.dto.response.SleepStatisticsResponse;
-import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepAggregationDto;
+import whispy_server.whispy.domain.statistics.sleep.summary.adapter.out.dto.SleepDetailedAggregationDto;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepSessionDto;
 import whispy_server.whispy.domain.statistics.sleep.summary.application.port.in.GetSleepStatisticsUseCase;
 import whispy_server.whispy.domain.statistics.sleep.summary.application.port.out.QuerySleepStatisticsPort;
@@ -51,24 +51,21 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         LocalDateTime start = range[0];
         LocalDateTime end = range[1];
 
-        SleepAggregationDto aggregation = querySleepStatisticsPort.aggregateByPeriod(user.id(), start, end);
+        SleepDetailedAggregationDto aggregation = querySleepStatisticsPort.aggregateDetailedStatistics(user.id(), start, end);
         Integer todayMinutes = querySleepStatisticsPort.sumMinutesByDate(user.id(), date);
-
         List<SleepSessionDto> sessions = querySleepStatisticsPort.findByUserIdAndPeriod(user.id(), start, end);
 
-        int totalMinutes = aggregation.totalMinutes();
-        int averageMinutes = calculateAverageMinutes(sessions);
-        double sleepConsistency = calculateSleepConsistency(sessions);
-        LocalTime averageBedTime = calculateAverageBedTime(sessions);
-        LocalTime averageWakeTime = calculateAverageWakeTime(sessions);
+        double sleepConsistency = calculateConsistencyScore(sessions, aggregation);
+        LocalTime averageBedTime = convertMinutesToLocalTime(aggregation.averageBedTimeMinutes());
+        LocalTime averageWakeTime = convertMinutesToLocalTime(aggregation.averageWakeTimeMinutes());
 
         SleepStatistics statistics = new SleepStatistics(
                 todayMinutes,
-                averageMinutes,
+                aggregation.averageMinutes(),
                 sleepConsistency,
                 averageBedTime,
                 averageWakeTime,
-                totalMinutes
+                aggregation.totalMinutes()
         );
 
         return SleepStatisticsResponse.from(statistics);
@@ -95,26 +92,12 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         };
     }
 
-    private int calculateAverageMinutes(List<SleepSessionDto> sessions) {
-        if (sessions.isEmpty()) {
-            return 0;
-        }
-        int totalMinutes = sessions.stream()
-                .mapToInt(s -> s.durationSeconds() / TimeConstants.SECONDS_PER_MINUTE)
-                .sum();
-        return totalMinutes / sessions.size();
-    }
-
-    private double calculateSleepConsistency(List<SleepSessionDto> sessions) {
+    private double calculateConsistencyScore(List<SleepSessionDto> sessions, SleepDetailedAggregationDto aggregation) {
         if (sessions.size() < MIN_SESSIONS_FOR_CONSISTENCY) {
             return MAX_CONSISTENCY_SCORE;
         }
 
-        List<LocalTime> bedTimes = sessions.stream()
-                .map(s -> s.startedAt().toLocalTime())
-                .toList();
-
-        double variance = calculateTimeVariance(bedTimes);
+        double variance = calculateBedTimeVariance(sessions, aggregation.averageBedTimeMinutes());
 
         double score = Math.max(
                 MIN_CONSISTENCY_SCORE,
@@ -124,59 +107,27 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         return Math.round(score * SCORE_ROUNDING_PRECISION) / SCORE_ROUNDING_PRECISION;
     }
 
-    private double calculateTimeVariance(List<LocalTime> times) {
-        if (times.isEmpty()) {
+    private double calculateBedTimeVariance(List<SleepSessionDto> sessions, int avgBedMinutes) {
+        if (sessions.isEmpty()) {
             return 0.0;
         }
 
-        List<Integer> minutesFromMidnight = times.stream()
-                .map(time -> time.getHour() * TimeConstants.MINUTES_PER_HOUR + time.getMinute())
-                .toList();
-
-        double mean = minutesFromMidnight.stream()
-                .mapToInt(Integer::intValue)
+        double sumSquaredDiff = sessions.stream()
+                .mapToDouble(session -> {
+                    int bedMinutes = session.startedAt().getHour() * TimeConstants.MINUTES_PER_HOUR 
+                            + session.startedAt().getMinute();
+                    double diff = bedMinutes - avgBedMinutes;
+                    return diff * diff;
+                })
                 .average()
                 .orElse(0.0);
 
-        double variance = minutesFromMidnight.stream()
-                .mapToDouble(minutes -> Math.pow(minutes - mean, 2))
-                .average()
-                .orElse(0.0);
-
-        return Math.sqrt(variance);
+        return Math.sqrt(sumSquaredDiff);
     }
 
-    private LocalTime calculateAverageBedTime(List<SleepSessionDto> sessions) {
-        if (sessions.isEmpty()) {
-            return LocalTime.of(0, 0);
-        }
-
-        double averageMinutes = sessions.stream()
-                .mapToInt(s -> s.startedAt().getHour() * TimeConstants.MINUTES_PER_HOUR 
-                        + s.startedAt().getMinute())
-                .average()
-                .orElse(0.0);
-
-        int hours = (int) (averageMinutes / TimeConstants.MINUTES_PER_HOUR);
-        int minutes = (int) (averageMinutes % TimeConstants.MINUTES_PER_HOUR);
-
-        return LocalTime.of(hours, minutes);
-    }
-
-    private LocalTime calculateAverageWakeTime(List<SleepSessionDto> sessions) {
-        if (sessions.isEmpty()) {
-            return LocalTime.of(0, 0);
-        }
-
-        double averageMinutes = sessions.stream()
-                .mapToInt(s -> s.endedAt().getHour() * TimeConstants.MINUTES_PER_HOUR 
-                        + s.endedAt().getMinute())
-                .average()
-                .orElse(0.0);
-
-        int hours = (int) (averageMinutes / TimeConstants.MINUTES_PER_HOUR);
-        int minutes = (int) (averageMinutes % TimeConstants.MINUTES_PER_HOUR);
-
+    private LocalTime convertMinutesToLocalTime(int totalMinutes) {
+        int hours = totalMinutes / TimeConstants.MINUTES_PER_HOUR;
+        int minutes = totalMinutes % TimeConstants.MINUTES_PER_HOUR;
         return LocalTime.of(hours, minutes);
     }
 }

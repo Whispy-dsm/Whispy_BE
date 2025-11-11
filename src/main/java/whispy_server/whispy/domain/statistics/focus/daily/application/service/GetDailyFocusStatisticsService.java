@@ -13,7 +13,9 @@ import whispy_server.whispy.domain.statistics.focus.daily.model.DailyFocusStatis
 import whispy_server.whispy.domain.statistics.focus.daily.model.HourlyFocusData;
 import whispy_server.whispy.domain.statistics.focus.daily.model.MonthlyFocusData;
 import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
-import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.DailyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.MonthlyFocusAggregationDto;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
@@ -22,6 +24,7 @@ import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,22 +51,26 @@ public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUs
         LocalDateTime start = range[0];
         LocalDateTime end = range[1];
 
-        List<FocusSessionDto> sessions = queryFocusStatisticsPort.findByUserIdAndPeriod(user.id(), start, end);
-
         DailyFocusStatistics statistics = switch (period) {
-            case TODAY -> createHourlyStatistics(sessions);
-            case WEEK, MONTH -> createDailyStatistics(sessions, start.toLocalDate(), end.toLocalDate());
-            case YEAR -> createMonthlyStatistics(sessions, date.getYear());
+            case TODAY -> createHourlyStatistics(user.id(), start, end);
+            case WEEK, MONTH -> createDailyStatistics(user.id(), start, end);
+            case YEAR -> createMonthlyStatistics(user.id(), date.getYear());
         };
 
         return DailyFocusStatisticsResponse.from(statistics);
     }
 
-    private DailyFocusStatistics createHourlyStatistics(List<FocusSessionDto> sessions) {
-        Map<Integer, Integer> hourlyMinutesMap = sessions.stream()
-                .collect(Collectors.groupingBy(
-                        s -> s.startedAt().getHour(),
-                        Collectors.summingInt(s -> s.durationSeconds() / TimeConstants.SECONDS_PER_MINUTE)
+    private DailyFocusStatistics createHourlyStatistics(Long userId, LocalDateTime start, LocalDateTime end) {
+        List<HourlyFocusAggregationDto> aggregations = queryFocusStatisticsPort.aggregateHourlyMinutes(
+                userId, 
+                start, 
+                end
+        );
+
+        Map<Integer, Integer> hourlyMinutesMap = aggregations.stream()
+                .collect(Collectors.toMap(
+                        HourlyFocusAggregationDto::hour,
+                        HourlyFocusAggregationDto::totalMinutes
                 ));
 
         List<HourlyFocusData> hourlyDataList = IntStream.range(
@@ -79,18 +86,20 @@ public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUs
         return DailyFocusStatistics.ofHourly(hourlyDataList);
     }
 
-    private DailyFocusStatistics createDailyStatistics(
-            List<FocusSessionDto> sessions,
-            LocalDate startDate,
-            LocalDate endDate
-    ) {
-        Map<LocalDate, Integer> dailyMinutesMap = sessions.stream()
-                .collect(Collectors.groupingBy(
-                        s -> s.startedAt().toLocalDate(),
-                        Collectors.summingInt(s -> s.durationSeconds() / TimeConstants.SECONDS_PER_MINUTE)
+    private DailyFocusStatistics createDailyStatistics(Long userId, LocalDateTime start, LocalDateTime end) {
+        List<DailyFocusAggregationDto> aggregations = queryFocusStatisticsPort.aggregateDailyMinutes(
+                userId, 
+                start, 
+                end
+        );
+
+        Map<LocalDate, Integer> dailyMinutesMap = aggregations.stream()
+                .collect(Collectors.toMap(
+                        DailyFocusAggregationDto::date,
+                        DailyFocusAggregationDto::totalMinutes
                 ));
 
-        List<DailyFocusData> dailyDataList = startDate.datesUntil(endDate.plusDays(1))
+        List<DailyFocusData> dailyDataList = start.toLocalDate().datesUntil(end.toLocalDate().plusDays(1))
                 .map(date -> new DailyFocusData(
                         date,
                         date.getDayOfWeek(),
@@ -102,11 +111,13 @@ public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUs
         return DailyFocusStatistics.ofDaily(dailyDataList);
     }
 
-    private DailyFocusStatistics createMonthlyStatistics(List<FocusSessionDto> sessions, int year) {
-        Map<Integer, Integer> monthlyMinutesMap = sessions.stream()
-                .collect(Collectors.groupingBy(
-                        s -> s.startedAt().getMonthValue(),
-                        Collectors.summingInt(s -> s.durationSeconds() / TimeConstants.SECONDS_PER_MINUTE)
+    private DailyFocusStatistics createMonthlyStatistics(Long userId, int year) {
+        List<MonthlyFocusAggregationDto> aggregations = queryFocusStatisticsPort.aggregateMonthlyMinutes(userId, year);
+
+        Map<Integer, Integer> monthlyMinutesMap = aggregations.stream()
+                .collect(Collectors.toMap(
+                        MonthlyFocusAggregationDto::month,
+                        MonthlyFocusAggregationDto::totalMinutes
                 ));
 
         List<MonthlyFocusData> monthlyDataList = IntStream.rangeClosed(
@@ -115,7 +126,7 @@ public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUs
                 )
                 .mapToObj(month -> new MonthlyFocusData(
                         month,
-                        java.time.Month.of(month),
+                        Month.of(month),
                         monthlyMinutesMap.getOrDefault(month, 0)
                 ))
                 .toList();

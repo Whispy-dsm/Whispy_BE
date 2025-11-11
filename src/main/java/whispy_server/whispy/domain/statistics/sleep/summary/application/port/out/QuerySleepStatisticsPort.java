@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.statistics.sleep.summary.application.port.out;
 
-import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepAggregationDto;
+import whispy_server.whispy.domain.statistics.sleep.summary.adapter.out.dto.SleepAggregationDto;
+import whispy_server.whispy.domain.statistics.sleep.summary.adapter.out.dto.SleepDetailedAggregationDto;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepSessionDto;
 
 import java.time.LocalDate;
@@ -13,4 +14,6 @@ public interface QuerySleepStatisticsPort {
     SleepAggregationDto aggregateByPeriod(Long userId, LocalDateTime start, LocalDateTime end);
     
     Integer sumMinutesByDate(Long userId, LocalDate date);
+    
+    SleepDetailedAggregationDto aggregateDetailedStatistics(Long userId, LocalDateTime start, LocalDateTime end);
 }

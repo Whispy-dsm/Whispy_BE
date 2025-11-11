@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.focussession.adapter.out.entity.QFocusSessionJpaEntity;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.focus.summary.application.port.out.QueryFocusStatisticsPort;
-import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusAggregationDto;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
-import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.TagMinutesDto;
+import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.TagMinutesDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
