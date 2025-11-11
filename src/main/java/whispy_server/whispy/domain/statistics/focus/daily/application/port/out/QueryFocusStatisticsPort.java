@@ -16,4 +16,6 @@ public interface QueryFocusStatisticsPort {
     List<DailyFocusAggregationDto> aggregateDailyMinutes(Long userId, LocalDateTime start, LocalDateTime end);
     
     List<MonthlyFocusAggregationDto> aggregateMonthlyMinutes(Long userId, int year);
+    
+    int getTotalMinutes(Long userId, LocalDateTime start, LocalDateTime end);
 }

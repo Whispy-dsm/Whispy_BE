@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface QueryFocusStatisticsPort {
     List<FocusSessionDto> findByUserIdAndPeriod(Long userId, LocalDateTime start, LocalDateTime end);
-    
+
     FocusAggregationDto aggregateByPeriod(Long userId, LocalDateTime start, LocalDateTime end);
-    
-    Integer sumMinutesByDate(Long userId, LocalDate date);
-    
+
+    int sumMinutesByDate(Long userId, LocalDate date);
+
     List<TagMinutesDto> aggregateByTag(Long userId, LocalDateTime start, LocalDateTime end);
 }

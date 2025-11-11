@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface QuerySleepStatisticsPort {
     List<SleepSessionDto> findByUserIdAndPeriod(Long userId, LocalDateTime start, LocalDateTime end);
-    
+
     SleepAggregationDto aggregateByPeriod(Long userId, LocalDateTime start, LocalDateTime end);
-    
-    Integer sumMinutesByDate(Long userId, LocalDate date);
-    
+
+    int sumMinutesByDate(Long userId, LocalDate date);
+
     SleepDetailedAggregationDto aggregateDetailedStatistics(Long userId, LocalDateTime start, LocalDateTime end);
 }

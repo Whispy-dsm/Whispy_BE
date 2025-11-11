@@ -110,4 +110,20 @@ public class FocusDailyPersistenceAdapter implements QueryFocusStatisticsPort {
                 .orderBy(focusSession.startedAt.month().asc())
                 .fetch();
     }
+
+    @Override
+    public int getTotalMinutes(Long userId, LocalDateTime start, LocalDateTime end) {
+        QFocusSessionJpaEntity focusSession = QFocusSessionJpaEntity.focusSessionJpaEntity;
+
+        Integer totalSeconds = jpaQueryFactory
+                .select(focusSession.durationSeconds.sum())
+                .from(focusSession)
+                .where(
+                        focusSession.userId.eq(userId),
+                        focusSession.startedAt.between(start, end)
+                )
+                .fetchOne();
+
+        return totalSeconds != null ? totalSeconds / TimeConstants.SECONDS_PER_MINUTE : 0;
+    }
 }

@@ -47,7 +47,7 @@ public class GetFocusStatisticsService implements GetFocusStatisticsUseCase {
         LocalDateTime end = range[1];
 
         FocusAggregationDto aggregation = queryFocusStatisticsPort.aggregateByPeriod(user.id(), start, end);
-        Integer todayMinutes = queryFocusStatisticsPort.sumMinutesByDate(user.id(), date);
+        int todayMinutes = queryFocusStatisticsPort.sumMinutesByDate(user.id(), date);
         List<TagMinutesDto> tagAggregations = queryFocusStatisticsPort.aggregateByTag(user.id(), start, end);
 
         int totalCount = aggregation.totalCount();

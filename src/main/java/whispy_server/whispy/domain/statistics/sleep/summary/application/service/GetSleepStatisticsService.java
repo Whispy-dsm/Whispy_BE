@@ -52,7 +52,7 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         LocalDateTime end = range[1];
 
         SleepDetailedAggregationDto aggregation = querySleepStatisticsPort.aggregateDetailedStatistics(user.id(), start, end);
-        Integer todayMinutes = querySleepStatisticsPort.sumMinutesByDate(user.id(), date);
+        int todayMinutes = querySleepStatisticsPort.sumMinutesByDate(user.id(), date);
         List<SleepSessionDto> sessions = querySleepStatisticsPort.findByUserIdAndPeriod(user.id(), start, end);
 
         double sleepConsistency = calculateConsistencyScore(sessions, aggregation);

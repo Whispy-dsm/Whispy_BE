@@ -66,7 +66,7 @@ public class FocusSummaryPersistenceAdapter implements QueryFocusStatisticsPort 
     }
 
     @Override
-    public Integer sumMinutesByDate(Long userId, LocalDate date) {
+    public int sumMinutesByDate(Long userId, LocalDate date) {
         QFocusSessionJpaEntity focusSession = QFocusSessionJpaEntity.focusSessionJpaEntity;
 
         Integer result = jpaQueryFactory

@@ -67,7 +67,7 @@ public class SleepSummaryPersistenceAdapter implements QuerySleepStatisticsPort 
     }
 
     @Override
-    public Integer sumMinutesByDate(Long userId, LocalDate date) {
+    public int sumMinutesByDate(Long userId, LocalDate date) {
         QSleepSessionJpaEntity sleepSession = QSleepSessionJpaEntity.sleepSessionJpaEntity;
 
         Integer result = jpaQueryFactory
