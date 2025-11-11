@@ -8,11 +8,13 @@ import whispy_server.whispy.domain.focussession.adapter.in.web.dto.response.Focu
 import whispy_server.whispy.domain.focussession.application.port.in.SaveFocusSessionUseCase;
 import whispy_server.whispy.domain.focussession.application.port.out.FocusSessionSavePort;
 import whispy_server.whispy.domain.focussession.model.FocusSession;
+import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.QueryFocusStatisticsPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -22,6 +24,7 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
     private final FocusSessionSavePort focusSessionSavePort;
     private final UserFacadeUseCase userFacadeUseCase;
     private final QueryUserPort queryUserPort;
+    private final QueryFocusStatisticsPort queryFocusStatisticsPort;
 
     @Transactional
     @Override
@@ -43,6 +46,15 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
 
         FocusSession saved = focusSessionSavePort.save(focusSession);
 
-        return FocusSessionResponse.from(saved);
+        int todayTotalMinutes = calculateTodayTotalMinutes(user.id());
+
+        return FocusSessionResponse.from(saved, todayTotalMinutes);
+    }
+
+    private int calculateTodayTotalMinutes(Long userId) {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
+
+        return queryFocusStatisticsPort.getTotalMinutes(userId, startOfDay, endOfDay);
     }
 }

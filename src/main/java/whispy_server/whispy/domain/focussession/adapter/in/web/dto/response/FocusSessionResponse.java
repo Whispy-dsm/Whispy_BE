@@ -13,9 +13,10 @@ public record FocusSessionResponse(
         LocalDateTime endedAt,
         int durationSeconds,
         FocusTag tag,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        int todayTotalMinutes
 ) {
-    public static FocusSessionResponse from(FocusSession focusSession) {
+    public static FocusSessionResponse from(FocusSession focusSession, int todayTotalMinutes) {
         return new FocusSessionResponse(
                 focusSession.id(),
                 focusSession.userId(),
@@ -24,7 +25,8 @@ public record FocusSessionResponse(
                 focusSession.endedAt(),
                 focusSession.durationSeconds(),
                 focusSession.tag(),
-                focusSession.createdAt()
+                focusSession.createdAt(),
+                todayTotalMinutes
         );
     }
 }
