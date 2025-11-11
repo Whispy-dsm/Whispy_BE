@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 public record SleepSessionResponse(
         Long id,
         Long userId,
-        Long musicId,
         LocalDateTime startedAt,
         LocalDateTime endedAt,
         int durationSeconds,
@@ -17,7 +16,6 @@ public record SleepSessionResponse(
         return new SleepSessionResponse(
                 sleepSession.id(),
                 sleepSession.userId(),
-                sleepSession.musicId(),
                 sleepSession.startedAt(),
                 sleepSession.endedAt(),
                 sleepSession.durationSeconds(),

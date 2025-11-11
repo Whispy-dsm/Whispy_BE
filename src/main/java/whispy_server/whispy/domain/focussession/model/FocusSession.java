@@ -13,7 +13,6 @@ import java.time.temporal.ChronoUnit;
 public record FocusSession(
         Long id,
         Long userId,
-        Long musicId,
         LocalDateTime startedAt,
         LocalDateTime endedAt,
         int durationSeconds,

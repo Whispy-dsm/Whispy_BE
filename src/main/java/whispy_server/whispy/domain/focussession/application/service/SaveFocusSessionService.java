@@ -36,7 +36,6 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
         FocusSession focusSession = new FocusSession(
                 null,
                 user.id(),
-                request.musicId(),
                 request.startedAt(),
                 request.endedAt(),
                 request.durationSeconds(),

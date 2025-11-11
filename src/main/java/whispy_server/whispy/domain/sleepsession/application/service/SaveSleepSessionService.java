@@ -33,7 +33,6 @@ public class SaveSleepSessionService implements SaveSleepSessionUseCase {
         SleepSession sleepSession = new SleepSession(
                 null,
                 user.id(),
-                request.musicId(),
                 request.startedAt(),
                 request.endedAt(),
                 request.durationSeconds(),

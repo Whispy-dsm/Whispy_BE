@@ -31,9 +31,6 @@ public class SleepSessionJpaEntity extends BaseTimeEntity {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "music_id", nullable = false)
-    private Long musicId;
-
     @Column(name = "started_at", nullable = false)
     private LocalDateTime startedAt;
 

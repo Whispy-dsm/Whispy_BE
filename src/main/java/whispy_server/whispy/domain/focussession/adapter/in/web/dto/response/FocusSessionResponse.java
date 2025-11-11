@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public record FocusSessionResponse(
         Long id,
         Long userId,
-        Long musicId,
         LocalDateTime startedAt,
         LocalDateTime endedAt,
         int durationSeconds,
@@ -20,7 +19,6 @@ public record FocusSessionResponse(
         return new FocusSessionResponse(
                 focusSession.id(),
                 focusSession.userId(),
-                focusSession.musicId(),
                 focusSession.startedAt(),
                 focusSession.endedAt(),
                 focusSession.durationSeconds(),
