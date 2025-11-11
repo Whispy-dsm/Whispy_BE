@@ -6,7 +6,6 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 import whispy_server.whispy.domain.music.adapter.out.entity.MusicJpaEntity;
 import whispy_server.whispy.domain.music.model.Music;
-import whispy_server.whispy.domain.user.model.User;
 
 import java.util.Optional;
 
@@ -25,4 +24,3 @@ public interface MusicMapper {
         return pageEntity.map(this::toModel);
     }
 }
-
