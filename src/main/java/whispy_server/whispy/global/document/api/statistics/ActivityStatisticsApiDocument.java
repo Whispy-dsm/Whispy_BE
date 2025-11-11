@@ -1,0 +1,32 @@
+package whispy_server.whispy.global.document.api.statistics;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import whispy_server.whispy.domain.statistics.activity.adapter.in.web.dto.response.WeeklySessionExistsResponse;
+import whispy_server.whispy.global.exception.error.ErrorResponse;
+
+import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
+
+@Tag(name = "ACTIVITY STATISTICS API", description = "활동 통계 관련 API")
+public interface ActivityStatisticsApiDocument {
+
+    @Operation(
+            summary = "1주일 세션 존재 여부 조회",
+            description = "월요일부터 일요일까지 각 요일별로 집중 세션 또는 수면 세션이 존재하는지 확인합니다. 둘 중 하나라도 있으면 true를 반환합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(schema = @Schema(implementation = WeeklySessionExistsResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    WeeklySessionExistsResponse getWeeklySessionExists();
+}
