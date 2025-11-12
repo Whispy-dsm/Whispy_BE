@@ -31,7 +31,6 @@ public class SleepDailyPersistenceAdapter implements QuerySleepStatisticsPort {
                         SleepSessionDto.class,
                         sleepSession.id,
                         sleepSession.userId,
-                        sleepSession.musicId,
                         sleepSession.startedAt,
                         sleepSession.endedAt,
                         sleepSession.durationSeconds,

@@ -26,7 +26,6 @@ public class FocusComparisonPersistenceAdapter implements QueryFocusComparisonPo
                         FocusSessionDto.class,
                         focusSession.id,
                         focusSession.userId,
-                        focusSession.musicId,
                         focusSession.startedAt,
                         focusSession.endedAt,
                         focusSession.durationSeconds,

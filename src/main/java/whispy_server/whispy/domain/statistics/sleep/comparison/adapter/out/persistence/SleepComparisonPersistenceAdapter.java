@@ -26,7 +26,6 @@ public class SleepComparisonPersistenceAdapter implements QuerySleepComparisonPo
                         SleepSessionDto.class,
                         sleepSession.id,
                         sleepSession.userId,
-                        sleepSession.musicId,
                         sleepSession.startedAt,
                         sleepSession.endedAt,
                         sleepSession.durationSeconds,
