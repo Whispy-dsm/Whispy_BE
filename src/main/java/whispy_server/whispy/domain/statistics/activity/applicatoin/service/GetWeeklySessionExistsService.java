@@ -20,13 +20,13 @@ import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class GetWeeklySessionExistsService implements GetWeeklySessionExistsUseCase {
 
     private final CheckWeeklySessionExistsPort checkWeeklySessionExistsPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
     @Override
+    @Transactional(readOnly = true)
     public WeeklySessionExistsResponse execute() {
         Long userId = userFacadeUseCase.currentUser().id();
         LocalDate today = LocalDate.now();

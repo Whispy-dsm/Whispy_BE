@@ -11,7 +11,7 @@ import whispy_server.whispy.domain.statistics.focus.summary.application.port.in.
 import whispy_server.whispy.domain.statistics.focus.summary.application.port.out.QueryFocusStatisticsPort;
 import whispy_server.whispy.domain.statistics.focus.summary.model.FocusStatistics;
 import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
-import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.persistence.FocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.FocusAggregationDto;
 import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.TagMinutesDto;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;

@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import whispy_server.whispy.domain.statistics.activity.adapter.in.web.dto.response.WeeklyActivityResponse;
 import whispy_server.whispy.domain.statistics.activity.adapter.in.web.dto.response.WeeklySessionExistsResponse;
+import whispy_server.whispy.domain.statistics.activity.applicatoin.port.in.GetWeeklyActivityUseCase;
 import whispy_server.whispy.domain.statistics.activity.applicatoin.port.in.GetWeeklySessionExistsUseCase;
 import whispy_server.whispy.global.document.api.statistics.ActivityStatisticsApiDocument;
 
@@ -14,9 +16,15 @@ import whispy_server.whispy.global.document.api.statistics.ActivityStatisticsApi
 public class ActivityStatisticsController implements ActivityStatisticsApiDocument {
 
     private final GetWeeklySessionExistsUseCase getWeeklySessionExistsUseCase;
+    private final GetWeeklyActivityUseCase getWeeklyActivityUseCase;
 
     @GetMapping("/weekly-exists")
     public WeeklySessionExistsResponse getWeeklySessionExists() {
         return getWeeklySessionExistsUseCase.execute();
+    }
+
+    @GetMapping("/weekly")
+    public WeeklyActivityResponse getWeeklyActivity() {
+        return getWeeklyActivityUseCase.execute();
     }
 }
