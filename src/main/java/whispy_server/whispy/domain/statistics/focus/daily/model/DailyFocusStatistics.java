@@ -12,11 +12,11 @@ public record DailyFocusStatistics(
     public static DailyFocusStatistics ofHourly(List<HourlyFocusData> hourlyData) {
         return new DailyFocusStatistics(hourlyData, null, null);
     }
-    
+
     public static DailyFocusStatistics ofDaily(List<DailyFocusData> dailyData) {
         return new DailyFocusStatistics(null, dailyData, null);
     }
-    
+
     public static DailyFocusStatistics ofMonthly(List<MonthlyFocusData> monthlyData) {
         return new DailyFocusStatistics(null, null, monthlyData);
     }

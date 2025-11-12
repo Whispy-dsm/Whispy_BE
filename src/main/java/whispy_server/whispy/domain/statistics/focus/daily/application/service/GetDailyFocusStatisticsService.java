@@ -12,10 +12,10 @@ import whispy_server.whispy.domain.statistics.focus.daily.model.DailyFocusData;
 import whispy_server.whispy.domain.statistics.focus.daily.model.DailyFocusStatistics;
 import whispy_server.whispy.domain.statistics.focus.daily.model.HourlyFocusData;
 import whispy_server.whispy.domain.statistics.focus.daily.model.MonthlyFocusData;
+import whispy_server.whispy.domain.statistics.focus.daily.model.TagFocusData;
 import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
-import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.DailyFocusAggregationDto;
-import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyFocusAggregationDto;
-import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.MonthlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.*;
+import whispy_server.whispy.domain.focussession.model.types.FocusTag;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
@@ -25,6 +25,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,8 +63,13 @@ public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUs
 
     private DailyFocusStatistics createHourlyStatistics(Long userId, LocalDateTime start, LocalDateTime end) {
         List<HourlyFocusAggregationDto> aggregations = queryFocusStatisticsPort.aggregateHourlyMinutes(
-                userId, 
-                start, 
+                userId,
+                start,
+                end
+        );
+        List<HourlyTagFocusAggregationDto> tagAggregations = queryFocusStatisticsPort.aggregateHourlyByTag(
+                userId,
+                start,
                 end
         );
 
@@ -73,23 +79,52 @@ public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUs
                         HourlyFocusAggregationDto::totalMinutes
                 ));
 
+        Map<Integer, List<HourlyTagFocusAggregationDto>> hourlyTagMap = tagAggregations.stream()
+                .collect(Collectors.groupingBy(HourlyTagFocusAggregationDto::hour));
+
         List<HourlyFocusData> hourlyDataList = IntStream.range(
                         TimeConstants.FIRST_HOUR_OF_DAY,
                         TimeConstants.HOURS_PER_DAY
                 )
-                .mapToObj(hour -> new HourlyFocusData(
-                        hour,
-                        hourlyMinutesMap.getOrDefault(hour, 0)
-                ))
+                .mapToObj(hour -> {
+                    List<TagFocusData> tagDataList = createTagDataForPeriod(
+                            hourlyTagMap.getOrDefault(hour, List.of())
+                    );
+                    return new HourlyFocusData(
+                            hour,
+                            hourlyMinutesMap.getOrDefault(hour, 0),
+                            tagDataList
+                    );
+                })
                 .toList();
 
         return DailyFocusStatistics.ofHourly(hourlyDataList);
     }
 
+    private List<TagFocusData> createTagDataForPeriod(List<HourlyTagFocusAggregationDto> aggregations) {
+        Map<FocusTag, Integer> tagMinutesMap = aggregations.stream()
+                .collect(Collectors.toMap(
+                        HourlyTagFocusAggregationDto::tag,
+                        HourlyTagFocusAggregationDto::minutes
+                ));
+
+        return Arrays.stream(FocusTag.values())
+                .map(tag -> new TagFocusData(
+                        tag,
+                        tagMinutesMap.getOrDefault(tag, 0)
+                ))
+                .toList();
+    }
+
     private DailyFocusStatistics createDailyStatistics(Long userId, LocalDateTime start, LocalDateTime end) {
         List<DailyFocusAggregationDto> aggregations = queryFocusStatisticsPort.aggregateDailyMinutes(
-                userId, 
-                start, 
+                userId,
+                start,
+                end
+        );
+        List<DailyTagFocusAggregationDto> tagAggregations = queryFocusStatisticsPort.aggregateDailyByTag(
+                userId,
+                start,
                 end
         );
 
@@ -99,20 +134,45 @@ public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUs
                         DailyFocusAggregationDto::totalMinutes
                 ));
 
+        Map<LocalDate, List<DailyTagFocusAggregationDto>> dailyTagMap = tagAggregations.stream()
+                .collect(Collectors.groupingBy(DailyTagFocusAggregationDto::date));
+
         List<DailyFocusData> dailyDataList = start.toLocalDate().datesUntil(end.toLocalDate().plusDays(1))
-                .map(date -> new DailyFocusData(
-                        date,
-                        date.getDayOfWeek(),
-                        date.getDayOfMonth(),
-                        dailyMinutesMap.getOrDefault(date, 0)
-                ))
+                .map(date -> {
+                    List<TagFocusData> tagDataList = createTagDataForDailyPeriod(
+                            dailyTagMap.getOrDefault(date, List.of())
+                    );
+                    return new DailyFocusData(
+                            date,
+                            date.getDayOfWeek(),
+                            date.getDayOfMonth(),
+                            dailyMinutesMap.getOrDefault(date, 0),
+                            tagDataList
+                    );
+                })
                 .toList();
 
         return DailyFocusStatistics.ofDaily(dailyDataList);
     }
 
+    private List<TagFocusData> createTagDataForDailyPeriod(List<DailyTagFocusAggregationDto> aggregations) {
+        Map<FocusTag, Integer> tagMinutesMap = aggregations.stream()
+                .collect(Collectors.toMap(
+                        DailyTagFocusAggregationDto::tag,
+                        DailyTagFocusAggregationDto::minutes
+                ));
+
+        return Arrays.stream(FocusTag.values())
+                .map(tag -> new TagFocusData(
+                        tag,
+                        tagMinutesMap.getOrDefault(tag, 0)
+                ))
+                .toList();
+    }
+
     private DailyFocusStatistics createMonthlyStatistics(Long userId, int year) {
         List<MonthlyFocusAggregationDto> aggregations = queryFocusStatisticsPort.aggregateMonthlyMinutes(userId, year);
+        List<MonthlyTagFocusAggregationDto> tagAggregations = queryFocusStatisticsPort.aggregateMonthlyByTag(userId, year);
 
         Map<Integer, Integer> monthlyMinutesMap = aggregations.stream()
                 .collect(Collectors.toMap(
@@ -120,18 +180,42 @@ public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUs
                         MonthlyFocusAggregationDto::totalMinutes
                 ));
 
+        Map<Integer, List<MonthlyTagFocusAggregationDto>> monthlyTagMap = tagAggregations.stream()
+                .collect(Collectors.groupingBy(MonthlyTagFocusAggregationDto::month));
+
         List<MonthlyFocusData> monthlyDataList = IntStream.rangeClosed(
                         TimeConstants.FIRST_MONTH_OF_YEAR,
                         TimeConstants.MONTHS_PER_YEAR
                 )
-                .mapToObj(month -> new MonthlyFocusData(
-                        month,
-                        Month.of(month),
-                        monthlyMinutesMap.getOrDefault(month, 0)
-                ))
+                .mapToObj(month -> {
+                    List<TagFocusData> tagDataList = createTagDataForMonthlyPeriod(
+                            monthlyTagMap.getOrDefault(month, List.of())
+                    );
+                    return new MonthlyFocusData(
+                            month,
+                            Month.of(month),
+                            monthlyMinutesMap.getOrDefault(month, 0),
+                            tagDataList
+                    );
+                })
                 .toList();
 
         return DailyFocusStatistics.ofMonthly(monthlyDataList);
+    }
+
+    private List<TagFocusData> createTagDataForMonthlyPeriod(List<MonthlyTagFocusAggregationDto> aggregations) {
+        Map<FocusTag, Integer> tagMinutesMap = aggregations.stream()
+                .collect(Collectors.toMap(
+                        MonthlyTagFocusAggregationDto::tag,
+                        MonthlyTagFocusAggregationDto::minutes
+                ));
+
+        return Arrays.stream(FocusTag.values())
+                .map(tag -> new TagFocusData(
+                        tag,
+                        tagMinutesMap.getOrDefault(tag, 0)
+                ))
+                .toList();
     }
 
     private LocalDateTime[] calculatePeriodRange(FocusPeriodType period, LocalDate date) {
