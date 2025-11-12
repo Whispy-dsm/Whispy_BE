@@ -14,14 +14,20 @@ public record Music(
         String bannerImageUrl
 ) {
 
-    public Music update(UpdateMusicRequest request) {
+    public Music update(
+            String newTitle,
+            String newFilePath,
+            Integer newDuration,
+            MusicCategory newCategory,
+            String newBannerImageUrl
+    ) {
         return new Music(
                 this.id,
-                request.title() != null ? request.title() : this.title,
-                request.filePath() != null ? request.filePath() : this.filePath,
-                request.duration() != null ? request.duration() : this.duration,
-                request.category() != null ? request.category() : this.category,
-                request.bannerImageUrl() != null ? request.bannerImageUrl() : this.bannerImageUrl
+                newTitle != null ? newTitle : this.title,
+                newFilePath != null ? newFilePath : this.filePath,
+                newDuration != null ? newDuration : this.duration,
+                newCategory != null ? newCategory : this.category,
+                newBannerImageUrl != null ? newBannerImageUrl : this.bannerImageUrl
         );
     }
 }

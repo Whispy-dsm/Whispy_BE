@@ -25,7 +25,13 @@ public class UpdateMusicService implements UpdateMusicUseCase {
         Music existingMusic = queryMusicPort.findById(request.id())
                 .orElseThrow(() -> MusicNotFoundException.EXCEPTION);
 
-        Music updatedMusic = existingMusic.update(request);
+        Music updatedMusic = existingMusic.update(
+                request.title(),
+                request.filePath(),
+                request.duration(),
+                request.category(),
+                request.bannerImageUrl()
+        );
         musicSavePort.save(updatedMusic);
     }
 }
