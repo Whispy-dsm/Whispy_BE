@@ -37,7 +37,7 @@ public class MusicJpaEntity {
     @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Column(name = "duration", nullable = false)
+    @Column(name = "file_path", nullable = false)
     private String filePath;
 
     @Column(name = "duration", nullable = false)
