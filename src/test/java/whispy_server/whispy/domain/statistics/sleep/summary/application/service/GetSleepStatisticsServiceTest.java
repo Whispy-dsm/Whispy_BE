@@ -508,7 +508,6 @@ class GetSleepStatisticsServiceTest {
         return new SleepSessionDto(
                 1L,
                 TEST_USER_ID,
-                null,
                 startedAt,
                 endedAt,
                 durationMinutes * 60,
