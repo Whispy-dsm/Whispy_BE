@@ -7,6 +7,8 @@ import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.Creat
 import whispy_server.whispy.domain.announcement.application.port.in.CreateAnnouncementUseCase;
 import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
 import whispy_server.whispy.domain.announcement.model.Announcement;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
+import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 public class CreateAnnouncementService implements CreateAnnouncementUseCase {
 
     private final AnnouncementPort announcementPort;
+    private final BroadCastToAllUsersUseCase broadCastToAllUsersUseCase;
 
     @Transactional
     @Override
@@ -28,5 +31,18 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
         );
 
         announcementPort.save(announcement);
+
+        sendAnnouncementNotification();
+    }
+
+    private void sendAnnouncementNotification() {
+        NotificationTopicSendRequest notificationRequest = new NotificationTopicSendRequest(
+                null,
+                "공지사항",
+                "새로운 공지사항이 등록되었습니다.",
+                null
+        );
+
+        broadCastToAllUsersUseCase.execute(notificationRequest);
     }
 }

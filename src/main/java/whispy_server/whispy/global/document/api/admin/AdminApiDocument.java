@@ -9,11 +9,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import whispy_server.whispy.domain.admin.adapter.in.web.dto.request.AdminLoginRequest;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.CreateAnnouncementRequest;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.UpdateAnnouncementRequest;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.request.CreateMusicRequest;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.request.UpdateMusicRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
+import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
+import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonResponse;
+import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonSummaryResponse;
 import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.AddNewTopicRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
@@ -195,5 +201,129 @@ public interface AdminApiDocument {
     })
     void deleteAnnouncement(
             @Parameter(description = "공지사항 ID", required = true) Long id
+    );
+
+    @Operation(
+            summary = "탈퇴 사유 목록 조회",
+            description = "모든 탈퇴 사유를 페이징하여 조회합니다. (상세 내용 제외)",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "탈퇴 사유 조회 성공",
+                    content = @Content(schema = @Schema(implementation = Page.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    Page<WithdrawalReasonSummaryResponse> getWithdrawalReasons(Pageable pageable);
+
+    @Operation(
+            summary = "탈퇴 사유 상세 조회",
+            description = "ID로 탈퇴 사유의 상세 정보를 조회합니다. (상세 내용 포함)",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "탈퇴 사유 상세 조회 성공",
+                    content = @Content(schema = @Schema(implementation = WithdrawalReasonResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "탈퇴 사유를 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    WithdrawalReasonResponse getWithdrawalReasonDetail(
+            @Parameter(description = "탈퇴 사유 ID", required = true) Long id
+    );
+
+    @Operation(
+            summary = "탈퇴 사유 삭제",
+            description = "ID로 탈퇴 사유를 삭제합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "탈퇴 사유 삭제 성공"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "탈퇴 사유를 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    void deleteWithdrawalReason(
+            @Parameter(description = "탈퇴 사유 ID", required = true) Long id
+    );
+
+    @Operation(
+            summary = "디바이스 토큰으로 알림 전송",
+            description = "관리자가 특정 디바이스 토큰들에게 알림을 전송합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "알림 전송 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    void sendNotification(
+            @RequestBody(description = "알림 전송 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = NotificationSendRequest.class)))
+            NotificationSendRequest request
+    );
+
+    @Operation(
+            summary = "토픽으로 알림 전송",
+            description = "관리자가 특정 토픽을 구독한 사용자들에게 알림을 전송합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "토픽 알림 전송 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    void sendToTopic(
+            @RequestBody(description = "토픽 알림 전송 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = NotificationTopicSendRequest.class)))
+            NotificationTopicSendRequest request
+    );
+
+    @Operation(
+            summary = "전체 사용자에게 브로드캐스트",
+            description = "관리자가 모든 사용자에게 알림을 브로드캐스트합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "브로드캐스트 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    void broadcastToAllUsers(
+            @RequestBody(description = "브로드캐스트 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = NotificationTopicSendRequest.class)))
+            NotificationTopicSendRequest request
     );
 }

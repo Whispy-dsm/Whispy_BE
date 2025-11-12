@@ -6,7 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
 import whispy_server.whispy.domain.statistics.sleep.daily.adapter.in.web.dto.response.DailySleepStatisticsResponse;
-import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepSessionDto;
+import whispy_server.whispy.domain.statistics.sleep.daily.adapter.out.dto.DailySleepAggregationDto;
+import whispy_server.whispy.domain.statistics.sleep.daily.adapter.out.dto.MonthlySleepAggregationDto;
 import whispy_server.whispy.domain.statistics.sleep.daily.application.port.in.GetDailySleepStatisticsUseCase;
 import whispy_server.whispy.domain.statistics.sleep.daily.application.port.out.QuerySleepStatisticsPort;
 import whispy_server.whispy.domain.statistics.sleep.daily.model.DailySleepData;
@@ -48,28 +49,28 @@ public class GetDailySleepStatisticsService implements GetDailySleepStatisticsUs
         LocalDateTime start = range[0];
         LocalDateTime end = range[1];
 
-        List<SleepSessionDto> sessions = querySleepStatisticsPort.findByUserIdAndPeriod(user.id(), start, end);
-
         DailySleepStatistics statistics = switch (period) {
-            case WEEK, MONTH -> createDailyStatistics(sessions, start.toLocalDate(), end.toLocalDate());
-            case YEAR -> createMonthlyStatistics(sessions, date.getYear());
+            case WEEK, MONTH -> createDailyStatistics(user.id(), start, end);
+            case YEAR -> createMonthlyStatistics(user.id(), date.getYear());
         };
 
         return DailySleepStatisticsResponse.from(statistics);
     }
 
-    private DailySleepStatistics createDailyStatistics(
-            List<SleepSessionDto> sessions,
-            LocalDate startDate,
-            LocalDate endDate
-    ) {
-        Map<LocalDate, Integer> dailyMinutesMap = sessions.stream()
-                .collect(Collectors.groupingBy(
-                        s -> s.startedAt().toLocalDate(),
-                        Collectors.summingInt(s -> s.durationSeconds() / TimeConstants.SECONDS_PER_MINUTE)
+    private DailySleepStatistics createDailyStatistics(Long userId, LocalDateTime start, LocalDateTime end) {
+        List<DailySleepAggregationDto> aggregations = querySleepStatisticsPort.aggregateDailyMinutes(
+                userId, 
+                start, 
+                end
+        );
+
+        Map<LocalDate, Integer> dailyMinutesMap = aggregations.stream()
+                .collect(Collectors.toMap(
+                        DailySleepAggregationDto::date,
+                        DailySleepAggregationDto::totalMinutes
                 ));
 
-        List<DailySleepData> dailyDataList = startDate.datesUntil(endDate.plusDays(1))
+        List<DailySleepData> dailyDataList = start.toLocalDate().datesUntil(end.toLocalDate().plusDays(1))
                 .map(date -> new DailySleepData(
                         date,
                         date.getDayOfWeek(),
@@ -81,11 +82,13 @@ public class GetDailySleepStatisticsService implements GetDailySleepStatisticsUs
         return DailySleepStatistics.ofDaily(dailyDataList);
     }
 
-    private DailySleepStatistics createMonthlyStatistics(List<SleepSessionDto> sessions, int year) {
-        Map<Integer, Integer> monthlyMinutesMap = sessions.stream()
-                .collect(Collectors.groupingBy(
-                        s -> s.startedAt().getMonthValue(),
-                        Collectors.summingInt(s -> s.durationSeconds() / TimeConstants.SECONDS_PER_MINUTE)
+    private DailySleepStatistics createMonthlyStatistics(Long userId, int year) {
+        List<MonthlySleepAggregationDto> aggregations = querySleepStatisticsPort.aggregateMonthlyMinutes(userId, year);
+
+        Map<Integer, Integer> monthlyMinutesMap = aggregations.stream()
+                .collect(Collectors.toMap(
+                        MonthlySleepAggregationDto::month,
+                        MonthlySleepAggregationDto::totalMinutes
                 ));
 
         List<MonthlySleepData> monthlyDataList = IntStream.rangeClosed(

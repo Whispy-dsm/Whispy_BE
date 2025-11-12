@@ -1,8 +1,8 @@
-package whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus;
+package whispy_server.whispy.domain.statistics.focus.daily.model;
 
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
 
-public record TagMinutesDto(
+public record TagFocusData(
         FocusTag tag,
         int minutes
 ) {

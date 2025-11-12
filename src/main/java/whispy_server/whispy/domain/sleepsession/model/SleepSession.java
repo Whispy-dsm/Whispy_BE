@@ -12,7 +12,6 @@ import java.time.temporal.ChronoUnit;
 public record SleepSession(
         Long id,
         Long userId,
-        Long musicId,
         LocalDateTime startedAt,
         LocalDateTime endedAt,
         int durationSeconds,

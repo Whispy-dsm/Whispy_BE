@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,9 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
 import java.time.LocalDateTime;
 
 @Entity(name = "SleepSessionJpaEntity")
-@Table(name = "tbl_sleep_session")
+@Table(name = "tbl_sleep_session", indexes = {
+    @Index(name = "idx_user_started", columnList = "user_id, started_at")
+})
 @Getter
 @SuperBuilder
 @AllArgsConstructor
@@ -30,9 +33,6 @@ public class SleepSessionJpaEntity extends BaseTimeEntity {
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
-
-    @Column(name = "music_id", nullable = false)
-    private Long musicId;
 
     @Column(name = "started_at", nullable = false)
     private LocalDateTime startedAt;

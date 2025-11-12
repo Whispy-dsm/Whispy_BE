@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep;
+package whispy_server.whispy.domain.statistics.sleep.summary.adapter.out.dto;
 
 public record SleepAggregationDto(
         int totalCount,

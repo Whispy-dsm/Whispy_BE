@@ -30,6 +30,9 @@ public enum ErrorCode {
     INVALID_SLEEP_SESSION_TIME_RANGE(400, "종료시간이 시작시간보다 이를 수 없습니다."),
     SLEEP_SESSION_DURATION_EXCEEDED(400, "수면시간이 전체 시간을 초과할 수 없습니다."),
     INVALID_SLEEP_SESSION_DURATION(400, "수면시간은 1초 이상이어야 합니다."),
+    INVALID_MEDITATION_SESSION_TIME_RANGE(400, "종료시간이 시작시간보다 이를 수 없습니다."),
+    MEDITATION_SESSION_DURATION_EXCEEDED(400, "명상시간이 전체 시간을 초과할 수 없습니다."),
+    INVALID_MEDITATION_SESSION_DURATION(400, "명상시간은 1초 이상이어야 합니다."),
     INVALID_STATISTICS_DATE(400, "통계 조회는 미래 날짜로 할 수 없습니다."),
     INVALID_WITHDRAWAL_REASON_DETAIL(400, "탈퇴 사유 상세 내용이 유효하지 않습니다."),
 
@@ -44,6 +47,7 @@ public enum ErrorCode {
     ANNOUNCEMENT_NOT_FOUND(404, "공지사항을 찾을 수 없습니다."),
     FOCUS_SESSION_NOT_FOUND(404, "집중 세션을 찾을 수 없습니다."),
     SLEEP_SESSION_NOT_FOUND(404, "수면 세션을 찾을 수 없습니다."),
+    MEDITATION_SESSION_NOT_FOUND(404, "명상 세션을 찾을 수 없습니다."),
     WITHDRAWAL_REASON_NOT_FOUND(404, "탈퇴 사유를 찾을 수 없습니다."),
 
     INVALID_TOKEN(401, "Invalid Token"),

@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record SaveSleepSessionRequest(
-        @NotNull Long musicId,
         @NotNull LocalDateTime startedAt,
         @NotNull LocalDateTime endedAt,
         @Min(1) int durationSeconds
