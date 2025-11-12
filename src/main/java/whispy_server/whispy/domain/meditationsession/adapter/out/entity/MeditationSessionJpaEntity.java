@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,9 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
 import java.time.LocalDateTime;
 
 @Entity(name = "MeditationSessionJpaEntity")
-@Table(name = "tbl_meditation_session")
+@Table(name = "tbl_meditation_session", indexes = {
+    @Index(name = "idx_user_started", columnList = "user_id, started_at")
+})
 @Getter
 @SuperBuilder
 @AllArgsConstructor
