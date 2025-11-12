@@ -15,7 +15,6 @@ import whispy_server.whispy.domain.statistics.sleep.summary.adapter.in.web.dto.r
 import whispy_server.whispy.domain.statistics.sleep.summary.application.port.out.QuerySleepStatisticsPort;
 import whispy_server.whispy.domain.statistics.sleep.types.SleepPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
-import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
@@ -47,9 +46,6 @@ class GetSleepStatisticsServiceTest {
     @Mock
     private UserFacadeUseCase userFacadeUseCase;
 
-    @Mock
-    private QueryUserPort queryUserPort;
-
     private static final String TEST_EMAIL = "test@example.com";
     private static final Long TEST_USER_ID = 1L;
 
@@ -61,7 +57,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(0, 0, 0, 0, 0);
         given(querySleepStatisticsPort.aggregateDetailedStatistics(eq(TEST_USER_ID), any(), any()))
@@ -85,7 +80,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         LocalDateTime session1Start = LocalDateTime.of(2024, 1, 15, 23, 0);
         SleepSessionDto session = createSession(session1Start, 480);
@@ -112,7 +106,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         LocalDateTime session1Start = LocalDateTime.of(2024, 1, 14, 23, 0);
         LocalDateTime session2Start = LocalDateTime.of(2024, 1, 15, 23, 30);
@@ -147,7 +140,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         List<SleepSessionDto> sessions = List.of(
                 createSession(LocalDateTime.of(2024, 1, 10, 23, 0), 480),
@@ -186,7 +178,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         List<SleepSessionDto> sessions = List.of(
                 createSession(bedTime1, 480),
@@ -221,7 +212,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepSessionDto session = createSession(LocalDateTime.of(2024, 1, 15, 0, 0), 480);
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(1, 480, 480, avgMinutes, avgMinutes);
@@ -248,7 +238,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepSessionDto session = createSession(LocalDateTime.of(2024, 1, 15, 0, 0), 480);
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(1, 480, 480, 1440, 420);
@@ -272,7 +261,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(0, 0, 0, 0, 0);
         given(querySleepStatisticsPort.aggregateDetailedStatistics(eq(TEST_USER_ID), any(), any()))
@@ -300,7 +288,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(0, 0, 0, 0, 0);
         given(querySleepStatisticsPort.aggregateDetailedStatistics(eq(TEST_USER_ID), any(), any()))
@@ -328,7 +315,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(0, 0, 0, 0, 0);
         given(querySleepStatisticsPort.aggregateDetailedStatistics(eq(TEST_USER_ID), any(), any()))
@@ -356,7 +342,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(0, 0, 0, 0, 0);
         given(querySleepStatisticsPort.aggregateDetailedStatistics(eq(TEST_USER_ID), any(), any()))
@@ -384,7 +369,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(0, 0, 0, 0, 0);
         given(querySleepStatisticsPort.aggregateDetailedStatistics(eq(TEST_USER_ID), any(), any()))
@@ -412,7 +396,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(0, 0, 0, 0, 0);
         given(querySleepStatisticsPort.aggregateDetailedStatistics(eq(TEST_USER_ID), any(), any()))
@@ -440,7 +423,6 @@ class GetSleepStatisticsServiceTest {
         User user = createUser();
         
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         
         SleepDetailedAggregationDto aggregation = new SleepDetailedAggregationDto(0, 0, 0, 0, 0);
         given(querySleepStatisticsPort.aggregateDetailedStatistics(eq(TEST_USER_ID), any(), any()))
