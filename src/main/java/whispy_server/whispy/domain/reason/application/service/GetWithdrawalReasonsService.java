@@ -11,12 +11,12 @@ import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQ
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class GetWithdrawalReasonsService implements GetWithdrawalReasonsUseCase {
 
     private final WithdrawalReasonQueryPort withdrawalReasonQueryPort;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<WithdrawalReasonSummaryResponse> execute(Pageable pageable) {
         return withdrawalReasonQueryPort.findAll(pageable)
                 .map(WithdrawalReasonSummaryResponse::from);

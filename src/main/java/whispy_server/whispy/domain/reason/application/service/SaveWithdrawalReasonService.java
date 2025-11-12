@@ -14,13 +14,13 @@ import whispy_server.whispy.global.exception.domain.reason.InvalidWithdrawalReas
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class SaveWithdrawalReasonService implements SaveWithdrawalReasonUseCase {
 
     private final WithdrawalReasonSavePort withdrawalReasonSavePort;
     private final UserFacadeUseCase userFacadeUseCase;
 
     @Override
+    @Transactional
     public void execute(SaveWithdrawalReasonRequest request) {
         User currentUser = userFacadeUseCase.currentUser();
         

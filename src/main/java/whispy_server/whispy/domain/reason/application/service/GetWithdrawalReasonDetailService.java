@@ -11,12 +11,12 @@ import whispy_server.whispy.global.exception.domain.reason.WithdrawalReasonNotFo
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class GetWithdrawalReasonDetailService implements GetWithdrawalReasonDetailUseCase {
 
     private final WithdrawalReasonQueryPort withdrawalReasonQueryPort;
 
     @Override
+    @Transactional(readOnly = true)
     public WithdrawalReasonResponse execute(Long id) {
         WithdrawalReason withdrawalReason = withdrawalReasonQueryPort.findById(id)
                 .orElseThrow(() -> WithdrawalReasonNotFoundException.EXCEPTION);

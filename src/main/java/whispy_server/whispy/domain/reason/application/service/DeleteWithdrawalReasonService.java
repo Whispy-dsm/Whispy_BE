@@ -10,13 +10,13 @@ import whispy_server.whispy.global.exception.domain.reason.WithdrawalReasonNotFo
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class DeleteWithdrawalReasonService implements DeleteWithdrawalReasonUseCase {
 
     private final WithdrawalReasonQueryPort withdrawalReasonQueryPort;
     private final WithdrawalReasonDeletePort withdrawalReasonDeletePort;
 
     @Override
+    @Transactional
     public void execute(Long id) {
         if (!withdrawalReasonQueryPort.existsById(id)) {
             throw WithdrawalReasonNotFoundException.EXCEPTION;
