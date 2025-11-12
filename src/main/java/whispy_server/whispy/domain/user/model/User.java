@@ -52,6 +52,21 @@ public record User(
         );
     }
 
+    public User changeProfile(String name, String profileImageUrl, Gender gender) {
+        return new User(
+                this.id,
+                this.email,
+                this.password,
+                name,
+                profileImageUrl,
+                gender,
+                this.role,
+                this.provider,
+                this.fcmToken,
+                this.createdAt
+        );
+    }
+
     public long getDaysSinceRegistration() {
         return ChronoUnit.DAYS.between(this.createdAt, LocalDateTime.now());
     }

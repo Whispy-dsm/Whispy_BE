@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangePasswordRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfileRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
@@ -23,6 +24,7 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyAccountInf
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileResponse;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.ChangePasswordUseCase;
+import whispy_server.whispy.domain.user.application.port.in.ChangeProfileUseCase;
 import whispy_server.whispy.domain.user.application.port.in.GetMyAccountInfoUseCase;
 import whispy_server.whispy.domain.user.application.port.in.GetMyProfileUseCase;
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
@@ -51,6 +53,7 @@ public class UserController implements UserApiDocument {
     private final ResetPasswordUseCase resetPasswordUseCase;
     private final GetMyProfileUseCase getMyProfileUseCase;
     private final GetMyAccountInfoUseCase getMyAccountInfoUseCase;
+    private final ChangeProfileUseCase changeProfileUseCase;
 
     @PostMapping("/login")
     public TokenResponse login(@Valid @RequestBody UserLoginRequest request) {
@@ -99,6 +102,12 @@ public class UserController implements UserApiDocument {
     @ResponseStatus(HttpStatus.OK)
     public void resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         resetPasswordUseCase.execute(request);
+    }
+
+    @PatchMapping("/profile")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changeProfile(@Valid @RequestBody ChangeProfileRequest request) {
+        changeProfileUseCase.execute(request);
     }
 
     @GetMapping("/profile")

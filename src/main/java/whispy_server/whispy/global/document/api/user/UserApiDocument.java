@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangePasswordRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfileRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
@@ -154,6 +155,24 @@ public interface UserApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     void resetPassword(ResetPasswordRequest request);
+
+    @Operation(
+            summary = "프로필 수정",
+            description = "사용자의 프로필 정보(이름, 프로필 사진, 성별)를 수정합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "프로필 수정 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "일치하는 유저를 찾을 수 없습니다",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    void changeProfile(ChangeProfileRequest request);
 
     @Operation(
             summary = "내 프로필 조회",
