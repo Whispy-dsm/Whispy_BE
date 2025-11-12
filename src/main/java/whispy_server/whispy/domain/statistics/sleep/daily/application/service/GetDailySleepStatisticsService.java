@@ -15,9 +15,7 @@ import whispy_server.whispy.domain.statistics.sleep.daily.model.DailySleepStatis
 import whispy_server.whispy.domain.statistics.sleep.daily.model.MonthlySleepData;
 import whispy_server.whispy.domain.statistics.sleep.types.SleepPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
-import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -34,16 +32,13 @@ public class GetDailySleepStatisticsService implements GetDailySleepStatisticsUs
 
     private final QuerySleepStatisticsPort querySleepStatisticsPort;
     private final UserFacadeUseCase userFacadeUseCase;
-    private final QueryUserPort queryUserPort;
 
     @Override
     @Transactional(readOnly = true)
     public DailySleepStatisticsResponse execute(SleepPeriodType period, LocalDate date) {
         DateValidator.validateNotFutureDate(date);
-        
-        String email = userFacadeUseCase.currentUser().email();
-        User user = queryUserPort.findByEmail(email)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        User user = userFacadeUseCase.currentUser();
 
         LocalDateTime[] range = calculatePeriodRange(period, date);
         LocalDateTime start = range[0];

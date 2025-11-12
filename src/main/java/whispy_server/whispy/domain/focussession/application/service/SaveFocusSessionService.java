@@ -10,9 +10,7 @@ import whispy_server.whispy.domain.focussession.application.port.out.FocusSessio
 import whispy_server.whispy.domain.focussession.model.FocusSession;
 import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.QueryFocusStatisticsPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
-import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,15 +21,12 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
 
     private final FocusSessionSavePort focusSessionSavePort;
     private final UserFacadeUseCase userFacadeUseCase;
-    private final QueryUserPort queryUserPort;
     private final QueryFocusStatisticsPort queryFocusStatisticsPort;
 
     @Transactional
     @Override
     public FocusSessionResponse execute(SaveFocusSessionRequest request) {
-        String email = userFacadeUseCase.currentUser().email();
-        User user = queryUserPort.findByEmail(email)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        User user = userFacadeUseCase.currentUser();
 
         FocusSession focusSession = new FocusSession(
                 null,

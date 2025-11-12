@@ -9,9 +9,7 @@ import whispy_server.whispy.domain.sleepsession.application.port.in.SaveSleepSes
 import whispy_server.whispy.domain.sleepsession.application.port.out.SleepSessionSavePort;
 import whispy_server.whispy.domain.sleepsession.model.SleepSession;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
-import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 
 import java.time.LocalDateTime;
 
@@ -21,14 +19,11 @@ public class SaveSleepSessionService implements SaveSleepSessionUseCase {
 
     private final SleepSessionSavePort sleepSessionSavePort;
     private final UserFacadeUseCase userFacadeUseCase;
-    private final QueryUserPort queryUserPort;
 
     @Transactional
     @Override
     public SleepSessionResponse execute(SaveSleepSessionRequest request) {
-        String email = userFacadeUseCase.currentUser().email();
-        User user = queryUserPort.findByEmail(email)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        User user = userFacadeUseCase.currentUser();
 
         SleepSession sleepSession = new SleepSession(
                 null,

@@ -10,9 +10,7 @@ import whispy_server.whispy.domain.meditationsession.application.port.out.Medita
 import whispy_server.whispy.domain.meditationsession.model.MeditationSession;
 import whispy_server.whispy.domain.statistics.meditation.daily.application.port.out.QueryMeditationStatisticsPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
-import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,15 +21,12 @@ public class SaveMeditationSessionService implements SaveMeditationSessionUseCas
 
     private final MeditationSessionSavePort meditationSessionSavePort;
     private final UserFacadeUseCase userFacadeUseCase;
-    private final QueryUserPort queryUserPort;
     private final QueryMeditationStatisticsPort queryMeditationStatisticsPort;
 
     @Transactional
     @Override
     public MeditationSessionResponse execute(SaveMeditationSessionRequest request) {
-        String email = userFacadeUseCase.currentUser().email();
-        User user = queryUserPort.findByEmail(email)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        User user = userFacadeUseCase.currentUser();
 
         MeditationSession meditationSession = new MeditationSession(
                 null,

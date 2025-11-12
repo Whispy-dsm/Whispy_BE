@@ -12,9 +12,7 @@ import whispy_server.whispy.domain.statistics.focus.comparison.application.port.
 import whispy_server.whispy.domain.statistics.focus.comparison.model.PeriodComparisonStatistics;
 import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
-import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -31,16 +29,13 @@ public class GetPeriodComparisonStatisticsService implements GetPeriodComparison
 
     private final QueryFocusComparisonPort queryFocusComparisonPort;
     private final UserFacadeUseCase userFacadeUseCase;
-    private final QueryUserPort queryUserPort;
 
     @Override
     @Transactional(readOnly = true)
     public PeriodComparisonResponse execute(FocusPeriodType period, LocalDate date) {
         DateValidator.validateNotFutureDate(date);
-        
-        String email = userFacadeUseCase.currentUser().email();
-        User user = queryUserPort.findByEmail(email)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        User user = userFacadeUseCase.currentUser();
 
         int currentMinutes = calculatePeriodMinutes(user.id(), period, date, CURRENT_PERIOD_OFFSET);
         int previousMinutes = calculatePeriodMinutes(user.id(), period, date, PREVIOUS_PERIOD_OFFSET);
