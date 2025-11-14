@@ -13,8 +13,6 @@ import whispy_server.whispy.domain.announcement.application.port.in.QueryAllAnno
 import whispy_server.whispy.domain.announcement.application.port.in.QueryAnnouncementUseCase;
 import whispy_server.whispy.global.document.api.announcement.AnnouncementApiDocument;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/announcements")
 @RequiredArgsConstructor
