@@ -1,6 +1,8 @@
 package whispy_server.whispy.domain.announcement.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.announcement.adapter.out.mapper.AnnouncementMapper;
 import whispy_server.whispy.domain.announcement.adapter.out.persistence.repository.AnnouncementJpaRepository;
@@ -30,8 +32,8 @@ public class AnnouncementPersistenceAdapter implements AnnouncementPort {
     }
 
     @Override
-    public List<Announcement> findAllByOrderByCreatedAtDesc() {
-        return announcementMapper.toModelList(announcementJpaRepository.findAllByOrderByCreatedAtDesc());
+    public Page<Announcement> findAllByOrderByCreatedAtDesc(Pageable pageable) {
+        return announcementMapper.toModelPage(announcementJpaRepository.findAllByOrderByCreatedAtDesc(pageable));
     }
 
     @Override

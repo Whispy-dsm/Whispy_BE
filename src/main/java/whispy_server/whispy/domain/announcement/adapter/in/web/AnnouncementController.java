@@ -1,6 +1,8 @@
 package whispy_server.whispy.domain.announcement.adapter.in.web;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +31,7 @@ public class AnnouncementController implements AnnouncementApiDocument {
 
     @GetMapping
     @Override
-    public List<QueryAllAnnouncementResponse> getAllAnnouncements() {
-        return queryAllAnnouncementUseCase.execute();
+    public Page<QueryAllAnnouncementResponse> getAllAnnouncements(Pageable pageable) {
+        return queryAllAnnouncementUseCase.execute(pageable);
     }
 }

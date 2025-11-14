@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.QueryAllAnnouncementResponse;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.QueryAnnouncementResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
@@ -38,7 +40,7 @@ public interface AnnouncementApiDocument {
 
     @Operation(
             summary = "공지사항 전체 조회",
-            description = "모든 공지사항을 조회합니다.",
+            description = "모든 공지사항을 페이지 단위로 조회합니다.",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     @ApiResponses({
@@ -47,5 +49,5 @@ public interface AnnouncementApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    List<QueryAllAnnouncementResponse> getAllAnnouncements();
+    Page<QueryAllAnnouncementResponse> getAllAnnouncements(Pageable pageable);
 }
