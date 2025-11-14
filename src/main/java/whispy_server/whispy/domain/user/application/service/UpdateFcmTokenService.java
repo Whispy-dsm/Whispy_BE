@@ -26,7 +26,6 @@ public class UpdateFcmTokenService implements UpdateFcmTokenUseCase {
     private final InitializeTopicsUseCase initializeTopicsUseCase;
     private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final FcmSendPort fcmSendPort;
 
     @Override
     public void execute(String fcmToken) {
@@ -37,14 +36,14 @@ public class UpdateFcmTokenService implements UpdateFcmTokenUseCase {
             if (currentUser.fcmToken() != null && !currentUser.fcmToken().trim().isEmpty()) {
                 sendLogoutNotification(currentUser.fcmToken(), currentUser.email());
             }
-            
+
             // 기존 RefreshToken 강제 삭제 (기존 세션 무효화)
             refreshTokenRepository.deleteById(currentUser.email());
-            
+
             User updatedUser = currentUser.updateFcmToken(fcmToken);
             userSavePort.save(updatedUser);
 
-            initializeTopicsUseCase.execute(currentUser.email(), fcmToken);
+            initializeTopicsUseCase.execute(currentUser.email(), fcmToken, false);
         }
     }
 

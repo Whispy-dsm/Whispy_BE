@@ -4,5 +4,5 @@ import whispy_server.whispy.global.annotation.UseCase;
 
 @UseCase
 public interface InitializeTopicsUseCase {
-    void execute(String email, String fcmToken);
+    void execute(String email, String fcmToken, boolean isEventAgreed);
 }

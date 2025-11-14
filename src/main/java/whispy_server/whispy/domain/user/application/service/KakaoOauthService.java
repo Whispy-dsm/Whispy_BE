@@ -49,7 +49,7 @@ public class KakaoOauthService implements KakaoOauthUseCase {
             User updatedUser = user.updateFcmToken(fcmToken);
             userSavePort.save(updatedUser);
 
-            initializeTopicsUseCase.execute(user.email(), fcmToken);
+            initializeTopicsUseCase.execute(user.email(), fcmToken, false);
             user = updatedUser;
         }
 

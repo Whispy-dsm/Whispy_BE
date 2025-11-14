@@ -64,7 +64,7 @@ public class UserLoginService implements UserLoginUseCase {
             userSavePort.save(updatedUser);
 
             // 새 기기 토픽 초기화
-            initializeTopicsUseCase.execute(user.email(), request.fcmToken());
+            initializeTopicsUseCase.execute(user.email(), request.fcmToken(), false);
 
             return updatedUser;
         }

@@ -58,7 +58,7 @@ public class UserRegisterService implements UserRegisterUseCase {
         userSavePort.save(user);
 
         if(request.fcmToken() != null){
-            initializeTopicsUseCase.execute(user.email(), request.fcmToken());
+            initializeTopicsUseCase.execute(user.email(), request.fcmToken(), request.isEventAgreed());
         }
     }
 }

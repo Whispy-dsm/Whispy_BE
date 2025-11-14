@@ -31,6 +31,9 @@ public record RegisterRequest(
         Gender gender,
 
         @Schema(name = "fcm_token", description = "fcm 토큰")
-        String fcmToken
+        String fcmToken,
+
+        @Schema(name = "is_event_agreed", description = "이벤트 알림 수신 동의 여부")
+        boolean isEventAgreed
 ) {
 }

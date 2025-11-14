@@ -23,25 +23,29 @@ public class InitializeTopicsService implements InitializeTopicsUseCase {
     private final FcmSendPort fcmSendPort;
 
     @Override
-    public void execute(String email, String fcmToken) {
-        executeForUser(email, fcmToken);
+    public void execute(String email, String fcmToken, boolean isEventAgreed) {
+        executeForUser(email, fcmToken, isEventAgreed);
 
     }
 
-    private void executeForUser(String email, String fcmToken) {
+    private void executeForUser(String email, String fcmToken, boolean isEventAgreed) {
         List<TopicSubscription> existingSubscriptions = queryTopicSubscriptionPort.findByEmail(email);
 
         if (existingSubscriptions.isEmpty()) {
-            createAllTopicsForNewUser(email, fcmToken);
+            createAllTopicsForNewUser(email, fcmToken, isEventAgreed);
         } else {
             reRegisterFcmTokenForExistingUser(existingSubscriptions, fcmToken);
         }
     }
 
-    private void createAllTopicsForNewUser(String email, String fcmToken) {
+    private void createAllTopicsForNewUser(String email, String fcmToken, boolean isEventAgreed) {
         Arrays.stream(NotificationTopic.values())
                 .forEach(topic -> {
-                    boolean isSubscribed = (topic != NotificationTopic.ONLY_ADMIN);
+                    boolean isSubscribed = switch (topic) {
+                        case ONLY_ADMIN -> false;
+                        case GENERAL_ANNOUNCEMENT -> isEventAgreed;
+                        default -> true;
+                    };
 
                     TopicSubscription subscription = new TopicSubscription(
                             null,
