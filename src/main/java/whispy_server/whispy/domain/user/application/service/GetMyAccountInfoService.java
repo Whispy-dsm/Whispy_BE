@@ -11,11 +11,19 @@ import whispy_server.whispy.domain.user.model.User;
 @RequiredArgsConstructor
 public class GetMyAccountInfoService implements GetMyAccountInfoUseCase {
 
+    private static final String DEFAULT_PROVIDER = "일반 로그인";
+
     private final UserFacadeUseCase userFacadeUseCase;
 
     @Override
     public MyAccountInfoResponse execute() {
         User currentUser = userFacadeUseCase.currentUser();
-        return MyAccountInfoResponse.from(currentUser);
+
+        String maskedPassword = null;
+        if (DEFAULT_PROVIDER.equals(currentUser.provider()) && currentUser.password() != null) {
+            maskedPassword = "*".repeat(currentUser.password().length());
+        }
+
+        return MyAccountInfoResponse.of(currentUser, maskedPassword);
     }
 }

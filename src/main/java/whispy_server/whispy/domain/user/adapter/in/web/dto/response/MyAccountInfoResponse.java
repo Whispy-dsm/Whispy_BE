@@ -8,15 +8,17 @@ public record MyAccountInfoResponse(
         String profileImageUrl,
         String email,
         Gender gender,
-        String provider
+        String provider,
+        String password
 ) {
-    public static MyAccountInfoResponse from(User user) {
+    public static MyAccountInfoResponse of(User user, String maskedPassword) {
         return new MyAccountInfoResponse(
                 user.name(),
                 user.profileImageUrl(),
                 user.email(),
                 user.gender(),
-                user.provider()
+                user.provider(),
+                maskedPassword
         );
     }
 }
