@@ -56,8 +56,6 @@ public class UserWithdrawalService implements UserWithdrawalUseCase {
         deleteNotificationPort.deleteByEmail(email);
         deleteTopicSubscriptionPort.deleteByEmail(email);
 
-        // Subscription은 결제 기록 보존을 위해 삭제하지 않음
-
         // User 삭제
         refreshTokenRepository.deleteById(email);
         userDeletePort.deleteById(userId);
