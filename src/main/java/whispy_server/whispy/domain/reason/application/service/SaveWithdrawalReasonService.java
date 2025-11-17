@@ -8,8 +8,6 @@ import whispy_server.whispy.domain.reason.application.port.in.SaveWithdrawalReas
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonSavePort;
 import whispy_server.whispy.domain.reason.model.WithdrawalReason;
 import whispy_server.whispy.domain.reason.model.types.WithdrawalReasonType;
-import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
-import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.exception.domain.reason.InvalidWithdrawalReasonDetailException;
 
 @Service
@@ -17,23 +15,19 @@ import whispy_server.whispy.global.exception.domain.reason.InvalidWithdrawalReas
 public class SaveWithdrawalReasonService implements SaveWithdrawalReasonUseCase {
 
     private final WithdrawalReasonSavePort withdrawalReasonSavePort;
-    private final UserFacadeUseCase userFacadeUseCase;
 
     @Override
     @Transactional
     public void execute(SaveWithdrawalReasonRequest request) {
-        User currentUser = userFacadeUseCase.currentUser();
-        
         validateDetailContent(request.reasonType(), request.detailContent());
-        
+
         WithdrawalReason withdrawalReason = new WithdrawalReason(
                 null,
-                currentUser.id(),
                 request.reasonType(),
                 request.detailContent(),
                 null
         );
-        
+
         withdrawalReasonSavePort.save(withdrawalReason);
     }
     

@@ -136,7 +136,7 @@ public class MusicJpaEntity {
 
 ### 5.1 User 참조 관계
 
-#### 5.1.1 userId (Long)로 참조하는 엔티티 - 7개
+#### 5.1.1 userId (Long)로 참조하는 엔티티 - 6개
 
 | 엔티티 | 테이블명 | 인덱스 | Unique 제약 | 용도 |
 |--------|----------|--------|-------------|------|
@@ -146,7 +146,6 @@ public class MusicJpaEntity {
 | **MusicLikeJpaEntity** | `tbl_music_like` | - | `(user_id, music_id)` | 음악 좋아요 |
 | **ListeningHistoryJpaEntity** | `tbl_listening_history` | - | `(user_id, music_id)` | 청취 기록 |
 | **SoundSpaceMusicJpaEntity** | `tbl_soundspace_music` | - | `(user_id, music_id)` | 사운드스페이스 |
-| **WithdrawalReasonJpaEntity** | `tbl_withdrawal_reason` | - | - | 탈퇴 이유 |
 
 **예시 코드:**
 ```java
@@ -231,14 +230,13 @@ public class MusicLikeJpaEntity {
 
 ```
 User (id, email)
- ├─ userId 기반 참조 (7개)
+ ├─ userId 기반 참조 (6개)
  │   ├─ FocusSession
  │   ├─ SleepSession
  │   ├─ MeditationSession
  │   ├─ MusicLike
  │   ├─ ListeningHistory
- │   ├─ SoundSpaceMusic
- │   └─ WithdrawalReason
+ │   └─ SoundSpaceMusic
  │
  └─ email 기반 참조 (3개)
      ├─ Notification
@@ -307,7 +305,6 @@ public class UserWithdrawalService implements UserWithdrawalUseCase {
         // 3️⃣ 보존되는 데이터
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // Subscription은 결제 기록 보존을 위해 삭제하지 않음
-        // WithdrawalReason은 통계/분석을 위해 보존
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // 4️⃣ User 삭제
@@ -328,9 +325,8 @@ public class UserWithdrawalService implements UserWithdrawalUseCase {
 7. Notification
 8. TopicSubscription
 
-**보존되는 엔티티 (2개):**
+**보존되는 엔티티 (1개):**
 - **Subscription** - 결제 기록 법적 보존 의무
-- **WithdrawalReason** - 탈퇴 이유 통계/분석 목적
 
 ### 6.2 Music 삭제 시 CASCADE
 
@@ -376,7 +372,7 @@ public class DeleteMusicService implements DeleteMusicUseCase {
 
 | 삭제 대상 | CASCADE 여부 | 삭제되는 엔티티 수 | 구현 위치 |
 |-----------|-------------|-------------------|-----------|
-| **User** | ✅ | 8개 (총 10개 중) | `UserWithdrawalService:42` |
+| **User** | ✅ | 8개 (총 9개 중) | `UserWithdrawalService:42` |
 | **Music** | ✅ | 3개 (전체) | `DeleteMusicService:28` |
 | **Announcement** | ❌ | 0개 | `DeleteAnnouncementService:17` |
 | **Admin** | ❌ | 0개 | - |
@@ -615,21 +611,9 @@ user.getName();
 | 엔티티 | 보존 이유 | 참조 필드 |
 |--------|----------|----------|
 | **Subscription** | 결제 기록 법적 보존 의무 (전자상거래법) | `email` |
-| **WithdrawalReason** | 탈퇴 이유 통계/분석 목적 | `userId` |
 
-### 9.4 고아 데이터(Orphan Data) 관리
-
-**고아 데이터란?**
-- 부모 엔티티는 삭제되었지만, 자식 엔티티가 남아있어 존재하지 않는 부모를 참조하는 데이터
-
-**현재 프로젝트의 고아 데이터:**
-```
-User 삭제 → WithdrawalReason.userId는 존재하지 않는 User를 참조
-```
-
-이는 **의도된 설계**입니다:
-- WithdrawalReason은 탈퇴한 유저의 통계 분석용
-- Admin이 필요시 수동으로 삭제 가능
+**참고:**
+- WithdrawalReason은 User를 참조하지 않으며, 독립적인 통계 데이터로 관리됩니다.
 
 ### 9.5 새로운 엔티티 추가 시 체크리스트
 
@@ -669,14 +653,13 @@ User 삭제 → WithdrawalReason.userId는 존재하지 않는 User를 참조
 │                        User (id, email)                      │
 └─────────────────────────────────────────────────────────────┘
           │
-          ├─ userId 참조 (7개)
+          ├─ userId 참조 (6개)
           │   ├─ FocusSession          → deleteByUserId()
           │   ├─ SleepSession          → deleteByUserId()
           │   ├─ MeditationSession     → deleteByUserId()
           │   ├─ MusicLike             → deleteByUserId()
           │   ├─ ListeningHistory      → deleteByUserId()
-          │   ├─ SoundSpaceMusic       → deleteByUserId()
-          │   └─ WithdrawalReason      → 🔒 보존
+          │   └─ SoundSpaceMusic       → deleteByUserId()
           │
           └─ email 참조 (3개)
               ├─ Notification          → deleteByEmail()

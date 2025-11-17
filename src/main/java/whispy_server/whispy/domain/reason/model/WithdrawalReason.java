@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Aggregate
 public record WithdrawalReason(
         Long id,
-        Long userId,
         WithdrawalReasonType reasonType,
         String detailContent,
         LocalDateTime createdAt
