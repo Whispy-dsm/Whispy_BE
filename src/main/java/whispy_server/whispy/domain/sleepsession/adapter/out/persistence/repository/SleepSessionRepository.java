@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface SleepSessionRepository extends JpaRepository<SleepSessionJpaEntity, Long> {
     Page<SleepSessionJpaEntity> findByUserIdOrderByStartedAtDesc(Long userId, Pageable pageable);
     Optional<SleepSessionJpaEntity> findByIdAndUserId(Long id, Long userId);
+    void deleteByUserId(Long userId);
 }

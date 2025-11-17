@@ -19,6 +19,6 @@ public class DeleteAllNotificationsService implements DeleteAllNotificationsUseC
     @Override
     public void execute() {
         User currentUser = userFacadeUseCase.currentUser();
-        deleteNotificationPort.deleteAllByEmail(currentUser.email());
+        deleteNotificationPort.deleteByEmail(currentUser.email());
     }
 }

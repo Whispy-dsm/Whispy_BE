@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface FocusSessionRepository extends JpaRepository<FocusSessionJpaEntity, Long> {
     Page<FocusSessionJpaEntity> findByUserIdOrderByStartedAtDesc(Long userId, Pageable pageable);
     Optional<FocusSessionJpaEntity> findByIdAndUserId(Long id, Long userId);
+    void deleteByUserId(Long userId);
 }

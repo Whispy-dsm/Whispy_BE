@@ -61,4 +61,9 @@ public class SoundSpaceMusicPersistenceAdapter implements SoundSpaceMusicPort {
     public void deleteAllByMusicId(Long musicId) {
         soundSpaceMusicJpaRepository.deleteAllByMusicId(musicId);
     }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        soundSpaceMusicJpaRepository.deleteByUserId(userId);
+    }
 }

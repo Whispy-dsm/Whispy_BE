@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface MeditationSessionRepository extends JpaRepository<MeditationSessionJpaEntity, Long> {
     Page<MeditationSessionJpaEntity> findByUserIdOrderByStartedAtDesc(Long userId, Pageable pageable);
     Optional<MeditationSessionJpaEntity> findByIdAndUserId(Long id, Long userId);
+    void deleteByUserId(Long userId);
 }
