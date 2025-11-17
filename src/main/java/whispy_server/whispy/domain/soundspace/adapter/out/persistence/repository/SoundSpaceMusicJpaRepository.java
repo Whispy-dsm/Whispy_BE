@@ -13,5 +13,7 @@ public interface SoundSpaceMusicJpaRepository extends JpaRepository<SoundSpaceMu
 
     void deleteAllByMusicId(Long musicId);
 
+    void deleteByUserId(Long userId);
+
     List<SoundSpaceMusicJpaEntity> findAllByUserIdOrderByAddedAtDesc(Long userId);
 }

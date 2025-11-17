@@ -10,6 +10,7 @@ public interface MusicLikeJpaRepository extends JpaRepository<MusicLikeJpaEntity
     boolean existsByUserIdAndMusicId(Long userId, Long musicId);
     void deleteByUserIdAndMusicId(Long userId, Long musicId);
     void deleteAllByMusicId(Long musicId);
+    void deleteByUserId(Long userId);
     List<MusicLikeJpaEntity> findAllByUserId(Long userId);
     Optional<MusicLikeJpaEntity> findByUserIdAndMusicId(Long userId, Long musicId);
 }

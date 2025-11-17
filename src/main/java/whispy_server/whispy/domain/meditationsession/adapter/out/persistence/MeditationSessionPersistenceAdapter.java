@@ -41,4 +41,9 @@ public class MeditationSessionPersistenceAdapter implements MeditationSessionPor
     public void deleteById(Long id) {
         meditationSessionRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        meditationSessionRepository.deleteByUserId(userId);
+    }
 }

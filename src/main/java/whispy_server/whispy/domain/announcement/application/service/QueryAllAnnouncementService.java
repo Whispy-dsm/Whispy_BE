@@ -21,11 +21,6 @@ public class QueryAllAnnouncementService implements QueryAllAnnouncementUseCase 
     @Override
     public Page<QueryAllAnnouncementResponse> execute(Pageable pageable) {
         return announcementPort.findAllByOrderByCreatedAtDesc(pageable)
-                .map(announcement -> new QueryAllAnnouncementResponse(
-                        announcement.id(),
-                        announcement.title(),
-                        announcement.content(),
-                        announcement.bannerImageUrl()
-                ));
+                .map(QueryAllAnnouncementResponse::from);
     }
 }

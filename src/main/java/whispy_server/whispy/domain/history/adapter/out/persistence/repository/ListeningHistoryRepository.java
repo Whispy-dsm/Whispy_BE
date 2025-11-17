@@ -8,4 +8,5 @@ public interface ListeningHistoryRepository extends JpaRepository<ListeningHisto
 
     Optional<ListeningHistoryJpaEntity> findByUserIdAndMusicId(Long userId, Long musicId);
     void deleteAllByMusicId(Long musicId);
+    void deleteByUserId(Long userId);
 }

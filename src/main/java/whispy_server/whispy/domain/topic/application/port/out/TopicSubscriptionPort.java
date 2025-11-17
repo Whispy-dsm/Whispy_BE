@@ -1,4 +1,4 @@
 package whispy_server.whispy.domain.topic.application.port.out;
 
-public interface TopicSubscriptionPort extends QueryTopicSubscriptionPort, SaveTopicSubscriptionPort {
+public interface TopicSubscriptionPort extends QueryTopicSubscriptionPort, SaveTopicSubscriptionPort, DeleteTopicSubscriptionPort {
 }
