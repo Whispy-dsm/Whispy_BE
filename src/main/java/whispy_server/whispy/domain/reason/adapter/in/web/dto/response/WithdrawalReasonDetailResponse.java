@@ -10,23 +10,19 @@ import java.time.LocalDateTime;
 public record WithdrawalReasonDetailResponse(
         @Schema(description = "탈퇴 사유 ID", example = "1")
         Long id,
-        
-        @Schema(description = "사용자 ID", example = "123")
-        Long userId,
-        
+
         @Schema(description = "탈퇴 사유 타입", example = "NOT_USEFUL")
         WithdrawalReasonType reasonType,
-        
+
         @Schema(description = "상세 내용", example = "더 나은 서비스를 찾았습니다.")
         String detailContent,
-        
+
         @Schema(description = "생성 시간", example = "2025-01-01T12:00:00")
         LocalDateTime createdAt
 ) {
     public static WithdrawalReasonDetailResponse from(WithdrawalReason withdrawalReason) {
         return new WithdrawalReasonDetailResponse(
                 withdrawalReason.id(),
-                withdrawalReason.userId(),
                 withdrawalReason.reasonType(),
                 withdrawalReason.detailContent(),
                 withdrawalReason.createdAt()

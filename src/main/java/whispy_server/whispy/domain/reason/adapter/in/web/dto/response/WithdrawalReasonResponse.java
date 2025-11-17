@@ -10,20 +10,16 @@ import java.time.LocalDateTime;
 public record WithdrawalReasonResponse(
         @Schema(description = "탈퇴 사유 ID", example = "1")
         Long id,
-        
-        @Schema(description = "사용자 ID", example = "123")
-        Long userId,
-        
+
         @Schema(description = "탈퇴 사유 타입", example = "NOT_USEFUL")
         WithdrawalReasonType reasonType,
-        
+
         @Schema(description = "생성 시간", example = "2025-01-01T12:00:00")
         LocalDateTime createdAt
 ) {
     public static WithdrawalReasonResponse from(WithdrawalReason withdrawalReason) {
         return new WithdrawalReasonResponse(
                 withdrawalReason.id(),
-                withdrawalReason.userId(),
                 withdrawalReason.reasonType(),
                 withdrawalReason.createdAt()
         );
