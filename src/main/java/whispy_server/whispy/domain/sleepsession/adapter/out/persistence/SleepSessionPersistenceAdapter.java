@@ -41,4 +41,9 @@ public class SleepSessionPersistenceAdapter implements SleepSessionPort {
     public void deleteById(Long id) {
         sleepSessionRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        sleepSessionRepository.deleteByUserId(userId);
+    }
 }

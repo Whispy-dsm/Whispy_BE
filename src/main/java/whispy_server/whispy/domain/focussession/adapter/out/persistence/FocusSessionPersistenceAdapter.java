@@ -41,4 +41,9 @@ public class FocusSessionPersistenceAdapter implements FocusSessionPort {
     public void deleteById(Long id) {
         focusSessionRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        focusSessionRepository.deleteByUserId(userId);
+    }
 }

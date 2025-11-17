@@ -52,4 +52,9 @@ public class TopicSubscriptionPersistenceAdapter implements TopicSubscriptionPor
         List<TopicSubscriptionJpaEntity> savedEntities = topicSubscriptionRepository.saveAll(entities);
         return mapper.toModelList(savedEntities);
     }
+
+    @Override
+    public void deleteByEmail(String email) {
+        topicSubscriptionRepository.deleteByEmail(email);
+    }
 }

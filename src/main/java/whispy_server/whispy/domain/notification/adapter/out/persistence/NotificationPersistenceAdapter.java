@@ -64,8 +64,8 @@ public class NotificationPersistenceAdapter implements NotificationPort {
     }
 
     @Override
-    public void deleteAllByEmail(String email) {
-        notificationRepository.deleteAllByEmail(email);
+    public void deleteByEmail(String email) {
+        notificationRepository.deleteByEmail(email);
     }
 
     @Override

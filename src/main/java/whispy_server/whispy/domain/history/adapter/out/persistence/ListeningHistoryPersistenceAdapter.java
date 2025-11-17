@@ -72,4 +72,9 @@ public class ListeningHistoryPersistenceAdapter implements ListeningHistoryPort 
     public void deleteAllByMusicId(Long musicId) {
         listeningHistoryRepository.deleteAllByMusicId(musicId);
     }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        listeningHistoryRepository.deleteByUserId(userId);
+    }
 }
