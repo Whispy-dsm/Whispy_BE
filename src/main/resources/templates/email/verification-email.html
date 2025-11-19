@@ -5,77 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Whispy 이메일 인증</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5;">
-    <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f5f5f5;" cellpadding="0" cellspacing="0">
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #ffffff;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;" cellpadding="0" cellspacing="0">
         <tr>
-            <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" style="max-width: 600px; width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" cellpadding="0" cellspacing="0">
+            <td align="center" style="padding: 60px 20px;">
+                <table role="presentation" style="max-width: 500px; width: 100%; border-collapse: collapse;" cellpadding="0" cellspacing="0">
 
                     <!-- Header -->
                     <tr>
-                        <td style="padding: 40px 40px 30px 40px; text-align: center; background: linear-gradient(135deg, #1B214B 0%, #2a3a5f 100%); border-radius: 16px 16px 0 0;">
-                            <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">
+                        <td style="padding-bottom: 40px; text-align: center;">
+                            <h1 style="margin: 0; color: #1B214B; font-size: 28px; font-weight: 600; letter-spacing: -0.5px;">
                                 Whispy
                             </h1>
-                            <p style="margin: 10px 0 0 0; color: rgba(255, 255, 255, 0.9); font-size: 16px;">
-                                이메일 인증
-                            </p>
                         </td>
                     </tr>
 
                     <!-- Content -->
                     <tr>
-                        <td style="padding: 40px;">
-                            <p style="margin: 0 0 20px 0; color: #333333; font-size: 16px; line-height: 1.6;">
-                                안녕하세요!
-                            </p>
-                            <p style="margin: 0 0 30px 0; color: #666666; font-size: 15px; line-height: 1.6;">
-                                Whispy 서비스에 가입해 주셔서 감사합니다.<br>
-                                아래의 인증 코드를 입력하여 이메일 인증을 완료해주세요.
+                        <td style="padding: 0 20px;">
+                            <p style="margin: 0 0 30px 0; color: #666666; font-size: 15px; line-height: 1.7; text-align: center;">
+                                이메일 인증을 위해<br>아래 코드를 입력해주세요
                             </p>
 
                             <!-- Verification Code Box -->
-                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 30px 0;" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td style="background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); border-radius: 12px; padding: 30px; text-align: center; border: 2px dashed #1B214B;">
-                                        <p style="margin: 0 0 15px 0; color: #666666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
-                                            인증 코드
-                                        </p>
-                                        <div style="background-color: #ffffff; border-radius: 8px; padding: 20px; display: inline-block; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
-                                            <span th:text="${code}" style="font-size: 36px; font-weight: 700; letter-spacing: 8px; color: #4A90E2; font-family: 'Courier New', monospace;">
-                                                123456
-                                            </span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div style="margin: 0 0 30px 0; padding: 35px 30px; background-color: #f8f9fb; border-radius: 12px; border: 1px solid #e5e8eb;">
+                                <div style="text-align: center;">
+                                    <span th:text="${code}" style="display: inline-block; font-size: 34px; font-weight: 600; letter-spacing: 8px; color: #4A90E2;">
+                                        123456
+                                    </span>
+                                </div>
+                            </div>
 
-                            <!-- Info Box -->
-                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 0 0 20px 0; background-color: #fff8e6; border-left: 4px solid #ffc107; border-radius: 8px;" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td style="padding: 20px;">
-                                        <p style="margin: 0; color: #856404; font-size: 14px; line-height: 1.5;">
-                                            <strong>⏰ 유효 시간:</strong> 이 코드는 <strong>5분 후</strong> 만료됩니다.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
+                            <p style="margin: 0 0 40px 0; color: #999999; font-size: 13px; line-height: 1.6; text-align: center;">
+                                유효시간 5분
+                            </p>
 
-                            <p style="margin: 0; color: #999999; font-size: 14px; line-height: 1.6;">
-                                본인이 요청하지 않은 이메일이라면 이 메일을 무시하셔도 됩니다.<br>
-                                계정 보안을 위해 이 코드를 타인과 공유하지 마세요.
+                            <p style="margin: 0; color: #aaaaaa; font-size: 12px; line-height: 1.5; text-align: center;">
+                                본인이 요청하지 않았다면 이 메일을 무시하세요
                             </p>
                         </td>
-                    </tr>
-
-                    <!-- Footer -->
-                    <tr>
-                        <td style="padding: 20px 40px; background-color: #f8f9fa; border-radius: 0 0 16px 16px; text-align: center; border-top: 1px solid #e9ecef;">
-                            <p style="margin: 0; color: #999999; font-size: 13px;">
-                                이 메일은 발신 전용입니다. 문의사항이 있으시면 고객센터로 연락해주세요.
-                            </p>
-                        </td>
-
                     </tr>
 
                 </table>
