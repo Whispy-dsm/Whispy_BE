@@ -1,15 +1,22 @@
 package whispy_server.whispy.domain.soundspace.adapter.in.web.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;
 import whispy_server.whispy.domain.soundspace.adapter.out.dto.SoundSpaceMusicWithDetailDto;
 
 import java.util.List;
 
+@Schema(description = "사운드 스페이스 음악 응답")
 public record SoundSpaceMusicResponse(
+        @Schema(description = "음악 ID", example = "1")
         Long musicId,
+        @Schema(description = "음악 제목", example = "편안한 빗소리")
         String title,
+        @Schema(description = "파일 경로", example = "/music/rain.mp3")
         String filePath,
+        @Schema(description = "음악 길이(초)", example = "180")
         Integer duration,
+        @Schema(description = "음악 카테고리")
         MusicCategory category
 ) {
     public static List<SoundSpaceMusicResponse> fromList(List<SoundSpaceMusicWithDetailDto> dtos) {

@@ -6,14 +6,15 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "비밀번호 변경 요청")
 public record ChangePasswordRequest(
         @NotBlank
         @Email
-        @Schema(name = "email", description = "자기 자신의 이메일")
+        @Schema(name = "email", description = "자기 자신의 이메일", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
         String email,
 
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$")
-        @Schema(name = "new_password", description = "비밀번호는 8자 이상, 숫자 1개 이상, 특수문자 1개 이상 포함해야 합니다.", example = "@new_password123!")
+        @Schema(name = "new_password", description = "비밀번호는 8자 이상, 숫자 1개 이상, 특수문자 1개 이상 포함해야 합니다.", example = "@new_password123!", requiredMode = Schema.RequiredMode.REQUIRED)
         @Size(min = 8, max = 60)
         @NotBlank
         String newPassword

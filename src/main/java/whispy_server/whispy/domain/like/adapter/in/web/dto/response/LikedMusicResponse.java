@@ -6,17 +6,18 @@ import whispy_server.whispy.domain.music.model.type.MusicCategory;
 
 import java.util.List;
 
+@Schema(description = "좋아요한 음악 응답")
 public record LikedMusicResponse(
-        @Schema(description = "음악 ID")
+        @Schema(description = "음악 ID", example = "1")
         Long musicId,
 
-        @Schema(description = "음악 제목")
+        @Schema(description = "음악 제목", example = "편안한 빗소리")
         String title,
 
-        @Schema(description = "파일 경로")
+        @Schema(description = "파일 경로", example = "/music/rain.mp3")
         String filePath,
 
-        @Schema(description = "음악 길이(초)")
+        @Schema(description = "음악 길이(초)", example = "180")
         Integer duration,
 
         @Schema(description = "음악 카테고리")

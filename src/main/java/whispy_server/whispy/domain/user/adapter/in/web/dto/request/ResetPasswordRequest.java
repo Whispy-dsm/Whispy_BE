@@ -1,15 +1,19 @@
 package whispy_server.whispy.domain.user.adapter.in.web.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+@Schema(description = "비밀번호 재설정 요청")
 public record ResetPasswordRequest(
+        @Schema(description = "이메일", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
         @Email
         @NotBlank
         String email,
 
+        @Schema(description = "새 비밀번호 (8자 이상, 숫자 및 특수문자 포함)", example = "newPassword123!", requiredMode = Schema.RequiredMode.REQUIRED)
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$")
         @Size(min = 8, max = 60)
         @NotBlank

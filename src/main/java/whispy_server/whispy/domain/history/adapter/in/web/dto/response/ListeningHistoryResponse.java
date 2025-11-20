@@ -1,16 +1,24 @@
 package whispy_server.whispy.domain.history.adapter.in.web.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import whispy_server.whispy.domain.history.adapter.out.dto.ListeningHistoryWithMusicDto;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Schema(description = "청취 기록 응답")
 public record ListeningHistoryResponse(
+        @Schema(description = "음악 ID", example = "1")
         Long musicId,
+        @Schema(description = "음악 제목", example = "편안한 빗소리")
         String title,
+        @Schema(description = "파일 경로", example = "/music/rain.mp3")
         String filePath,
+        @Schema(description = "음악 길이(초)", example = "180")
         Integer duration,
+        @Schema(description = "음악 카테고리")
         MusicCategory category,
+        @Schema(description = "청취 일시", example = "2024-01-01T12:00:00")
         LocalDateTime listenedAt
 ) {
     public static ListeningHistoryResponse from(ListeningHistoryWithMusicDto dto) {
