@@ -15,7 +15,7 @@
 //
 //    @Test
 //    void testMapping() {
-//        // given
+//
 //        NotificationJpaEntity entity = NotificationJpaEntity.builder()
 //                .email("test@test.com")
 //                .title("title")
@@ -24,10 +24,10 @@
 //                .isRead(true)
 //                .build();
 //
-//        // when
+//
 //        Notification model = notificationEntityMapper.toModel(entity);
 //
-//        // then
+//
 //        System.out.println("isRead = " + model.isRead());
 //        assertThat(model.isRead()).isTrue();  // true여야 정상
 //    }
