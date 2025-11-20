@@ -37,15 +37,14 @@ public class SendEmailVerificationService implements SendEmailVerificationUseCas
             throw EmailRateLimitExceededException.EXCEPTION;
         }
         
-        try {
-            if (!redisUtil.setIfAbsent(codeKey, code, CODE_EXPIRATION)) {
-                throw EmailAlreadySentException.EXCEPTION;
-            }
+        if (!redisUtil.setIfAbsent(codeKey, code, CODE_EXPIRATION)) {
+            redisUtil.delete(rateLimitKey);
+            throw EmailAlreadySentException.EXCEPTION;
+        }
 
+        try {
             emailSendPort.sendVerificationCode(email, code);
-            
         } catch (Exception e) {
-            // 발송 실패 시 Redis 롤백
             redisUtil.delete(codeKey);
             redisUtil.delete(rateLimitKey);
             throw EmailSendFailedException.EXCEPTION;
