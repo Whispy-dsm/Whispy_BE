@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
+import whispy_server.whispy.domain.statistics.common.util.StatisticsPeriodRangeCalculator;
 import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
 import whispy_server.whispy.domain.statistics.focus.comparison.adapter.in.web.dto.response.PeriodComparisonResponse;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
@@ -14,7 +15,6 @@ import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -74,23 +74,6 @@ public class GetPeriodComparisonStatisticsService implements GetPeriodComparison
             default -> date;
         };
 
-        return switch (period) {
-            case WEEK -> new LocalDateTime[]{
-                    targetDate.with(DayOfWeek.MONDAY).atStartOfDay(),
-                    targetDate.with(DayOfWeek.SUNDAY).atTime(TimeConstants.END_OF_DAY)
-            };
-            case MONTH -> new LocalDateTime[]{
-                    targetDate.withDayOfMonth(1).atStartOfDay(),
-                    targetDate.withDayOfMonth(targetDate.lengthOfMonth()).atTime(TimeConstants.END_OF_DAY)
-            };
-            case YEAR -> new LocalDateTime[]{
-                    targetDate.withDayOfYear(1).atStartOfDay(),
-                    targetDate.withDayOfYear(targetDate.lengthOfYear()).atTime(TimeConstants.END_OF_DAY)
-            };
-            default -> new LocalDateTime[]{
-                    targetDate.atStartOfDay(),
-                    targetDate.atTime(TimeConstants.END_OF_DAY)
-            };
-        };
+        return StatisticsPeriodRangeCalculator.calculateFocusPeriodRange(period, targetDate);
     }
 }

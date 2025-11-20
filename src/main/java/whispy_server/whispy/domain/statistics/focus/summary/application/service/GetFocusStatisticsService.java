@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
-import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
+import whispy_server.whispy.domain.statistics.common.util.StatisticsPeriodRangeCalculator;
 import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
 import whispy_server.whispy.domain.statistics.focus.summary.adapter.in.web.dto.response.FocusStatisticsResponse;
 import whispy_server.whispy.domain.statistics.focus.summary.application.port.in.GetFocusStatisticsUseCase;
@@ -16,7 +16,6 @@ import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.TagM
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.EnumMap;
@@ -60,24 +59,7 @@ public class GetFocusStatisticsService implements GetFocusStatisticsUseCase {
     }
 
     private LocalDateTime[] calculatePeriodRange(FocusPeriodType period, LocalDate date) {
-        return switch (period) {
-            case TODAY -> new LocalDateTime[]{
-                    date.atStartOfDay(),
-                    date.atTime(TimeConstants.END_OF_DAY)
-            };
-            case WEEK -> new LocalDateTime[]{
-                    date.with(DayOfWeek.MONDAY).atStartOfDay(),
-                    date.with(DayOfWeek.SUNDAY).atTime(TimeConstants.END_OF_DAY)
-            };
-            case MONTH -> new LocalDateTime[]{
-                    date.withDayOfMonth(1).atStartOfDay(),
-                    date.withDayOfMonth(date.lengthOfMonth()).atTime(TimeConstants.END_OF_DAY)
-            };
-            case YEAR -> new LocalDateTime[]{
-                    date.withDayOfYear(1).atStartOfDay(),
-                    date.withDayOfYear(date.lengthOfYear()).atTime(TimeConstants.END_OF_DAY)
-            };
-        };
+        return StatisticsPeriodRangeCalculator.calculateFocusPeriodRange(period, date);
     }
 
     private Map<FocusTag, Integer> convertToTagMap(List<TagMinutesDto> aggregations) {
