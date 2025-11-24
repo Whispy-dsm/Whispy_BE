@@ -30,7 +30,7 @@ import java.util.UUID;
 @Table(name = "tbl_notification",
         indexes = {
                 @Index(name = "idx_notification_email_created", columnList = "email, created_at"),
-                @Index(name = "idx_notification_email_read", columnList = "email, read")
+                @Index(name = "idx_notification_email_read", columnList = "email, `read`")
         })
 @Getter
 @SuperBuilder
