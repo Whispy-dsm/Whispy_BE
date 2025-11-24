@@ -2,7 +2,6 @@ package whispy_server.whispy.domain.notification.application.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -16,7 +15,6 @@ import whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFaile
 
 import java.util.Collections;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SendToTopicBatchService implements SendToTopicUseCase {
