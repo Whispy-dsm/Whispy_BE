@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
@@ -15,6 +16,9 @@ import lombok.NoArgsConstructor;
 
 @Entity(name = "MusicLikeJpaEntity")
 @Table(name = "tbl_music_like",
+        indexes = {
+                @Index(name = "idx_music_like_music_id", columnList = "music_id")
+        },
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"user_id", "music_id"})
         })
