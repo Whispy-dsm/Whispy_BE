@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
@@ -17,6 +18,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_listening_history",
+        indexes = {
+                @Index(name = "idx_listening_history_music_id", columnList = "music_id")
+        },
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"user_id", "music_id"})
         })
