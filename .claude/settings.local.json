@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew clean:*)",
+      "Bash(./gradlew compileJava:*)",
+      "Bash(./gradlew build:*)",
+      "Bash(NUL)",
+      "Bash(java -version:*)",
+      "Bash(dir:*)",
+      "Bash(./gradlew tasks:*)",
+      "Bash(./gradlew bootRun:*)",
+      "Bash(tee:*)",
+      "Bash(timeout /t 15)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
