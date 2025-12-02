@@ -16,6 +16,12 @@ import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * 알림 저장 Item Processor.
+ *
+ * TopicSubscriptionJpaEntity를 NotificationJobParameters로 변환하는 배치 프로세서입니다.
+ * Job 파라미터에서 알림 정보를 읽어와 각 구독자에 대한 알림 파라미터를 생성합니다.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -28,6 +34,11 @@ public class SaveNotificationItemProcessor implements ItemProcessor<TopicSubscri
     private String body;
     private Map<String, String> data;
 
+    /**
+     * Step 시작 전에 Job 파라미터에서 알림 정보를 초기화합니다.
+     *
+     * @param stepExecution Step 실행 정보
+     */
     @BeforeStep
     public void beforeStep(StepExecution stepExecution) {
         JobParameters jobParameters = stepExecution.getJobParameters();
@@ -45,6 +56,13 @@ public class SaveNotificationItemProcessor implements ItemProcessor<TopicSubscri
         }
     }
 
+    /**
+     * 토픽 구독 엔티티를 알림 파라미터로 변환합니다.
+     *
+     * @param subscription 토픽 구독 엔티티
+     * @return 알림 저장 파라미터
+     * @throws Exception 변환 중 예외 발생 시
+     */
     @Override
     public NotificationJobParameters process(TopicSubscriptionJpaEntity subscription) throws Exception {
         return new NotificationJobParameters(

@@ -22,6 +22,10 @@ import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 
 import java.util.List;
 
+/**
+ * 사용자 로그인 서비스.
+ * 이메일과 비밀번호를 사용한 로컬 인증을 처리하고 JWT 토큰을 발급합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserLoginService implements UserLoginUseCase {
@@ -34,6 +38,13 @@ public class UserLoginService implements UserLoginUseCase {
     private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    /**
+     * 사용자 로그인을 처리합니다.
+     * 비밀번호를 검증하고, FCM 토큰을 업데이트하며, 기존 세션을 무효화한 후 새로운 JWT 토큰을 발급합니다.
+     *
+     * @param request 로그인 요청 (이메일, 비밀번호, FCM 토큰)
+     * @return JWT 액세스 토큰과 리프레시 토큰
+     */
     @Transactional
     @Override
     public TokenResponse login(UserLoginRequest request) {
@@ -46,6 +57,7 @@ public class UserLoginService implements UserLoginUseCase {
         return generateToken(user.email());
     }
 
+    /** 사용자 인증을 수행하고 FCM 토큰을 업데이트합니다 */
     private User authenticatedUser(UserLoginRequest request) {
         User user = queryUserPort.findByEmail(request.email())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
@@ -72,6 +84,7 @@ public class UserLoginService implements UserLoginUseCase {
         return user;
     }
 
+    /** 이전 기기에 로그아웃 알림을 전송합니다 */
     private void sendLogoutNotification(String oldToken, String email) {
         try {
             NotificationSendRequest request = new NotificationSendRequest(
@@ -90,6 +103,7 @@ public class UserLoginService implements UserLoginUseCase {
         }
     }
 
+    /** JWT 토큰을 생성합니다 */
     private TokenResponse generateToken(String email) {
         return jwtTokenProvider.generateToken(email, Role.USER.toString());
     }

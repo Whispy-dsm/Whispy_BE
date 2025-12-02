@@ -16,6 +16,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 사용자 사운드 스페이스에 저장된 음악을 나타내는 엔티티.
+ */
 @Entity(name = "SoundSpaceMusicJpaEntity")
 @Table(name = "tbl_soundspace_music",
         indexes = {

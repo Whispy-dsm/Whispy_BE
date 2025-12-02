@@ -18,12 +18,25 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 주간 세션 확인 영속성 어댑터.
+ *
+ * QueryDSL을 사용하여 주간 세션 데이터를 조회하는 아웃바운드 어댑터입니다.
+ */
 @Component
 @RequiredArgsConstructor
 public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    /**
+     * 기간 내 세션이 있는 날짜들을 조회합니다.
+     *
+     * @param userId 사용자 ID
+     * @param start 조회 시작 시간
+     * @param end 조회 종료 시간
+     * @return 기간 내 세션이 있는 날짜 집합
+     */
     @Override
     public Set<LocalDate> findSessionDatesInPeriod(Long userId, LocalDateTime start, LocalDateTime end) {
         QFocusSessionJpaEntity focusSession = QFocusSessionJpaEntity.focusSessionJpaEntity;
@@ -56,6 +69,14 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
         return focusDates;
     }
 
+    /**
+     * 기간 내 요일별 누적 세션 시간(분)을 조회합니다.
+     *
+     * @param userId 사용자 ID
+     * @param start 조회 시작 시간
+     * @param end 조회 종료 시간
+     * @return 요일별 누적 세션 시간 맵
+     */
     @Override
     public Map<LocalDate, Integer> findSessionMinutesInPeriod(Long userId, LocalDateTime start, LocalDateTime end) {
         QFocusSessionJpaEntity focusSession = QFocusSessionJpaEntity.focusSessionJpaEntity;

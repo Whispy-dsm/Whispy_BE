@@ -19,6 +19,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 수면 기간 비교 조회 서비스.
+ *
+ * 사용자의 수면 통계를 기간별로 비교하여 조회하는 애플리케이션 서비스입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetSleepPeriodComparisonService implements GetSleepPeriodComparisonUseCase {
@@ -30,6 +35,13 @@ public class GetSleepPeriodComparisonService implements GetSleepPeriodComparison
     private final QuerySleepComparisonPort querySleepComparisonPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 수면 기간 비교 통계를 조회합니다.
+     *
+     * @param period 통계 기간 타입
+     * @param date 기준 날짜
+     * @return 수면 기간 비교 응답
+     */
     @Override
     @Transactional(readOnly = true)
     public SleepPeriodComparisonResponse execute(SleepPeriodType period, LocalDate date) {

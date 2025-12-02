@@ -21,6 +21,10 @@ import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 카카오 OAuth 로그인 서비스.
+ * 카카오 액세스 토큰으로 사용자 정보를 가져와 인증하고 JWT 토큰을 발급합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class KakaoOauthService implements KakaoOauthUseCase {
@@ -33,6 +37,14 @@ public class KakaoOauthService implements KakaoOauthUseCase {
     private final RefreshTokenRepository refreshTokenRepository;
     private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
 
+    /**
+     * 카카오 액세스 토큰으로 로그인하고 JWT 토큰을 발급합니다.
+     * 신규 사용자의 경우 자동으로 회원가입이 진행됩니다.
+     *
+     * @param accessToken 카카오에서 발급받은 액세스 토큰
+     * @param fcmToken Firebase Cloud Messaging 토큰 (선택)
+     * @return JWT 액세스 토큰과 리프레시 토큰
+     */
     @Override
     @Transactional
     public TokenResponse loginWithKakao(String accessToken, String fcmToken) {
@@ -59,6 +71,7 @@ public class KakaoOauthService implements KakaoOauthUseCase {
         return jwtTokenProvider.generateToken(user.email(), user.role().name());
     }
 
+    /** 이전 기기에 로그아웃 알림을 전송합니다 */
     private void sendLogoutNotification(String oldToken, String email) {
         try {
             NotificationSendRequest request = new NotificationSendRequest(

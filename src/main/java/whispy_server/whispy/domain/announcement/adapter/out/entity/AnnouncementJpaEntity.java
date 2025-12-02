@@ -13,6 +13,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import whispy_server.whispy.global.entity.BaseTimeEntity;
 
+/**
+ * 공지사항 JPA 엔티티.
+ *
+ * tbl_announcement 테이블과 매핑되는 엔티티입니다.
+ * BaseTimeEntity를 상속하여 생성일시, 수정일시를 자동으로 관리합니다.
+ */
 @Entity(name = "AnnouncementJpaEntity")
 @Table(name = "tbl_announcement")
 @SuperBuilder

@@ -17,6 +17,11 @@ import whispy_server.whispy.global.document.api.statistics.SleepStatisticsApiDoc
 
 import java.time.LocalDate;
 
+/**
+ * 수면 통계 REST 컨트롤러.
+ *
+ * 수면 통계, 기간 비교, 일일 상세 통계를 조회하는 인바운드 어댑터입니다.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/statistics/sleep")
@@ -26,6 +31,13 @@ public class SleepStatisticsController implements SleepStatisticsApiDocument {
     private final GetSleepPeriodComparisonUseCase getSleepPeriodComparisonUseCase;
     private final GetDailySleepStatisticsUseCase getDailySleepStatisticsUseCase;
 
+    /**
+     * 수면 통계를 조회합니다.
+     *
+     * @param period 통계 기간 타입
+     * @param date 기준 날짜
+     * @return 수면 통계 응답
+     */
     @GetMapping
     public SleepStatisticsResponse getSleepStatistics(
             @RequestParam SleepPeriodType period,
@@ -34,6 +46,13 @@ public class SleepStatisticsController implements SleepStatisticsApiDocument {
         return getSleepStatisticsUseCase.execute(period, date);
     }
 
+    /**
+     * 수면 기간 비교 통계를 조회합니다.
+     *
+     * @param period 통계 기간 타입
+     * @param date 기준 날짜
+     * @return 수면 기간 비교 응답
+     */
     @GetMapping("/comparison")
     public SleepPeriodComparisonResponse getSleepPeriodComparison(
             @RequestParam SleepPeriodType period,
@@ -42,6 +61,13 @@ public class SleepStatisticsController implements SleepStatisticsApiDocument {
         return getSleepPeriodComparisonUseCase.execute(period, date);
     }
 
+    /**
+     * 일일 수면 통계를 조회합니다.
+     *
+     * @param period 통계 기간 타입
+     * @param date 기준 날짜
+     * @return 일일 수면 통계 응답
+     */
     @GetMapping("/daily")
     public DailySleepStatisticsResponse getDailySleepStatistics(
             @RequestParam SleepPeriodType period,

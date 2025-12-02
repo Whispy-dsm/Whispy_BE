@@ -26,6 +26,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * 수면 데이터를 일/월 단위로 집계해 그래프 응답을 생성하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetDailySleepStatisticsService implements GetDailySleepStatisticsUseCase {

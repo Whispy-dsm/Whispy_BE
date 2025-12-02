@@ -7,6 +7,18 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import whispy_server.whispy.domain.user.model.types.Gender;
 
+/**
+ * 회원가입 요청 DTO.
+ * 로컬 계정으로 회원가입할 때 사용됩니다.
+ *
+ * @param email 이메일 주소
+ * @param password 비밀번호 (8자 이상, 숫자 및 특수문자 포함)
+ * @param name 사용자 이름 (1-30자)
+ * @param profileImageUrl 프로필 이미지 URL (선택)
+ * @param gender 성별 (선택)
+ * @param fcmToken Firebase Cloud Messaging 토큰 (선택)
+ * @param isEventAgreed 이벤트 알림 수신 동의 여부
+ */
 @Schema(description = "회원가입 요청")
 public record RegisterRequest(
         @Email

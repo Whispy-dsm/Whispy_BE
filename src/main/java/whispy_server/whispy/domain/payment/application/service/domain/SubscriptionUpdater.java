@@ -9,6 +9,11 @@ import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
 
 import java.util.Optional;
 
+/**
+ * 구독 업데이터.
+ *
+ * 구독 상태를 업데이트하는 도메인 서비스입니다.
+ */
 @Component
 @RequiredArgsConstructor
 public class SubscriptionUpdater {
@@ -17,6 +22,12 @@ public class SubscriptionUpdater {
     private final SubscriptionSavePort subscriptionSavePort;
     private final SubscriptionFactory subscriptionFactory;
 
+    /**
+     * 구독 상태를 업데이트합니다.
+     *
+     * @param purchaseToken 구매 토큰
+     * @param newState 새로운 상태
+     */
     public void updateState(String purchaseToken, SubscriptionState newState) {
         Optional<Subscription> subscriptionOpt = querySubscriptionPort.findByPurchaseToken(purchaseToken);
         subscriptionOpt.ifPresent(subscription -> {

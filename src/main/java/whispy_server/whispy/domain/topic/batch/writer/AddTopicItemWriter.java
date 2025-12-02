@@ -13,6 +13,11 @@ import whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFaile
 
 import java.util.List;
 
+/**
+ * 토픽 추가 배치 아이템 라이터.
+ *
+ * 토픽 구독을 저장하고 FCM 토픽을 구독하는 라이터입니다.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -21,6 +26,12 @@ public class AddTopicItemWriter implements ItemWriter<AddTopicJobParameters> {
     private final SaveTopicSubscriptionPort saveTopicSubscriptionPort;
     private final FcmSendPort fcmSendPort;
 
+    /**
+     * 토픽 구독을 저장하고 FCM 토픽을 구독합니다.
+     *
+     * @param chunk 토픽 추가 작업 파라미터 청크
+     * @throws whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException 처리 중 예외 발생 시
+     */
     @Override
     public void write(Chunk<? extends AddTopicJobParameters> chunk) {
         try {

@@ -9,12 +9,24 @@ import whispy_server.whispy.domain.music.application.port.out.QueryMusicPort;
 import whispy_server.whispy.domain.music.model.Music;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
+/**
+ * 음악 상세 조회 서비스.
+ *
+ * 지정된 ID의 음악 상세 정보를 조회하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetMusicDetailService implements GetMusicDetailUseCase {
 
     private final QueryMusicPort queryMusicPort;
 
+    /**
+     * 지정된 ID의 음악 상세 정보를 조회합니다.
+     *
+     * @param id 조회할 음악의 ID
+     * @return 음악 상세 정보
+     * @throws MusicNotFoundException 음악을 찾을 수 없을 때 발생
+     */
     @Transactional(readOnly = true)
     @Override
     public MusicDetailResponse execute(Long id) {

@@ -18,6 +18,9 @@ import whispy_server.whispy.domain.music.adapter.out.entity.QMusicJpaEntity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 청취 이력에 대한 영속성 작업을 담당하는 어댑터.
+ */
 @Component
 @RequiredArgsConstructor
 public class ListeningHistoryPersistenceAdapter implements ListeningHistoryPort {
@@ -26,11 +29,23 @@ public class ListeningHistoryPersistenceAdapter implements ListeningHistoryPort 
     private final ListeningHistoryMapper mapper;
     private final JPAQueryFactory jpaQueryFactory;
 
+    /**
+     * 청취 이력을 저장한다.
+     *
+     * @param history 청취 이력
+     */
     @Override
     public void save(ListeningHistory history) {
         listeningHistoryRepository.save(mapper.toEntity(history));
     }
 
+    /**
+     * 사용자별 청취 이력을 음악 정보와 함께 조회한다.
+     *
+     * @param userId   사용자 ID
+     * @param pageable 페이지네이션 정보
+     * @return 청취 이력 페이지
+     */
     @Override
     public Page<ListeningHistoryWithMusicDto> findListeningHistoryWithMusicByUserId(Long userId, Pageable pageable) {
         QListeningHistoryJpaEntity history = QListeningHistoryJpaEntity.listeningHistoryJpaEntity;
@@ -63,16 +78,25 @@ public class ListeningHistoryPersistenceAdapter implements ListeningHistoryPort 
         return new PageImpl<>(content, pageable, total != null ? total : 0L);
     }
 
+    /**
+     * 사용자/음악 조합으로 청취 이력을 조회한다.
+     */
     @Override
     public Optional<ListeningHistory> findByUserIdAndMusicId(Long userId, Long musicId) {
         return mapper.toOptionalModel(listeningHistoryRepository.findByUserIdAndMusicId(userId, musicId));
     }
 
+    /**
+     * 특정 음악의 이력을 모두 삭제한다.
+     */
     @Override
     public void deleteAllByMusicId(Long musicId) {
         listeningHistoryRepository.deleteAllByMusicId(musicId);
     }
 
+    /**
+     * 특정 사용자의 청취 이력을 삭제한다.
+     */
     @Override
     public void deleteByUserId(Long userId) {
         listeningHistoryRepository.deleteByUserId(userId);

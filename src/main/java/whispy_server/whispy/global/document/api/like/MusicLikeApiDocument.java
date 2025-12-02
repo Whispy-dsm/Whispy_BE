@@ -16,6 +16,10 @@ import java.util.List;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 음악 좋아요 등록/조회 기능을 설명하는 Swagger 인터페이스이다.
+ * 좋아요 컨트롤러는 이 계약을 구현해 문서화 정보를 자동으로 상속한다.
+ */
 @Tag(name = "MUSIC LIKE API", description = "음악 좋아요 관련 API")
 public interface MusicLikeApiDocument {
 

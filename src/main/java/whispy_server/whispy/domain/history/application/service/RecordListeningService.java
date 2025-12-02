@@ -15,6 +15,9 @@ import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * 청취 기록 저장 UseCase 구현체.
+ */
 @Service
 @RequiredArgsConstructor
 public class RecordListeningService implements RecordListeningUseCase {
@@ -24,6 +27,11 @@ public class RecordListeningService implements RecordListeningUseCase {
     private final QueryMusicPort queryMusicPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 음악 청취 기록을 저장하거나 갱신한다.
+     *
+     * @param musicId 청취한 음악 ID
+     */
     @Transactional
     @Override
     public void execute(Long musicId) {

@@ -5,6 +5,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+/**
+ * 사용자 로그인 요청 DTO.
+ * 이메일과 비밀번호를 사용한 로컬 로그인에 사용됩니다.
+ *
+ * @param email 이메일 주소
+ * @param password 비밀번호
+ * @param fcmToken Firebase Cloud Messaging 토큰
+ */
 @Schema(description = "사용자 로그인 요청")
 public record UserLoginRequest(
 

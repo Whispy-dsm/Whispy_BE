@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
+/**
+ * 이미지 파일을 압축하고 WebP로 변환하는 유틸 컴포넌트.
+ */
 @Component
 public class ImageCompressionConverter {
 
@@ -26,6 +29,12 @@ public class ImageCompressionConverter {
     private static final int MAX_HEIGHT = 1024;
     private static final float WEBP_QUALITY = 0.8f;
 
+    /**
+     * 입력 이미지 파일을 리사이즈·압축하여 WebP 스트림으로 반환한다.
+     *
+     * @param file 업로드된 이미지 파일
+     * @return WebP InputStream
+     */
     public InputStream compressImage(MultipartFile file) {
         try {
             BufferedImage processedImage = Thumbnails.of(file.getInputStream())
@@ -47,6 +56,9 @@ public class ImageCompressionConverter {
         }
     }
 
+    /**
+     * BufferedImage를 WebP 포맷으로 변환한다.
+     */
     private InputStream convertToWebP(BufferedImage image) throws IOException {
         Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType("image/webp");
 

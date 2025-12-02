@@ -14,6 +14,9 @@ import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 
 import java.io.IOException;
 
+/**
+ * OAuth 인증 성공 시 JWT 를 발급하고 프런트엔드 리디렉트 URL 로 전달하는 핸들러.
+ */
 @RequiredArgsConstructor
 @Component
 public class OauthSuccessHandler implements AuthenticationSuccessHandler {

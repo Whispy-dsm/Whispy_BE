@@ -13,6 +13,11 @@ import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 
 import java.util.List;
 
+/**
+ * 내 알림 목록 조회 서비스.
+ *
+ * 현재 사용자의 알림 목록을 페이지네이션하여 조회하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -21,6 +26,12 @@ public class QueryMyNotificationsService implements QueryMyNotificationsUseCase 
     private final QueryNotificationPort queryNotificationPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 내 알림 목록을 페이지네이션하여 조회합니다.
+     *
+     * @param pageable 페이지 정보
+     * @return 알림 목록 페이지
+     */
     @Override
     public Page<NotificationResponse> execute(Pageable pageable){
         Page<Notification> notifications = queryNotificationPort.findByEmailOrderByCreatedAtDesc(

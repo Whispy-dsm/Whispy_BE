@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 도메인 전역에서 사용하는 표준 오류 코드 정의.
+ */
 @Getter
 @AllArgsConstructor
 @JsonFormat(shape =  JsonFormat.Shape.OBJECT)

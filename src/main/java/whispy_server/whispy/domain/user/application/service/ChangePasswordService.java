@@ -15,6 +15,10 @@ import whispy_server.whispy.global.exception.domain.user.PasswordMissMatchExcept
 import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 import whispy_server.whispy.global.utils.redis.RedisUtil;
 
+/**
+ * 비밀번호 변경 서비스.
+ * 이메일 인증을 거친 사용자의 비밀번호를 변경합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class ChangePasswordService implements ChangePasswordUseCase {
@@ -26,6 +30,12 @@ public class ChangePasswordService implements ChangePasswordUseCase {
 
     private final static String VERIFICATION_STATUS_KEY = "email:verification:status:";
 
+    /**
+     * 사용자의 비밀번호를 변경합니다.
+     * Redis에서 이메일 인증 상태를 확인한 후 비밀번호를 변경하고 인증 상태를 삭제합니다.
+     *
+     * @param request 비밀번호 변경 요청 (이메일, 새 비밀번호)
+     */
     @Override
     @Transactional
     public void execute(ChangePasswordRequest request) {

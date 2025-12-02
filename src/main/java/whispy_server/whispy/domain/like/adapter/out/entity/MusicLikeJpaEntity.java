@@ -14,6 +14,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 사용자-음악 좋아요 관계를 저장하는 JPA 엔티티.
+ */
 @Entity(name = "MusicLikeJpaEntity")
 @Table(name = "tbl_music_like",
         indexes = {

@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.PubSubMessageRequest;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
+/**
+ * Google Play 웹훅 수신 엔드포인트를 문서화하는 Swagger 인터페이스.
+ */
 @Tag(name = "WEBHOOK API", description = "외부 서비스 웹훅 관련 API")
 public interface GooglePlayWebhookApiDocument {
 

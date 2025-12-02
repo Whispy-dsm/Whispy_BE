@@ -15,12 +15,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 집중 요약 통계 영속성 어댑터.
+ *
+ * QueryDSL을 사용하여 집중 세션 데이터를 조회하고 요약 통계를 생성하는 아웃바운드 어댑터입니다.
+ */
 @Component
 @RequiredArgsConstructor
 public class FocusSummaryPersistenceAdapter implements QueryFocusStatisticsPort {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    /**
+     * 기간 내 사용자의 집중 세션을 조회합니다.
+     *
+     * @param userId 사용자 ID
+     * @param start 조회 시작 시간
+     * @param end 조회 종료 시간
+     * @return 집중 세션 DTO 목록
+     */
     @Override
     public List<FocusSessionDto> findByUserIdAndPeriod(Long userId, LocalDateTime start, LocalDateTime end) {
         QFocusSessionJpaEntity focusSession = QFocusSessionJpaEntity.focusSessionJpaEntity;

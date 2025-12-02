@@ -14,6 +14,9 @@ import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException
 
 import java.time.LocalDateTime;
 
+/**
+ * 사운드 스페이스에 음악을 추가하거나 제거하는 토글 서비스를 담당한다.
+ */
 @Service
 @RequiredArgsConstructor
 public class ToggleSoundSpaceMusicService implements ToggleSoundSpaceMusicUseCase {

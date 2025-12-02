@@ -15,6 +15,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * Redis 연결/직렬화 설정을 구성하는 스프링 설정 클래스.
+ */
 @Configuration
 public class RedisConfig {
 
@@ -25,6 +28,9 @@ public class RedisConfig {
     @Value("${spring.data.redis.password}")
     private String password;
 
+    /**
+     * 단일 노드 Redis 커넥션 팩토리를 생성한다.
+     */
     @Bean
     public RedisConnectionFactory redisConnectionFactory(){
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
@@ -37,6 +43,9 @@ public class RedisConfig {
         return new LettuceConnectionFactory(config);
     }
 
+    /**
+     * 제네릭 RedisTemplate을 구성한다.
+     */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -51,11 +60,17 @@ public class RedisConfig {
         return template;
     }
 
+    /**
+     * 문자열 전용 RedisTemplate 빈을 등록한다.
+     */
     @Bean
     public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory){
         return new StringRedisTemplate(redisConnectionFactory);
     }
 
+    /**
+     * Redis 직렬화에 사용할 ObjectMapper 설정.
+     */
     private ObjectMapper objectMapper(){
         ObjectMapper mapper = new ObjectMapper();
         mapper.activateDefaultTyping(

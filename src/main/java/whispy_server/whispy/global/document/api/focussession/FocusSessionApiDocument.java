@@ -20,6 +20,10 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 집중 세션 CRUD 엔드포인트를 설명하는 Swagger 문서 전용 인터페이스이다.
+ * 집중 세션 컨트롤러가 구현해 각 API 의 공통 설명과 보안 요건을 제공한다.
+ */
 @Tag(name = "FOCUS SESSION API", description = "집중 세션 관련 API")
 public interface FocusSessionApiDocument {
 

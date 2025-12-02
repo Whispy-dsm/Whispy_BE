@@ -15,6 +15,11 @@ import whispy_server.whispy.domain.notification.application.port.in.MarkNotifica
 import whispy_server.whispy.domain.notification.application.port.in.QueryMyNotificationsUseCase;
 import whispy_server.whispy.global.document.api.notification.NotificationApiDocument;
 
+/**
+ * 알림 REST 컨트롤러.
+ *
+ * 사용자 알림 조회, 읽음 처리, 삭제 기능을 제공하는 인바운드 어댑터입니다.
+ */
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
@@ -27,6 +32,12 @@ public class NotificationController implements NotificationApiDocument {
     private final DeleteNotificationUseCase deleteNotificationUseCase;
     private final DeleteAllNotificationsUseCase deleteAllNotificationsUseCase;
 
+    /**
+     * 내 알림 목록을 조회합니다.
+     *
+     * @param pageable 페이지 정보
+     * @return 알림 목록 페이지
+     */
     @GetMapping
     public Page<NotificationResponse> getMyNotifications(Pageable pageable) {
         return queryMyNotificationsUseCase.execute(pageable);

@@ -24,6 +24,11 @@ import whispy_server.whispy.domain.notification.batch.writer.DeleteOldNotificati
 import java.time.LocalDateTime;
 import java.util.Map;
 
+/**
+ * 오래된 알림 삭제 배치 설정.
+ *
+ * 30일이 지난 오래된 알림을 삭제하는 Spring Batch 작업을 설정합니다.
+ */
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -37,6 +42,12 @@ public class DeleteNotificationBatchConfig {
 
     private static final int CHUNK_SIZE = 1000;
 
+    /**
+     * 오래된 알림 삭제 Job을 생성합니다.
+     *
+     * @param deleteOldNotificationStep 알림 삭제 Step
+     * @return 알림 삭제 Job
+     */
     @Bean("deleteOldNotificationJob")
     public Job deleteOldNotificationJob(
             @Qualifier("deleteOldNotificationStep") Step deleteOldNotificationStep) {
@@ -45,6 +56,12 @@ public class DeleteNotificationBatchConfig {
                 .build();
     }
 
+    /**
+     * 오래된 알림 삭제 Step을 생성합니다.
+     *
+     * @param oldNotificationReader 오래된 알림 Reader
+     * @return 알림 삭제 Step
+     */
     @Bean("deleteOldNotificationStep")
     public Step deleteOldNotificationStep(ItemReader<NotificationJpaEntity> oldNotificationReader) {
         return new StepBuilder("deleteOldNotificationStep", jobRepository)
@@ -55,6 +72,12 @@ public class DeleteNotificationBatchConfig {
                 .build();
     }
 
+    /**
+     * 30일이 지난 오래된 알림을 조회하는 Reader를 생성합니다.
+     *
+     * @return 오래된 알림 Reader
+     * @throws Exception Reader 초기화 실패 시
+     */
     @Bean
     @StepScope
     public ItemReader<NotificationJpaEntity> oldNotificationReader() throws Exception {

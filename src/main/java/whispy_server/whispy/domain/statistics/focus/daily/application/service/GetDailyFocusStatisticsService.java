@@ -30,6 +30,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * 집중 세션을 기준에 맞춰 시간별/일별/월별로 집계하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUseCase {

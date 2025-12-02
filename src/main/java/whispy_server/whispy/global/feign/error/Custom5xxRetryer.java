@@ -3,6 +3,9 @@ package whispy_server.whispy.global.feign.error;
 import feign.RetryableException;
 import feign.Retryer;
 
+/**
+ * 5xx 응답에 대해 지정된 횟수만큼 간단히 재시도하는 Retryer 구현.
+ */
 public class Custom5xxRetryer implements Retryer {
 
     private final int maxAttempts; // 최대 재시도
@@ -20,6 +23,9 @@ public class Custom5xxRetryer implements Retryer {
         this.attempt = 1;
     }
 
+    /**
+     * 재시도 횟수를 초과하면 예외를 다시 던지고, 그렇지 않으면 지연 후 재시도한다.
+     */
     @Override
     public void continueOrPropagate(RetryableException e){
         if(attempt++ >= maxAttempts){

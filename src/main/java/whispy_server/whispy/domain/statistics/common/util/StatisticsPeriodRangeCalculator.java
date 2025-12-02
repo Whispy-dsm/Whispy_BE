@@ -8,12 +8,24 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 통계 기간 범위 계산 유틸리티.
+ *
+ * 주어진 기간 타입과 날짜를 바탕으로 시작 및 종료 시간을 계산합니다.
+ */
 public final class StatisticsPeriodRangeCalculator {
 
     private StatisticsPeriodRangeCalculator() {
         throw new AssertionError("유틸리티 클래스는 인스턴스화할 수 없습니다.");
     }
 
+    /**
+     * 집중 통계 기간 범위를 계산합니다.
+     *
+     * @param period 기간 타입
+     * @param date 기준 날짜
+     * @return [시작 시간, 종료 시간]을 포함한 배열
+     */
     public static LocalDateTime[] calculateFocusPeriodRange(FocusPeriodType period, LocalDate date) {
         return switch (period) {
             case TODAY -> calculateDayRange(date);
@@ -23,6 +35,13 @@ public final class StatisticsPeriodRangeCalculator {
         };
     }
 
+    /**
+     * 수면 통계 기간 범위를 계산합니다.
+     *
+     * @param period 기간 타입
+     * @param date 기준 날짜
+     * @return [시작 시간, 종료 시간]을 포함한 배열
+     */
     public static LocalDateTime[] calculateSleepPeriodRange(SleepPeriodType period, LocalDate date) {
         return switch (period) {
             case WEEK -> calculateWeekRange(date);

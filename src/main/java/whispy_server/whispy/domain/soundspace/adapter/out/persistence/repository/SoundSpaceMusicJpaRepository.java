@@ -5,6 +5,9 @@ import whispy_server.whispy.domain.soundspace.adapter.out.entity.SoundSpaceMusic
 
 import java.util.List;
 
+/**
+ * 사운드 스페이스 음악 테이블에 접근하는 Spring Data JPA 저장소.
+ */
 public interface SoundSpaceMusicJpaRepository extends JpaRepository<SoundSpaceMusicJpaEntity, Long> {
 
     boolean existsByUserIdAndMusicId(Long userId, Long musicId);

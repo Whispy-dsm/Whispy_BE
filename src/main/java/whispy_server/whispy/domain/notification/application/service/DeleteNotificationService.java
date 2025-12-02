@@ -12,6 +12,12 @@ import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.exception.domain.fcm.NotificationNotFoundException;
 
+/**
+ * 알림 삭제 서비스.
+ *
+ * 특정 알림을 삭제하는 유스케이스 구현체입니다.
+ * 소유권 검증을 통해 본인의 알림만 삭제할 수 있습니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -21,6 +27,12 @@ public class DeleteNotificationService implements DeleteNotificationUseCase {
     private final DeleteNotificationPort deleteNotificationPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 특정 알림을 삭제합니다.
+     *
+     * @param notificationId 삭제할 알림 ID
+     * @throws whispy_server.whispy.global.exception.domain.fcm.NotificationNotFoundException 알림을 찾을 수 없거나 소유자가 아닌 경우
+     */
     @Override
     public void execute(Long notificationId) {
         User currentUser = userFacadeUseCase.currentUser();

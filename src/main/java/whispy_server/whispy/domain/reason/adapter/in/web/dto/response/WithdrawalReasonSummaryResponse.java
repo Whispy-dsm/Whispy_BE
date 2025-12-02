@@ -6,6 +6,9 @@ import whispy_server.whispy.domain.reason.model.types.WithdrawalReasonType;
 
 import java.time.LocalDateTime;
 
+/**
+ * 탈퇴 사유 목록 요약 응답 DTO.
+ */
 @Schema(description = "탈퇴 사유 요약 응답 (전체 조회용)")
 public record WithdrawalReasonSummaryResponse(
         @Schema(description = "탈퇴 사유 ID", example = "1")
@@ -17,6 +20,9 @@ public record WithdrawalReasonSummaryResponse(
         @Schema(description = "생성 시간", example = "2025-01-01T12:00:00")
         LocalDateTime createdAt
 ) {
+    /**
+     * 도메인 모델을 응답으로 변환한다.
+     */
     public static WithdrawalReasonSummaryResponse from(WithdrawalReason withdrawalReason) {
         return new WithdrawalReasonSummaryResponse(
                 withdrawalReason.id(),

@@ -25,6 +25,11 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 
 import java.util.Map;
 
+/**
+ * 알림 저장 배치 설정.
+ *
+ * FCM 토픽을 구독한 사용자들에게 알림 이력을 저장하는 Spring Batch 작업을 설정합니다.
+ */
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -37,6 +42,12 @@ public class SaveNotificationBatchConfig {
 
     private static final int CHUNK_SIZE = 1000;
 
+    /**
+     * 알림 저장 Job을 생성합니다.
+     *
+     * @param saveNotificationBatchStep 알림 저장 Step
+     * @return 알림 저장 Job
+     */
     @Bean("saveNotificationJob")
     public Job saveNotificationBatchJob(
             @Qualifier("saveNotificationStep") Step saveNotificationBatchStep) {
@@ -45,7 +56,12 @@ public class SaveNotificationBatchConfig {
                 .build();
     }
 
-
+    /**
+     * 알림 저장 Step을 생성합니다.
+     *
+     * @param topicSubscriberItemReader 토픽 구독자 Reader
+     * @return 알림 저장 Step
+     */
     @Bean("saveNotificationStep")
     public Step saveNotificationBatchStep(
             ItemReader<TopicSubscriptionJpaEntity> topicSubscriberItemReader) {
@@ -57,6 +73,14 @@ public class SaveNotificationBatchConfig {
                 .build();
     }
 
+    /**
+     * 특정 토픽을 구독한 사용자를 조회하는 Reader를 생성합니다.
+     *
+     * @param topicParam 토픽 파라미터
+     * @param entityManagerFactory EntityManagerFactory
+     * @return 토픽 구독자 Reader
+     * @throws Exception Reader 초기화 실패 시
+     */
     @Bean
     @StepScope
     public JpaPagingItemReader<TopicSubscriptionJpaEntity> topicSubscriberItemReader(

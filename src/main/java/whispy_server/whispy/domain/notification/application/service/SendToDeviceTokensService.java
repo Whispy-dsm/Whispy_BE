@@ -9,6 +9,11 @@ import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort
 import whispy_server.whispy.domain.notification.application.port.out.SaveNotificationPort;
 import whispy_server.whispy.domain.notification.model.Notification;
 
+/**
+ * 디바이스 토큰으로 알림 전송 서비스.
+ *
+ * 특정 디바이스 토큰 목록으로 FCM 푸시 알림을 전송하고 알림 이력을 저장하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -17,6 +22,11 @@ public class SendToDeviceTokensService implements SendToDeviceTokensUseCase {
     private final FcmSendPort fcmSendPort;
     private final SaveNotificationPort saveNotificationPort;
 
+    /**
+     * 디바이스 토큰으로 알림을 전송합니다.
+     *
+     * @param request 알림 전송 요청
+     */
     @Override
     public void execute(NotificationSendRequest request){
         fcmSendPort.sendMulticast(

@@ -26,6 +26,10 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 관리자 전용 기능(음악/공지/토픽/통계 관리 등)을 문서화하는 Swagger 인터페이스이다.
+ * 어드민 컨트롤러가 이 계약을 구현해 공통 API 설명과 보안 요구사항을 공유한다.
+ */
 @Tag(name = "ADMIN API", description = "관리자 API")
 public interface AdminApiDocument {
 

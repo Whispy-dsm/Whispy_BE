@@ -17,6 +17,10 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 음악 청취 기록과 관련된 REST 엔드포인트의 Swagger 메타데이터를 정의한다.
+ * 기록 저장/조회 컨트롤러는 이 인터페이스를 구현해 문서 정보를 재사용한다.
+ */
 @Tag(name = "LISTENING HISTORY API", description = "음악 청취 기록 관련 API")
 public interface ListeningHistoryApiDocument {
 

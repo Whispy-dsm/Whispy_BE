@@ -11,6 +11,9 @@ import whispy_server.whispy.domain.user.model.User;
 
 import java.util.List;
 
+/**
+ * 사운드 스페이스 음악 목록을 조회해 응답 DTO 로 가공하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetSoundSpaceMusicsService implements GetSoundSpaceMusicsUseCase {

@@ -5,6 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.DayOfWeek;
 import java.util.Map;
 
+/**
+ * 주간 세션 존재 여부 응답 DTO.
+ *
+ * 사용자의 요일별 세션 존재 여부를 표시합니다.
+ *
+ * @param weeklyExists 요일별 세션 존재 여부 맵
+ */
 @Schema(description = "주간 세션 존재 여부 응답")
 public record WeeklySessionExistsResponse(
         @Schema(description = "요일별 세션 존재 여부")

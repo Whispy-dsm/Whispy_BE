@@ -16,6 +16,10 @@ import whispy_server.whispy.domain.user.model.User;
 
 import java.util.List;
 
+/**
+ * FCM 토큰 업데이트 서비스.
+ * 푸시 알림을 위한 Firebase Cloud Messaging 토큰을 업데이트합니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,6 +31,12 @@ public class UpdateFcmTokenService implements UpdateFcmTokenUseCase {
     private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    /**
+     * FCM 토큰을 업데이트합니다.
+     * 토큰 변경 시 이전 기기에 로그아웃 알림을 보내고 기존 세션을 무효화합니다.
+     *
+     * @param fcmToken 새로운 FCM 토큰
+     */
     @Override
     public void execute(String fcmToken) {
         User currentUser = userFacade.currentUser();
@@ -47,6 +57,7 @@ public class UpdateFcmTokenService implements UpdateFcmTokenUseCase {
         }
     }
 
+    /** 이전 기기에 로그아웃 알림을 전송합니다 */
     private void sendLogoutNotification(String oldToken, String email) {
         try {
             NotificationSendRequest request = new NotificationSendRequest(

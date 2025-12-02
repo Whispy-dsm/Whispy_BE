@@ -12,12 +12,18 @@ import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 import whispy_server.whispy.global.oauth.parser.factory.OauthUserInfoParserFactory;
 
+/**
+ * OAuth2 로그인 시 사용자 정보를 조회/생성하는 서비스.
+ */
 @RequiredArgsConstructor
 @Service
 public class CustomOauthUserDetailsService extends DefaultOAuth2UserService {
 
     private final OauthUserUseCase oauthUserUseCase;
 
+    /**
+     * OAuth2 정보를 기반으로 Whispy 사용자 계정을 조회하거나 생성한다.
+     */
     @Transactional
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

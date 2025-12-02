@@ -17,6 +17,12 @@ import whispy_server.whispy.global.security.jwt.domain.entity.RefreshToken;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 
+/**
+ * 관리자 로그인 서비스.
+ *
+ * 관리자 인증을 처리하고 JWT 토큰을 발급하는 유스케이스 구현체입니다.
+ * 비밀번호 검증 후 액세스 토큰과 리프레시 토큰을 생성하여 반환합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class AdminLoginService implements AdminLoginUseCase {
@@ -27,6 +33,17 @@ public class AdminLoginService implements AdminLoginUseCase {
     private final JwtProperties jwtProperties;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    /**
+     * 관리자 로그인을 실행합니다.
+     *
+     * 관리자 ID로 계정을 조회하고 비밀번호를 검증합니다.
+     * 인증 성공 시 JWT 토큰을 생성하고 리프레시 토큰을 Redis에 저장합니다.
+     *
+     * @param request 관리자 ID와 비밀번호가 포함된 요청
+     * @return JWT 액세스 토큰과 리프레시 토큰
+     * @throws AdminNotFoundException 관리자를 찾을 수 없는 경우
+     * @throws PasswordMissMatchException 비밀번호가 일치하지 않는 경우
+     */
     @Override
     @Transactional
     public TokenResponse execute(AdminLoginRequest request) {

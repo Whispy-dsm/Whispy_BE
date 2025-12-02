@@ -17,6 +17,10 @@ import whispy_server.whispy.domain.user.application.port.in.UserWithdrawalUseCas
 import whispy_server.whispy.domain.user.application.port.out.UserDeletePort;
 import whispy_server.whispy.domain.user.model.User;
 
+/**
+ * 사용자 회원 탈퇴 서비스.
+ * 사용자 계정과 관련된 모든 데이터를 삭제합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserWithdrawalService implements UserWithdrawalUseCase {
@@ -37,6 +41,10 @@ public class UserWithdrawalService implements UserWithdrawalUseCase {
     private final DeleteNotificationPort deleteNotificationPort;
     private final DeleteTopicSubscriptionPort deleteTopicSubscriptionPort;
 
+    /**
+     * 현재 인증된 사용자의 계정을 삭제합니다.
+     * 세션 데이터, 좋아요, 히스토리, 알림 등 관련된 모든 데이터를 함께 삭제합니다.
+     */
     @Override
     @Transactional
     public void withdrawal(){

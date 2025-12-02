@@ -9,6 +9,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * 인증된 사용자의 식별자, 권한, OAuth2 속성을 보유하는 Spring Security {@link UserDetails} 구현체이다.
+ * 세션/토큰 기반 인증 모두에서 동일한 Principal 표현을 재사용한다.
+ */
 public record AuthDetails(
         String id,
         String role,

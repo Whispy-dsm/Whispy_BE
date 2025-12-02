@@ -12,6 +12,11 @@ import whispy_server.whispy.domain.notification.application.port.in.BroadCastToA
 
 import java.time.LocalDateTime;
 
+/**
+ * 공지사항 생성 서비스.
+ *
+ * 새로운 공지사항을 생성하고 모든 사용자에게 FCM 푸시 알림을 전송하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class CreateAnnouncementService implements CreateAnnouncementUseCase {
@@ -19,6 +24,11 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
     private final AnnouncementPort announcementPort;
     private final BroadCastToAllUsersUseCase broadCastToAllUsersUseCase;
 
+    /**
+     * 공지사항을 생성하고 푸시 알림을 전송합니다.
+     *
+     * @param request 생성할 공지사항 정보가 포함된 요청
+     */
     @Transactional
     @Override
     public void execute(CreateAnnouncementRequest request) {
@@ -35,6 +45,9 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
         sendAnnouncementNotification();
     }
 
+    /**
+     * 모든 사용자에게 공지사항 등록 알림을 전송합니다.
+     */
     private void sendAnnouncementNotification() {
         NotificationTopicSendRequest notificationRequest = new NotificationTopicSendRequest(
                 null,

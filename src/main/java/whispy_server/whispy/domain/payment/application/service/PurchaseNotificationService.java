@@ -24,6 +24,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Base64;
 
+/**
+ * 구매 알림 처리 서비스.
+ *
+ * Google Play Pub/Sub 메시지를 처리하고 구독 상태를 업데이트하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class PurchaseNotificationService implements ProcessPurchaseNotificationUseCase {
@@ -35,6 +40,11 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
     private final SubscriptionFactory subscriptionFactory;
     private final SubscriptionUpdater subscriptionUpdater;
 
+    /**
+     * Google Play Pub/Sub 메시지를 처리합니다.
+     *
+     * @param pubSubMessage 처리할 Pub/Sub 메시지
+     */
     @Transactional
     @Override
     public void processPubSubMessage(PubSubMessageRequest pubSubMessage) {
@@ -54,6 +64,11 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
         }
     }
 
+    /**
+     * 구독 알림을 처리합니다.
+     *
+     * @param notification 구독 알림 정보
+     */
     private void handleSubscriptionNotification(SubscriptionNotificationRequest notification) {
         switch (notification.notificationType()) {
             case NOTIFICATION_TYPE_RECOVERED -> subscriptionUpdater.updateState(notification.purchaseToken(), SubscriptionState.ACTIVE);
@@ -69,6 +84,11 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
         }
     }
 
+    /**
+     * 구독 갱신을 처리합니다.
+     *
+     * @param notification 구독 알림 정보
+     */
     private void handleSubscriptionRenewed(SubscriptionNotificationRequest notification) {
         GooglePlaySubscriptionInfo subscriptionInfo = googlePlayApiPort.getSubscriptionInfo(
                 notification.subscriptionId(),

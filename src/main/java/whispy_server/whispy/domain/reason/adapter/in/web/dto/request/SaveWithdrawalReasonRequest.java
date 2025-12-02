@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import whispy_server.whispy.domain.reason.model.types.WithdrawalReasonType;
 
+/**
+ * 탈퇴 사유 저장 요청 DTO.
+ */
 @Schema(description = "탈퇴 사유 저장 요청")
 public record SaveWithdrawalReasonRequest(
         @Schema(description = "탈퇴 사유 타입", example = "NOT_USEFUL")

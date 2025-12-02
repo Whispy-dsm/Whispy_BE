@@ -16,6 +16,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 청취 이력을 저장하는 JPA 엔터티.
+ */
 @Entity
 @Table(name = "tbl_listening_history",
         indexes = {

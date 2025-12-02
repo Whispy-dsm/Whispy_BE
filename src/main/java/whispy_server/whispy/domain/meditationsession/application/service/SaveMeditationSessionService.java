@@ -15,6 +15,11 @@ import whispy_server.whispy.domain.user.model.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 명상 세션 저장 서비스.
+ *
+ * 명상 세션을 저장하고 오늘의 명상 통계를 계산하는 유스케이스 구현입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class SaveMeditationSessionService implements SaveMeditationSessionUseCase {
@@ -23,6 +28,12 @@ public class SaveMeditationSessionService implements SaveMeditationSessionUseCas
     private final UserFacadeUseCase userFacadeUseCase;
     private final QueryMeditationStatisticsPort queryMeditationStatisticsPort;
 
+    /**
+     * 명상 세션을 저장합니다.
+     *
+     * @param request 저장할 명상 세션의 요청 DTO
+     * @return 저장된 명상 세션과 오늘의 총 명상 시간(분)을 포함한 응답 DTO
+     */
     @Transactional
     @Override
     public MeditationSessionResponse execute(SaveMeditationSessionRequest request) {
@@ -45,6 +56,12 @@ public class SaveMeditationSessionService implements SaveMeditationSessionUseCas
         return MeditationSessionResponse.from(saved, todayTotalMinutes);
     }
 
+    /**
+     * 오늘의 총 명상 시간을 계산합니다.
+     *
+     * @param userId 계산할 사용자 ID
+     * @return 오늘의 총 명상 시간(분)
+     */
     private int calculateTodayTotalMinutes(Long userId) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);

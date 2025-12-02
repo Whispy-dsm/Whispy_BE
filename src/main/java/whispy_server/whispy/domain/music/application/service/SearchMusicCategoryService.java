@@ -9,12 +9,24 @@ import whispy_server.whispy.domain.music.adapter.in.web.dto.response.MusicSearch
 import whispy_server.whispy.domain.music.application.port.in.SearchMusicCategoryUseCase;
 import whispy_server.whispy.domain.music.application.port.out.SearchMusicPort;
 
+/**
+ * 음악 카테고리 검색 서비스.
+ *
+ * 카테고리별로 음악을 검색하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class SearchMusicCategoryService implements SearchMusicCategoryUseCase {
 
     private final SearchMusicPort searchMusicPort;
 
+    /**
+     * 지정된 카테고리의 음악을 검색합니다.
+     *
+     * @param category 검색할 음악 카테고리
+     * @param pageable 페이지 정보
+     * @return 검색된 음악 페이지
+     */
     @Override
     public Page<MusicSearchResponse> searchByMusicCategory(MusicCategory category, Pageable pageable) {
         return searchMusicPort.searchByCategory(category, pageable)

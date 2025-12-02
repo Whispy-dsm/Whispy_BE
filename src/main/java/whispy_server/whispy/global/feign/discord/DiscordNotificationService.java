@@ -11,6 +11,9 @@ import whispy_server.whispy.global.feign.discord.dto.DiscordPayload;
 
 import java.util.List;
 
+/**
+ * Discord Webhook을 이용해 에러 정보를 전송하는 서비스.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -18,6 +21,9 @@ public class DiscordNotificationService {
 
     private final DiscordBugClient discordBugClient;
 
+    /**
+     * 예외 정보를 Embed 형태로 구성해 Discord로 전송한다.
+     */
     public void sendErrorNotification(Exception exception) {
         String errorMessage = getErrorMessage(exception);
 
@@ -31,6 +37,9 @@ public class DiscordNotificationService {
         }
     }
 
+    /**
+     * WhispyException 여부에 따라 Discord 메시지 본문을 구성한다.
+     */
     private String getErrorMessage(Exception exception) {
         if (exception instanceof WhispyException) {
             WhispyException whispyException = (WhispyException) exception;

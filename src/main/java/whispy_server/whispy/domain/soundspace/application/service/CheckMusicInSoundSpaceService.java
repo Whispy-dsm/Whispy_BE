@@ -9,6 +9,9 @@ import whispy_server.whispy.domain.soundspace.application.port.out.QuerySoundSpa
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 
+/**
+ * 특정 음악의 사운드 스페이스 포함 여부를 확인하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class CheckMusicInSoundSpaceService implements CheckMusicInSoundSpaceUseCase {

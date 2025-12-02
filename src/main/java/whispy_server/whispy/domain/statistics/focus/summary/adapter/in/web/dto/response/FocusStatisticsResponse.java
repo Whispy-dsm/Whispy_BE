@@ -6,6 +6,16 @@ import whispy_server.whispy.domain.statistics.focus.summary.model.FocusStatistic
 
 import java.util.Map;
 
+/**
+ * 집중 통계 응답 DTO.
+ *
+ * 집중 통계의 요약 데이터를 포함합니다.
+ *
+ * @param totalCount 총 집중 세션 수
+ * @param totalMinutes 누적 집중 시간(분)
+ * @param todayMinutes 오늘 집중 시간(분)
+ * @param tagMinutes 태그별 집중 시간 맵
+ */
 @Schema(description = "집중 통계 응답")
 public record FocusStatisticsResponse(
         @Schema(description = "총 집중 세션 수", example = "50")

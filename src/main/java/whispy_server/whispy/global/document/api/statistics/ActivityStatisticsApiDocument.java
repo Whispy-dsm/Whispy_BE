@@ -13,6 +13,10 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 주간 세션 존재 여부와 활동량 지표를 문서화하는 Swagger 인터페이스이다.
+ * 활동 통계 컨트롤러는 본 인터페이스를 구현해 API 설명을 재사용한다.
+ */
 @Tag(name = "ACTIVITY STATISTICS API", description = "활동 통계 관련 API")
 public interface ActivityStatisticsApiDocument {
 

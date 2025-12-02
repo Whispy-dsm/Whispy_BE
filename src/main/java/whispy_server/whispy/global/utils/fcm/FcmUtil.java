@@ -17,6 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Firebase Cloud Messaging 전송을 담당하는 유틸 컴포넌트.
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -24,10 +27,16 @@ public class FcmUtil implements FcmSendPort {
 
     private final FirebaseApp firebaseApp;
 
+    /**
+     * FirebaseMessaging 인스턴스를 반환한다.
+     */
     private FirebaseMessaging getFirebaseMessaging(){
         return FirebaseMessaging.getInstance(firebaseApp);
     }
 
+    /**
+     * 다수의 단말 토큰으로 알림을 전송한다.
+     */
     @Override
     public void sendMulticast(List<String> deviceTokens, String title, String body, Map<String, String> data){
 
@@ -61,6 +70,9 @@ public class FcmUtil implements FcmSendPort {
         }
     }
 
+    /**
+     * 특정 토픽 구독자에게 알림을 전송한다.
+     */
     @Override
     public void sendToTopic(NotificationTopic topic, String title, String body, Map<String, String> data) {
         try {
@@ -79,6 +91,9 @@ public class FcmUtil implements FcmSendPort {
         }
     }
 
+    /**
+     * 단일 디바이스를 토픽에 구독시킨다.
+     */
     @Override
     public void subscribeToTopic(String deviceToken, NotificationTopic topic) {
         if(deviceToken == null || deviceToken.trim().isEmpty()){
@@ -96,6 +111,9 @@ public class FcmUtil implements FcmSendPort {
         }
     }
 
+    /**
+     * 단일 디바이스의 토픽 구독을 해제한다.
+     */
     @Override
     public void unsubscribeFromTopic(String deviceToken, NotificationTopic topic) {
         if(deviceToken == null || deviceToken.trim().isEmpty()){
@@ -114,6 +132,9 @@ public class FcmUtil implements FcmSendPort {
     }
 
 
+    /**
+     * 텍스트 타이틀/본문으로 FCM Notification 객체를 생성한다.
+     */
     private Notification buildNotification(String title, String body){
         return Notification.builder()
                 .setTitle(title)
@@ -121,6 +142,9 @@ public class FcmUtil implements FcmSendPort {
                 .build();
     }
 
+    /**
+     * 안드로이드 디바이스에서 받을 커스텀 데이터 구성을 생성한다.
+     */
     private AndroidConfig buildAndroidConfig(String title, String body, NotificationTopic topic){
         return AndroidConfig.builder()
                 .putData("topic", topic != null ? topic.name() : "")

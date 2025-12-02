@@ -17,6 +17,11 @@ import whispy_server.whispy.global.document.api.statistics.StatisticsApiDocument
 
 import java.time.LocalDate;
 
+/**
+ * 집중 통계 REST 컨트롤러.
+ *
+ * 집중 통계, 기간 비교, 일일 상세 통계를 조회하는 인바운드 어댑터입니다.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/statistics")
@@ -26,6 +31,13 @@ public class FocusStatisticsController implements StatisticsApiDocument {
     private final GetPeriodComparisonStatisticsUseCase getPeriodComparisonStatisticsUseCase;
     private final GetDailyFocusStatisticsUseCase getDailyFocusStatisticsUseCase;
 
+    /**
+     * 집중 통계를 조회합니다.
+     *
+     * @param period 통계 기간 타입
+     * @param date 기준 날짜
+     * @return 집중 통계 응답
+     */
     @GetMapping("/focus")
     public FocusStatisticsResponse getFocusStatistics(
             @RequestParam FocusPeriodType period,
@@ -34,6 +46,13 @@ public class FocusStatisticsController implements StatisticsApiDocument {
         return getFocusStatisticsUseCase.execute(period, date);
     }
 
+    /**
+     * 집중 기간 비교 통계를 조회합니다.
+     *
+     * @param period 통계 기간 타입
+     * @param date 기준 날짜
+     * @return 집중 기간 비교 응답
+     */
     @GetMapping("/focus/comparison")
     public PeriodComparisonResponse getPeriodComparison(
             @RequestParam FocusPeriodType period,
@@ -42,6 +61,13 @@ public class FocusStatisticsController implements StatisticsApiDocument {
         return getPeriodComparisonStatisticsUseCase.execute(period, date);
     }
 
+    /**
+     * 일일 집중 통계를 조회합니다.
+     *
+     * @param period 통계 기간 타입
+     * @param date 기준 날짜
+     * @return 일일 집중 통계 응답
+     */
     @GetMapping("/focus/daily")
     public DailyFocusStatisticsResponse getDailyFocusStatistics(
             @RequestParam FocusPeriodType period,

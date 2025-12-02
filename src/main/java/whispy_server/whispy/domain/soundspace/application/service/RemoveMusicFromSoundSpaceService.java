@@ -8,6 +8,9 @@ import whispy_server.whispy.domain.soundspace.application.port.out.DeleteSoundSp
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 
+/**
+ * 현재 사용자의 사운드 스페이스에서 특정 음악을 제거하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class RemoveMusicFromSoundSpaceService implements RemoveMusicFromSoundSpaceUseCase {

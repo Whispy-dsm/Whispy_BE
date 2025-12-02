@@ -15,6 +15,11 @@ import whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFaile
 
 import java.util.Collections;
 
+/**
+ * 토픽으로 알림 전송 배치 서비스.
+ *
+ * FCM 토픽을 통해 알림을 전송하고 Spring Batch를 사용하여 알림 이력을 저장하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class SendToTopicBatchService implements SendToTopicUseCase {
@@ -27,6 +32,12 @@ public class SendToTopicBatchService implements SendToTopicUseCase {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * 토픽으로 알림을 전송하고 배치 작업을 통해 알림 이력을 저장합니다.
+     *
+     * @param request 알림 토픽 전송 요청
+     * @throws whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException 배치 작업 실행 실패 시
+     */
     @Override
     public void execute(NotificationTopicSendRequest request) {
         try {

@@ -17,6 +17,11 @@ import whispy_server.whispy.global.exception.domain.payment.SubscriptionAcknowle
 
 import java.util.Optional;
 
+/**
+ * 구매 처리 서비스.
+ *
+ * 검증된 구매를 처리하고 구독을 생성하는 도메인 서비스입니다.
+ */
 @Component
 @RequiredArgsConstructor
 public class PurchaseProcessingService {
@@ -26,6 +31,15 @@ public class PurchaseProcessingService {
     private final SubscriptionFactory subscriptionFactory;
     private final GooglePlayApiPort googlePlayApiPort;
 
+    /**
+     * 검증된 구매를 처리하고 구독을 생성합니다.
+     *
+     * @param email 사용자 이메일
+     * @param purchaseToken 구매 토큰
+     * @param subscriptionId 구독 ID
+     * @param subscriptionInfo Google Play 구독 정보
+     * @return 구매 처리 결과
+     */
     @Transactional
     public ValidatePurchaseResponse processValidatedPurchase(
             String email,

@@ -20,6 +20,9 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 수면 세션 저장/조회 API 의 Swagger 정의를 제공하는 인터페이스이다.
+ */
 @Tag(name = "SLEEP SESSION API", description = "수면 세션 관련 API")
 public interface SleepSessionApiDocument {
 

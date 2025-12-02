@@ -13,6 +13,12 @@ import whispy_server.whispy.domain.user.model.User;
 
 import java.time.LocalDateTime;
 
+/**
+ * 수면 세션 저장 서비스.
+ *
+ * 새로운 수면 세션을 저장하는 유스케이스 구현입니다.
+ * 현재 인증된 사용자의 정보를 포함하여 세션을 저장합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class SaveSleepSessionService implements SaveSleepSessionUseCase {
@@ -20,6 +26,12 @@ public class SaveSleepSessionService implements SaveSleepSessionUseCase {
     private final SleepSessionSavePort sleepSessionSavePort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 새로운 수면 세션을 저장합니다.
+     *
+     * @param request 수면 세션 저장 요청
+     * @return 저장된 세션 정보
+     */
     @Transactional
     @Override
     public SleepSessionResponse execute(SaveSleepSessionRequest request) {
