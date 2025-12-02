@@ -49,7 +49,7 @@ public class PurchaseProcessingService {
 
         Optional<Subscription> existingSubscription = querySubscriptionPort.findByPurchaseToken(purchaseToken);
         if (existingSubscription.isPresent()) {
-            return new ValidatePurchaseResponse(true, "Purchase already processed");
+            return new ValidatePurchaseResponse(true);
         }
 
         Subscription subscription = subscriptionFactory.createNewSubscription(
@@ -68,6 +68,6 @@ public class PurchaseProcessingService {
             throw SubscriptionAcknowledgmentFailedException.EXCEPTION;
         }
 
-        return new ValidatePurchaseResponse(true, "Purchase validated successfully");
+        return new ValidatePurchaseResponse(true);
     }
 }

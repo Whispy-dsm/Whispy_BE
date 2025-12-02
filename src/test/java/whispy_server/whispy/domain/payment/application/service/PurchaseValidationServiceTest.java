@@ -59,7 +59,7 @@ class PurchaseValidationServiceTest {
         ValidatePurchaseRequest request = createValidatePurchaseRequest();
         User user = createUser();
         GooglePlaySubscriptionInfo subscriptionInfo = createSubscriptionInfo(1); // paymentState = 1 (결제 완료)
-        ValidatePurchaseResponse expectedResponse = new ValidatePurchaseResponse(true, "Purchase validated successfully");
+        ValidatePurchaseResponse expectedResponse = new ValidatePurchaseResponse(true);
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
         given(googlePlayApiPort.getSubscriptionInfo(TEST_SUBSCRIPTION_ID, TEST_PURCHASE_TOKEN))
@@ -76,7 +76,6 @@ class PurchaseValidationServiceTest {
 
         // then
         assertThat(response.isValid()).isTrue();
-        assertThat(response.message()).isEqualTo("Purchase validated successfully");
         verify(purchaseProcessingService).processValidatedPurchase(
                 TEST_EMAIL,
                 TEST_PURCHASE_TOKEN,
@@ -126,7 +125,7 @@ class PurchaseValidationServiceTest {
         ValidatePurchaseRequest request = createValidatePurchaseRequest();
         User user = createUser();
         GooglePlaySubscriptionInfo subscriptionInfo = createSubscriptionInfo(1);
-        ValidatePurchaseResponse expectedResponse = new ValidatePurchaseResponse(true, "Purchase validated successfully");
+        ValidatePurchaseResponse expectedResponse = new ValidatePurchaseResponse(true);
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
         given(googlePlayApiPort.getSubscriptionInfo(TEST_SUBSCRIPTION_ID, TEST_PURCHASE_TOKEN))
@@ -148,7 +147,7 @@ class PurchaseValidationServiceTest {
         ValidatePurchaseRequest request = createValidatePurchaseRequest();
         User user = createUser();
         GooglePlaySubscriptionInfo subscriptionInfo = createSubscriptionInfo(1);
-        ValidatePurchaseResponse expectedResponse = new ValidatePurchaseResponse(true, "Purchase validated successfully");
+        ValidatePurchaseResponse expectedResponse = new ValidatePurchaseResponse(true);
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
         given(googlePlayApiPort.getSubscriptionInfo(TEST_SUBSCRIPTION_ID, TEST_PURCHASE_TOKEN))

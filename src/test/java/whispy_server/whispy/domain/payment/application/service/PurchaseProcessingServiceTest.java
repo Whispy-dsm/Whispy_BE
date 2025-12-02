@@ -84,14 +84,13 @@ class PurchaseProcessingServiceTest {
 
         // then
         assertThat(response.isValid()).isTrue();
-        assertThat(response.message()).isEqualTo("Purchase validated successfully");
         verify(subscriptionSavePort).save(newSubscription);
         verify(googlePlayApiPort).acknowledgeSubscription(TEST_SUBSCRIPTION_ID, TEST_PURCHASE_TOKEN);
     }
 
     @Test
-    @DisplayName("이미 처리된 구매인 경우 중복 처리 메시지를 반환한다")
-    void whenPurchaseAlreadyProcessed_thenReturnsAlreadyProcessedMessage() {
+    @DisplayName("이미 처리된 구매인 경우 유효한 응답을 반환한다")
+    void whenPurchaseAlreadyProcessed_thenReturnsValidResponse() {
         // given
         GooglePlaySubscriptionInfo subscriptionInfo = createSubscriptionInfo();
         Subscription existingSubscription = createSubscription();
@@ -109,7 +108,6 @@ class PurchaseProcessingServiceTest {
 
         // then
         assertThat(response.isValid()).isTrue();
-        assertThat(response.message()).isEqualTo("Purchase already processed");
         verify(subscriptionSavePort, never()).save(any());
         verify(googlePlayApiPort, never()).acknowledgeSubscription(anyString(), anyString());
     }
