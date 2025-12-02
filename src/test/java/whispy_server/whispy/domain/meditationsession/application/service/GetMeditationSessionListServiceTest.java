@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 /**
  * GetMeditationSessionListService의 단위 테스트 클래스
@@ -114,7 +115,7 @@ class GetMeditationSessionListServiceTest {
         getMeditationSessionListService.execute(pageable);
 
         // then
-        org.mockito.Mockito.verify(queryMeditationSessionPort).findByUserId(eq(TEST_USER_ID), any(Pageable.class));
+        verify(queryMeditationSessionPort).findByUserId(eq(TEST_USER_ID), any(Pageable.class));
     }
 
     /**
