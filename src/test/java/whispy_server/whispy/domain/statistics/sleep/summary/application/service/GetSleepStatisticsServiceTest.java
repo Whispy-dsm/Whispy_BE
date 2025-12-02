@@ -33,6 +33,13 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+/**
+ * GetSleepStatisticsService의 단위 테스트 클래스
+ * <p>
+ * 수면 통계 조회 서비스의 다양한 시나리오를 검증합니다.
+ * 일관성 점수 계산, 기간 범위 계산, 경계값 처리 등을 테스트합니다.
+ * </p>
+ */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetSleepStatisticsService 테스트")
 class GetSleepStatisticsServiceTest {
@@ -442,6 +449,14 @@ class GetSleepStatisticsServiceTest {
         );
     }
 
+    /**
+     * 자정을 넘는 취침 시간 테스트 케이스를 제공합니다.
+     * <p>
+     * 취침 시간이 자정을 넘어갈 때 분 계산이 정확히 수행되는지 검증하기 위한 테스트 데이터입니다.
+     * </p>
+     *
+     * @return 취침 시간1, 취침 시간2, 예상 평균 분을 포함하는 Arguments 스트림
+     */
     private static Stream<Arguments> provideMidnightCrossingCases() {
         return Stream.of(
                 Arguments.of(
@@ -462,6 +477,14 @@ class GetSleepStatisticsServiceTest {
         );
     }
 
+    /**
+     * 경계값 시간 테스트 케이스를 제공합니다.
+     * <p>
+     * 분 단위로 표현된 시간을 LocalTime으로 변환할 때 경계값에서 정상 동작하는지 검증하기 위한 테스트 데이터입니다.
+     * </p>
+     *
+     * @return 평균 분과 예상 LocalTime을 포함하는 Arguments 스트림
+     */
     private static Stream<Arguments> provideBoundaryTimeValues() {
         return Stream.of(
                 Arguments.of(0, LocalTime.of(0, 0)),
@@ -470,6 +493,11 @@ class GetSleepStatisticsServiceTest {
         );
     }
 
+    /**
+     * 테스트용 User 객체를 생성합니다.
+     *
+     * @return 기본 정보가 설정된 User 객체
+     */
     private User createUser() {
         return new User(
                 TEST_USER_ID,
@@ -485,6 +513,13 @@ class GetSleepStatisticsServiceTest {
         );
     }
 
+    /**
+     * 테스트용 SleepSessionDto 객체를 생성합니다.
+     *
+     * @param startedAt 수면 시작 시간
+     * @param durationMinutes 수면 지속 시간(분)
+     * @return 생성된 SleepSessionDto 객체
+     */
     private SleepSessionDto createSession(LocalDateTime startedAt, int durationMinutes) {
         LocalDateTime endedAt = startedAt.plusMinutes(durationMinutes);
         return new SleepSessionDto(
