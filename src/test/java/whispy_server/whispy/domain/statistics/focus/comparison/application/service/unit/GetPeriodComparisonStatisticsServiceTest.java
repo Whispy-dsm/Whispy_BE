@@ -1,4 +1,5 @@
-package whispy_server.whispy.domain.statistics.focus.comparison.application.service;
+package whispy_server.whispy.domain.statistics.focus.comparison.application.service.unit;
+import whispy_server.whispy.domain.statistics.focus.comparison.application.service.GetPeriodComparisonStatisticsService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

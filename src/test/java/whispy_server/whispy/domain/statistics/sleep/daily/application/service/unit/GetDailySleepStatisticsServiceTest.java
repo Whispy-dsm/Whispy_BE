@@ -1,4 +1,5 @@
-package whispy_server.whispy.domain.statistics.sleep.daily.application.service;
+package whispy_server.whispy.domain.statistics.sleep.daily.application.service.unit;
+import whispy_server.whispy.domain.statistics.sleep.daily.application.service.GetDailySleepStatisticsService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

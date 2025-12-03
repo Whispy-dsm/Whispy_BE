@@ -1,4 +1,5 @@
-package whispy_server.whispy.domain.statistics.activity.applicatoin.service;
+package whispy_server.whispy.domain.statistics.activity.applicatoin.service.unit;
+import whispy_server.whispy.domain.statistics.activity.applicatoin.service.GetWeeklyActivityService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
