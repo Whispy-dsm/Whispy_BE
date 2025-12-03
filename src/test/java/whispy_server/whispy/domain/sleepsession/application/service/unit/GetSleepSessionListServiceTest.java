@@ -1,4 +1,5 @@
-package whispy_server.whispy.domain.sleepsession.application.service;
+package whispy_server.whispy.domain.sleepsession.application.service.unit;
+import whispy_server.whispy.domain.sleepsession.application.service.GetSleepSessionListService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
