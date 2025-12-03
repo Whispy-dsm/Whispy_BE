@@ -1,4 +1,5 @@
-package whispy_server.whispy.domain.meditationsession.application.service;
+package whispy_server.whispy.domain.meditationsession.application.service.unit;
+import whispy_server.whispy.domain.meditationsession.application.service.SaveMeditationSessionService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
