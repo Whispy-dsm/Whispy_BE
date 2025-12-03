@@ -33,7 +33,7 @@ public final class FileValidator {
             "image/jpeg", "image/png", "image/heic", "image/webp", "image/gif", "image/heif"
     );
     private static final Set<String> MUSIC_VALID_MIME_TYPES = Set.of(
-            "audio/mpeg", "audio/wav", "audio/flac", "audio/aac", "audio/ogg", "audio/mp4"
+            "audio/mpeg", "audio/wav","audio/x-wav", "audio/wave", "audio/vnd.wave", "audio/flac", "audio/aac", "audio/ogg", "audio/mp4"
     );
 
     private FileValidator() {
