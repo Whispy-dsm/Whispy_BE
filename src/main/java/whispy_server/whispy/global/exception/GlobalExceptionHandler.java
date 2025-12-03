@@ -2,6 +2,7 @@ package whispy_server.whispy.global.exception;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,6 +34,16 @@ public class GlobalExceptionHandler {
         errorNotificationHandler.handleWhispyException(e);
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
+    }
+
+    /**
+     * 클라이언트가 연결을 중단한 경우를 처리한다.
+     * 음악/비디오 스트리밍 시 브라우저가 연결을 끊는 정상적인 동작이므로
+     * 로그만 남기고 알림을 보내지 않는다.
+     */
+    @ExceptionHandler(ClientAbortException.class)
+    public void handleClientAbortException(ClientAbortException e) {
+        log.debug("Client aborted connection: {}", e.getMessage());
     }
 
     /**
