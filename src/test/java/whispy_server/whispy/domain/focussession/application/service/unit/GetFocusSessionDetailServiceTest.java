@@ -1,4 +1,5 @@
-package whispy_server.whispy.domain.focussession.application.service;
+package whispy_server.whispy.domain.focussession.application.service.unit;
+import whispy_server.whispy.domain.focussession.application.service.GetFocusSessionDetailService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
