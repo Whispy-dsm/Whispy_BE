@@ -1,4 +1,6 @@
-package whispy_server.whispy.domain.payment.application.service;
+package whispy_server.whispy.domain.payment.application.service.unit;
+import whispy_server.whispy.domain.payment.application.service.PurchaseValidationService;
+import whispy_server.whispy.domain.payment.application.service.PurchaseProcessingService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

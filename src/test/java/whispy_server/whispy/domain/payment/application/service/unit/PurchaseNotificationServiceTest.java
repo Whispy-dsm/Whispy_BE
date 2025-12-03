@@ -1,4 +1,5 @@
-package whispy_server.whispy.domain.payment.application.service;
+package whispy_server.whispy.domain.payment.application.service.unit;
+import whispy_server.whispy.domain.payment.application.service.PurchaseNotificationService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
