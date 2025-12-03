@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.request.SaveS
 import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.response.SleepSessionDetailResponse;
 import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.response.SleepSessionListResponse;
 import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.response.SleepSessionResponse;
+import whispy_server.whispy.domain.sleepsession.application.port.in.DeleteSleepSessionUseCase;
 import whispy_server.whispy.domain.sleepsession.application.port.in.GetSleepSessionDetailUseCase;
 import whispy_server.whispy.domain.sleepsession.application.port.in.GetSleepSessionListUseCase;
 import whispy_server.whispy.domain.sleepsession.application.port.in.SaveSleepSessionUseCase;
@@ -34,6 +36,7 @@ public class SleepSessionController implements SleepSessionApiDocument {
     private final SaveSleepSessionUseCase saveSleepSessionUseCase;
     private final GetSleepSessionListUseCase getSleepSessionListUseCase;
     private final GetSleepSessionDetailUseCase getSleepSessionDetailUseCase;
+    private final DeleteSleepSessionUseCase deleteSleepSessionUseCase;
 
     /**
      * 새로운 수면 세션을 저장합니다.
@@ -67,5 +70,16 @@ public class SleepSessionController implements SleepSessionApiDocument {
     @GetMapping("/{sleepSessionId}")
     public SleepSessionDetailResponse getSleepSessionDetail(@PathVariable Long sleepSessionId) {
         return getSleepSessionDetailUseCase.execute(sleepSessionId);
+    }
+
+    /**
+     * 특정 수면 세션을 삭제합니다.
+     *
+     * @param sleepSessionId 삭제할 수면 세션 ID
+     */
+    @DeleteMapping("/{sleepSessionId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSleepSession(@PathVariable Long sleepSessionId) {
+        deleteSleepSessionUseCase.execute(sleepSessionId);
     }
 }
