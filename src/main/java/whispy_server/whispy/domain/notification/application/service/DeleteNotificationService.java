@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.notification.application.port.in.DeleteNotificationUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.DeleteNotificationPort;
-import whispy_server.whispy.domain.notification.application.port.out.NotificationPort;
 import whispy_server.whispy.domain.notification.application.port.out.QueryNotificationPort;
 import whispy_server.whispy.domain.notification.model.Notification;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
@@ -31,7 +30,7 @@ public class DeleteNotificationService implements DeleteNotificationUseCase {
      * 특정 알림을 삭제합니다.
      *
      * @param notificationId 삭제할 알림 ID
-     * @throws whispy_server.whispy.global.exception.domain.fcm.NotificationNotFoundException 알림을 찾을 수 없거나 소유자가 아닌 경우
+     * @throws NotificationNotFoundException 알림을 찾을 수 없거나 소유자가 아닌 경우
      */
     @Override
     public void execute(Long notificationId) {

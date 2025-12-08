@@ -30,7 +30,7 @@ public class AddTopicItemWriter implements ItemWriter<AddTopicJobParameters> {
      * 토픽 구독을 저장하고 FCM 토픽을 구독합니다.
      *
      * @param chunk 토픽 추가 작업 파라미터 청크
-     * @throws whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException 처리 중 예외 발생 시
+     * @throws BatchJobExecutionFailedException 처리 중 예외 발생 시
      */
     @Override
     public void write(Chunk<? extends AddTopicJobParameters> chunk) {

@@ -3,7 +3,6 @@ package whispy_server.whispy.domain.sleepsession.adapter.out.persistence.reposit
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import whispy_server.whispy.domain.focussession.adapter.out.entity.FocusSessionJpaEntity;
 import whispy_server.whispy.domain.sleepsession.adapter.out.entity.SleepSessionJpaEntity;
 
 import java.util.Optional;

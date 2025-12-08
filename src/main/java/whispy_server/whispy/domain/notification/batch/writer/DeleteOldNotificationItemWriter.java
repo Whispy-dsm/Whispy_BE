@@ -27,7 +27,7 @@ public class DeleteOldNotificationItemWriter implements ItemWriter<DeleteOldNoti
      * 청크 단위로 알림을 배치 삭제합니다.
      *
      * @param chunk 삭제할 알림 파라미터 청크
-     * @throws whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException 배치 작업 실행 실패 시
+     * @throws BatchJobExecutionFailedException 배치 작업 실행 실패 시
      */
     @Override
     public void write(Chunk<? extends DeleteOldNotificationJobParameters> chunk) {

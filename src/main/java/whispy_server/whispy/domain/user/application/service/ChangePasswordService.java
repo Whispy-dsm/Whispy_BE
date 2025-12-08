@@ -6,12 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangePasswordRequest;
 import whispy_server.whispy.domain.user.application.port.in.ChangePasswordUseCase;
-import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.exception.domain.auth.EmailNotVerifiedException;
-import whispy_server.whispy.global.exception.domain.user.PasswordMissMatchException;
 import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 import whispy_server.whispy.global.utils.redis.RedisUtil;
 

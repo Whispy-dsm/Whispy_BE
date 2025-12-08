@@ -7,7 +7,6 @@ import com.google.firebase.FirebaseOptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import whispy_server.whispy.global.fcm.properties.FcmProperties;
 
 import java.io.ByteArrayInputStream;

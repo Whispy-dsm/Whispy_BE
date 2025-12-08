@@ -15,8 +15,6 @@ import whispy_server.whispy.domain.user.application.port.out.ExistsUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.global.exception.domain.user.UserAlreadyExistException;
 
-import java.time.LocalDateTime;
-
 /**
  * 사용자 회원가입 서비스.
  * 로컬 계정으로 새로운 사용자를 등록합니다.

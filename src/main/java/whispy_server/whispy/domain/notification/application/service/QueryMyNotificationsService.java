@@ -11,8 +11,6 @@ import whispy_server.whispy.domain.notification.application.port.out.QueryNotifi
 import whispy_server.whispy.domain.notification.model.Notification;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 
-import java.util.List;
-
 /**
  * 내 알림 목록 조회 서비스.
  *

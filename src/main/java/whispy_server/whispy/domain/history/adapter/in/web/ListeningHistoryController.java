@@ -1,12 +1,10 @@
 package whispy_server.whispy.domain.history.adapter.in.web;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import whispy_server.whispy.domain.history.adapter.in.web.dto.request.RecordListeningRequest;
 import whispy_server.whispy.domain.history.adapter.in.web.dto.response.ListeningHistoryResponse;
 import whispy_server.whispy.domain.history.application.port.in.QueryListeningHistoryUseCase;
 import whispy_server.whispy.domain.history.application.port.in.RecordListeningUseCase;

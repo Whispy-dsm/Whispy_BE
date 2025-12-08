@@ -1,6 +1,5 @@
 package whispy_server.whispy.domain.music.model;
 
-import whispy_server.whispy.domain.music.adapter.in.web.dto.request.UpdateMusicRequest;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;
 import whispy_server.whispy.global.annotation.Aggregate;
 

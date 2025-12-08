@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.meditationsession.adapter.in.web.dto.request.SaveMeditationSessionRequest;
 import whispy_server.whispy.domain.meditationsession.adapter.in.web.dto.response.MeditationSessionResponse;
 import whispy_server.whispy.domain.meditationsession.application.port.out.MeditationSessionSavePort;
+import whispy_server.whispy.domain.meditationsession.model.types.BreatheMode;
 import whispy_server.whispy.domain.meditationsession.model.MeditationSession;
 import whispy_server.whispy.domain.statistics.meditation.daily.application.port.out.QueryMeditationStatisticsPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
@@ -64,7 +65,7 @@ class SaveMeditationSessionServiceTest {
                 startedAt,
                 endedAt,
                 durationSeconds,
-                whispy_server.whispy.domain.meditationsession.model.types.BreatheMode.BOX_BREATHING
+                BreatheMode.BOX_BREATHING
         );
 
         MeditationSession savedSession = new MeditationSession(
@@ -73,7 +74,7 @@ class SaveMeditationSessionServiceTest {
                 startedAt,
                 endedAt,
                 durationSeconds,
-                whispy_server.whispy.domain.meditationsession.model.types.BreatheMode.BOX_BREATHING,
+                BreatheMode.BOX_BREATHING,
                 LocalDateTime.now()
         );
 
@@ -88,7 +89,7 @@ class SaveMeditationSessionServiceTest {
         assertThat(response).isNotNull();
         assertThat(response.id()).isEqualTo(1L);
         assertThat(response.userId()).isEqualTo(TEST_USER_ID);
-        assertThat(response.breatheMode()).isEqualTo(whispy_server.whispy.domain.meditationsession.model.types.BreatheMode.BOX_BREATHING);
+        assertThat(response.breatheMode()).isEqualTo(BreatheMode.BOX_BREATHING);
         assertThat(response.todayTotalMinutes()).isEqualTo(30);
         verify(meditationSessionSavePort).save(any(MeditationSession.class));
     }
@@ -106,7 +107,7 @@ class SaveMeditationSessionServiceTest {
                 startedAt,
                 endedAt,
                 durationSeconds,
-                whispy_server.whispy.domain.meditationsession.model.types.BreatheMode.DIAPHRAGMATIC
+                BreatheMode.DIAPHRAGMATIC
         );
 
         MeditationSession savedSession = new MeditationSession(
@@ -115,7 +116,7 @@ class SaveMeditationSessionServiceTest {
                 startedAt,
                 endedAt,
                 durationSeconds,
-                whispy_server.whispy.domain.meditationsession.model.types.BreatheMode.DIAPHRAGMATIC,
+                BreatheMode.DIAPHRAGMATIC,
                 LocalDateTime.now()
         );
 

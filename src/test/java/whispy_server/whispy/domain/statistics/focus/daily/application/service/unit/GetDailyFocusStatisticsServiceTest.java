@@ -1,4 +1,6 @@
 package whispy_server.whispy.domain.statistics.focus.daily.application.service.unit;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyTagFocusAggregationDto;
 import whispy_server.whispy.domain.statistics.focus.daily.application.service.GetDailyFocusStatisticsService;
 
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
 import whispy_server.whispy.domain.statistics.focus.daily.adapter.in.web.dto.response.DailyFocusStatisticsResponse;
-import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.*;
 import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.QueryFocusStatisticsPort;
 import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;

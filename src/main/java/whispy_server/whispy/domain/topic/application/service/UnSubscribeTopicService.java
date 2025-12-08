@@ -32,7 +32,7 @@ public class UnSubscribeTopicService implements UnSubscribeTopicUseCase {
      * 토픽 구독을 취소합니다.
      *
      * @param request 토픽 구독 취소 요청
-     * @throws whispy_server.whispy.global.exception.domain.fcm.TopicSubscriptionNotFoundException 토픽 구독이 존재하지 않는 경우
+     * @throws TopicSubscriptionNotFoundException 토픽 구독이 존재하지 않는 경우
      */
     @Override
     public void execute(TopicSubscriptionRequest request){

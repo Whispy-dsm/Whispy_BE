@@ -9,8 +9,6 @@ import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.Quer
 import whispy_server.whispy.domain.announcement.application.port.in.QueryAllAnnouncementUseCase;
 import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
 
-import java.util.List;
-
 /**
  * 모든 공지사항 조회 서비스.
  *

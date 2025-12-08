@@ -5,8 +5,6 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import whispy_server.whispy.domain.admin.adapter.out.entity.AdminJpaEntity;
 import whispy_server.whispy.domain.admin.model.Admin;
-import whispy_server.whispy.domain.announcement.adapter.out.entity.AnnouncementJpaEntity;
-import whispy_server.whispy.domain.announcement.model.Announcement;
 
 import java.util.Optional;
 

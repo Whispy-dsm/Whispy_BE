@@ -30,7 +30,7 @@ public class MarkNotificationAsReadService implements MarkNotificationAsReadUseC
      * 특정 알림을 읽음 상태로 변경합니다.
      *
      * @param notificationId 읽음 처리할 알림 ID
-     * @throws whispy_server.whispy.global.exception.domain.fcm.NotificationNotFoundException 알림을 찾을 수 없거나 소유자가 아닌 경우
+     * @throws NotificationNotFoundException 알림을 찾을 수 없거나 소유자가 아닌 경우
      */
     @Override
     public void execute(Long notificationId){

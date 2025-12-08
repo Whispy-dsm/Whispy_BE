@@ -16,7 +16,6 @@ import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -24,7 +23,6 @@ import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.global.entity.BaseTimeEntity;
 
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 알림 JPA 엔티티.

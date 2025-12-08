@@ -2,9 +2,7 @@ package whispy_server.whispy.domain.payment.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.ValidatePurchaseRequest;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.ValidatePurchaseResponse;
 import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPort;
 import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
@@ -12,7 +10,6 @@ import whispy_server.whispy.domain.payment.application.port.out.SubscriptionSave
 import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionFactory;
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.payment.model.Subscription;
-import whispy_server.whispy.global.exception.domain.payment.PurchaseNotificationProcessingFailedException;
 import whispy_server.whispy.global.exception.domain.payment.SubscriptionAcknowledgmentFailedException;
 
 import java.util.Optional;

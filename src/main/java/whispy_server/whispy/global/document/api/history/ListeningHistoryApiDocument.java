@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import whispy_server.whispy.domain.history.adapter.in.web.dto.request.RecordListeningRequest;
 import whispy_server.whispy.domain.history.adapter.in.web.dto.response.ListeningHistoryResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 

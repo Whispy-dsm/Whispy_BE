@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 
 import java.util.UUID;
 

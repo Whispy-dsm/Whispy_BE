@@ -36,7 +36,7 @@ public class SendToTopicBatchService implements SendToTopicUseCase {
      * 토픽으로 알림을 전송하고 배치 작업을 통해 알림 이력을 저장합니다.
      *
      * @param request 알림 토픽 전송 요청
-     * @throws whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException 배치 작업 실행 실패 시
+     * @throws BatchJobExecutionFailedException 배치 작업 실행 실패 시
      */
     @Override
     public void execute(NotificationTopicSendRequest request) {

@@ -7,7 +7,6 @@ import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.adapter.out.mapper.UserEntityMapper;
 import whispy_server.whispy.domain.user.application.port.out.UserPort;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

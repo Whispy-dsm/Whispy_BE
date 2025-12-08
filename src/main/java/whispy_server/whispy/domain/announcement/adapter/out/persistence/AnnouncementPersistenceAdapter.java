@@ -9,7 +9,6 @@ import whispy_server.whispy.domain.announcement.adapter.out.persistence.reposito
 import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
 import whispy_server.whispy.domain.announcement.model.Announcement;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

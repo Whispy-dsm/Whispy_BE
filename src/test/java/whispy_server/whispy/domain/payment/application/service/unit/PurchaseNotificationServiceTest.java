@@ -20,7 +20,6 @@ import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.payment.model.Subscription;
 import whispy_server.whispy.domain.payment.model.type.ProductType;
 import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
-import whispy_server.whispy.global.exception.domain.payment.InvalidSubscriptionNotificationException;
 import whispy_server.whispy.global.exception.domain.payment.PurchaseNotificationProcessingFailedException;
 
 import java.nio.charset.StandardCharsets;

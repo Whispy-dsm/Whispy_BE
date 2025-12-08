@@ -4,9 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import whispy_server.whispy.domain.announcement.adapter.out.entity.AnnouncementJpaEntity;
-import whispy_server.whispy.domain.announcement.model.Announcement;
-
-import java.util.List;
 
 /**
  * 공지사항 JPA 레포지토리.

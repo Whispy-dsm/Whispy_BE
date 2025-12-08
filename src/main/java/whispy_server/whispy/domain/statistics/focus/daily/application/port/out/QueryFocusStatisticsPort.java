@@ -1,6 +1,11 @@
 package whispy_server.whispy.domain.statistics.focus.daily.application.port.out;
 
-import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.*;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.DailyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.DailyTagFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyTagFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.MonthlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.MonthlyTagFocusAggregationDto;
 import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.TagMinutesDto;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
 

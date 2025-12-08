@@ -29,7 +29,7 @@ public class NotificationScheduler {
     /**
      * 매일 새벽 3시에 30일이 지난 오래된 알림을 삭제합니다.
      *
-     * @throws whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException 배치 작업 실행 실패 시
+     * @throws BatchJobExecutionFailedException 배치 작업 실행 실패 시
      */
     @Scheduled(cron = "0 0 3 * * *")
     public void deleteOldNotifications () {

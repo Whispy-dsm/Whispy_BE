@@ -2,7 +2,6 @@ package whispy_server.whispy.domain.payment.application.port.out;
 
 import whispy_server.whispy.domain.payment.model.Subscription;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

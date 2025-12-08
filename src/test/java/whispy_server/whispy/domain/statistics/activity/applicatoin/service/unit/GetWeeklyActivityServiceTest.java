@@ -14,7 +14,6 @@ import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;

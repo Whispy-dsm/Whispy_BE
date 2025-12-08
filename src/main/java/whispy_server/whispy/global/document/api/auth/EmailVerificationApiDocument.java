@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.CheckEmailVerificationRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.SendEmailVerificationRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.VerifyEmailCodeRequest;

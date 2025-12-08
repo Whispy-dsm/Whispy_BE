@@ -4,8 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.response.NotificationResponse;
 
-import java.util.List;
-
 /**
  * 내 알림 목록 조회 유스케이스.
  *

@@ -1,5 +1,6 @@
 package whispy_server.whispy.domain.admin.application.port.in;
 
+import whispy_server.whispy.global.exception.domain.admin.AdminNotFoundException;
 import whispy_server.whispy.domain.admin.model.Admin;
 import whispy_server.whispy.global.annotation.UseCase;
 
@@ -18,7 +19,7 @@ public interface AdminFacadeUseCase {
      * SecurityContext에서 관리자 ID를 추출하여 관리자 정보를 반환합니다.
      *
      * @return 현재 인증된 관리자 정보
-     * @throws whispy_server.whispy.global.exception.domain.admin.AdminNotFoundException 관리자를 찾을 수 없는 경우
+     * @throws AdminNotFoundException 관리자를 찾을 수 없는 경우
      */
     Admin currentAdmin();
 
@@ -27,7 +28,7 @@ public interface AdminFacadeUseCase {
      *
      * @param adminId 조회할 관리자 로그인 ID
      * @return 조회된 관리자 정보
-     * @throws whispy_server.whispy.global.exception.domain.admin.AdminNotFoundException 관리자를 찾을 수 없는 경우
+     * @throws AdminNotFoundException 관리자를 찾을 수 없는 경우
      */
     Admin getAdminByAdminId(String adminId);
 

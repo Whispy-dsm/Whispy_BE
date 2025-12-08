@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import whispy_server.whispy.domain.history.adapter.out.dto.ListeningHistoryWithMusicDto;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 청취 이력 조회 응답 DTO.

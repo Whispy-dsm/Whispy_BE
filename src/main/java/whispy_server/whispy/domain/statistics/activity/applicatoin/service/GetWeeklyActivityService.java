@@ -12,7 +12,6 @@ import whispy_server.whispy.domain.statistics.activity.model.WeekActivityData;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -20,7 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 

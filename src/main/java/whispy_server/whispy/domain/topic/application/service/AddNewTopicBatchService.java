@@ -30,7 +30,7 @@ public class AddNewTopicBatchService implements AddNewTopicForAllUsersUseCase {
      *
      * @param newTopic 새로운 토픽
      * @param defaultSubscribed 기본 구독 여부
-     * @throws whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException 배치 작업 실행 실패 시
+     * @throws BatchJobExecutionFailedException 배치 작업 실행 실패 시
      */
     @Override
     public void execute(NotificationTopic newTopic, boolean defaultSubscribed) {

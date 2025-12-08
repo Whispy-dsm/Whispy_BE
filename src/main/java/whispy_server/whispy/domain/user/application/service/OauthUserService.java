@@ -1,7 +1,6 @@
 package whispy_server.whispy.domain.user.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +11,6 @@ import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
-
-import java.time.LocalDateTime;
 
 /**
  * OAuth 사용자 처리 서비스.

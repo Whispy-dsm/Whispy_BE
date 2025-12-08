@@ -14,8 +14,6 @@ import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.Quer
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.QueryAnnouncementResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
-import java.util.List;
-
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
 /**

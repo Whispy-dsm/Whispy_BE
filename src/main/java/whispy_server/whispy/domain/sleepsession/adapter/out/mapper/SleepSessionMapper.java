@@ -5,8 +5,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
-import whispy_server.whispy.domain.focussession.adapter.out.entity.FocusSessionJpaEntity;
-import whispy_server.whispy.domain.focussession.model.FocusSession;
 import whispy_server.whispy.domain.sleepsession.adapter.out.entity.SleepSessionJpaEntity;
 import whispy_server.whispy.domain.sleepsession.model.SleepSession;
 
