@@ -14,6 +14,9 @@ import whispy_server.whispy.global.exception.domain.file.FileSizeExceededExcepti
 import java.util.Set;
 import java.util.regex.Pattern;
 
+/**
+ * 파일 확장자, MIME, 크기, 이름 등을 검증하는 유틸리티.
+ */
 public final class FileValidator {
 
     private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9가-힣._\\-() ]+$");
@@ -30,13 +33,19 @@ public final class FileValidator {
             "image/jpeg", "image/png", "image/heic", "image/webp", "image/gif", "image/heif"
     );
     private static final Set<String> MUSIC_VALID_MIME_TYPES = Set.of(
-            "audio/mpeg", "audio/wav", "audio/flac", "audio/aac", "audio/ogg", "audio/mp4"
+            "audio/mpeg", "audio/wav","audio/x-wav", "audio/wave", "audio/vnd.wave", "audio/flac", "audio/aac", "audio/ogg", "audio/mp4"
     );
 
     private FileValidator() {
         throw new AssertionError("유틸리티 클래스는 객체를 생성하지 않도록 설계해야 합니다.");
     }
 
+    /**
+     * 파일을 폴더 타입에 맞춰 검증한다.
+     *
+     * @param file   업로드 파일
+     * @param folder 대상 폴더
+     */
     public static void validateFile(MultipartFile file, ImageFolder folder) {
         validateFileName(file);
 

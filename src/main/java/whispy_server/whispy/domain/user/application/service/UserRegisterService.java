@@ -15,8 +15,10 @@ import whispy_server.whispy.domain.user.application.port.out.ExistsUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.global.exception.domain.user.UserAlreadyExistException;
 
-import java.time.LocalDateTime;
-
+/**
+ * 사용자 회원가입 서비스.
+ * 로컬 계정으로 새로운 사용자를 등록합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserRegisterService implements UserRegisterUseCase {
@@ -29,6 +31,12 @@ public class UserRegisterService implements UserRegisterUseCase {
 
     private static final String DEFAULT_PROVIDER = "일반 로그인";
 
+    /**
+     * 새로운 사용자를 회원가입 처리합니다.
+     * 이메일 중복 확인, 비밀번호 암호화, FCM 토픽 초기화를 수행합니다.
+     *
+     * @param request 회원가입 요청 (이메일, 비밀번호, 이름 등)
+     */
     @Transactional
     @Override
     public void register(RegisterRequest request){

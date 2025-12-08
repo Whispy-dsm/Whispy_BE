@@ -4,8 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import whispy_server.whispy.domain.history.adapter.out.dto.ListeningHistoryWithMusicDto;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;
 import java.time.LocalDateTime;
-import java.util.List;
 
+/**
+ * 청취 이력 조회 응답 DTO.
+ */
 @Schema(description = "청취 기록 응답")
 public record ListeningHistoryResponse(
         @Schema(description = "음악 ID", example = "1")
@@ -21,6 +23,12 @@ public record ListeningHistoryResponse(
         @Schema(description = "청취 일시", example = "2024-01-01T12:00:00")
         LocalDateTime listenedAt
 ) {
+    /**
+     * 도메인 DTO를 응답으로 변환한다.
+     *
+     * @param dto 청취 이력 DTO
+     * @return 응답 객체
+     */
     public static ListeningHistoryResponse from(ListeningHistoryWithMusicDto dto) {
         return new ListeningHistoryResponse(
                 dto.musicId(),

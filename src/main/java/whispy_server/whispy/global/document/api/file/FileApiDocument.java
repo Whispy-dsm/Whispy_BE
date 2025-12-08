@@ -15,6 +15,10 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 파일 업로드/삭제 엔드포인트의 Swagger 설명을 담는 인터페이스이다.
+ * 파일 컨트롤러는 이를 구현함으로써 문서화와 보안 요구사항을 공유한다.
+ */
 @Tag(name = "FILE API", description = "파일 관련 API")
 public interface FileApiDocument {
 

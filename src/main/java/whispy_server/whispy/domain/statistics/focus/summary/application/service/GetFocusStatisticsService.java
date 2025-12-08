@@ -22,6 +22,9 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 집중 세션을 기간별로 집계해 주요 지표와 태그별 시간을 계산하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetFocusStatisticsService implements GetFocusStatisticsUseCase {

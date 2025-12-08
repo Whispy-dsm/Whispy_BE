@@ -14,6 +14,9 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
 @Tag(name = "WITHDRAWAL REASON API", description = "탈퇴 사유 API")
+/**
+ * 회원 탈퇴 과정에서 수집하는 사유 입력 API 를 문서화한다.
+ */
 public interface WithdrawalReasonApiDocument {
 
     @Operation(

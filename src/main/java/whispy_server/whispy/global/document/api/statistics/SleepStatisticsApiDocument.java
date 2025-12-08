@@ -19,6 +19,10 @@ import java.time.LocalDate;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 수면 통계 및 비교 지표를 설명하는 Swagger 문서용 인터페이스이다.
+ * 수면 통계 컨트롤러가 구현하여 주기별/일별 통계 API 정의를 공유한다.
+ */
 @Tag(name = "SLEEP STATISTICS API", description = "수면 통계 관련 API")
 public interface SleepStatisticsApiDocument {
 

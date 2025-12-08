@@ -12,6 +12,11 @@ import whispy_server.whispy.domain.user.model.User;
 
 import java.util.List;
 
+/**
+ * 모든 알림 읽음 처리 서비스.
+ *
+ * 현재 사용자의 모든 읽지 않은 알림을 읽음 상태로 변경하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -21,6 +26,9 @@ public class MarkAllNotificationsAsReadService implements MarkAllNotificationsAs
     private final SaveNotificationPort saveNotificationPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 모든 알림을 읽음 상태로 변경합니다.
+     */
     @Override
     public void execute(){
         User currentUser = userFacadeUseCase.currentUser();

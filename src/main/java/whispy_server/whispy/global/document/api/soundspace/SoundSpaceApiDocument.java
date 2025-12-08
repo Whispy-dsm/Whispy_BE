@@ -17,6 +17,10 @@ import java.util.List;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 사운드 스페이스 음악 관리 엔드포인트의 Swagger 스펙을 정의한다.
+ * 사운드 스페이스 컨트롤러에서 구현하여 조회/토글/삭제 API 문서를 일관되게 유지한다.
+ */
 @Tag(name = "SOUND SPACE API", description = "사운드 스페이스 관련 API")
 public interface SoundSpaceApiDocument {
 

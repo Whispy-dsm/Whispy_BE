@@ -10,6 +10,11 @@ import whispy_server.whispy.domain.sleepsession.application.port.in.GetSleepSess
 import whispy_server.whispy.domain.sleepsession.application.port.out.QuerySleepSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 
+/**
+ * 수면 세션 목록 조회 서비스.
+ *
+ * 현재 사용자의 수면 세션 목록을 페이지 단위로 조회하는 유스케이스 구현입니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -18,6 +23,12 @@ public class GetSleepSessionListService implements GetSleepSessionListUseCase {
     private final QuerySleepSessionPort querySleepSessionPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 현재 사용자의 수면 세션 목록을 페이지 단위로 조회합니다.
+     *
+     * @param pageable 페이지 정보
+     * @return 수면 세션 목록 페이지
+     */
     @Override
     public Page<SleepSessionListResponse> execute(Pageable pageable) {
         Long userId = userFacadeUseCase.currentUser().id();

@@ -7,7 +7,6 @@ import com.google.firebase.FirebaseOptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import whispy_server.whispy.global.fcm.properties.FcmProperties;
 
 import java.io.ByteArrayInputStream;
@@ -15,6 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Firebase Admin SDK 초기화를 위한 설정.
+ */
 @Configuration
 @RequiredArgsConstructor
 public class FcmConfig {
@@ -22,6 +24,9 @@ public class FcmConfig {
     private final ObjectMapper objectMapper;
     private final FcmProperties fcmProperties;
 
+    /**
+     * 환경설정 정보를 기반으로 FirebaseApp 인스턴스를 초기화한다.
+     */
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
         if (FirebaseApp.getApps().isEmpty()) {

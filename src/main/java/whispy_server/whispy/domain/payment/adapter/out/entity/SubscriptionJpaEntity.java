@@ -11,7 +11,6 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -21,6 +20,12 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
 
 import java.time.LocalDateTime;
 
+/**
+ * 구독 JPA 엔티티.
+ *
+ * 데이터베이스의 tbl_subscription 테이블과 매핑되는 엔티티입니다.
+ * 이메일과 구독 상태에 대한 인덱스가 정의되어 있습니다.
+ */
 @Entity(name = "SubscriptionJpaEntity")
 @Table(name = "tbl_subscription", indexes = {
         @Index(name = "idx_subscription_email", columnList = "email"),

@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.CheckEmailVerificationRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.SendEmailVerificationRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.VerifyEmailCodeRequest;
@@ -14,6 +13,10 @@ import whispy_server.whispy.domain.auth.adapter.in.dto.response.CheckEmailVerifi
 import whispy_server.whispy.domain.auth.adapter.in.dto.response.VerifyEmailCodeResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
+/**
+ * 이메일 인증 코드 발송/검증/상태 조회를 문서화하는 Swagger 인터페이스.
+ * 인증 컨트롤러가 구현하여 공통 응답 스펙을 제공한다.
+ */
 @Tag(name = "EMAIL VERIFICATION API", description = "이메일 인증 관련 API")
 public interface EmailVerificationApiDocument {
 

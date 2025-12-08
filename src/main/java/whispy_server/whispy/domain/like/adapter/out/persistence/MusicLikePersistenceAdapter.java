@@ -15,6 +15,9 @@ import whispy_server.whispy.domain.music.adapter.out.entity.QMusicJpaEntity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 좋아요 도메인의 영속 계층 어댑터로, JPA/QueryDSL 을 통해 CRUD 를 수행한다.
+ */
 @Component
 @RequiredArgsConstructor
 public class MusicLikePersistenceAdapter implements MusicLikePort {

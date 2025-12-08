@@ -16,6 +16,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;
 
+/**
+ * 음악 JPA 엔티티.
+ *
+ * tbl_music 테이블과 매핑되는 엔티티입니다.
+ * 카테고리와 제목에 인덱스가 설정되어 있어 검색 성능이 최적화되어 있습니다.
+ */
 @Entity
 @Table(
         name = "tbl_music",

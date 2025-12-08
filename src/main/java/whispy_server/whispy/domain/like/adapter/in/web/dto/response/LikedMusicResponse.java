@@ -6,6 +6,9 @@ import whispy_server.whispy.domain.music.model.type.MusicCategory;
 
 import java.util.List;
 
+/**
+ * 좋아요한 음악 목록을 내려줄 때 사용하는 응답 DTO.
+ */
 @Schema(description = "좋아요한 음악 응답")
 public record LikedMusicResponse(
         @Schema(description = "음악 ID", example = "1")
@@ -22,7 +25,7 @@ public record LikedMusicResponse(
 
         @Schema(description = "음악 카테고리")
         MusicCategory category
-) {
+        ) {
 
         public static LikedMusicResponse from(MusicLikeWithMusicDto dto) {
                 return new LikedMusicResponse(

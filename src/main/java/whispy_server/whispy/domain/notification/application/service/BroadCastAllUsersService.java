@@ -7,12 +7,22 @@ import whispy_server.whispy.domain.notification.application.port.in.BroadCastToA
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
+/**
+ * 모든 사용자에게 알림 전송 서비스.
+ *
+ * 모든 사용자에게 FCM 푸시 알림을 브로드캐스트하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class BroadCastAllUsersService implements BroadCastToAllUsersUseCase {
 
     private final SendToTopicUseCase sendToTopicUseCase;
 
+    /**
+     * 모든 사용자에게 알림을 전송합니다.
+     *
+     * @param request 알림 토픽 전송 요청
+     */
     @Override
     public void execute(NotificationTopicSendRequest request){
 

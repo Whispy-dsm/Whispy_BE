@@ -9,12 +9,21 @@ import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQ
 import whispy_server.whispy.domain.reason.model.WithdrawalReason;
 import whispy_server.whispy.global.exception.domain.reason.WithdrawalReasonNotFoundException;
 
+/**
+ * 탈퇴 사유 상세 조회 UseCase 구현체.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetWithdrawalReasonDetailService implements GetWithdrawalReasonDetailUseCase {
 
     private final WithdrawalReasonQueryPort withdrawalReasonQueryPort;
 
+    /**
+     * 탈퇴 사유 상세를 조회한다.
+     *
+     * @param id 탈퇴 사유 ID
+     * @return 상세 응답
+     */
     @Override
     @Transactional(readOnly = true)
     public WithdrawalReasonResponse execute(Long id) {

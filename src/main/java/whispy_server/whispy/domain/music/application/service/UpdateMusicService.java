@@ -11,6 +11,11 @@ import whispy_server.whispy.domain.music.application.port.out.QueryMusicPort;
 import whispy_server.whispy.domain.music.model.Music;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
+/**
+ * 음악 수정 서비스.
+ *
+ * 기존 음악 정보를 수정하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -19,6 +24,12 @@ public class UpdateMusicService implements UpdateMusicUseCase {
     private final QueryMusicPort queryMusicPort;
     private final MusicSavePort musicSavePort;
 
+    /**
+     * 음악 정보를 수정합니다.
+     *
+     * @param request 수정할 음악 정보가 포함된 요청
+     * @throws MusicNotFoundException 음악을 찾을 수 없을 때 발생
+     */
     @Transactional
     @Override
     public void execute(UpdateMusicRequest request) {

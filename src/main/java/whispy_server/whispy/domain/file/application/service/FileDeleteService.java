@@ -12,12 +12,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * 파일 삭제 UseCase 구현체.
+ */
 @Service
 @RequiredArgsConstructor
 public class FileDeleteService implements FileDeleteUseCase {
 
     private final FileProperties fileProperties;
 
+    /**
+     * 지정된 폴더/파일명을 기반으로 파일을 삭제한다.
+     *
+     * @param imageFolder 폴더 타입
+     * @param fileName    삭제할 파일명
+     */
     @Override
     public void deleteFile(ImageFolder imageFolder, String fileName){
 

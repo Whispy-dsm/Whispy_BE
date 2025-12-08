@@ -12,6 +12,11 @@ import whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFaile
 
 import java.time.LocalDateTime;
 
+/**
+ * 알림 배치 스케줄러.
+ *
+ * 오래된 알림을 주기적으로 삭제하는 배치 작업을 스케줄링합니다.
+ */
 @Component
 @RequiredArgsConstructor
 public class NotificationScheduler {
@@ -21,6 +26,11 @@ public class NotificationScheduler {
     @Qualifier("deleteOldNotificationJob")
     private final Job deleteOldNotificationJob;
 
+    /**
+     * 매일 새벽 3시에 30일이 지난 오래된 알림을 삭제합니다.
+     *
+     * @throws BatchJobExecutionFailedException 배치 작업 실행 실패 시
+     */
     @Scheduled(cron = "0 0 3 * * *")
     public void deleteOldNotifications () {
         try {

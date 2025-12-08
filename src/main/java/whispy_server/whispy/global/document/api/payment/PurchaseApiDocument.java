@@ -10,6 +10,9 @@ import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.ValidatePu
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.ValidatePurchaseResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
+/**
+ * Google Play 결제 검증/처리를 위한 Swagger 인터페이스이다.
+ */
 @Tag(name = "PURCHASE API", description = "구매 검증 관련 API")
 public interface PurchaseApiDocument {
 

@@ -12,7 +12,6 @@ import whispy_server.whispy.domain.statistics.activity.model.WeekActivityData;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -20,10 +19,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * 주간 활동 통계 조회 서비스.
+ *
+ * 사용자의 지난 20주간 활동 통계를 집계하여 조회하는 애플리케이션 서비스입니다.
+ */
 @Service
 @RequiredArgsConstructor
     public class GetWeeklyActivityService implements GetWeeklyActivityUseCase {
@@ -34,6 +37,11 @@ import java.util.stream.Stream;
     private final QueryActivityMinutesPort queryActivityMinutesPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 주간 활동 통계를 집계하여 조회합니다.
+     *
+     * @return 주간 활동 통계 응답
+     */
     @Override
     @Transactional(readOnly = true)
     public WeeklyActivityResponse execute() {

@@ -12,6 +12,11 @@ import whispy_server.whispy.global.config.jpa.JpaAuditingConfig;
 
 import java.time.LocalDateTime;
 
+/**
+ * 생성/수정 시간을 공통으로 관리하는 추상 엔터티.
+ *
+ * {@link JpaAuditingConfig}에서 Auditing 기능을 활성화해야 동작한다.
+ */
 @Getter
 @MappedSuperclass
 @SuperBuilder

@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -18,6 +17,11 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.domain.user.model.types.Gender;
 
+/**
+ * 사용자 JPA 엔티티.
+ * 데이터베이스 tbl_user 테이블과 매핑되는 영속성 엔티티입니다.
+ * 도메인 모델(User)과 분리되어 인프라 계층의 관심사를 처리합니다.
+ */
 @Entity(name = "UserJpaEntity")
 @Table(name = "tbl_user")
 @Getter

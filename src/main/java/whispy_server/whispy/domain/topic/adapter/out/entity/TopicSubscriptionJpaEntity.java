@@ -17,6 +17,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
+/**
+ * 토픽 구독 JPA 엔티티.
+ *
+ * 사용자의 FCM 토픽 구독 정보를 저장하는 엔티티입니다.
+ */
 @Entity(name = "TopicSubscriptionJpaEntity")
 @Table(name = "tbl_topic_subscription", indexes = {
         @Index(name = "idx_topic_sub_email", columnList = "email"),

@@ -16,6 +16,9 @@ import lombok.experimental.SuperBuilder;
 import whispy_server.whispy.domain.reason.model.types.WithdrawalReasonType;
 import whispy_server.whispy.global.entity.BaseTimeEntity;
 
+/**
+ * 탈퇴 사유 JPA 엔터티.
+ */
 @Entity(name = "WithdrawalReasonJpaEntity")
 @Table(name = "tbl_withdrawal_reason")
 @Getter

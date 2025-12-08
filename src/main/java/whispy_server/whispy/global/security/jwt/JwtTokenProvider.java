@@ -26,6 +26,9 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+/**
+ * JWT 생성, 검증, 재발급과 관련된 핵심 유틸리티 컴포넌트.
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
@@ -41,6 +44,9 @@ public class JwtTokenProvider {
     public static final String ACCESS_TOKEN = "access_token";
     public static final String REFRESH_TOKEN = "refresh_token";
 
+    /**
+     * 사용자 식별자/역할을 기반으로 Access·Refresh 토큰을 생성·저장한다.
+     */
     public TokenResponse generateToken(String id, String role){
         String accessToken = generateAccessToken(id, role, ACCESS_TOKEN, jwtProperties.accessExpiration());
         String refreshToken = generateRefreshToken(role, REFRESH_TOKEN, jwtProperties.refreshExpiration());
@@ -50,6 +56,9 @@ public class JwtTokenProvider {
                 return new TokenResponse(accessToken, refreshToken);
     }
 
+    /**
+     * JWT 서명에 사용할 SecretKey를 반환한다.
+     */
     private SecretKey getSecretKey(){
         return Keys.hmacShaKeyFor(jwtProperties.secret().getBytes(StandardCharsets.UTF_8));
     }
@@ -82,6 +91,9 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    /**
+     * Refresh 토큰을 검증한 뒤 새 토큰 쌍을 발급하고 저장소를 갱신한다.
+     */
     public TokenResponse reissue(String refreshToken){
         if(!isRefreshToken(refreshToken)){
             throw InvalidJwtException.EXCEPTION;
@@ -132,6 +144,9 @@ public class JwtTokenProvider {
         }
     }
 
+    /**
+     * 요청 헤더에서 Bearer 토큰 문자열을 추출한다.
+     */
     public String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader(jwtProperties.header());
 
@@ -142,6 +157,9 @@ public class JwtTokenProvider {
         return null;
     }
 
+    /**
+     * 토큰의 subject/role 정보를 바탕으로 Authentication 객체를 생성한다.
+     */
     public Authentication getAuthentication(String token){
         Claims body = getJws(token).getBody();
         UserDetails userDetails = getDetails(body);

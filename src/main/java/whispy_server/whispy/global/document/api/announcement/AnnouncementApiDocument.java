@@ -14,10 +14,12 @@ import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.Quer
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.QueryAnnouncementResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
-import java.util.List;
-
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 공지사항 조회 기능을 문서화하기 위한 Swagger 인터페이스이다.
+ * 공지 컨트롤러는 이 계약을 구현해 단일/목록 조회 API 의 공통 설명을 제공한다.
+ */
 @Tag(name = "ANNOUNCEMENT API", description = "공지사항 관련 API")
 public interface AnnouncementApiDocument {
 

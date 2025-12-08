@@ -13,6 +13,9 @@ import whispy_server.whispy.global.feign.discord.DiscordNotificationService;
 
 import java.io.IOException;
 
+/**
+ * Filter 단계에서 발생한 예외를 잡아 표준 ErrorResponse 로 응답하고 모니터링에 전파하는 필터.
+ */
 @RequiredArgsConstructor
 public class GlobalExceptionFilter extends OncePerRequestFilter {
 
@@ -20,6 +23,9 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
     private final DiscordNotificationService discordNotificationService;
     private final ErrorNotificationHandler errorNotificationHandler;
 
+    /**
+     * 체인 수행 중 발생한 예외를 처리한다.
+     */
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -44,6 +50,9 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
     }
 
 
+    /**
+     * JSON 형태의 오류 응답을 작성한다.
+     */
     private void writeErrorResponse(HttpServletResponse response, int statusCode, ErrorResponse errorResponse) throws IOException {
         response.setStatus(statusCode);
         response.setContentType("application/json");

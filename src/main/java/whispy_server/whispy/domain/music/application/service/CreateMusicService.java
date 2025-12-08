@@ -9,6 +9,11 @@ import whispy_server.whispy.domain.music.application.port.in.CreateMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicSavePort;
 import whispy_server.whispy.domain.music.model.Music;
 
+/**
+ * 음악 생성 서비스.
+ *
+ * 새로운 음악을 생성하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -16,6 +21,11 @@ public class CreateMusicService implements CreateMusicUseCase {
 
     private final MusicSavePort musicSavePort;
 
+    /**
+     * 음악을 생성하고 저장합니다.
+     *
+     * @param request 생성할 음악 정보가 포함된 요청
+     */
     @Transactional
     @Override
     public void execute(CreateMusicRequest request) {

@@ -9,7 +9,6 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -17,6 +16,12 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
 
 import java.time.LocalDateTime;
 
+/**
+ * 수면 세션 JPA 엔티티.
+ *
+ * 수면 세션 정보를 데이터베이스에 영속화하기 위한 JPA 엔티티입니다.
+ * 사용자 ID와 시작 일시에 대한 복합 인덱스를 포함합니다.
+ */
 @Entity(name = "SleepSessionJpaEntity")
 @Table(name = "tbl_sleep_session", indexes = {
     @Index(name = "idx_user_started", columnList = "user_id, started_at")

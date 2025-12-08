@@ -9,10 +9,20 @@ import whispy_server.whispy.domain.history.model.ListeningHistory;
 
 import java.util.Optional;
 
+/**
+ * 청취 이력 엔터티-도메인 변환을 담당하는 MapStruct 매퍼.
+ */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ListeningHistoryMapper {
 
+    /**
+     * 도메인 모델을 엔터티로 변환한다.
+     */
     ListeningHistoryJpaEntity toEntity(ListeningHistory listeningHistory);
+
+    /**
+     * 엔터티를 도메인 모델로 변환한다.
+     */
     ListeningHistory toModel(ListeningHistoryJpaEntity listeningHistoryJpaEntity);
 
     default Optional<ListeningHistory> toOptionalModel(Optional<ListeningHistoryJpaEntity> optionalEntity) {

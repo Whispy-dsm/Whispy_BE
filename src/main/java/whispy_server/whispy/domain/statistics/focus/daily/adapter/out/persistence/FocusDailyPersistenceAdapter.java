@@ -5,9 +5,14 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.DailyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.DailyTagFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyTagFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.MonthlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.MonthlyTagFocusAggregationDto;
 import whispy_server.whispy.domain.focussession.adapter.out.entity.QFocusSessionJpaEntity;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
-import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.*;
 import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.TagMinutesDto;
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
 import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.QueryFocusStatisticsPort;
@@ -16,12 +21,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 집중 일일 통계 영속성 어댑터.
+ *
+ * QueryDSL을 사용하여 집중 세션 데이터를 조회하고 집계하는 아웃바운드 어댑터입니다.
+ */
 @Component
 @RequiredArgsConstructor
 public class FocusDailyPersistenceAdapter implements QueryFocusStatisticsPort {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    /**
+     * 기간 내 사용자의 집중 세션을 조회합니다.
+     *
+     * @param userId 사용자 ID
+     * @param start 조회 시작 시간
+     * @param end 조회 종료 시간
+     * @return 집중 세션 DTO 목록
+     */
     @Override
     public List<FocusSessionDto> findByUserIdAndPeriod(Long userId, LocalDateTime start, LocalDateTime end) {
         QFocusSessionJpaEntity focusSession = QFocusSessionJpaEntity.focusSessionJpaEntity;

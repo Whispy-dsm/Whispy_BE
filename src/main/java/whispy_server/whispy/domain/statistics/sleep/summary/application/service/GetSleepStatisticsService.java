@@ -21,6 +21,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * 사용자 수면 세션을 기간별로 집계해 통계 응답을 생성하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {

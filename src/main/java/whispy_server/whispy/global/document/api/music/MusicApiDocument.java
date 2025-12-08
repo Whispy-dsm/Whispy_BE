@@ -17,6 +17,9 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 음악 조회/검색 API 의 Swagger 명세를 중앙에서 관리하기 위한 인터페이스이다.
+ */
 @Tag(name = "MUSIC API", description = "음악 관련 API")
 public interface MusicApiDocument {
 

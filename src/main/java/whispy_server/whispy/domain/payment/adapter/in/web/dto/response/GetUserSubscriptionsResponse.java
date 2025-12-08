@@ -5,6 +5,13 @@ import whispy_server.whispy.domain.payment.model.Subscription;
 
 import java.util.Optional;
 
+/**
+ * 사용자 구독 정보 조회 응답 DTO.
+ *
+ * 사용자의 구독 정보를 반환합니다.
+ *
+ * @param subscriptions 구독 정보
+ */
 @Schema(description = "사용자 구독 정보 조회 응답")
 public record GetUserSubscriptionsResponse(
         @Schema(description = "구독 정보")

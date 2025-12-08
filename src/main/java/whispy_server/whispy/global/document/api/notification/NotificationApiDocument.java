@@ -17,6 +17,10 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 사용자 알림 조회/수정/삭제 기능에 대한 Swagger 문서를 정의한다.
+ * 알림 컨트롤러는 이 인터페이스를 구현해 공통 스펙을 재사용한다.
+ */
 @Tag(name = "NOTIFICATION API", description = "알림 관련 API")
 public interface NotificationApiDocument {
 

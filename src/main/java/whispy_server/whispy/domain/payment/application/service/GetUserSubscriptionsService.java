@@ -10,6 +10,11 @@ import whispy_server.whispy.domain.payment.model.Subscription;
 
 import java.util.Optional;
 
+/**
+ * 사용자 구독 정보 조회 서비스.
+ *
+ * 사용자의 모든 구독 정보를 조회하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -17,6 +22,12 @@ public class GetUserSubscriptionsService implements GetUserSubscriptionsUseCase 
 
     private final QuerySubscriptionPort querySubscriptionPort;
 
+    /**
+     * 사용자의 모든 구독 정보를 조회합니다.
+     *
+     * @param email 사용자 이메일
+     * @return 사용자의 구독 정보 목록
+     */
     @Override
     public GetUserSubscriptionsResponse getUserSubscriptions(String email) {
         Optional<Subscription> subscriptions = querySubscriptionPort.findByEmail(email);

@@ -15,6 +15,10 @@ import java.util.List;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * FCM 토픽 구독/해제/조회 API 를 정의하는 Swagger 인터페이스이다.
+ * 토픽 컨트롤러가 구현하여 공통 문서 스펙을 재사용한다.
+ */
 @Tag(name = "TOPIC API", description = "토픽 구독 관련 API")
 public interface TopicApiDocument {
 

@@ -8,6 +8,9 @@ import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonD
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
 import whispy_server.whispy.global.exception.domain.reason.WithdrawalReasonNotFoundException;
 
+/**
+ * 탈퇴 사유 삭제 UseCase 구현체.
+ */
 @Service
 @RequiredArgsConstructor
 public class DeleteWithdrawalReasonService implements DeleteWithdrawalReasonUseCase {
@@ -15,6 +18,11 @@ public class DeleteWithdrawalReasonService implements DeleteWithdrawalReasonUseC
     private final WithdrawalReasonQueryPort withdrawalReasonQueryPort;
     private final WithdrawalReasonDeletePort withdrawalReasonDeletePort;
 
+    /**
+     * 탈퇴 사유를 삭제한다.
+     *
+     * @param id 삭제할 ID
+     */
     @Override
     @Transactional
     public void execute(Long id) {

@@ -13,6 +13,10 @@ import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
+/**
+ * 현재 사용자의 음악 좋아요 상태를 조회 후 저장/삭제하여 토글하는 서비스.
+ * 음악 존재 여부를 검증한 뒤 원자적으로 상태를 반전시킨다.
+ */
 @Service
 @RequiredArgsConstructor
 public class ToggleMusicLikeService implements ToggleMusicLikeUseCase {

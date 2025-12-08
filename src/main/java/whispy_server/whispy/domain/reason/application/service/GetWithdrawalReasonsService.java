@@ -9,12 +9,18 @@ import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.Withdrawal
 import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReasonsUseCase;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
 
+/**
+ * 탈퇴 사유 목록 조회 UseCase 구현체.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetWithdrawalReasonsService implements GetWithdrawalReasonsUseCase {
 
     private final WithdrawalReasonQueryPort withdrawalReasonQueryPort;
 
+    /**
+     * 탈퇴 사유 목록을 페이지 단위로 조회한다.
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<WithdrawalReasonSummaryResponse> execute(Pageable pageable) {

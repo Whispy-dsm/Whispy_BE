@@ -12,6 +12,9 @@ import whispy_server.whispy.domain.reason.adapter.in.web.dto.request.SaveWithdra
 import whispy_server.whispy.domain.reason.application.port.in.SaveWithdrawalReasonUseCase;
 import whispy_server.whispy.global.document.api.reason.WithdrawalReasonApiDocument;
 
+/**
+ * 탈퇴 사유 등록 API 컨트롤러.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/withdrawal-reasons")
@@ -19,6 +22,11 @@ public class WithdrawalReasonController implements WithdrawalReasonApiDocument {
 
     private final SaveWithdrawalReasonUseCase saveWithdrawalReasonUseCase;
 
+    /**
+     * 탈퇴 사유를 저장한다.
+     *
+     * @param request 저장 요청
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void saveWithdrawalReason(@Valid @RequestBody SaveWithdrawalReasonRequest request) {

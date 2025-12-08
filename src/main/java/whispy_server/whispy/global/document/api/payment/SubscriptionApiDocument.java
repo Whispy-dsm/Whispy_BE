@@ -14,6 +14,9 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 관리자용 구독 조회/상태 확인 API 를 문서화한 Swagger 인터페이스이다.
+ */
 @Tag(name = "SUBSCRIPTION API", description = "구독 관련 API")
 public interface SubscriptionApiDocument {
 

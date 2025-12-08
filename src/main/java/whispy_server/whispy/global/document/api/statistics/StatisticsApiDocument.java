@@ -19,6 +19,10 @@ import java.time.LocalDate;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 포커스 통계 조회 엔드포인트의 Swagger 스펙을 모아둔 인터페이스이다.
+ * 통계 컨트롤러는 이 인터페이스를 구현하여 기간·비교·일별 통계 API 설명을 공유한다.
+ */
 @Tag(name = "STATISTICS API", description = "통계 관련 API")
 public interface StatisticsApiDocument {
 

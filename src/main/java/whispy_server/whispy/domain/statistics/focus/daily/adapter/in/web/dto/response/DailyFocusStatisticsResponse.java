@@ -9,6 +9,15 @@ import whispy_server.whispy.domain.statistics.focus.daily.model.MonthlyFocusData
 
 import java.util.List;
 
+/**
+ * 일일 집중 통계 응답 DTO.
+ *
+ * 집중 통계의 시간별, 일별, 월별 상세 데이터를 포함합니다.
+ *
+ * @param hourlyData 시간별 집중 데이터 목록
+ * @param dailyData 일별 집중 데이터 목록
+ * @param monthlyData 월별 집중 데이터 목록
+ */
 @Schema(description = "일별 집중 통계 응답")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record DailyFocusStatisticsResponse(

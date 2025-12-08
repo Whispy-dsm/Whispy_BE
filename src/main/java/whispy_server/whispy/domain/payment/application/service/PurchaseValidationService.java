@@ -11,7 +11,11 @@ import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.exception.domain.payment.InvalidPaymentStateException;
 
-
+/**
+ * 구매 검증 서비스.
+ *
+ * Google Play 구매를 검증하고 처리하는 유스케이스 구현체입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class PurchaseValidationService implements ValidatePurchaseUseCase {
@@ -20,6 +24,12 @@ public class PurchaseValidationService implements ValidatePurchaseUseCase {
     private final PurchaseProcessingService purchaseProcessingService;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 구매를 검증하고 처리합니다.
+     *
+     * @param request 구매 검증 요청
+     * @return 구매 검증 결과
+     */
     @Override
     public ValidatePurchaseResponse validateAndProcessPurchase(ValidatePurchaseRequest request) {
 
@@ -34,6 +44,13 @@ public class PurchaseValidationService implements ValidatePurchaseUseCase {
         );
     }
 
+    /**
+     * Google Play로 구매를 검증합니다.
+     *
+     * @param request 구매 검증 요청
+     * @return Google Play 구독 정보
+     * @throws InvalidPaymentStateException 결제 상태가 유효하지 않은 경우
+     */
     private GooglePlaySubscriptionInfo validateWithGooglePlay(ValidatePurchaseRequest request){
 
         GooglePlaySubscriptionInfo subscriptionInfo = googlePlayApiPort.getSubscriptionInfo(

@@ -20,6 +20,9 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 수면 세션 저장/조회/삭제 API 의 Swagger 정의를 제공하는 인터페이스이다.
+ */
 @Tag(name = "SLEEP SESSION API", description = "수면 세션 관련 API")
 public interface SleepSessionApiDocument {
 
@@ -110,6 +113,36 @@ public interface SleepSessionApiDocument {
             )
     })
     SleepSessionDetailResponse getSleepSessionDetail(
+            @Parameter(description = "수면 세션 ID", required = true, in = ParameterIn.PATH) Long sleepSessionId
+    );
+
+    @Operation(
+            summary = "수면 세션 삭제",
+            description = "특정 수면 세션을 삭제합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "수면 세션 삭제 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "수면 세션을 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    void deleteSleepSession(
             @Parameter(description = "수면 세션 ID", required = true, in = ParameterIn.PATH) Long sleepSessionId
     );
 }

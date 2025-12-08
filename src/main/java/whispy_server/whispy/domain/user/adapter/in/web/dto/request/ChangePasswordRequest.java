@@ -6,6 +6,13 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * 비밀번호 변경 요청 DTO.
+ * 인증된 사용자가 자신의 비밀번호를 변경할 때 사용됩니다.
+ *
+ * @param email 자신의 이메일 (본인 확인용)
+ * @param newPassword 새로운 비밀번호 (8자 이상, 숫자 및 특수문자 포함)
+ */
 @Schema(description = "비밀번호 변경 요청")
 public record ChangePasswordRequest(
         @NotBlank

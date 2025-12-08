@@ -15,6 +15,9 @@ import org.springframework.security.core.AuthenticationException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * OAuth 인증 실패 시 표준 에러 응답을 반환하는 핸들러.
+ */
 @Component
 @RequiredArgsConstructor
 public class OauthFailureHandler implements AuthenticationFailureHandler {

@@ -14,6 +14,9 @@ import whispy_server.whispy.domain.soundspace.model.SoundSpaceMusic;
 
 import java.util.List;
 
+/**
+ * 사운드 스페이스 도메인에 대한 영속화 로직을 담당하는 어댑터.
+ */
 @Component
 @RequiredArgsConstructor
 public class SoundSpaceMusicPersistenceAdapter implements SoundSpaceMusicPort {

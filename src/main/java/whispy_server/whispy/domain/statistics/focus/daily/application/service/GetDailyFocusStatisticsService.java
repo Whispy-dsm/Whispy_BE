@@ -7,6 +7,12 @@ import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.statistics.common.util.StatisticsPeriodRangeCalculator;
 import whispy_server.whispy.domain.statistics.common.validator.DateValidator;
 import whispy_server.whispy.domain.statistics.focus.daily.adapter.in.web.dto.response.DailyFocusStatisticsResponse;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.DailyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.DailyTagFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.HourlyTagFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.MonthlyFocusAggregationDto;
+import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.MonthlyTagFocusAggregationDto;
 import whispy_server.whispy.domain.statistics.focus.daily.application.port.in.GetDailyFocusStatisticsUseCase;
 import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.QueryFocusStatisticsPort;
 import whispy_server.whispy.domain.statistics.focus.daily.model.DailyFocusData;
@@ -15,7 +21,6 @@ import whispy_server.whispy.domain.statistics.focus.daily.model.HourlyFocusData;
 import whispy_server.whispy.domain.statistics.focus.daily.model.MonthlyFocusData;
 import whispy_server.whispy.domain.statistics.focus.daily.model.TagFocusData;
 import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
-import whispy_server.whispy.domain.statistics.focus.daily.adapter.out.dto.*;
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
@@ -30,6 +35,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * 집중 세션을 기준에 맞춰 시간별/일별/월별로 집계하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetDailyFocusStatisticsService implements GetDailyFocusStatisticsUseCase {

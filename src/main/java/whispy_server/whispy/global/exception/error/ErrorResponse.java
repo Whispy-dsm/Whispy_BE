@@ -5,6 +5,9 @@ import lombok.Builder;
 
 import java.time.LocalDateTime;
 
+/**
+ * API 오류 응답 본문을 표현하는 레코드.
+ */
 @Builder
 public record ErrorResponse(
         String message,
@@ -15,6 +18,9 @@ public record ErrorResponse(
         String exception
         ) {
 
+    /**
+     * 도메인 ErrorCode 기반 응답 팩토리 메서드.
+     */
     public static ErrorResponse of(ErrorCode errorCode, String description, Exception e){
         return ErrorResponse.builder()
                 .message(errorCode.getMessage())
@@ -25,6 +31,9 @@ public record ErrorResponse(
                 .build();
     }
 
+    /**
+     * 상태코드/메시지를 직접 지정할 때 사용하는 팩토리 메서드.
+     */
     public static ErrorResponse of(int statusCode, String description, Exception e){
         return ErrorResponse.builder()
                 .message(description)

@@ -11,6 +11,9 @@ import whispy_server.whispy.domain.history.application.port.out.QueryListeningHi
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 
+/**
+ * 청취 이력 조회 UseCase 구현체.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -19,6 +22,9 @@ public class QueryListeningHistoryService implements QueryListeningHistoryUseCas
     private final QueryListeningHistoryPort queryListeningHistoryPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    /**
+     * 현재 사용자 청취 이력을 페이지로 조회한다.
+     */
     @Override
     public Page<ListeningHistoryResponse> execute(Pageable pageable) {
         User currentUser = userFacadeUseCase.currentUser();

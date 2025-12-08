@@ -22,6 +22,10 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 
 import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
+/**
+ * 사용자 인증 및 계정 관리 엔드포인트를 문서화하기 위한 Swagger 인터페이스이다.
+ * 컨트롤러는 이 인터페이스를 구현해 모든 사용자 API 에 동일한 설명과 응답 스키마를 부여한다.
+ */
 @Tag(name = "USER API", description = "사용자 관련 API")
 public interface UserApiDocument {
 

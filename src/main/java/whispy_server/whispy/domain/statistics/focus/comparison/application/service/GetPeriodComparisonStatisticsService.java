@@ -19,6 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 현재/이전/이전이전 기간의 집중 시간을 비교 지표로 계산하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetPeriodComparisonStatisticsService implements GetPeriodComparisonStatisticsUseCase {

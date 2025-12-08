@@ -1,7 +1,6 @@
 package whispy_server.whispy.domain.user.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +12,10 @@ import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 
-import java.time.LocalDateTime;
-
+/**
+ * OAuth 사용자 처리 서비스.
+ * OAuth 인증 후 사용자를 조회하거나 신규 생성합니다.
+ */
 @RequiredArgsConstructor
 @Service
 public class OauthUserService implements OauthUserUseCase {
@@ -22,6 +23,14 @@ public class OauthUserService implements OauthUserUseCase {
     private final QueryUserPort queryUserPort;
     private final UserSavePort userSavePort;
 
+    /**
+     * OAuth 사용자 정보로 기존 사용자를 조회하거나 신규 생성합니다.
+     * 이메일이 존재하면 해당 사용자를 반환하고, 없으면 새로 생성합니다.
+     *
+     * @param oauthUserInfo OAuth에서 받은 사용자 정보
+     * @param provider OAuth 제공자 (GOOGLE, KAKAO)
+     * @return 조회되거나 생성된 사용자 도메인 객체
+     */
     @Override
     @Transactional
     public User findOrCreateOauthUser(OauthUserInfo oauthUserInfo, String provider) {

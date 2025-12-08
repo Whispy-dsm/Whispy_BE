@@ -12,6 +12,9 @@ import whispy_server.whispy.domain.user.model.User;
 
 import java.util.List;
 
+/**
+ * 사용자 ID 로 좋아요한 음악 목록을 조회해 응답 DTO 로 변환하는 서비스.
+ */
 @Service
 @RequiredArgsConstructor
 public class QueryMyLikedMusicsService implements QueryMyLikedMusicsUseCase {

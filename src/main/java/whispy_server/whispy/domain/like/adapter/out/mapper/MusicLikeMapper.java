@@ -9,6 +9,9 @@ import whispy_server.whispy.domain.like.model.MusicLike;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * MusicLike 도메인 모델과 JPA 엔티티 간 변환을 담당하는 MapStruct 매퍼.
+ */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MusicLikeMapper {
 

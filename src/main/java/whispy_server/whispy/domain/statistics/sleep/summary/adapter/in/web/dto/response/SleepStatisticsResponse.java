@@ -4,6 +4,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import whispy_server.whispy.domain.statistics.sleep.summary.model.SleepStatistics;
 import java.time.LocalTime;
 
+/**
+ * 수면 통계 응답 DTO.
+ *
+ * 수면 통계의 요약 데이터를 포함합니다.
+ *
+ * @param todayMinutes 오늘 수면 시간(분)
+ * @param averageMinutes 평균 수면 시간(분)
+ * @param sleepConsistency 수면 일관성(0.0-1.0)
+ * @param averageBedTime 평균 취침 시각
+ * @param averageWakeTime 평균 기상 시각
+ * @param totalMinutes 총 수면 시간(분)
+ */
 @Schema(description = "수면 통계 응답")
 public record SleepStatisticsResponse(
         @Schema(description = "오늘 수면 시간(분)", example = "480")
