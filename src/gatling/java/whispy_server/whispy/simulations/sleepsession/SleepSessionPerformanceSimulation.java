@@ -1,4 +1,4 @@
-package whispy_server.whispy.simulations.statistics.sleep;
+package whispy_server.whispy.simulations.sleepsession;
 
 import io.gatling.javaapi.core.*;
 import io.gatling.javaapi.http.*;
@@ -91,9 +91,16 @@ public class SleepSessionPerformanceSimulation extends Simulation {
 
     /**
      * 수면 세션 상세 조회 시나리오
-     * 특정 세션의 상세 정보 조회 성능을 측정합니다
+     * 실제 사용자 플로우: 목록 조회 → 첫 번째 세션 클릭 → 상세 조회
      */
-    ScenarioBuilder getSleepSessionDetailScenario = scenario("수면 세션 상세 조회")
+    ScenarioBuilder getSleepSessionDetailScenario = scenario("수면 세션 목록 후 상세 조회")
+            .exec(
+                    http("세션 목록 조회")
+                            .get("/sleep-sessions?page=0&size=20&sort=createdAt,desc")
+                            .check(status().is(200))
+                            .check(jsonPath("$.content[0].id").saveAs("sessionId"))  // 첫 번째 세션 ID 추출
+            )
+            .pause(Duration.ofSeconds(1, 2))  // 목록 보는 시간
             .exec(
                     http("세션 상세 조회 - ID #{sessionId}")
                             .get("/sleep-sessions/#{sessionId}")
@@ -101,7 +108,7 @@ public class SleepSessionPerformanceSimulation extends Simulation {
                             .check(jsonPath("$.id").exists())
                             .check(jsonPath("$.duration_seconds").exists())
             )
-            .pause(Duration.ofMillis(500), Duration.ofSeconds(1));
+            .pause(Duration.ofSeconds(2, 4));  // 상세 정보 보는 시간
 
     /**
      * 실제 사용자 플로우 시나리오

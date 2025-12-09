@@ -71,41 +71,52 @@ public class MusicSearchPerformanceSimulation extends Simulation {
 
     /**
      * 음악 상세 조회 시나리오
-     * 검색 후 상세 페이지 조회 시나리오
+     * 실제 사용자 플로우: 검색 → 첫 번째 결과 클릭 → 상세 조회
      */
-    ScenarioBuilder musicDetailScenario = scenario("음악 상세 조회")
+    ScenarioBuilder musicDetailScenario = scenario("음악 검색 후 상세 조회")
+            .feed(keywordFeeder)
             .exec(
-                    http("음악 상세 - ID #{musicId}")
+                    http("음악 검색")
+                            .get("/search/music?keyword=#{keyword}&page=0&size=20")
+                            .check(status().is(200))
+                            .check(jsonPath("$.content[0].id").saveAs("musicId"))  // 첫 번째 음악 ID 추출
+            )
+            .pause(Duration.ofSeconds(1, 3))  // 검색 결과 보는 시간
+            .exec(
+                    http("음악 상세 조회 - ID #{musicId}")
                             .get("/search/#{musicId}")
                             .check(status().is(200))
                             .check(jsonPath("$.id").exists())
-                            .check(jsonPath("$.total_elements").exists())
+                            .check(jsonPath("$.title").exists())
             )
-            .pause(Duration.ofMillis(300), Duration.ofSeconds(1));
+            .pause(Duration.ofSeconds(2, 5));  // 음악 상세 정보 보는 시간
 
     /**
      * 혼합 검색 시나리오
-     * 실제 사용자 패턴: 검색 -> 다른 검색 -> 상세 조회
+     * 실제 사용자 패턴: 키워드 검색 → 카테고리 변경 → 상세 조회
      */
     ScenarioBuilder mixedSearchScenario = scenario("혼합 검색 패턴")
             .feed(keywordFeeder)
             .exec(
-                    http("첫 번째 검색")
+                    http("키워드 검색")
                             .get("/search/music?keyword=#{keyword}&page=0&size=20")
                             .check(status().is(200))
             )
-            .pause(Duration.ofSeconds(1), Duration.ofSeconds(3))
+            .pause(Duration.ofSeconds(1, 3))
             .feed(categoryFeeder)
             .exec(
                     http("카테고리 변경")
                             .get("/search/music/category?musicCategory=#{category}&page=0&size=20")
                             .check(status().is(200))
+                            .check(jsonPath("$.content[0].id").optional().saveAs("selectedMusicId"))  // 첫 번째 음악 ID 추출
             )
-            .pause(Duration.ofMillis(500), Duration.ofSeconds(2))
-            .exec(
-                    http("음악 상세")
-                            .get("/search/1")
-                            .check(status().is(200))
+            .pause(Duration.ofSeconds(1, 2))
+            .doIf(session -> session.contains("selectedMusicId")).then(
+                    exec(
+                            http("선택한 음악 상세 조회")
+                                    .get("/search/#{selectedMusicId}")
+                                    .check(status().is(200))
+                    )
             );
 
     /**

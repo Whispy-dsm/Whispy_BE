@@ -91,18 +91,22 @@ public class WhispyPortfolioSimulation extends Simulation {
                     http("수면 음악 검색")
                             .get("/search/music?keyword=sleep&page=0&size=20")
                             .check(status().is(200))
+                            .check(jsonPath("$.content[0].id").optional().saveAs("firstMusicId"))
             )
-            .pause(Duration.ofSeconds(1), Duration.ofSeconds(3))
+            .pause(Duration.ofSeconds(1, 3))
             .exec(
                     http("카테고리 변경 - SLEEP")
                             .get("/search/music/category?musicCategory=SLEEP&page=0&size=20")
                             .check(status().is(200))
+                            .check(jsonPath("$.content[0].id").optional().saveAs("selectedMusicId"))
             )
-            .pause(Duration.ofSeconds(2), Duration.ofSeconds(4))
-            .exec(
-                    http("음악 상세 조회")
-                            .get("/search/1")
-                            .check(status().is(200))
+            .pause(Duration.ofSeconds(1, 2))
+            .doIf(session -> session.contains("selectedMusicId")).then(
+                    exec(
+                            http("선택한 음악 상세 조회")
+                                    .get("/search/#{selectedMusicId}")
+                                    .check(status().is(200))
+                    )
             );
 
     /**
@@ -114,6 +118,15 @@ public class WhispyPortfolioSimulation extends Simulation {
                     http("내 수면 세션 목록")
                             .get("/sleep-sessions?page=0&size=20")
                             .check(status().is(200))
+                            .check(jsonPath("$.content[0].id").optional().saveAs("recentSessionId"))
+            )
+            .pause(Duration.ofSeconds(1, 2))
+            .doIf(session -> session.contains("recentSessionId")).then(
+                    exec(
+                            http("최근 세션 상세 조회")
+                                    .get("/sleep-sessions/#{recentSessionId}")
+                                    .check(status().is(200))
+                    )
             )
             .pause(Duration.ofSeconds(1))
             .exec(
@@ -121,16 +134,25 @@ public class WhispyPortfolioSimulation extends Simulation {
                             .get("/statistics/sleep/daily?period=WEEK&date=2024-12-08")
                             .check(status().is(200))
             )
-            .pause(Duration.ofSeconds(1))
+            .pause(Duration.ofSeconds(1, 2))
             .exec(
                     http("명상 음악 검색")
                             .get("/search/music?keyword=meditation&page=0&size=20")
                             .check(status().is(200))
+                            .check(jsonPath("$.content[0].id").optional().saveAs("meditationMusicId"))
             )
-            .pause(Duration.ofSeconds(2))
+            .pause(Duration.ofSeconds(1))
+            .doIf(session -> session.contains("meditationMusicId")).then(
+                    exec(
+                            http("명상 음악 상세")
+                                    .get("/search/#{meditationMusicId}")
+                                    .check(status().is(200))
+                    )
+            )
+            .pause(Duration.ofSeconds(1, 2))
             .exec(session -> session.set("sleepSessionJson", generateSleepSessionJson()))
             .exec(
-                    http("새 수면 세션 시작")
+                    http("새 수면 세션 저장")
                             .post("/sleep-sessions")
                             .body(StringBody("#{sleepSessionJson}"))
                             .check(status().is(201))
@@ -174,8 +196,17 @@ public class WhispyPortfolioSimulation extends Simulation {
                     http("최근 수면 기록 확인")
                             .get("/sleep-sessions?page=0&size=10")
                             .check(status().is(200))
+                            .check(jsonPath("$.content[0].id").optional().saveAs("latestSessionId"))
             )
-            .pause(Duration.ofSeconds(1), Duration.ofSeconds(2))
+            .pause(Duration.ofSeconds(1, 2))
+            .doIf(session -> session.contains("latestSessionId")).then(
+                    exec(
+                            http("최신 세션 빠른 확인")
+                                    .get("/sleep-sessions/#{latestSessionId}")
+                                    .check(status().is(200))
+                    )
+            )
+            .pause(Duration.ofMillis(500), Duration.ofSeconds(1))
             .exec(
                     http("주간 수면 통계 확인")
                             .get("/statistics/sleep?period=WEEK&date=2024-12-08")

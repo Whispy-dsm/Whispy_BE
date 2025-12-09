@@ -16,7 +16,7 @@ public class GatlingConfig {
      * 토큰이 만료되면 이 값만 변경하면 모든 시뮬레이션에 적용됩니다.
      * </p>
      */
-    public static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnYW1pbC5jb20iLCJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjUyMDE4OTYsImV4cCI6MTc2NTIwNTQ5Nn0.xcWhDPLX0RbBVQ2PVgBCpIKZzm6v4w3IjBPU-4YiLvk";
+    public static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnYW1pbC5jb20iLCJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjUyODM3ODMsImV4cCI6MTc2NTI4NzM4M30.RWxess9oXfezHMENxp0zWBUfYyvEfNod2SxXvPnzYlk";
 
     /**
      * 베이스 URL

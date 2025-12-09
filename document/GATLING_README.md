@@ -77,7 +77,7 @@ Whispy Backend의 핵심 3개 API에 대한 성능 테스트를 위한 Gatling �
 
 **실행 명령어:**
 ```bash
-./gradlew gatlingRun-whispy_server.whispy.simulations.statistics.sleep.SleepSessionPerformanceSimulation
+./gradlew gatlingRun-whispy_server.whispy.simulations.sleepsession.SleepSessionPerformanceSimulation
 ```
 
 **예상 성능 지표:**
@@ -157,7 +157,7 @@ private static final String JWT_TOKEN = "여기에_실제_토큰_붙여넣기";
 ./gradlew gatlingRun-whispy_server.whispy.simulations.music.MusicSearchPerformanceSimulation
 
 # 수면 세션 성능 테스트
-./gradlew gatlingRun-whispy_server.whispy.simulations.statistics.sleep.SleepSessionPerformanceSimulation
+./gradlew gatlingRun-whispy_server.whispy.simulations.sleepsession.SleepSessionPerformanceSimulation
 
 # 통합 포트폴리오 성능 테스트 (추천)
 ./gradlew gatlingRun-whispy_server.whispy.simulations.WhispyPortfolioSimulation
