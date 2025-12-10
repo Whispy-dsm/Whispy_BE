@@ -34,7 +34,7 @@ Whispy Backend의 핵심 3개 API에 대한 성능 테스트를 위한 Gatling �
 
 **실행 명령어:**
 ```bash
-./gradlew gatlingRun-whispy_server.whispy.simulations.statistics.sleep.SleepStatisticsPerformanceSimulation
+./gradlew gatlingRun --simulation=whispy_server.whispy.simulations.statistics.sleep.SleepStatisticsPerformanceSimulation
 ```
 
 **예상 성능 지표:**
@@ -55,7 +55,7 @@ Whispy Backend의 핵심 3개 API에 대한 성능 테스트를 위한 Gatling �
 
 **실행 명령어:**
 ```bash
-./gradlew gatlingRun-whispy_server.whispy.simulations.music.MusicSearchPerformanceSimulation
+./gradlew gatlingRun --simulation=whispy_server.whispy.simulations.music.MusicSearchPerformanceSimulation
 ```
 
 **예상 성능 지표:**
@@ -77,7 +77,7 @@ Whispy Backend의 핵심 3개 API에 대한 성능 테스트를 위한 Gatling �
 
 **실행 명령어:**
 ```bash
-./gradlew gatlingRun-whispy_server.whispy.simulations.sleepsession.SleepSessionPerformanceSimulation
+./gradlew gatlingRun --simulation=whispy_server.whispy.simulations.sleepsession.SleepSessionPerformanceSimulation
 ```
 
 **예상 성능 지표:**
@@ -99,7 +99,7 @@ Whispy Backend의 핵심 3개 API에 대한 성능 테스트를 위한 Gatling �
 
 **실행 명령어:**
 ```bash
-./gradlew gatlingRun-whispy_server.whispy.simulations.WhispyPortfolioSimulation
+./gradlew gatlingRun --simulation=whispy_server.whispy.simulations.WhispyPortfolioSimulation
 ```
 
 **예상 성능 지표:**
@@ -130,14 +130,15 @@ Whispy Backend의 핵심 3개 API에 대한 성능 테스트를 위한 Gatling �
 
 **방법 2: curl 사용**
 ```bash
-curl -X POST http://localhost:8080/api/auth/login \
+curl -X POST http://localhost:8080/api/users/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password"}'
+  -d '{"email":"test@example.com","password":"password123!","fcmToken":"test-fcm-token"}'
 ```
 
 **토큰 교체 위치:**
+`src/gatling/java/whispy_server/whispy/simulations/config/GatlingConfig.java` 파일의 JWT_TOKEN 상수를 수정하세요.
 ```java
-private static final String JWT_TOKEN = "여기에_실제_토큰_붙여넣기";
+public static final String JWT_TOKEN = "여기에_실제_토큰_붙여넣기";
 ```
 
 ### 3. 테스트 데이터 준비
@@ -151,16 +152,16 @@ private static final String JWT_TOKEN = "여기에_실제_토큰_붙여넣기";
 ### 개별 시뮬레이션 실행
 ```bash
 # 수면 통계 성능 테스트
-./gradlew gatlingRun-whispy_server.whispy.simulations.statistics.sleep.SleepStatisticsPerformanceSimulation
+./gradlew gatlingRun --simulation=whispy_server.whispy.simulations.statistics.sleep.SleepStatisticsPerformanceSimulation
 
 # 음악 검색 성능 테스트
-./gradlew gatlingRun-whispy_server.whispy.simulations.music.MusicSearchPerformanceSimulation
+./gradlew gatlingRun --simulation=whispy_server.whispy.simulations.music.MusicSearchPerformanceSimulation
 
 # 수면 세션 성능 테스트
-./gradlew gatlingRun-whispy_server.whispy.simulations.sleepsession.SleepSessionPerformanceSimulation
+./gradlew gatlingRun --simulation=whispy_server.whispy.simulations.sleepsession.SleepSessionPerformanceSimulation
 
 # 통합 포트폴리오 성능 테스트 (추천)
-./gradlew gatlingRun-whispy_server.whispy.simulations.WhispyPortfolioSimulation
+./gradlew gatlingRun --simulation=whispy_server.whispy.simulations.WhispyPortfolioSimulation
 ```
 
 ### 모든 시뮬레이션 실행
@@ -319,7 +320,7 @@ export GRADLE_OPTS="-Xmx4g"
 
 1. **점진적 부하 증가**: 급격한 부하보다는 rampUsers로 점진적 증가
 2. **Think Time 추가**: pause로 실제 사용자의 행동 패턴 반영
-3. **충분한 테스트 데이터**: CSV 파더를 활용한 다양한 테스트 데이터
+3. **충분한 테스트 데이터**: CSV 파일을 활용한 다양한 테스트 데이터
 4. **모니터링**: 테스트 중 서버 리소스(CPU, 메모리, DB 연결) 모니터링
 5. **반복 테스트**: 여러 번 테스트하여 일관된 결과 확인
 6. **Warm-up**: 첫 번째 결과는 버리고 두 번째 이후 결과 사용
