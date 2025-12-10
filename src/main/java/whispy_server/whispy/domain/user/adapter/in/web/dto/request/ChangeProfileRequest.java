@@ -22,6 +22,7 @@ public record ChangeProfileRequest(
         String name,
         @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg", requiredMode = Schema.RequiredMode.REQUIRED)
         @NotBlank
+        @Size(max = 500)
         String profileImageUrl,
         @Schema(description = "성별", requiredMode = Schema.RequiredMode.REQUIRED)
         @NotNull

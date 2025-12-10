@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record ChangePasswordRequest(
         @NotBlank
         @Email
+        @Size(max = 255)
         @Schema(name = "email", description = "자기 자신의 이메일", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
         String email,
 

@@ -23,6 +23,7 @@ import whispy_server.whispy.domain.user.model.types.Gender;
 public record RegisterRequest(
         @Email
         @NotBlank
+        @Size(max = 255)
         @Schema(name = "email", description = "이메일 형식대로 작성해야 한다.", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
         String email,
 
@@ -38,12 +39,14 @@ public record RegisterRequest(
         String name,
 
         @Schema(name = "profile_image_url", description = "이미지 URL", example = "https://example.com/profile.jpg")
+        @Size(max = 500)
         String profileImageUrl,
 
         @Schema(name = "gender", description = "자신의 성 ( ENUM 형태 ) ")
         Gender gender,
 
         @Schema(name = "fcm_token", description = "fcm 토큰", example = "fGcm_T0k3n_ExAmPlE...")
+        @Size(max = 255)
         String fcmToken,
 
         @Schema(name = "is_event_agreed", description = "이벤트 알림 수신 동의 여부", example = "true")

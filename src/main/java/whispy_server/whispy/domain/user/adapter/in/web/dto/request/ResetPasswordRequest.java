@@ -18,6 +18,7 @@ public record ResetPasswordRequest(
         @Schema(description = "이메일", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
         @Email
         @NotBlank
+        @Size(max = 255)
         String email,
 
         @Schema(description = "새 비밀번호 (8자 이상, 숫자 및 특수문자 포함)", example = "newPassword123!", requiredMode = Schema.RequiredMode.REQUIRED)
