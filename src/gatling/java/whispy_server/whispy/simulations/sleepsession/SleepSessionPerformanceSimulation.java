@@ -100,7 +100,7 @@ public class SleepSessionPerformanceSimulation extends Simulation {
                             .check(status().is(200))
                             .check(jsonPath("$.content[0].id").saveAs("sessionId"))  // 첫 번째 세션 ID 추출
             )
-            .pause(Duration.ofSeconds(1, 2))  // 목록 보는 시간
+            .pause(1, 2)  // 목록 보는 시간
             .exec(
                     http("세션 상세 조회 - ID #{sessionId}")
                             .get("/sleep-sessions/#{sessionId}")
@@ -108,7 +108,7 @@ public class SleepSessionPerformanceSimulation extends Simulation {
                             .check(jsonPath("$.id").exists())
                             .check(jsonPath("$.duration_seconds").exists())
             )
-            .pause(Duration.ofSeconds(2, 4));  // 상세 정보 보는 시간
+            .pause(2, 4);  // 상세 정보 보는 시간
 
     /**
      * 실제 사용자 플로우 시나리오

@@ -69,13 +69,13 @@ public class WhispyPortfolioSimulation extends Simulation {
                             .body(StringBody("#{sleepSessionJson}"))
                             .check(status().is(201))
             )
-            .pause(Duration.ofSeconds(2), Duration.ofSeconds(4))
+            .pause(2, 4)
             .exec(
                     http("주간 수면 통계 확인")
                             .get("/statistics/sleep?period=WEEK&date=2024-12-08")
                             .check(status().is(200))
             )
-            .pause(Duration.ofSeconds(1), Duration.ofSeconds(3))
+            .pause(1, 3)
             .exec(
                     http("월간 수면 통계 비교")
                             .get("/statistics/sleep/comparison?period=MONTH&date=2024-12-08")
@@ -93,14 +93,14 @@ public class WhispyPortfolioSimulation extends Simulation {
                             .check(status().is(200))
                             .check(jsonPath("$.content[0].id").optional().saveAs("firstMusicId"))
             )
-            .pause(Duration.ofSeconds(1, 3))
+            .pause(1, 3)
             .exec(
                     http("카테고리 변경 - SLEEP")
                             .get("/search/music/category?musicCategory=SLEEP&page=0&size=20")
                             .check(status().is(200))
                             .check(jsonPath("$.content[0].id").optional().saveAs("selectedMusicId"))
             )
-            .pause(Duration.ofSeconds(1, 2))
+            .pause(1, 2)
             .doIf(session -> session.contains("selectedMusicId")).then(
                     exec(
                             http("선택한 음악 상세 조회")
@@ -120,7 +120,7 @@ public class WhispyPortfolioSimulation extends Simulation {
                             .check(status().is(200))
                             .check(jsonPath("$.content[0].id").optional().saveAs("recentSessionId"))
             )
-            .pause(Duration.ofSeconds(1, 2))
+            .pause(1, 2)
             .doIf(session -> session.contains("recentSessionId")).then(
                     exec(
                             http("최근 세션 상세 조회")
@@ -128,20 +128,20 @@ public class WhispyPortfolioSimulation extends Simulation {
                                     .check(status().is(200))
                     )
             )
-            .pause(Duration.ofSeconds(1))
+            .pause(1)
             .exec(
                     http("일일 수면 통계")
                             .get("/statistics/sleep/daily?period=WEEK&date=2024-12-08")
                             .check(status().is(200))
             )
-            .pause(Duration.ofSeconds(1, 2))
+            .pause(1, 2)
             .exec(
                     http("명상 음악 검색")
                             .get("/search/music?keyword=meditation&page=0&size=20")
                             .check(status().is(200))
                             .check(jsonPath("$.content[0].id").optional().saveAs("meditationMusicId"))
             )
-            .pause(Duration.ofSeconds(1))
+            .pause(1)
             .doIf(session -> session.contains("meditationMusicId")).then(
                     exec(
                             http("명상 음악 상세")
@@ -149,7 +149,7 @@ public class WhispyPortfolioSimulation extends Simulation {
                                     .check(status().is(200))
                     )
             )
-            .pause(Duration.ofSeconds(1, 2))
+            .pause(1, 2)
             .exec(session -> session.set("sleepSessionJson", generateSleepSessionJson()))
             .exec(
                     http("새 수면 세션 저장")
@@ -168,19 +168,19 @@ public class WhispyPortfolioSimulation extends Simulation {
                             .get("/statistics/sleep?period=WEEK&date=2024-12-08")
                             .check(status().is(200))
             )
-            .pause(Duration.ofMillis(500), Duration.ofSeconds(1))
+            .pause(500, 1000)
             .exec(
                     http("주간 수면 통계 2")
                             .get("/statistics/sleep?period=WEEK&date=2024-12-01")
                             .check(status().is(200))
             )
-            .pause(Duration.ofMillis(500), Duration.ofSeconds(1))
+            .pause(500, 1000)
             .exec(
                     http("월간 수면 통계")
                             .get("/statistics/sleep?period=MONTH&date=2024-12-08")
                             .check(status().is(200))
             )
-            .pause(Duration.ofSeconds(1), Duration.ofSeconds(2))
+            .pause(1, 2)
             .exec(
                     http("기간 비교 분석")
                             .get("/statistics/sleep/comparison?period=WEEK&date=2024-12-08")
@@ -198,7 +198,7 @@ public class WhispyPortfolioSimulation extends Simulation {
                             .check(status().is(200))
                             .check(jsonPath("$.content[0].id").optional().saveAs("latestSessionId"))
             )
-            .pause(Duration.ofSeconds(1, 2))
+            .pause(1, 2)
             .doIf(session -> session.contains("latestSessionId")).then(
                     exec(
                             http("최신 세션 빠른 확인")
@@ -206,7 +206,7 @@ public class WhispyPortfolioSimulation extends Simulation {
                                     .check(status().is(200))
                     )
             )
-            .pause(Duration.ofMillis(500), Duration.ofSeconds(1))
+            .pause(500, 1000)
             .exec(
                     http("주간 수면 통계 확인")
                             .get("/statistics/sleep?period=WEEK&date=2024-12-08")

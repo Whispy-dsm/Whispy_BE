@@ -81,7 +81,7 @@ public class MusicSearchPerformanceSimulation extends Simulation {
                             .check(status().is(200))
                             .check(jsonPath("$.content[0].id").saveAs("musicId"))  // 첫 번째 음악 ID 추출
             )
-            .pause(Duration.ofSeconds(1, 3))  // 검색 결과 보는 시간
+            .pause(1, 3)  // 검색 결과 보는 시간 (1~3초 랜덤)
             .exec(
                     http("음악 상세 조회 - ID #{musicId}")
                             .get("/search/#{musicId}")
@@ -89,7 +89,7 @@ public class MusicSearchPerformanceSimulation extends Simulation {
                             .check(jsonPath("$.id").exists())
                             .check(jsonPath("$.title").exists())
             )
-            .pause(Duration.ofSeconds(2, 5));  // 음악 상세 정보 보는 시간
+            .pause(2, 5);  // 음악 상세 정보 보는 시간 (2~5초 랜덤)
 
     /**
      * 혼합 검색 시나리오
@@ -102,7 +102,7 @@ public class MusicSearchPerformanceSimulation extends Simulation {
                             .get("/search/music?keyword=#{keyword}&page=0&size=20")
                             .check(status().is(200))
             )
-            .pause(Duration.ofSeconds(1, 3))
+            .pause(1, 3)
             .feed(categoryFeeder)
             .exec(
                     http("카테고리 변경")
@@ -110,7 +110,7 @@ public class MusicSearchPerformanceSimulation extends Simulation {
                             .check(status().is(200))
                             .check(jsonPath("$.content[0].id").optional().saveAs("selectedMusicId"))  // 첫 번째 음악 ID 추출
             )
-            .pause(Duration.ofSeconds(1, 2))
+            .pause(1, 2)
             .doIf(session -> session.contains("selectedMusicId")).then(
                     exec(
                             http("선택한 음악 상세 조회")
