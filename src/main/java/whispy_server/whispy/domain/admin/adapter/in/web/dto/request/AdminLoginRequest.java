@@ -1,6 +1,8 @@
 package whispy_server.whispy.domain.admin.adapter.in.web.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * 관리자 로그인 요청 DTO
@@ -14,9 +16,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @Schema(description = "관리자 로그인 요청")
 public record AdminLoginRequest(
-        @Schema(description = "관리자 ID", example = "admin")
+        @Schema(description = "관리자 ID", example = "admin", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
+        @Size(max = 255)
         String adminId,
-        @Schema(description = "비밀번호", example = "adminpass123")
+        @Schema(description = "비밀번호", example = "adminpass123", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
+        @Size(min = 8, max = 70)
         String password
 ) {
 }

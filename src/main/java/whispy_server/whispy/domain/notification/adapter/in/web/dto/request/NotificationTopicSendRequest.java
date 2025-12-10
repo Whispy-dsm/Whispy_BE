@@ -1,6 +1,9 @@
 package whispy_server.whispy.domain.notification.adapter.in.web.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
 import java.util.Map;
@@ -17,11 +20,16 @@ import java.util.Map;
  */
 @Schema(description = "토픽별 알림 전송 요청")
 public record NotificationTopicSendRequest(
-        @Schema(description = "알림 주제")
+        @Schema(description = "알림 주제", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotNull
         NotificationTopic topic,
-        @Schema(description = "알림 제목", example = "새로운 공지")
+        @Schema(description = "알림 제목", example = "새로운 공지", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
+        @Size(max = 255)
         String title,
-        @Schema(description = "알림 내용", example = "공지사항 내용입니다")
+        @Schema(description = "알림 내용", example = "공지사항 내용입니다", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
+        @Size(max = 5000)
         String body,
         @Schema(description = "추가 데이터")
         Map<String, String> data
