@@ -18,9 +18,12 @@ import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 
+import whispy_server.whispy.global.exception.domain.fcm.TopicSubscriptionNotFoundException;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -63,5 +66,20 @@ class UnSubscribeTopicServiceTest {
         service.execute(new TopicSubscriptionRequest(NotificationTopic.GENERAL_ANNOUNCEMENT));
 
         verify(saveTopicSubscriptionPort).save(any());
+    }
+
+    @Test
+    @DisplayName("구독 정보가 존재하지 않으면 TopicSubscriptionNotFoundException이 발생한다")
+    void execute_throwsException_whenSubscriptionNotFound() {
+        // given
+        User user = new User(1L, "test@test.com", "pw", "name", null, Gender.MALE, Role.USER, "fcm-token", null, LocalDateTime.now());
+        TopicSubscriptionRequest request = new TopicSubscriptionRequest(NotificationTopic.GENERAL_ANNOUNCEMENT);
+
+        given(userFacadeUseCase.currentUser()).willReturn(user);
+        given(queryTopicSubscriptionPort.findByEmailAndTopic("test@test.com", NotificationTopic.GENERAL_ANNOUNCEMENT))
+                .willReturn(Optional.empty());
+
+        // when & then
+        assertThrows(TopicSubscriptionNotFoundException.class, () -> service.execute(request));
     }
 }
