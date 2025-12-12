@@ -25,15 +25,20 @@ public final class FileValidator {
     
     private static final long IMAGE_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
     private static final long MUSIC_MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
-    
+    private static final long VIDEO_MAX_SIZE_BYTES = 100 * 1024 * 1024; // 100MB
+
     private static final Set<String> IMAGE_VALID_EXTENSIONS = Set.of(".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp", ".gif");
     private static final Set<String> MUSIC_VALID_EXTENSIONS = Set.of(".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a");
-    
+    private static final Set<String> VIDEO_VALID_EXTENSIONS = Set.of(".mp4", ".mov", ".avi", ".mkv", ".webm");
+
     private static final Set<String> IMAGE_VALID_MIME_TYPES = Set.of(
             "image/jpeg", "image/png", "image/heic", "image/webp", "image/gif", "image/heif"
     );
     private static final Set<String> MUSIC_VALID_MIME_TYPES = Set.of(
             "audio/mpeg", "audio/wav","audio/x-wav", "audio/wave", "audio/vnd.wave", "audio/flac", "audio/aac", "audio/ogg", "audio/mp4"
+    );
+    private static final Set<String> VIDEO_VALID_MIME_TYPES = Set.of(
+            "video/mp4", "video/quicktime", "video/x-msvideo", "video/x-matroska", "video/webm"
     );
 
     private FileValidator() {
@@ -52,6 +57,7 @@ public final class FileValidator {
         switch (folder) {
             case PROFILE_IMAGE_FOLDER, MUSIC_BANNER_IMAGE_FOLDER -> validateImageFile(file);
             case MUSIC_FOLDER -> validateMusicFile(file);
+            case MUSIC_VIDEO -> validateVideoFile(file);
         }
     }
 
@@ -85,6 +91,12 @@ public final class FileValidator {
         validateMusicExtension(file);
         validateMusicMimeType(file);
         validateMusicSize(file);
+    }
+
+    private static void validateVideoFile(MultipartFile file) {
+        validateVideoExtension(file);
+        validateVideoMimeType(file);
+        validateVideoSize(file);
     }
 
     private static void validateImageExtension(MultipartFile file) {
@@ -127,6 +139,28 @@ public final class FileValidator {
 
     private static void validateMusicSize(MultipartFile file) {
         if (file.getSize() > MUSIC_MAX_SIZE_BYTES) {
+            throw FileSizeExceededException.EXCEPTION;
+        }
+    }
+
+    private static void validateVideoExtension(MultipartFile file) {
+        String extension = getFileExtension(file);
+
+        if (!VIDEO_VALID_EXTENSIONS.contains(extension)) {
+            throw FileInvalidExtensionException.EXCEPTION;
+        }
+    }
+
+    private static void validateVideoMimeType(MultipartFile file) {
+        String contentType = file.getContentType();
+
+        if (contentType == null || !VIDEO_VALID_MIME_TYPES.contains(contentType)) {
+            throw FileInvalidMimeTypeException.EXCEPTION;
+        }
+    }
+
+    private static void validateVideoSize(MultipartFile file) {
+        if (file.getSize() > VIDEO_MAX_SIZE_BYTES) {
             throw FileSizeExceededException.EXCEPTION;
         }
     }
