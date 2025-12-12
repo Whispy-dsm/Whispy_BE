@@ -35,7 +35,8 @@ public class CreateMusicService implements CreateMusicUseCase {
                 request.filePath(),
                 request.duration(),
                 request.category(),
-                request.bannerImageUrl()
+                request.bannerImageUrl(),
+                request.videoUrl()
         );
 
         musicSavePort.save(music);

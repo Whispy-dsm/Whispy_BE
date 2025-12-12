@@ -14,6 +14,7 @@ import whispy_server.whispy.global.annotation.Aggregate;
  * @param duration 음악 길이(초)
  * @param category 음악 카테고리
  * @param bannerImageUrl 배너 이미지 URL
+ * @param videoUrl 뮤직 비디오 URL
  */
 @Aggregate
 public record Music(
@@ -22,7 +23,8 @@ public record Music(
         String filePath,
         int duration,
         MusicCategory category,
-        String bannerImageUrl
+        String bannerImageUrl,
+        String videoUrl
 ) {
 
     /**
@@ -33,6 +35,7 @@ public record Music(
      * @param newDuration 새로운 길이 (null이면 기존 값 유지)
      * @param newCategory 새로운 카테고리 (null이면 기존 값 유지)
      * @param newBannerImageUrl 새로운 배너 이미지 URL (null이면 기존 값 유지)
+     * @param newVideoUrl 새로운 뮤직 비디오 URL (null이면 기존 값 유지)
      * @return 업데이트된 음악 도메인 모델
      */
     public Music update(
@@ -40,7 +43,8 @@ public record Music(
             String newFilePath,
             Integer newDuration,
             MusicCategory newCategory,
-            String newBannerImageUrl
+            String newBannerImageUrl,
+            String newVideoUrl
     ) {
         return new Music(
                 this.id,
@@ -48,7 +52,8 @@ public record Music(
                 newFilePath != null ? newFilePath : this.filePath,
                 newDuration != null ? newDuration : this.duration,
                 newCategory != null ? newCategory : this.category,
-                newBannerImageUrl != null ? newBannerImageUrl : this.bannerImageUrl
+                newBannerImageUrl != null ? newBannerImageUrl : this.bannerImageUrl,
+                newVideoUrl != null ? newVideoUrl : this.videoUrl
         );
     }
 }

@@ -14,6 +14,7 @@ import whispy_server.whispy.domain.music.model.type.MusicCategory;
  * @param duration 음악 길이(초)
  * @param category 음악 카테고리
  * @param bannerImageUrl 배너 이미지 URL
+ * @param videoUrl 뮤직 비디오 URL
  */
 @Schema(description = "음악 상세 응답")
 public record MusicDetailResponse(
@@ -26,7 +27,9 @@ public record MusicDetailResponse(
         @Schema(description = "음악 카테고리")
         MusicCategory category,
         @Schema(description = "배너 이미지 URL", example = "https://example.com/banner.jpg")
-        String bannerImageUrl
+        String bannerImageUrl,
+        @Schema(description = "뮤직 비디오 URL", example = "https://example.com/video.mp4")
+        String videoUrl
 ) {
 
     /**
@@ -41,7 +44,8 @@ public record MusicDetailResponse(
                 music.filePath(),
                 music.duration(),
                 music.category(),
-                music.bannerImageUrl()
+                music.bannerImageUrl(),
+                music.videoUrl()
         );
     }
 }

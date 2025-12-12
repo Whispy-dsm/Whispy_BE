@@ -41,7 +41,8 @@ public class UpdateMusicService implements UpdateMusicUseCase {
                 request.filePath(),
                 request.duration(),
                 request.category(),
-                request.bannerImageUrl()
+                request.bannerImageUrl(),
+                request.videoUrl()
         );
         musicSavePort.save(updatedMusic);
     }

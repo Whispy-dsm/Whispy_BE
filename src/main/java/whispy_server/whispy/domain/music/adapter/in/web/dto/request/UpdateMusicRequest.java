@@ -18,6 +18,7 @@ import whispy_server.whispy.domain.music.model.type.MusicCategory;
  * @param duration 음악 길이(초)
  * @param category 음악 카테고리
  * @param bannerImageUrl 배너 이미지 URL
+ * @param videoUrl 뮤직 비디오 URL
  */
 @Schema(description = "음악 수정 요청")
 public record UpdateMusicRequest(
@@ -41,5 +42,8 @@ public record UpdateMusicRequest(
         MusicCategory category,
         @Schema(description = "배너 이미지 URL", example = "https://example.com/banner.jpg")
         @Size(max = 500)
-        String bannerImageUrl
+        String bannerImageUrl,
+        @Schema(description = "뮤직 비디오 URL", example = "https://example.com/video.mp4")
+        @Size(max = 500)
+        String videoUrl
 ) {}
