@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.notification.application.service;
+package whispy_server.whispy.domain.notification.application.service.unit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.response.UnreadCountResponse;
 import whispy_server.whispy.domain.notification.application.port.out.QueryNotificationPort;
+import whispy_server.whispy.domain.notification.application.service.GetUnreadCountService;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
