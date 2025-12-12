@@ -82,85 +82,68 @@ public final class FileValidator {
     }
 
     private static void validateImageFile(MultipartFile file) {
-        validateImageExtension(file);
-        validateImageMimeType(file);
-        validateImageSize(file);
+        validateFileType(file, IMAGE_VALID_EXTENSIONS, IMAGE_VALID_MIME_TYPES, IMAGE_MAX_SIZE_BYTES);
     }
 
     private static void validateMusicFile(MultipartFile file) {
-        validateMusicExtension(file);
-        validateMusicMimeType(file);
-        validateMusicSize(file);
+        validateFileType(file, MUSIC_VALID_EXTENSIONS, MUSIC_VALID_MIME_TYPES, MUSIC_MAX_SIZE_BYTES);
     }
 
     private static void validateVideoFile(MultipartFile file) {
-        validateVideoExtension(file);
-        validateVideoMimeType(file);
-        validateVideoSize(file);
+        validateFileType(file, VIDEO_VALID_EXTENSIONS, VIDEO_VALID_MIME_TYPES, VIDEO_MAX_SIZE_BYTES);
     }
 
-    private static void validateImageExtension(MultipartFile file) {
+    /**
+     * 파일 타입을 검증하는 공통 메서드.
+     *
+     * @param file            업로드 파일
+     * @param validExtensions 유효한 확장자 목록
+     * @param validMimeTypes  유효한 MIME 타입 목록
+     * @param maxSizeBytes    최대 파일 크기(바이트)
+     */
+    private static void validateFileType(MultipartFile file, Set<String> validExtensions,
+                                         Set<String> validMimeTypes, long maxSizeBytes) {
+        validateExtension(file, validExtensions);
+        validateMimeType(file, validMimeTypes);
+        validateSize(file, maxSizeBytes);
+    }
+
+    /**
+     * 파일 확장자를 검증한다.
+     *
+     * @param file            업로드 파일
+     * @param validExtensions 유효한 확장자 목록
+     */
+    private static void validateExtension(MultipartFile file, Set<String> validExtensions) {
         String extension = getFileExtension(file);
 
-        if (!IMAGE_VALID_EXTENSIONS.contains(extension)) {
+        if (!validExtensions.contains(extension)) {
             throw FileInvalidExtensionException.EXCEPTION;
         }
     }
 
-    private static void validateMusicExtension(MultipartFile file) {
-        String extension = getFileExtension(file);
-
-        if (!MUSIC_VALID_EXTENSIONS.contains(extension)) {
-            throw FileInvalidExtensionException.EXCEPTION;
-        }
-    }
-    
-    private static void validateImageMimeType(MultipartFile file) {
+    /**
+     * 파일 MIME 타입을 검증한다.
+     *
+     * @param file           업로드 파일
+     * @param validMimeTypes 유효한 MIME 타입 목록
+     */
+    private static void validateMimeType(MultipartFile file, Set<String> validMimeTypes) {
         String contentType = file.getContentType();
 
-        if (contentType == null || !IMAGE_VALID_MIME_TYPES.contains(contentType)) {
+        if (contentType == null || !validMimeTypes.contains(contentType)) {
             throw FileInvalidMimeTypeException.EXCEPTION;
         }
     }
 
-    private static void validateMusicMimeType(MultipartFile file) {
-        String contentType = file.getContentType();
-
-        if (contentType == null || !MUSIC_VALID_MIME_TYPES.contains(contentType)) {
-            throw FileInvalidMimeTypeException.EXCEPTION;
-        }
-    }
-
-    private static void validateImageSize(MultipartFile file) {
-        if (file.getSize() > IMAGE_MAX_SIZE_BYTES) {
-            throw FileSizeExceededException.EXCEPTION;
-        }
-    }
-
-    private static void validateMusicSize(MultipartFile file) {
-        if (file.getSize() > MUSIC_MAX_SIZE_BYTES) {
-            throw FileSizeExceededException.EXCEPTION;
-        }
-    }
-
-    private static void validateVideoExtension(MultipartFile file) {
-        String extension = getFileExtension(file);
-
-        if (!VIDEO_VALID_EXTENSIONS.contains(extension)) {
-            throw FileInvalidExtensionException.EXCEPTION;
-        }
-    }
-
-    private static void validateVideoMimeType(MultipartFile file) {
-        String contentType = file.getContentType();
-
-        if (contentType == null || !VIDEO_VALID_MIME_TYPES.contains(contentType)) {
-            throw FileInvalidMimeTypeException.EXCEPTION;
-        }
-    }
-
-    private static void validateVideoSize(MultipartFile file) {
-        if (file.getSize() > VIDEO_MAX_SIZE_BYTES) {
+    /**
+     * 파일 크기를 검증한다.
+     *
+     * @param file         업로드 파일
+     * @param maxSizeBytes 최대 파일 크기(바이트)
+     */
+    private static void validateSize(MultipartFile file, long maxSizeBytes) {
+        if (file.getSize() > maxSizeBytes) {
             throw FileSizeExceededException.EXCEPTION;
         }
     }
