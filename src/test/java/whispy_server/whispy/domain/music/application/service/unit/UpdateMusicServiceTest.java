@@ -52,7 +52,8 @@ class UpdateMusicServiceTest {
                 "http://example.com/old.mp3",
                 180,
                 MusicCategory.NATURE,
-                "http://example.com/old-cover.jpg"
+                "http://example.com/old-cover.jpg",
+                "http://example.com/old-video.mp4"
         );
 
         UpdateMusicRequest request = new UpdateMusicRequest(
@@ -61,7 +62,8 @@ class UpdateMusicServiceTest {
                 "http://example.com/new.mp3",
                 200,
                 MusicCategory.NATURE,
-                "http://example.com/new-cover.jpg"
+                "http://example.com/new-cover.jpg",
+                "http://example.com/new-video.mp4"
         );
 
         given(queryMusicPort.findById(musicId)).willReturn(Optional.of(existingMusic));
@@ -85,7 +87,8 @@ class UpdateMusicServiceTest {
                 "http://example.com/new.mp3",
                 200,
                 MusicCategory.NATURE,
-                "http://example.com/new-cover.jpg"
+                "http://example.com/new-cover.jpg",
+                "http://example.com/new-video.mp4"
         );
 
         given(queryMusicPort.findById(musicId)).willReturn(Optional.empty());
