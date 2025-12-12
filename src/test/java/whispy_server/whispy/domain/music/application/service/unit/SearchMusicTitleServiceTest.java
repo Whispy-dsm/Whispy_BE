@@ -47,8 +47,8 @@ class SearchMusicTitleServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Music> musics = List.of(
-                new Music(1L, "빗소리 1", "http://example.com/music1.mp3", 180, MusicCategory.NATURE, "http://example.com/cover1.jpg"),
-                new Music(2L, "빗소리 2", "http://example.com/music2.mp3", 200, MusicCategory.NATURE, "http://example.com/cover2.jpg")
+                new Music(1L, "빗소리 1", "http://example.com/music1.mp3", 180, MusicCategory.NATURE, "http://example.com/cover1.jpg", "http://example.com/video1.mp4"),
+                new Music(2L, "빗소리 2", "http://example.com/music2.mp3", 200, MusicCategory.NATURE, "http://example.com/cover2.jpg", "http://example.com/video2.mp4")
         );
         Page<Music> musicPage = new PageImpl<>(musics, pageable, musics.size());
 

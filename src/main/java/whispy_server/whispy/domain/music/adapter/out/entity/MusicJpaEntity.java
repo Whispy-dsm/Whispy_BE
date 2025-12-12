@@ -55,4 +55,7 @@ public class MusicJpaEntity {
 
     @Column(name = "banner_image_url")
     private String bannerImageUrl;
+
+    @Column(name = "video_url")
+    private String videoUrl;
 }

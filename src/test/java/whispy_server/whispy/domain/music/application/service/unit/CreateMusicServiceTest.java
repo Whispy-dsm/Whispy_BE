@@ -41,7 +41,8 @@ class CreateMusicServiceTest {
                 "http://example.com/music.mp3",
                 180,
                 MusicCategory.NATURE,
-                "http://example.com/cover.jpg"
+                "http://example.com/cover.jpg",
+                "http://example.com/video.mp4"
         );
 
         // when
@@ -60,6 +61,7 @@ class CreateMusicServiceTest {
                 "http://example.com/nature.mp3",
                 240,
                 MusicCategory.NATURE,
+                null,
                 null
         );
 

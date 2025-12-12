@@ -48,7 +48,8 @@ class GetMusicDetailServiceTest {
                 "http://example.com/music.mp3",
                 180,
                 MusicCategory.NATURE,
-                "http://example.com/cover.jpg"
+                "http://example.com/cover.jpg",
+                "http://example.com/video.mp4"
         );
 
         given(queryMusicPort.findById(musicId)).willReturn(Optional.of(music));
