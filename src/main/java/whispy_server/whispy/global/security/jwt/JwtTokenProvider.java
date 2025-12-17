@@ -19,6 +19,7 @@ import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 import whispy_server.whispy.global.exception.domain.security.ExpiredTokenException;
 import whispy_server.whispy.global.exception.domain.security.InvalidJwtException;
+import whispy_server.whispy.global.exception.domain.security.TokenTooLargeException;
 import whispy_server.whispy.global.security.auth.CustomAdminDetailsService;
 import whispy_server.whispy.global.security.auth.CustomUserDetailsService;
 
@@ -43,6 +44,12 @@ public class JwtTokenProvider {
 
     public static final String ACCESS_TOKEN = "access_token";
     public static final String REFRESH_TOKEN = "refresh_token";
+
+    /**
+     * JWT 토큰의 최대 허용 크기 (바이트 단위)
+     * 일반적인 JWT는 200-500바이트, 여유있게 2KB로 제한
+     */
+    private static final int MAX_TOKEN_SIZE = 2048;
 
     /**
      * 사용자 식별자/역할을 기반으로 Access·Refresh 토큰을 생성·저장한다.
@@ -146,13 +153,21 @@ public class JwtTokenProvider {
 
     /**
      * 요청 헤더에서 Bearer 토큰 문자열을 추출한다.
+     * 토큰 크기가 최대 허용 크기를 초과하면 예외를 발생시킨다.
      */
     public String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader(jwtProperties.header());
 
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(jwtProperties.prefix())
-        && bearerToken.length() > jwtProperties.prefix().length() + 1){
-            return bearerToken.substring(jwtProperties.prefix().length() +1);
+        if(StringUtils.hasText(bearerToken)) {
+            // 토큰 크기 검증 (조기 차단)
+            if(bearerToken.getBytes(StandardCharsets.UTF_8).length > MAX_TOKEN_SIZE) {
+                throw TokenTooLargeException.EXCEPTION;
+            }
+
+            if(bearerToken.startsWith(jwtProperties.prefix())
+                    && bearerToken.length() > jwtProperties.prefix().length() + 1){
+                return bearerToken.substring(jwtProperties.prefix().length() +1);
+            }
         }
         return null;
     }
