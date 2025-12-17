@@ -56,6 +56,7 @@ public enum ErrorCode {
     INVALID_TOKEN(401, "Invalid Token"),
     INVALID_KAKAO_ACCESS_TOKEN(401, "유효하지 않은 kakao access 토큰입니다."),
     EXPIRED_TOKEN(401, "토큰이 만료 되었습니다."),
+    TOKEN_TOO_LARGE(401, "토큰 크기가 제한을 초과했습니다."),
     OAUTH_AUTHENTICATION_FAILED(401, "OAuth2 인증에 실패했습니다"),
     PASSWORD_MISS_MATCH(401, "비밀번호가 일치하지 않습니다"),
     EMAIL_NOT_VERIFIED(401, "이메일 인증이 되지 않았습니다."),
