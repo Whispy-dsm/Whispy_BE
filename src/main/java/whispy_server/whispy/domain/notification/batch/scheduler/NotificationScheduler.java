@@ -43,12 +43,8 @@ public class NotificationScheduler {
 
         } catch (Exception e) {
 
-            // Sentry로 예외 전송
             Sentry.captureException(e);
-
-            // Discord로 알림 전송
-            BatchJobExecutionFailedException batchException = new BatchJobExecutionFailedException();
-            discordNotificationService.sendErrorNotification(batchException);
+            discordNotificationService.sendErrorNotification(e);
         }
     }
 }
