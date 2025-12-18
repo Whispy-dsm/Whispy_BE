@@ -19,6 +19,7 @@ import whispy_server.whispy.domain.notification.batch.dto.NotificationJobParamet
 import whispy_server.whispy.domain.notification.batch.processor.SaveNotificationItemProcessor;
 import whispy_server.whispy.domain.notification.batch.writer.SaveNotificationItemWriter;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+import whispy_server.whispy.global.exception.domain.batch.BatchItemReaderInitializationFailedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 
@@ -78,14 +79,13 @@ public class SaveNotificationBatchConfig {
      * @param topicParam 토픽 파라미터
      * @param entityManagerFactory EntityManagerFactory
      * @return 토픽 구독자 Reader
-     * @throws Exception Reader 초기화 실패 시
      */
     @Bean
     @StepScope
     public JpaPagingItemReader<TopicSubscriptionJpaEntity> topicSubscriberItemReader(
             @Value("#{jobParameters['topic']}") String topicParam,
             EntityManagerFactory entityManagerFactory
-    ) throws Exception {
+    ) {
         NotificationTopic topicEnum = NotificationTopic.valueOf(topicParam);
 
         JpaPagingItemReader<TopicSubscriptionJpaEntity> reader = new JpaPagingItemReader<>();
@@ -93,7 +93,13 @@ public class SaveNotificationBatchConfig {
         reader.setParameterValues(Map.of("topic", topicEnum));
         reader.setEntityManagerFactory(entityManagerFactory);
         reader.setPageSize(CHUNK_SIZE);
-        reader.afterPropertiesSet();
+
+        try {
+            reader.afterPropertiesSet();
+        } catch (Exception e) {
+            throw BatchItemReaderInitializationFailedException.EXCEPTION;
+        }
+
         return reader;
     }
 }
