@@ -17,6 +17,7 @@ import whispy_server.whispy.domain.topic.batch.dto.AddTopicJobParameters;
 import whispy_server.whispy.domain.topic.batch.processor.AddTopicItemProcessor;
 import whispy_server.whispy.domain.topic.batch.writer.AddTopicItemWriter;
 import whispy_server.whispy.domain.user.adapter.out.entity.UserJpaEntity;
+import whispy_server.whispy.global.exception.domain.batch.BatchItemReaderInitializationFailedException;
 
 /**
  * 새로운 토픽 추가 배치 설정.
@@ -70,12 +71,16 @@ public class AddNewTopicBatchConfig {
      */
     @Bean("userItemReader")
     public ItemReader<UserJpaEntity> userItemReader() {
-        return new JpaPagingItemReaderBuilder<UserJpaEntity>()
-                .name("userItemReader")
-                .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT u FROM UserJpaEntity u ORDER BY u.id")
-                .pageSize(CHUNK_SIZE)
-                .build();
+        try {
+            return new JpaPagingItemReaderBuilder<UserJpaEntity>()
+                    .name("userItemReader")
+                    .entityManagerFactory(entityManagerFactory)
+                    .queryString("SELECT u FROM UserJpaEntity u ORDER BY u.id")
+                    .pageSize(CHUNK_SIZE)
+                    .build();
+        } catch (Exception e) {
+            throw BatchItemReaderInitializationFailedException.EXCEPTION;
+        }
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import whispy_server.whispy.domain.notification.adapter.out.entity.NotificationJ
 import whispy_server.whispy.domain.notification.batch.dto.DeleteOldNotificationJobParameters;
 import whispy_server.whispy.domain.notification.batch.processor.DeleteOldNotificationItemProcessor;
 import whispy_server.whispy.domain.notification.batch.writer.DeleteOldNotificationItemWriter;
+import whispy_server.whispy.global.exception.domain.batch.BatchItemReaderInitializationFailedException;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -75,19 +77,22 @@ public class DeleteNotificationBatchConfig {
      * 30일이 지난 오래된 알림을 조회하는 Reader를 생성합니다.
      *
      * @return 오래된 알림 Reader
-     * @throws Exception Reader 초기화 실패 시
      */
     @Bean
     @StepScope
-    public ItemReader<NotificationJpaEntity> oldNotificationReader() throws Exception {
+    public ItemReader<NotificationJpaEntity> oldNotificationReader() {
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
 
-        return new JpaPagingItemReaderBuilder<NotificationJpaEntity>()
-                .name("oldNotificationReader")
-                .entityManagerFactory(entityManagerFactory)
-                .queryString("SELECT n FROM NotificationJpaEntity n WHERE n.createdAt < :thirtyDaysAgo")
-                .parameterValues(Map.of("thirtyDaysAgo", thirtyDaysAgo))
-                .pageSize(CHUNK_SIZE)
-                .build();
+        try {
+            return new JpaPagingItemReaderBuilder<NotificationJpaEntity>()
+                    .name("oldNotificationReader")
+                    .entityManagerFactory(entityManagerFactory)
+                    .queryString("SELECT n FROM NotificationJpaEntity n WHERE n.createdAt < :thirtyDaysAgo")
+                    .parameterValues(Map.of("thirtyDaysAgo", thirtyDaysAgo))
+                    .pageSize(CHUNK_SIZE)
+                    .build();
+        } catch (Exception e) {
+            throw BatchItemReaderInitializationFailedException.EXCEPTION;
+        }
     }
 }

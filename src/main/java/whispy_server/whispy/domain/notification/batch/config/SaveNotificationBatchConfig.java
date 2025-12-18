@@ -10,6 +10,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import whispy_server.whispy.domain.notification.batch.dto.NotificationJobParamet
 import whispy_server.whispy.domain.notification.batch.processor.SaveNotificationItemProcessor;
 import whispy_server.whispy.domain.notification.batch.writer.SaveNotificationItemWriter;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+import whispy_server.whispy.global.exception.domain.batch.BatchItemReaderInitializationFailedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 
@@ -78,22 +80,25 @@ public class SaveNotificationBatchConfig {
      * @param topicParam 토픽 파라미터
      * @param entityManagerFactory EntityManagerFactory
      * @return 토픽 구독자 Reader
-     * @throws Exception Reader 초기화 실패 시
      */
     @Bean
     @StepScope
     public JpaPagingItemReader<TopicSubscriptionJpaEntity> topicSubscriberItemReader(
             @Value("#{jobParameters['topic']}") String topicParam,
             EntityManagerFactory entityManagerFactory
-    ) throws Exception {
+    ) {
         NotificationTopic topicEnum = NotificationTopic.valueOf(topicParam);
 
-        JpaPagingItemReader<TopicSubscriptionJpaEntity> reader = new JpaPagingItemReader<>();
-        reader.setQueryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.subscribed = true ORDER BY ts.id");
-        reader.setParameterValues(Map.of("topic", topicEnum));
-        reader.setEntityManagerFactory(entityManagerFactory);
-        reader.setPageSize(CHUNK_SIZE);
-        reader.afterPropertiesSet();
-        return reader;
+        try {
+            return new JpaPagingItemReaderBuilder<TopicSubscriptionJpaEntity>()
+                    .name("topicSubscriberItemReader")
+                    .queryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.subscribed = true ORDER BY ts.id")
+                    .parameterValues(Map.of("topic", topicEnum))
+                    .entityManagerFactory(entityManagerFactory)
+                    .pageSize(CHUNK_SIZE)
+                    .build();
+        } catch (Exception e) {
+            throw BatchItemReaderInitializationFailedException.EXCEPTION;
+        }
     }
 }

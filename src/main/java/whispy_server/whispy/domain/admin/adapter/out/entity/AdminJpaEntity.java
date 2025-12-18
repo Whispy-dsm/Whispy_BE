@@ -1,5 +1,6 @@
 package whispy_server.whispy.domain.admin.adapter.out.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,10 +39,12 @@ public class AdminJpaEntity {
     /**
      * 관리자 로그인 ID
      */
+    @Column(name = "admin_id", nullable = false)
     private String adminId;
 
     /**
      * 암호화된 비밀번호
      */
+    @Column(name = "password", nullable = false)
     private String password;
 }
