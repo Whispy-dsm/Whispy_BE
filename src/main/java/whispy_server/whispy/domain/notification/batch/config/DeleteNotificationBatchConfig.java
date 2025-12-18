@@ -83,21 +83,16 @@ public class DeleteNotificationBatchConfig {
     public ItemReader<NotificationJpaEntity> oldNotificationReader() {
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
 
-        JpaPagingItemReader<NotificationJpaEntity> reader =
-            new JpaPagingItemReaderBuilder<NotificationJpaEntity>()
+        try {
+            return new JpaPagingItemReaderBuilder<NotificationJpaEntity>()
                     .name("oldNotificationReader")
                     .entityManagerFactory(entityManagerFactory)
                     .queryString("SELECT n FROM NotificationJpaEntity n WHERE n.createdAt < :thirtyDaysAgo")
                     .parameterValues(Map.of("thirtyDaysAgo", thirtyDaysAgo))
                     .pageSize(CHUNK_SIZE)
                     .build();
-
-        try {
-            reader.afterPropertiesSet();
         } catch (Exception e) {
             throw BatchItemReaderInitializationFailedException.EXCEPTION;
         }
-
-        return reader;
     }
 }

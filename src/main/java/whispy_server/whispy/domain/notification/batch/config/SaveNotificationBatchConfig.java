@@ -10,6 +10,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -88,18 +89,16 @@ public class SaveNotificationBatchConfig {
     ) {
         NotificationTopic topicEnum = NotificationTopic.valueOf(topicParam);
 
-        JpaPagingItemReader<TopicSubscriptionJpaEntity> reader = new JpaPagingItemReader<>();
-        reader.setQueryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.subscribed = true ORDER BY ts.id");
-        reader.setParameterValues(Map.of("topic", topicEnum));
-        reader.setEntityManagerFactory(entityManagerFactory);
-        reader.setPageSize(CHUNK_SIZE);
-
         try {
-            reader.afterPropertiesSet();
+            return new JpaPagingItemReaderBuilder<TopicSubscriptionJpaEntity>()
+                    .name("topicSubscriberItemReader")
+                    .queryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.subscribed = true ORDER BY ts.id")
+                    .parameterValues(Map.of("topic", topicEnum))
+                    .entityManagerFactory(entityManagerFactory)
+                    .pageSize(CHUNK_SIZE)
+                    .build();
         } catch (Exception e) {
             throw BatchItemReaderInitializationFailedException.EXCEPTION;
         }
-
-        return reader;
     }
 }
