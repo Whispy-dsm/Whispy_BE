@@ -57,7 +57,7 @@ public final class FileValidator {
         switch (folder) {
             case PROFILE_IMAGE_FOLDER, MUSIC_BANNER_IMAGE_FOLDER -> validateImageFile(file);
             case MUSIC_FOLDER -> validateMusicFile(file);
-            case MUSIC_VIDEO -> validateVideoFile(file);
+            case MUSIC_VIDEO_FOLDER -> validateVideoFile(file);
         }
     }
 

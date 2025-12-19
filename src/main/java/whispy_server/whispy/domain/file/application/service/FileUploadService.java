@@ -48,7 +48,7 @@ public class FileUploadService implements FileUploadUseCase {
         try {
             Files.createDirectories(Paths.get(fileProperties.uploadPath(), folder));
 
-            if (imageFolder == ImageFolder.MUSIC_FOLDER || imageFolder == ImageFolder.MUSIC_VIDEO) {
+            if (imageFolder == ImageFolder.MUSIC_FOLDER || imageFolder == ImageFolder.MUSIC_VIDEO_FOLDER) {
                 uploadOriginalFile(file, folder, fileName);
             } else {
                 uploadCompressedImage(file, folder, fileName);
@@ -85,7 +85,7 @@ public class FileUploadService implements FileUploadUseCase {
     private String generateFileName(MultipartFile file, ImageFolder imageFolder) {
         String originalFileName = file.getOriginalFilename();
 
-        if (imageFolder == ImageFolder.MUSIC_FOLDER || imageFolder == ImageFolder.MUSIC_VIDEO) {
+        if (imageFolder == ImageFolder.MUSIC_FOLDER || imageFolder == ImageFolder.MUSIC_VIDEO_FOLDER) {
             return generateFileNameWithExtension(originalFileName);
         }
 
