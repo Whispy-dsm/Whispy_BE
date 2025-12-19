@@ -44,7 +44,7 @@ public class EmailSendAdapter implements EmailSendPort {
             mailSender.send(message);
 
         } catch (Exception e) {
-            throw EmailSendFailedException.EXCEPTION;
+            throw new EmailSendFailedException(e);
         }
     }
 

@@ -66,7 +66,7 @@ public class SendEmailVerificationService implements SendEmailVerificationUseCas
         } catch (Exception e) {
             redisUtil.delete(codeKey);
             redisUtil.delete(rateLimitKey);
-            throw EmailSendFailedException.EXCEPTION;
+            throw new EmailSendFailedException(e);
         }
     }
 

@@ -36,7 +36,7 @@ public class FileDeleteService implements FileDeleteUseCase {
                 throw FileNotFoundException.EXCEPTION;
             }
         } catch (IOException e) {
-            throw FileDeleteFailedException.EXCEPTION;
+            throw new FileDeleteFailedException(e);
         }
     }
 }

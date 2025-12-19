@@ -1,7 +1,6 @@
 package whispy_server.whispy.domain.notification.batch.writer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ import java.util.List;
  *
  * DeleteOldNotificationJobParameters를 받아 배치로 알림을 삭제하는 배치 라이터입니다.
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DeleteOldNotificationItemWriter implements ItemWriter<DeleteOldNotificationJobParameters> {
@@ -38,7 +36,7 @@ public class DeleteOldNotificationItemWriter implements ItemWriter<DeleteOldNoti
 
             deleteNotificationPort.deleteAllByIdInBatch(ids);
         } catch (Exception e) {
-            throw BatchJobExecutionFailedException.EXCEPTION;
+            throw new BatchJobExecutionFailedException(e);
         }
     }
 }

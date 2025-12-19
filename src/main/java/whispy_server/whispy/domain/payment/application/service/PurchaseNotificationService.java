@@ -40,6 +40,16 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
     private final SubscriptionFactory subscriptionFactory;
     private final SubscriptionUpdater subscriptionUpdater;
 
+    private static final int NOTIFICATION_TYPE_RECOVERED = 1;
+    private static final int NOTIFICATION_TYPE_RENEWED = 2;
+    private static final int NOTIFICATION_TYPE_CANCELED = 3;
+    private static final int NOTIFICATION_TYPE_PURCHASED = 4;
+    private static final int NOTIFICATION_TYPE_ON_HOLD = 5;
+    private static final int NOTIFICATION_TYPE_IN_GRACE_PERIOD = 6;
+    private static final int NOTIFICATION_TYPE_PAUSED = 10;
+    private static final int NOTIFICATION_TYPE_REVOKED = 12;
+    private static final int NOTIFICATION_TYPE_EXPIRED = 13;
+
     /**
      * Google Play Pub/Sub 메시지를 처리합니다.
      *
@@ -60,7 +70,7 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
             }
 
         } catch (Exception e) {
-            throw PurchaseNotificationProcessingFailedException.EXCEPTION;
+            throw new PurchaseNotificationProcessingFailedException(e);
         }
     }
 
@@ -109,14 +119,4 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
         });
 
     }
-
-    private static final int NOTIFICATION_TYPE_RECOVERED = 1;
-    private static final int NOTIFICATION_TYPE_RENEWED = 2;
-    private static final int NOTIFICATION_TYPE_CANCELED = 3;
-    private static final int NOTIFICATION_TYPE_PURCHASED = 4;
-    private static final int NOTIFICATION_TYPE_ON_HOLD = 5;
-    private static final int NOTIFICATION_TYPE_IN_GRACE_PERIOD = 6;
-    private static final int NOTIFICATION_TYPE_PAUSED = 10;
-    private static final int NOTIFICATION_TYPE_REVOKED = 12;
-    private static final int NOTIFICATION_TYPE_EXPIRED = 13;
 }

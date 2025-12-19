@@ -52,7 +52,7 @@ public class ImageCompressionConverter {
             if (e.getMessage() != null && e.getMessage().contains("No suitable ImageReader")) {
                 throw ImageInvalidException.EXCEPTION;
             }
-            throw FileUploadFailedException.EXCEPTION;
+            throw new FileUploadFailedException(e);
         }
     }
 
