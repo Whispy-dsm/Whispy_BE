@@ -2,11 +2,10 @@ package whispy_server.whispy.domain.notification.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
-import whispy_server.whispy.domain.notification.application.port.out.SaveNotificationPort;
+import whispy_server.whispy.domain.notification.application.service.component.NotificationPersister;
 import whispy_server.whispy.domain.notification.model.Notification;
 
 /**
@@ -16,11 +15,10 @@ import whispy_server.whispy.domain.notification.model.Notification;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class SendToDeviceTokensService implements SendToDeviceTokensUseCase {
 
     private final FcmSendPort fcmSendPort;
-    private final SaveNotificationPort saveNotificationPort;
+    private final NotificationPersister notificationPersister;
 
     /**
      * 디바이스 토큰으로 알림을 전송합니다.
@@ -29,6 +27,7 @@ public class SendToDeviceTokensService implements SendToDeviceTokensUseCase {
      */
     @Override
     public void execute(NotificationSendRequest request){
+        // 1. 외부 API 호출 (실패 시 여기서 예외 발생 -> 저장 로직 실행 안 됨)
         fcmSendPort.sendMulticast(
                 request.deviceTokens(),
                 request.title(),
@@ -46,6 +45,7 @@ public class SendToDeviceTokensService implements SendToDeviceTokensUseCase {
                 false,
                 null
         );
-        saveNotificationPort.save(notification);
+
+        notificationPersister.save(notification);
     }
 }

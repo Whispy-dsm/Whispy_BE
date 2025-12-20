@@ -58,7 +58,7 @@ public class AddTopicItemWriter implements ItemWriter<AddTopicJobParameters> {
                     });
 
         } catch (Exception e) {
-            throw BatchJobExecutionFailedException.EXCEPTION;
+            throw new BatchJobExecutionFailedException(e);
         }
     }
 }

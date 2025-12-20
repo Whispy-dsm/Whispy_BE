@@ -1,7 +1,6 @@
 package whispy_server.whispy.domain.notification.batch.writer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import java.util.List;
  *
  * NotificationJobParameters를 받아 Notification 도메인 모델로 변환하고 배치로 저장하는 배치 라이터입니다.
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class SaveNotificationItemWriter implements ItemWriter<NotificationJobParameters> {
@@ -48,7 +46,7 @@ public class SaveNotificationItemWriter implements ItemWriter<NotificationJobPar
             saveNotificationPort.saveAll(notifications);
 
         } catch (Exception e) {
-            throw BatchJobExecutionFailedException.EXCEPTION;
+            throw new BatchJobExecutionFailedException(e);
         }
     }
 

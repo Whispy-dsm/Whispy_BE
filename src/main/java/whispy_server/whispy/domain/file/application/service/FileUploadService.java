@@ -58,7 +58,7 @@ public class FileUploadService implements FileUploadUseCase {
             return new FileUploadResponse(fileUrl);
 
         } catch (IOException e) {
-            throw FileUploadFailedException.EXCEPTION;
+            throw new FileUploadFailedException(e);
         }
     }
 

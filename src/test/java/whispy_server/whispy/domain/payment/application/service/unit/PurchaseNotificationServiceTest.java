@@ -12,10 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.PubSubMessageDataRequest;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.PubSubMessageRequest;
 import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPort;
-import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
-import whispy_server.whispy.domain.payment.application.port.out.SubscriptionSavePort;
-import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionFactory;
-import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionUpdater;
+import whispy_server.whispy.domain.payment.application.service.component.SubscriptionRenewalHandler;
+import whispy_server.whispy.domain.payment.application.service.component.SubscriptionUpdater;
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.payment.model.Subscription;
 import whispy_server.whispy.domain.payment.model.type.ProductType;
@@ -26,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
@@ -48,19 +45,13 @@ class PurchaseNotificationServiceTest {
     private PurchaseNotificationService purchaseNotificationService;
 
     @Mock
-    private SubscriptionSavePort subscriptionSavePort;
-
-    @Mock
-    private QuerySubscriptionPort querySubscriptionPort;
-
-    @Mock
     private GooglePlayApiPort googlePlayApiPort;
 
     @Mock
-    private SubscriptionFactory subscriptionFactory;
+    private SubscriptionUpdater subscriptionUpdater;
 
     @Mock
-    private SubscriptionUpdater subscriptionUpdater;
+    private SubscriptionRenewalHandler subscriptionRenewalHandler;
 
     @Spy
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -156,23 +147,17 @@ class PurchaseNotificationServiceTest {
         String jsonData = createNotificationJson(2, TEST_PURCHASE_TOKEN, TEST_SUBSCRIPTION_ID); // RENEWED = 2
         PubSubMessageRequest pubSubMessage = createPubSubMessage(jsonData);
 
-        Subscription existingSubscription = createSubscription(SubscriptionState.ACTIVE);
-        Subscription renewedSubscription = createSubscription(SubscriptionState.ACTIVE);
         GooglePlaySubscriptionInfo subscriptionInfo = createSubscriptionInfo();
 
         given(googlePlayApiPort.getSubscriptionInfo(TEST_SUBSCRIPTION_ID, TEST_PURCHASE_TOKEN))
                 .willReturn(subscriptionInfo);
-        given(querySubscriptionPort.findByPurchaseToken(TEST_PURCHASE_TOKEN))
-                .willReturn(Optional.of(existingSubscription));
-        given(subscriptionFactory.renewedFrom(eq(existingSubscription), any(LocalDateTime.class)))
-                .willReturn(renewedSubscription);
 
         // when
         purchaseNotificationService.processPubSubMessage(pubSubMessage);
 
         // then
         verify(googlePlayApiPort).getSubscriptionInfo(TEST_SUBSCRIPTION_ID, TEST_PURCHASE_TOKEN);
-        verify(subscriptionSavePort).save(renewedSubscription);
+        verify(subscriptionRenewalHandler).handleRenewal(any(), eq(subscriptionInfo));
     }
 
     @Test
@@ -186,14 +171,12 @@ class PurchaseNotificationServiceTest {
 
         given(googlePlayApiPort.getSubscriptionInfo(TEST_SUBSCRIPTION_ID, TEST_PURCHASE_TOKEN))
                 .willReturn(subscriptionInfo);
-        given(querySubscriptionPort.findByPurchaseToken(TEST_PURCHASE_TOKEN))
-                .willReturn(Optional.empty());
 
         // when
         purchaseNotificationService.processPubSubMessage(pubSubMessage);
 
         // then
-        verify(subscriptionSavePort, never()).save(any());
+        verify(subscriptionRenewalHandler).handleRenewal(any(), eq(subscriptionInfo));
     }
 
     @Test

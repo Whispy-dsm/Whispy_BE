@@ -6,12 +6,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.launch.JobLauncher;
 import whispy_server.whispy.domain.topic.application.service.AddNewTopicBatchService;
+import whispy_server.whispy.domain.topic.batch.trigger.AddNewTopicBatchTrigger;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -28,16 +26,15 @@ class AddNewTopicBatchServiceTest {
     private AddNewTopicBatchService service;
 
     @Mock
-    private JobLauncher jobLauncher;
-
-    @Mock
-    private Job addNewTopicJob;
+    private AddNewTopicBatchTrigger addNewTopicBatchTrigger;
 
     @Test
     @DisplayName("새로운 토픽을 배치로 추가할 수 있다")
-    void execute() throws Exception {
+    void execute() {
+        // when
         service.execute(NotificationTopic.GENERAL_ANNOUNCEMENT, true);
 
-        verify(jobLauncher).run(any(Job.class), any());
+        // then
+        verify(addNewTopicBatchTrigger).trigger(NotificationTopic.GENERAL_ANNOUNCEMENT, true);
     }
 }

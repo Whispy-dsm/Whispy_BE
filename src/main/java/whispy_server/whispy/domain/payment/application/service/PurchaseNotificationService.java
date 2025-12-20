@@ -3,25 +3,19 @@ package whispy_server.whispy.domain.payment.application.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.DeveloperNotificationRequest;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.PubSubMessageRequest;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.SubscriptionNotificationRequest;
-import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionUpdater;
-import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionFactory;
+import whispy_server.whispy.domain.payment.application.service.component.SubscriptionRenewalHandler;
+import whispy_server.whispy.domain.payment.application.service.component.SubscriptionUpdater;
 import whispy_server.whispy.global.exception.domain.payment.InvalidSubscriptionNotificationException;
 import whispy_server.whispy.global.exception.domain.payment.PurchaseNotificationProcessingFailedException;
 import whispy_server.whispy.domain.payment.application.port.in.ProcessPurchaseNotificationUseCase;
 import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPort;
-import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
-import whispy_server.whispy.domain.payment.application.port.out.SubscriptionSavePort;
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
-import whispy_server.whispy.domain.payment.model.Subscription;
 import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Base64;
 
 /**
@@ -33,19 +27,26 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class PurchaseNotificationService implements ProcessPurchaseNotificationUseCase {
 
-    private final SubscriptionSavePort subscriptionSavePort;
-    private final QuerySubscriptionPort querySubscriptionPort;
     private final GooglePlayApiPort googlePlayApiPort;
     private final ObjectMapper objectMapper;
-    private final SubscriptionFactory subscriptionFactory;
     private final SubscriptionUpdater subscriptionUpdater;
+    private final SubscriptionRenewalHandler subscriptionRenewalHandler;
+
+    private static final int NOTIFICATION_TYPE_RECOVERED = 1;
+    private static final int NOTIFICATION_TYPE_RENEWED = 2;
+    private static final int NOTIFICATION_TYPE_CANCELED = 3;
+    private static final int NOTIFICATION_TYPE_PURCHASED = 4;
+    private static final int NOTIFICATION_TYPE_ON_HOLD = 5;
+    private static final int NOTIFICATION_TYPE_IN_GRACE_PERIOD = 6;
+    private static final int NOTIFICATION_TYPE_PAUSED = 10;
+    private static final int NOTIFICATION_TYPE_REVOKED = 12;
+    private static final int NOTIFICATION_TYPE_EXPIRED = 13;
 
     /**
      * Google Play Pub/Sub 메시지를 처리합니다.
      *
      * @param pubSubMessage 처리할 Pub/Sub 메시지
      */
-    @Transactional
     @Override
     public void processPubSubMessage(PubSubMessageRequest pubSubMessage) {
         try {
@@ -60,7 +61,7 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
             }
 
         } catch (Exception e) {
-            throw PurchaseNotificationProcessingFailedException.EXCEPTION;
+            throw new PurchaseNotificationProcessingFailedException(e);
         }
     }
 
@@ -90,33 +91,13 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
      * @param notification 구독 알림 정보
      */
     private void handleSubscriptionRenewed(SubscriptionNotificationRequest notification) {
+        // 트랜잭션 밖에서 외부 API 호출
         GooglePlaySubscriptionInfo subscriptionInfo = googlePlayApiPort.getSubscriptionInfo(
                 notification.subscriptionId(),
                 notification.purchaseToken()
         );
 
-        querySubscriptionPort.findByPurchaseToken(notification.purchaseToken())
-                .filter(subscription -> {
-                    return subscription.subscriptionState() == SubscriptionState.ACTIVE ||
-                            subscription.subscriptionState() == SubscriptionState.GRACE_PERIOD ||
-                            subscription.subscriptionState() == SubscriptionState.ON_HOLD;
-                })
-                .ifPresent(subscription -> {
-           Subscription renewed = subscriptionFactory.renewedFrom(subscription,
-                   LocalDateTime.ofEpochSecond(subscriptionInfo.expiryTimeMillis() / 1000, 0, ZoneOffset.UTC)
-           );
-           subscriptionSavePort.save(renewed);
-        });
-
+        // 트랜잭션 안에서 DB 저장
+        subscriptionRenewalHandler.handleRenewal(notification, subscriptionInfo);
     }
-
-    private static final int NOTIFICATION_TYPE_RECOVERED = 1;
-    private static final int NOTIFICATION_TYPE_RENEWED = 2;
-    private static final int NOTIFICATION_TYPE_CANCELED = 3;
-    private static final int NOTIFICATION_TYPE_PURCHASED = 4;
-    private static final int NOTIFICATION_TYPE_ON_HOLD = 5;
-    private static final int NOTIFICATION_TYPE_IN_GRACE_PERIOD = 6;
-    private static final int NOTIFICATION_TYPE_PAUSED = 10;
-    private static final int NOTIFICATION_TYPE_REVOKED = 12;
-    private static final int NOTIFICATION_TYPE_EXPIRED = 13;
 }

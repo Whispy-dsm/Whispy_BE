@@ -8,18 +8,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.topic.application.port.out.QueryTopicSubscriptionPort;
-import whispy_server.whispy.domain.topic.application.port.out.SaveTopicSubscriptionPort;
 import whispy_server.whispy.domain.topic.application.service.InitializeTopicsService;
-import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
-import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.domain.user.model.types.Gender;
-import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
+import whispy_server.whispy.domain.topic.application.service.component.TopicInitializer;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
@@ -41,13 +35,10 @@ class InitializeTopicsServiceTest {
     private QueryTopicSubscriptionPort queryTopicSubscriptionPort;
 
     @Mock
-    private SaveTopicSubscriptionPort saveTopicSubscriptionPort;
-
-    @Mock
     private FcmSendPort fcmSendPort;
 
     @Mock
-    private UserFacadeUseCase userFacadeUseCase;
+    private TopicInitializer topicInitializer;
 
     @Test
     @DisplayName("신규 사용자의 토픽을 초기화할 수 있다")
@@ -62,6 +53,7 @@ class InitializeTopicsServiceTest {
 
         // then
         verify(queryTopicSubscriptionPort).findByEmail(email);
-        verify(saveTopicSubscriptionPort, atLeastOnce()).save(any());
+        verify(topicInitializer).createAllTopicsForNewUser(email, true);
+        verify(fcmSendPort, atLeastOnce()).subscribeToTopic(any(String.class), any());
     }
 }
