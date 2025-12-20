@@ -2,7 +2,6 @@ package whispy_server.whispy.domain.notification.batch.config;
 
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -31,7 +30,6 @@ import java.util.Map;
  *
  * FCM 토픽을 구독한 사용자들에게 알림 이력을 저장하는 Spring Batch 작업을 설정합니다.
  */
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class SaveNotificationBatchConfig {
@@ -87,18 +85,21 @@ public class SaveNotificationBatchConfig {
             @Value("#{jobParameters['topic']}") String topicParam,
             EntityManagerFactory entityManagerFactory
     ) {
-        NotificationTopic topicEnum = NotificationTopic.valueOf(topicParam);
 
         try {
-            return new JpaPagingItemReaderBuilder<TopicSubscriptionJpaEntity>()
+            NotificationTopic topicEnum = NotificationTopic.valueOf(topicParam);
+
+            JpaPagingItemReader<TopicSubscriptionJpaEntity> reader = new JpaPagingItemReaderBuilder<TopicSubscriptionJpaEntity>()
                     .name("topicSubscriberItemReader")
                     .queryString("SELECT ts FROM TopicSubscriptionJpaEntity ts WHERE ts.topic = :topic AND ts.subscribed = true ORDER BY ts.id")
                     .parameterValues(Map.of("topic", topicEnum))
                     .entityManagerFactory(entityManagerFactory)
                     .pageSize(CHUNK_SIZE)
                     .build();
+
+            return reader;
         } catch (Exception e) {
-            throw BatchItemReaderInitializationFailedException.EXCEPTION;
+            throw new BatchItemReaderInitializationFailedException(e);
         }
     }
 }

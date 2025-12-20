@@ -37,7 +37,7 @@ public class PurchaseProcessingService {
      * @param subscriptionInfo Google Play 구독 정보
      * @return 구매 처리 결과
      */
-    @Transactional
+    @Transactional(noRollbackFor = SubscriptionAcknowledgmentFailedException.class)
     public ValidatePurchaseResponse processValidatedPurchase(
             String email,
             String purchaseToken,
@@ -62,7 +62,7 @@ public class PurchaseProcessingService {
             googlePlayApiPort.acknowledgeSubscription(subscriptionId, purchaseToken);
         } catch (Exception e) {
             // acknowledge 실패해도 구독은 이미 저장됨
-            throw SubscriptionAcknowledgmentFailedException.EXCEPTION;
+            throw new SubscriptionAcknowledgmentFailedException(e);
         }
 
         return new ValidatePurchaseResponse(true);

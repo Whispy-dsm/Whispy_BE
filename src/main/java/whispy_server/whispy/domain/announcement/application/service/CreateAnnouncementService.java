@@ -2,13 +2,14 @@ package whispy_server.whispy.domain.announcement.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.CreateAnnouncementRequest;
 import whispy_server.whispy.domain.announcement.application.port.in.CreateAnnouncementUseCase;
-import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
+import whispy_server.whispy.domain.announcement.application.service.component.AnnouncementDeleter;
+import whispy_server.whispy.domain.announcement.application.service.component.AnnouncementSaver;
 import whispy_server.whispy.domain.announcement.model.Announcement;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
+import whispy_server.whispy.global.exception.domain.announcement.AnnouncementPublicationFailedException;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +22,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CreateAnnouncementService implements CreateAnnouncementUseCase {
 
-    private final AnnouncementPort announcementPort;
+    private final AnnouncementSaver announcementSaver;
+    private final AnnouncementDeleter announcementDeleter;
     private final BroadCastToAllUsersUseCase broadCastToAllUsersUseCase;
 
     /**
@@ -29,9 +31,9 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
      *
      * @param request 생성할 공지사항 정보가 포함된 요청
      */
-    @Transactional
     @Override
     public void execute(CreateAnnouncementRequest request) {
+        // Announcement 객체 생성 (서비스의 책임)
         Announcement announcement = new Announcement(
                 null,
                 request.title(),
@@ -40,9 +42,16 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
                 LocalDateTime.now()
         );
 
-        announcementPort.save(announcement);
+        Long savedId = announcementSaver.save(announcement);
 
-        sendAnnouncementNotification();
+        // 트랜잭션 밖에서 알림 전송
+        try {
+            sendAnnouncementNotification();
+        } catch (Exception e) {
+            // 알림 전송 실패 시 저장된 공지사항 롤백
+            announcementDeleter.delete(savedId);
+            throw new AnnouncementPublicationFailedException(e);
+        }
     }
 
     /**

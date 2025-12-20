@@ -77,7 +77,8 @@ public enum ErrorCode {
     EMAIL_SEND_FAILED(500, "이메일 발송에 실패했습니다. 다시 시도해주세요."),
     FCM_SEND_FAILED(500, "FCM 메시지 전송에 실패했습니다."),
     BATCH_JOB_EXECUTION_FAILED(500, "배치 작업 실행에 실패했습니다."),
-    BATCH_ITEM_READER_INITIALIZATION_FAILED(500, "배치 ItemReader 초기화에 실패했습니다.");
+    BATCH_ITEM_READER_INITIALIZATION_FAILED(500, "배치 ItemReader 초기화에 실패했습니다."),
+    ANNOUNCEMENT_PUBLICATION_FAILED(500, "공지사항 발행에 실패했습니다.");
 
 
     private final int statusCode;

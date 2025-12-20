@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
-import whispy_server.whispy.domain.notification.application.port.out.SaveNotificationPort;
 import whispy_server.whispy.domain.notification.application.service.SendToDeviceTokensService;
+import whispy_server.whispy.domain.notification.application.service.component.NotificationPersister;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
 import java.util.Arrays;
@@ -40,7 +40,7 @@ class SendToDeviceTokensServiceTest {
     private FcmSendPort fcmSendPort;
 
     @Mock
-    private SaveNotificationPort saveNotificationPort;
+    private NotificationPersister notificationPersister;
 
     private static final String TEST_EMAIL = "test@example.com";
 
@@ -94,7 +94,7 @@ class SendToDeviceTokensServiceTest {
         service.execute(request);
 
         // then
-        verify(saveNotificationPort).save(argThat(notification ->
+        verify(notificationPersister).save(argThat(notification ->
                 notification.email().equals(TEST_EMAIL) &&
                         notification.title().equals("제목") &&
                         notification.body().equals("내용") &&
@@ -129,7 +129,7 @@ class SendToDeviceTokensServiceTest {
                 eq("내용"),
                 eq(null)
         );
-        verify(saveNotificationPort).save(any());
+        verify(notificationPersister).save(any());
     }
 
     @Test
@@ -184,7 +184,7 @@ class SendToDeviceTokensServiceTest {
         service.execute(request);
 
         // then
-        verify(saveNotificationPort).save(argThat(notification ->
+        verify(notificationPersister).save(argThat(notification ->
                 !notification.read()
         ));
     }

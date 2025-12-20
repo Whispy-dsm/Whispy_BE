@@ -2,7 +2,6 @@ package whispy_server.whispy.domain.topic.batch.config;
 
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -24,7 +23,6 @@ import whispy_server.whispy.global.exception.domain.batch.BatchItemReaderInitial
  *
  * 모든 사용자에게 새로운 토픽을 추가하는 Spring Batch Job을 정의합니다.
  */
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class AddNewTopicBatchConfig {
@@ -79,7 +77,7 @@ public class AddNewTopicBatchConfig {
                     .pageSize(CHUNK_SIZE)
                     .build();
         } catch (Exception e) {
-            throw BatchItemReaderInitializationFailedException.EXCEPTION;
+            throw new BatchItemReaderInitializationFailedException(e);
         }
     }
 

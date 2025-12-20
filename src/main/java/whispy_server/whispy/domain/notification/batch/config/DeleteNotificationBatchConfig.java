@@ -10,7 +10,6 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +29,6 @@ import java.util.Map;
  *
  * 30일이 지난 오래된 알림을 삭제하는 Spring Batch 작업을 설정합니다.
  */
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class DeleteNotificationBatchConfig {
@@ -92,7 +90,7 @@ public class DeleteNotificationBatchConfig {
                     .pageSize(CHUNK_SIZE)
                     .build();
         } catch (Exception e) {
-            throw BatchItemReaderInitializationFailedException.EXCEPTION;
+            throw new BatchItemReaderInitializationFailedException(e);
         }
     }
 }

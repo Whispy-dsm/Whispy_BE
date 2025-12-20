@@ -66,7 +66,7 @@ public class FcmUtil implements FcmSendPort {
             getFirebaseMessaging().sendEachForMulticastAsync(multicastMessage);
 
         }catch (Exception e){
-            log.error("FCM 멀티캐스트 전송 실패", e);
+            throw new FcmSendFailedException(e);
         }
     }
 
@@ -87,7 +87,7 @@ public class FcmUtil implements FcmSendPort {
 
             getFirebaseMessaging().sendAsync(message);
         } catch (Exception e) {
-            throw FcmSendFailedException.EXCEPTION;
+            throw new FcmSendFailedException(e);
         }
     }
 
@@ -107,7 +107,7 @@ public class FcmUtil implements FcmSendPort {
                     topic.name()
             );
         } catch (Exception e){
-            log.error("FCM 토픽 구독 실패: topic={}", topic, e);
+            throw new FcmSendFailedException(e);
         }
     }
 
@@ -127,7 +127,7 @@ public class FcmUtil implements FcmSendPort {
                     topic.name()
             );
         } catch (Exception e){
-            log.error("FCM 토픽 구독 해제 실패: topic={}", topic, e);
+            throw new FcmSendFailedException(e);
         }
     }
 
