@@ -1,9 +1,11 @@
-package whispy_server.whispy.domain.payment.application.service.domain;
+package whispy_server.whispy.domain.payment.application.service.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
 import whispy_server.whispy.domain.payment.application.port.out.SubscriptionSavePort;
+import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionFactory;
 import whispy_server.whispy.domain.payment.model.Subscription;
 import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
 
@@ -28,6 +30,7 @@ public class SubscriptionUpdater {
      * @param purchaseToken 구매 토큰
      * @param newState 새로운 상태
      */
+    @Transactional
     public void updateState(String purchaseToken, SubscriptionState newState) {
         Optional<Subscription> subscriptionOpt = querySubscriptionPort.findByPurchaseToken(purchaseToken);
         subscriptionOpt.ifPresent(subscription -> {
