@@ -9,7 +9,7 @@ import whispy_server.whispy.domain.announcement.application.service.component.An
 import whispy_server.whispy.domain.announcement.model.Announcement;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
-import whispy_server.whispy.global.exception.domain.batch.BatchJobExecutionFailedException;
+import whispy_server.whispy.global.exception.domain.announcement.AnnouncementPublicationFailedException;
 
 import java.time.LocalDateTime;
 
@@ -44,13 +44,13 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
 
         Long savedId = announcementSaver.save(announcement);
 
-        // 트랜잭션 밖에서 배치 실행
+        // 트랜잭션 밖에서 알림 전송
         try {
             sendAnnouncementNotification();
         } catch (Exception e) {
             // 알림 전송 실패 시 저장된 공지사항 롤백
             announcementDeleter.delete(savedId);
-            throw new BatchJobExecutionFailedException(e);
+            throw new AnnouncementPublicationFailedException(e);
         }
     }
 
