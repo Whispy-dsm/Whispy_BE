@@ -7,9 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.CreateAnnouncementRequest;
-import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
+import whispy_server.whispy.domain.announcement.application.service.component.AnnouncementDeleter;
+import whispy_server.whispy.domain.announcement.application.service.component.AnnouncementSaver;
 import whispy_server.whispy.domain.announcement.application.service.CreateAnnouncementService;
-import whispy_server.whispy.domain.announcement.model.Announcement;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
 
@@ -31,7 +31,10 @@ class CreateAnnouncementServiceTest {
     private CreateAnnouncementService createAnnouncementService;
 
     @Mock
-    private AnnouncementPort announcementPort;
+    private AnnouncementSaver announcementSaver;
+
+    @Mock
+    private AnnouncementDeleter announcementDeleter;
 
     @Mock
     private BroadCastToAllUsersUseCase broadCastToAllUsersUseCase;
@@ -50,7 +53,7 @@ class CreateAnnouncementServiceTest {
         createAnnouncementService.execute(request);
 
         // then
-        verify(announcementPort).save(any(Announcement.class));
+        verify(announcementSaver).save(any());
     }
 
     @Test
@@ -84,7 +87,7 @@ class CreateAnnouncementServiceTest {
         createAnnouncementService.execute(request);
 
         // then
-        verify(announcementPort).save(any(Announcement.class));
+        verify(announcementSaver).save(any());
         verify(broadCastToAllUsersUseCase).execute(any(NotificationTopicSendRequest.class));
     }
 
@@ -103,7 +106,7 @@ class CreateAnnouncementServiceTest {
         createAnnouncementService.execute(request);
 
         // then
-        verify(announcementPort).save(any(Announcement.class));
+        verify(announcementSaver).save(any());
         verify(broadCastToAllUsersUseCase).execute(any(NotificationTopicSendRequest.class));
     }
 }
