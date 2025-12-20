@@ -2,16 +2,12 @@ package whispy_server.whispy.domain.topic.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.TopicSubscriptionRequest;
 import whispy_server.whispy.domain.topic.application.port.in.UnSubscribeTopicUseCase;
-import whispy_server.whispy.domain.topic.application.port.out.QueryTopicSubscriptionPort;
-import whispy_server.whispy.domain.topic.application.port.out.SaveTopicSubscriptionPort;
-import whispy_server.whispy.domain.topic.model.TopicSubscription;
+import whispy_server.whispy.domain.topic.application.service.component.TopicUnsubscriber;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
-import whispy_server.whispy.global.exception.domain.fcm.TopicSubscriptionNotFoundException;
 
 /**
  * 토픽 구독 취소 서비스.
@@ -20,31 +16,25 @@ import whispy_server.whispy.global.exception.domain.fcm.TopicSubscriptionNotFoun
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UnSubscribeTopicService implements UnSubscribeTopicUseCase {
 
-    private final QueryTopicSubscriptionPort queryTopicSubscriptionPort;
-    private final SaveTopicSubscriptionPort saveTopicSubscriptionPort;
     private final FcmSendPort fcmSendPort;
     private final UserFacadeUseCase userFacadeUseCase;
+    private final TopicUnsubscriber topicUnsubscriber;
 
     /**
      * 토픽 구독을 취소합니다.
      *
      * @param request 토픽 구독 취소 요청
-     * @throws TopicSubscriptionNotFoundException 토픽 구독이 존재하지 않는 경우
      */
     @Override
     public void execute(TopicSubscriptionRequest request){
         User currentUser = userFacadeUseCase.currentUser();
 
-        TopicSubscription subscription = queryTopicSubscriptionPort.findByEmailAndTopic(
-                currentUser.email(), request.topic()
-        ).orElseThrow(() -> TopicSubscriptionNotFoundException.EXCEPTION);
+        // 트랜잭션 안에서 DB 저장
+        topicUnsubscriber.unsubscribe(currentUser.email(), request.topic());
 
-        TopicSubscription updatedSubscription = subscription.updateSubscription(false);
-        saveTopicSubscriptionPort.save(updatedSubscription);
-
-        fcmSendPort.unsubscribeFromTopic(currentUser.fcmToken(),  request.topic());
+        // 트랜잭션 밖에서 FCM 구독 취소
+        fcmSendPort.unsubscribeFromTopic(currentUser.fcmToken(), request.topic());
     }
 }
