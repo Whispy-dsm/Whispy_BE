@@ -1,6 +1,5 @@
 package whispy_server.whispy.global.config.batch;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -15,19 +14,7 @@ import javax.sql.DataSource;
  * </p>
  */
 @Configuration
-@RequiredArgsConstructor
 @EnableBatchProcessing
 public class BatchConfiguration extends DefaultBatchConfiguration {
 
-    private final DataSource dataSource;
-
-    @Override
-    protected String getTablePrefix() {
-        return "tbl_batch_";
-    }
-
-    @Override
-    public DataSource getDataSource() {
-        return dataSource;
-    }
 }
