@@ -76,7 +76,7 @@ public class SecurityConfig {
                         .requestMatchers("/file/profile_image_folder/**",
                                          "/file/music_folder/**",
                                          "/file/music_banner_image_folder/**",
-                                         "/file/music_video/**",
+                                         "/file/music_video_folder/**",
                                          "file/announcement_banner_image_folder/**"
                         ).permitAll()
                         .requestMatchers("/auth/email/**").permitAll()
