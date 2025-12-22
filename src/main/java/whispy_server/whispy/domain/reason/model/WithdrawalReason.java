@@ -1,3 +1,4 @@
+
 package whispy_server.whispy.domain.reason.model;
 
 import whispy_server.whispy.domain.reason.model.types.WithdrawalReasonType;

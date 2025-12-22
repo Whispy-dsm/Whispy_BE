@@ -18,6 +18,7 @@ import whispy_server.whispy.domain.music.adapter.in.web.dto.request.CreateMusicR
 import whispy_server.whispy.domain.music.adapter.in.web.dto.request.UpdateMusicRequest;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
+import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonDetailResponse;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonResponse;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonSummaryResponse;
 import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.AddNewTopicRequest;
@@ -241,7 +242,7 @@ public interface AdminApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    WithdrawalReasonResponse getWithdrawalReasonDetail(
+    WithdrawalReasonDetailResponse getWithdrawalReasonDetail(
             @Parameter(description = "탈퇴 사유 ID", required = true) Long id
     );
 

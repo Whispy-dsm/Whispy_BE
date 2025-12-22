@@ -32,6 +32,7 @@ import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.Notif
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
+import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonDetailResponse;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonResponse;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonSummaryResponse;
 import whispy_server.whispy.domain.reason.application.port.in.DeleteWithdrawalReasonUseCase;
@@ -177,7 +178,7 @@ public class AdminController implements AdminApiDocument {
      */
     @GetMapping("/withdrawal-reasons/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public WithdrawalReasonResponse getWithdrawalReasonDetail(@PathVariable Long id) {
+    public WithdrawalReasonDetailResponse getWithdrawalReasonDetail(@PathVariable Long id) {
         return getWithdrawalReasonDetailUseCase.execute(id);
     }
 

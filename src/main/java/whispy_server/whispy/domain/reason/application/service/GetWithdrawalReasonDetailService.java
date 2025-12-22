@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.reason.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonDetailResponse;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonResponse;
 import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReasonDetailUseCase;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
@@ -26,10 +27,10 @@ public class GetWithdrawalReasonDetailService implements GetWithdrawalReasonDeta
      */
     @Override
     @Transactional(readOnly = true)
-    public WithdrawalReasonResponse execute(Long id) {
+    public WithdrawalReasonDetailResponse execute(Long id) {
         WithdrawalReason withdrawalReason = withdrawalReasonQueryPort.findById(id)
                 .orElseThrow(() -> WithdrawalReasonNotFoundException.EXCEPTION);
         
-        return WithdrawalReasonResponse.from(withdrawalReason);
+        return WithdrawalReasonDetailResponse.from(withdrawalReason);
     }
 }
