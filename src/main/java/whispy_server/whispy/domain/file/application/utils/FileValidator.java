@@ -131,7 +131,14 @@ public final class FileValidator {
     private static void validateMimeType(MultipartFile file, Set<String> validMimeTypes) {
         String contentType = file.getContentType();
 
-        if (contentType == null || !validMimeTypes.contains(contentType)) {
+        if (contentType == null) {
+            throw FileInvalidMimeTypeException.EXCEPTION;
+        }
+
+        // MIME 타입에서 세미콜론 이후의 파라미터 제거 (예: "image/heic; charset=..." -> "image/heic")
+        String baseMimeType = contentType.split(";")[0].trim();
+
+        if (!validMimeTypes.contains(baseMimeType)) {
             throw FileInvalidMimeTypeException.EXCEPTION;
         }
     }
