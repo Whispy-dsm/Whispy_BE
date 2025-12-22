@@ -105,8 +105,6 @@ plugins {
         // WebP 인코딩
         implementation 'org.sejda.imageio:webp-imageio:0.1.6'
 
-        //imageIo heif
-        implementation 'com.github.gotson.nightmonkeys:imageio-heif:1.1.0'
     }
 
     test {
