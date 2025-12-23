@@ -38,7 +38,7 @@ public class ImageCompressionConverter {
     public InputStream compressImage(MultipartFile file) {
         try {
             BufferedImage processedImage = Thumbnails.of(file.getInputStream())
-                    .size(MAX_WIDTH, MAX_HEIGHT)
+                    .scale(1.0) // 원본 크기 그대로 유지 (리사이즈 안 함)
                     .useExifOrientation(true)
                     .asBufferedImage();
 
