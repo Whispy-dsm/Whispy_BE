@@ -2,7 +2,6 @@ package whispy_server.whispy.domain.notification.batch.config;
 
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -10,6 +9,7 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -62,7 +62,9 @@ public class DeleteNotificationBatchConfig {
      * @return 알림 삭제 Step
      */
     @Bean("deleteOldNotificationStep")
-    public Step deleteOldNotificationStep(ItemReader<NotificationJpaEntity> oldNotificationReader) {
+    public Step deleteOldNotificationStep(
+            JpaPagingItemReader<NotificationJpaEntity> oldNotificationReader
+    ) {
         return new StepBuilder("deleteOldNotificationStep", jobRepository)
                 .<NotificationJpaEntity, DeleteOldNotificationJobParameters>chunk(CHUNK_SIZE, platformTransactionManager)
                 .reader(oldNotificationReader)
@@ -78,7 +80,9 @@ public class DeleteNotificationBatchConfig {
      */
     @Bean
     @StepScope
-    public ItemReader<NotificationJpaEntity> oldNotificationReader() {
+    public JpaPagingItemReader<NotificationJpaEntity> oldNotificationReader(
+            EntityManagerFactory entityManagerFactory
+    ) {
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
 
         try {
