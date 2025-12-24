@@ -22,7 +22,7 @@ public class NotificationScheduler {
     /**
      * 매일 새벽 3시에 30일이 지난 오래된 알림을 삭제합니다.
      */
-    @Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 0 3 * * *", zone = "Asia/Seoul")
     public void deleteOldNotifications() {
 
         try {
