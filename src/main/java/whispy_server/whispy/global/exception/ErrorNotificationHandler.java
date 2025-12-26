@@ -24,10 +24,13 @@ public class ErrorNotificationHandler {
         int statusCode = e.getErrorCode().getStatusCode();
 
         if (statusCode == 400 || (statusCode >= 500 && statusCode < 600)) {
+            log.error("[Whispy] 심각한 에러 발생 (400/5xx) - Status: {}, ErrorCode: {}, Message: {}",
+                statusCode, e.getErrorCode(), e.getErrorCode().getMessage(), e);
             Sentry.captureException(e);
             discordNotificationService.sendErrorNotification(e);
         } else {
-            log.error(e.toString());
+            log.warn("[Whispy] 일반적인 클라이언트 에러 발생 (4xx) - Status: {}, ErrorCode: {}, Message: {}",
+                statusCode, e.getErrorCode(), e.getErrorCode().getMessage(), e);
         }
     }
 
@@ -35,6 +38,8 @@ public class ErrorNotificationHandler {
       * 일반 예외를 모니터링 시스템에 전파한다.
       */
     public void handleExceptionException(Exception e) {
+        log.error("예상치 못한 예외 발생 - ExceptionType: {}, Message: {}",
+            e.getClass().getSimpleName(), e.getMessage(), e);
         Sentry.captureException(e);
         discordNotificationService.sendErrorNotification(e);
     }
