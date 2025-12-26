@@ -24,10 +24,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetWithdrawalReasonsService의 단위 테스트 클래스
- * <p>
+ *
  * 탈퇴 사유 목록 조회 서비스의 다양한 시나리오를 검증합니다.
  * 페이지네이션된 탈퇴 사유 목록 조회 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetWithdrawalReasonsService 테스트")

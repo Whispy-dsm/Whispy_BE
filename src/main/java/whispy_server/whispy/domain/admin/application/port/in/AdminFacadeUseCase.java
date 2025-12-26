@@ -6,10 +6,9 @@ import whispy_server.whispy.global.annotation.UseCase;
 
 /**
  * 관리자 파사드 유스케이스 인터페이스
- * <p>
+ *
  * 헥사고날 아키텍처의 인바운드 포트로, 관리자 관련 횡단 관심사 기능을 제공합니다.
  * 현재 인증된 관리자 정보 조회 등의 공통 작업을 담당합니다.
- * </p>
  */
 @UseCase
 public interface AdminFacadeUseCase {

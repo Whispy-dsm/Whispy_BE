@@ -22,10 +22,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * ChangeProfileService의 단위 테스트 클래스
- * <p>
+ *
  * 프로필 변경 서비스의 다양한 시나리오를 검증합니다.
  * 사용자 이름, 프로필 이미지, 성별 변경을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ChangeProfileService 테스트")

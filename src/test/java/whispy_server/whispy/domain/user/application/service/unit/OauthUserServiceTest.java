@@ -26,10 +26,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * OauthUserService의 단위 테스트 클래스
- * <p>
+ *
  * OAuth 사용자 처리 서비스의 다양한 시나리오를 검증합니다.
  * 기존 사용자 조회 및 신규 사용자 생성을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("OauthUserService 테스트")

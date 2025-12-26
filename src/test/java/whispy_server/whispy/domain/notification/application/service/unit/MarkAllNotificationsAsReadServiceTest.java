@@ -27,10 +27,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * MarkAllNotificationsAsReadService의 단위 테스트 클래스
- * <p>
+ *
  * 모든 알림 읽음 처리 서비스를 검증합니다.
  * 읽지 않은 알림들이 모두 읽음 상태로 변경되는지 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("MarkAllNotificationsAsReadService 테스트")

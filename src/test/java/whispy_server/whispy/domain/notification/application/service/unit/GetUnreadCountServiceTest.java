@@ -21,10 +21,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetUnreadCountService의 단위 테스트 클래스
- * <p>
+ *
  * 읽지 않은 알림 개수 조회 서비스의 다양한 시나리오를 검증합니다.
  * 읽지 않은 알림 개수 계산을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetUnreadCountService 테스트")

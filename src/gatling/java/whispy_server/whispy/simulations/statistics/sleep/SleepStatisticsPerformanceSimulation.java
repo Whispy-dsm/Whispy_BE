@@ -11,10 +11,10 @@ import static io.gatling.javaapi.http.HttpDsl.*;
 
 /**
  * 수면 통계 조회 API 성능 테스트 시뮬레이션
- * <p>
+ *
  * 복잡한 통계 쿼리 성능을 측정하여 포트폴리오용 성능 지표를 수집합니다.
  * 주간/월간/연간 통계, 기간 비교, 일일 상세 통계 조회 성능을 검증합니다.
- * </p>
+ *
  */
 public class SleepStatisticsPerformanceSimulation extends Simulation {
 
@@ -78,12 +78,12 @@ public class SleepStatisticsPerformanceSimulation extends Simulation {
 
     /**
      * 부하 테스트 설정
-     * <p>
+     *
      * 포트폴리오용 성능 지표 수집을 위한 단계별 부하 증가:
      * 1. Ramp-up: 10초 동안 50명까지 증가
      * 2. Steady: 30초 동안 초당 10명 유지
      * 3. Peak: 20초 동안 100명까지 급증
-     * </p>
+     *
      */
     {
         setUp(

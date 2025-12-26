@@ -28,10 +28,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * ToggleMusicLikeService의 단위 테스트 클래스
- * <p>
+ *
  * 음악 좋아요 토글 서비스의 다양한 시나리오를 검증합니다.
  * 좋아요 추가 및 삭제 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ToggleMusicLikeService 테스트")

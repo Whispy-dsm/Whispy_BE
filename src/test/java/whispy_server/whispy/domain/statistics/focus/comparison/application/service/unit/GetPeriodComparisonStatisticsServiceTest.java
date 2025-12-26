@@ -31,10 +31,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * GetPeriodComparisonStatisticsService의 단위 테스트 클래스
- * <p>
+ *
  * 집중 기간 비교 서비스의 다양한 시나리오를 검증합니다.
  * 주간/월간/연간 비교 통계 계산을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetPeriodComparisonStatisticsService 테스트")

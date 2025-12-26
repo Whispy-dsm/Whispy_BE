@@ -29,10 +29,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetDailyFocusStatisticsService의 단위 테스트 클래스
- * <p>
+ *
  * 일별 집중 통계 조회 서비스의 다양한 시나리오를 검증합니다.
  * 시간별, 일별, 월별 통계 생성 및 태그별 데이터 집계를 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetDailyFocusStatisticsService 테스트")

@@ -28,10 +28,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * ResetPasswordService의 단위 테스트 클래스
- * <p>
+ *
  * 비밀번호 재설정 서비스의 다양한 시나리오를 검증합니다.
  * 이메일 인증 확인, 비밀번호 암호화 및 Redis 상태 삭제를 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ResetPasswordService 테스트")

@@ -20,10 +20,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetMyAccountInfoService의 단위 테스트 클래스
- * <p>
+ *
  * 계정 정보 조회 서비스의 다양한 시나리오를 검증합니다.
  * 일반 로그인과 OAuth 로그인 사용자의 비밀번호 마스킹 처리를 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetMyAccountInfoService 테스트")

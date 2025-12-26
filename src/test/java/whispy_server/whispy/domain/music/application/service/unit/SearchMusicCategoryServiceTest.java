@@ -24,10 +24,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * SearchMusicCategoryService의 단위 테스트 클래스
- * <p>
+ *
  * 카테고리별 음악 검색 서비스의 다양한 시나리오를 검증합니다.
  * 카테고리 기반 음악 검색 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SearchMusicCategoryService 테스트")

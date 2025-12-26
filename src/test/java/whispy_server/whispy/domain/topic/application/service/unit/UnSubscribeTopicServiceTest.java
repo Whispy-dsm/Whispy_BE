@@ -27,9 +27,9 @@ import static org.mockito.Mockito.verify;
 
 /**
  * UnSubscribeTopicService의 단위 테스트 클래스
- * <p>
+ *
  * 토픽 구독 취소 서비스를 검증합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UnSubscribeTopicService 테스트")

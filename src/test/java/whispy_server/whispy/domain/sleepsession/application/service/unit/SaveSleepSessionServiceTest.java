@@ -25,10 +25,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * SaveSleepSessionService의 단위 테스트 클래스
- * <p>
+ *
  * 수면 세션 저장 서비스의 다양한 시나리오를 검증합니다.
  * 수면 세션 생성 및 저장 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SaveSleepSessionService 테스트")

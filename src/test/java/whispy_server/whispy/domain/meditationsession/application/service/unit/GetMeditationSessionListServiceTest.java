@@ -31,10 +31,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * GetMeditationSessionListService의 단위 테스트 클래스
- * <p>
+ *
  * 명상 세션 목록 조회 서비스의 다양한 시나리오를 검증합니다.
  * 페이지네이션 기반 목록 조회를 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetMeditationSessionListService 테스트")

@@ -32,10 +32,9 @@ import static org.mockito.Mockito.verify;
 
 /**
  * AdminLoginService의 단위 테스트 클래스
- * <p>
+ *
  * 관리자 로그인 서비스의 다양한 시나리오를 검증합니다.
  * 인증, 비밀번호 검증, JWT 토큰 발급 및 리프레시 토큰 저장을 테스트합니다.
- * </p>
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AdminLoginService 테스트")

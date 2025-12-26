@@ -26,10 +26,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetWeeklyActivityService의 단위 테스트 클래스
- * <p>
+ *
  * 주간 활동 통계 조회 서비스의 다양한 시나리오를 검증합니다.
  * 20주간의 활동 데이터 집계, 월 표시자 생성 등을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetWeeklyActivityService 테스트")

@@ -25,10 +25,10 @@ import static org.mockito.Mockito.*;
 
 /**
  * UpdateFcmTokenService의 단위 테스트 클래스
- * <p>
+ *
  * FCM 토큰 업데이트 서비스의 다양한 시나리오를 검증합니다.
  * 토큰 변경, 로그아웃 알림, 세션 무효화를 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UpdateFcmTokenService 테스트")

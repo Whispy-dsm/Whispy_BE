@@ -14,9 +14,9 @@ import static org.mockito.Mockito.verify;
 
 /**
  * AddNewTopicBatchService의 단위 테스트 클래스
- * <p>
+ *
  * 새로운 토픽 배치 추가 서비스를 검증합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AddNewTopicBatchService 테스트")

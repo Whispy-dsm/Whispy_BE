@@ -20,9 +20,9 @@ import static org.mockito.Mockito.verify;
 
 /**
  * RemoveMusicFromSoundSpaceService의 단위 테스트 클래스
- * <p>
+ *
  * 사운드스페이스 음악 제거 서비스를 검증합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("RemoveMusicFromSoundSpaceService 테스트")

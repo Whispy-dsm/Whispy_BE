@@ -21,9 +21,9 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * QueryMyTopicSubscriptionsService의 단위 테스트 클래스
- * <p>
+ *
  * 내 토픽 구독 목록 조회 서비스를 검증합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("QueryMyTopicSubscriptionsService 테스트")

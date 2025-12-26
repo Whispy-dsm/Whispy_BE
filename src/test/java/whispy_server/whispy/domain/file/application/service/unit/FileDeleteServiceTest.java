@@ -23,10 +23,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * FileDeleteService의 단위 테스트 클래스
- * <p>
+ *
  * 파일 삭제 서비스를 검증합니다.
  * 파일 존재 여부 확인 및 삭제 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("FileDeleteService 테스트")

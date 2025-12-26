@@ -23,9 +23,9 @@ import static org.mockito.Mockito.verify;
 
 /**
  * SubscriptionTopicService의 단위 테스트 클래스
- * <p>
+ *
  * 토픽 구독 서비스를 검증합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SubscriptionTopicService 테스트")

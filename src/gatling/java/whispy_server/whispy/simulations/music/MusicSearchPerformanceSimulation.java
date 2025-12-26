@@ -11,10 +11,10 @@ import static io.gatling.javaapi.http.HttpDsl.*;
 
 /**
  * 음악 검색 API 성능 테스트 시뮬레이션
- * <p>
+ *
  * 음악 제목 검색과 카테고리별 검색 성능을 측정합니다.
  * 검색 쿼리 최적화 및 인덱스 효과를 검증하기 위한 포트폴리오용 시뮬레이션입니다.
- * </p>
+ *
  */
 public class MusicSearchPerformanceSimulation extends Simulation {
 
@@ -121,12 +121,12 @@ public class MusicSearchPerformanceSimulation extends Simulation {
 
     /**
      * 부하 테스트 설정
-     * <p>
+     *
      * 검색 성능 측정을 위한 단계별 부하:
      * 1. Warm-up: 10초 동안 30명까지 증가
      * 2. Load: 20초 동안 초당 15명 유지
      * 3. Stress: 15초 동안 120명까지 급증
-     * </p>
+     *
      */
     {
         setUp(

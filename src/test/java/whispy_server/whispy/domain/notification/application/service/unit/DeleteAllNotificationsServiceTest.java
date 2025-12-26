@@ -20,10 +20,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * DeleteAllNotificationsService의 단위 테스트 클래스
- * <p>
+ *
  * 모든 알림 삭제 서비스를 검증합니다.
  * 현재 사용자의 모든 알림이 삭제되는지 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DeleteAllNotificationsService 테스트")

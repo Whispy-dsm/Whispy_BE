@@ -28,10 +28,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetDailySleepStatisticsService의 단위 테스트 클래스
- * <p>
+ *
  * 일별 수면 통계 조회 서비스의 다양한 시나리오를 검증합니다.
  * 일별, 월별 통계 생성을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetDailySleepStatisticsService 테스트")

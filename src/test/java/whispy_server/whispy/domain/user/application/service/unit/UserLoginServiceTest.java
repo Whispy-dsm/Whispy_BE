@@ -34,10 +34,10 @@ import static org.mockito.Mockito.never;
 
 /**
  * UserLoginService의 단위 테스트 클래스
- * <p>
+ *
  * 로그인 서비스의 다양한 시나리오를 검증합니다.
  * 인증, FCM 토큰 업데이트, 세션 무효화 및 JWT 토큰 발급을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserLoginService 테스트")

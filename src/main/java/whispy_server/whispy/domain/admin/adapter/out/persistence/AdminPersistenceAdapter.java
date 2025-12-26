@@ -11,10 +11,9 @@ import java.util.Optional;
 
 /**
  * 관리자 영속성 어댑터
- * <p>
+ *
  * 헥사고날 아키텍처의 아웃바운드 어댑터로, AdminPort 인터페이스를 구현합니다.
  * 관리자 도메인의 데이터베이스 접근을 담당하며, 도메인 로직과 영속성 기술을 분리합니다.
- * </p>
  */
 @Component
 @RequiredArgsConstructor

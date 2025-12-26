@@ -30,10 +30,10 @@ import static org.mockito.Mockito.*;
 
 /**
  * PurchaseProcessingService의 단위 테스트 클래스
- * <p>
+ *
  * 구매 처리 서비스의 다양한 시나리오를 검증합니다.
  * 구독 생성, 중복 구매 처리, acknowledgment 실패 처리를 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PurchaseProcessingService 테스트")

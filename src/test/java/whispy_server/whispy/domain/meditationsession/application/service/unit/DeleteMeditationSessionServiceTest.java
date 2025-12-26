@@ -27,10 +27,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * DeleteMeditationSessionService의 단위 테스트 클래스
- * <p>
+ *
  * 명상 세션 삭제 서비스의 다양한 시나리오를 검증합니다.
  * 세션 삭제 및 소유권 검증 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DeleteMeditationSessionService 테스트")

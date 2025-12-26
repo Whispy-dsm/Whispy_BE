@@ -24,10 +24,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * SendToDeviceTokensService의 단위 테스트 클래스
- * <p>
+ *
  * 디바이스 토큰으로 알림 전송 서비스를 검증합니다.
  * FCM 전송 및 알림 이력 저장 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SendToDeviceTokensService 테스트")

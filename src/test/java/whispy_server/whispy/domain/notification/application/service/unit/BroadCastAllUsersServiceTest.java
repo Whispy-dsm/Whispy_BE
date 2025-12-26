@@ -20,10 +20,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * BroadCastAllUsersService의 단위 테스트 클래스
- * <p>
+ *
  * 모든 사용자에게 알림 전송 서비스를 검증합니다.
  * BROADCAST_ANNOUNCEMENT 토픽으로 변환되어 전송되는지 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("BroadCastAllUsersService 테스트")

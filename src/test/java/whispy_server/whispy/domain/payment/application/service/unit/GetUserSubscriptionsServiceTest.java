@@ -21,10 +21,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetUserSubscriptionsService의 단위 테스트 클래스
- * <p>
+ *
  * 사용자 구독 정보 조회 서비스의 다양한 시나리오를 검증합니다.
  * 구독 정보 존재 여부에 따른 응답 반환을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetUserSubscriptionsService 테스트")

@@ -29,10 +29,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * FileUploadService의 단위 테스트 클래스
- * <p>
+ *
  * 파일 업로드 서비스를 검증합니다.
  * 이미지 압축, 음악 파일 저장, URL 생성 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("FileUploadService 테스트")

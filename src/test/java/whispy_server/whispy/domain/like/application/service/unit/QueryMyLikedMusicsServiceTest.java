@@ -24,10 +24,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * QueryMyLikedMusicsService의 단위 테스트 클래스
- * <p>
+ *
  * 좋아요한 음악 목록 조회 서비스의 다양한 시나리오를 검증합니다.
  * 사용자가 좋아요한 음악 목록을 조회하는 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("QueryMyLikedMusicsService 테스트")

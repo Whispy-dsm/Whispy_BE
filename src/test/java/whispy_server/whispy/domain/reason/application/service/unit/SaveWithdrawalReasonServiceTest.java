@@ -17,10 +17,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * SaveWithdrawalReasonService의 단위 테스트 클래스
- * <p>
+ *
  * 탈퇴 사유 저장 서비스의 다양한 시나리오를 검증합니다.
  * 탈퇴 사유 저장 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SaveWithdrawalReasonService 테스트")

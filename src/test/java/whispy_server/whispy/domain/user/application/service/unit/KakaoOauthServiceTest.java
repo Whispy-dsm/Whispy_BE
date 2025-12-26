@@ -30,10 +30,10 @@ import static org.mockito.Mockito.*;
 
 /**
  * KakaoOauthService의 단위 테스트 클래스
- * <p>
+ *
  * 카카오 OAuth 로그인 서비스의 다양한 시나리오를 검증합니다.
  * 카카오 사용자 정보 조회, 신규/기존 사용자 처리, FCM 토큰 업데이트 및 로그아웃 알림을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("KakaoOauthService 테스트")

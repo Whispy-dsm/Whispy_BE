@@ -26,10 +26,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetFocusSessionDetailService의 단위 테스트 클래스
- * <p>
+ *
  * 집중 세션 상세 조회 서비스의 다양한 시나리오를 검증합니다.
  * 세션 조회 및 소유권 검증 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetFocusSessionDetailService 테스트")

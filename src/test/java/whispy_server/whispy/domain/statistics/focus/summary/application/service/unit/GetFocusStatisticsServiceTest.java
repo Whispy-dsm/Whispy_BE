@@ -36,10 +36,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * GetFocusStatisticsService의 단위 테스트 클래스
- * <p>
+ *
  * 집중 통계 조회 서비스의 다양한 시나리오를 검증합니다.
  * 태그별 집중 시간 집계, 기간별 통계 계산 등을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetFocusStatisticsService 테스트")

@@ -32,10 +32,10 @@ import static org.mockito.Mockito.*;
 
 /**
  * PurchaseNotificationService의 단위 테스트 클래스
- * <p>
+ *
  * 구매 알림 처리 서비스의 다양한 시나리오를 검증합니다.
  * Google Play Pub/Sub 메시지 처리 및 구독 상태 업데이트를 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PurchaseNotificationService 테스트")

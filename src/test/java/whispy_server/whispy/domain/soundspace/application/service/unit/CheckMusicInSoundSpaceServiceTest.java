@@ -21,9 +21,9 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * CheckMusicInSoundSpaceService의 단위 테스트 클래스
- * <p>
+ *
  * 사운드스페이스 음악 포함 여부 확인 서비스를 검증합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CheckMusicInSoundSpaceService 테스트")

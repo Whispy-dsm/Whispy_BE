@@ -10,10 +10,9 @@ import java.util.Optional;
 
 /**
  * 관리자 엔티티 매퍼 인터페이스
- * <p>
+ *
  * MapStruct를 사용하여 Admin 도메인 모델과 AdminJpaEntity 간의 변환을 담당합니다.
  * 헥사고날 아키텍처에서 도메인과 영속성 계층 간의 경계를 관리합니다.
- * </p>
  */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AdminEntityMapper {

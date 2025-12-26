@@ -30,10 +30,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * QueryMyNotificationsService의 단위 테스트 클래스
- * <p>
+ *
  * 내 알림 목록 조회 서비스를 검증합니다.
  * 페이지네이션 및 알림 목록 조회 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("QueryMyNotificationsService 테스트")

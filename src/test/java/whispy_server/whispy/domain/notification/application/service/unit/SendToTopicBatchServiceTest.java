@@ -24,10 +24,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * SendToTopicBatchService의 단위 테스트 클래스
- * <p>
+ *
  * 토픽으로 알림 전송 배치 서비스를 검증합니다.
  * FCM 전송 및 배치 작업 실행 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SendToTopicBatchService 테스트")

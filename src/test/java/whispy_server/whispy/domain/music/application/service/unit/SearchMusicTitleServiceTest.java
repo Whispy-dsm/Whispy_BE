@@ -24,10 +24,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * SearchMusicTitleService의 단위 테스트 클래스
- * <p>
+ *
  * 제목 기반 음악 검색 서비스의 다양한 시나리오를 검증합니다.
  * 제목으로 음악 검색 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SearchMusicTitleService 테스트")

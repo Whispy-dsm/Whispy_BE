@@ -21,10 +21,9 @@ import static org.mockito.Mockito.verify;
 
 /**
  * VerifyEmailCodeService의 단위 테스트 클래스
- * <p>
+ *
  * 이메일 인증 코드 검증 서비스의 다양한 시나리오를 검증합니다.
  * Redis에서 코드를 조회하여 일치 여부를 판단하고, 인증 상태를 기록하는 로직을 테스트합니다.
- * </p>
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("VerifyEmailCodeService 테스트")

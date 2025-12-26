@@ -26,10 +26,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * DeleteNotificationService의 단위 테스트 클래스
- * <p>
+ *
  * 알림 삭제 서비스를 검증합니다.
  * 소유권 검증 및 알림 삭제 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DeleteNotificationService 테스트")

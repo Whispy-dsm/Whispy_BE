@@ -16,10 +16,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * UserTokenReissueService의 단위 테스트 클래스
- * <p>
+ *
  * ?�큰 ?�발�??�비?�의 ?�작??검증합?�다.
  * JwtTokenProvider�??�한 ?�큰 ?�발급을 ?�스?�합?�다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserTokenReissueService 테스트")

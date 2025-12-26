@@ -16,10 +16,10 @@ import static org.mockito.Mockito.*;
 
 /**
  * NotificationScheduler의 단위 테스트 클래스
- * <p>
+ *
  * 알림 배치 스케줄러의 다양한 시나리오를 검증합니다.
  * 배치 작업 실행 성공, 실패 및 Sentry/Discord 연동을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("NotificationScheduler 테스트")

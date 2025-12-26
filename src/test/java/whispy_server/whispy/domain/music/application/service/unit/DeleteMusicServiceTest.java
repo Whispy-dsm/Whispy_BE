@@ -18,10 +18,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * DeleteMusicService의 단위 테스트 클래스
- * <p>
+ *
  * 음악 삭제 서비스의 다양한 시나리오를 검증합니다.
  * 음악 삭제 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DeleteMusicService 테스트")

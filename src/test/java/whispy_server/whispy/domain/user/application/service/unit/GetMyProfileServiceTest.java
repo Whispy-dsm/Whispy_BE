@@ -20,10 +20,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * GetMyProfileService의 단위 테스트 클래스
- * <p>
+ *
  * 프로필 조회 서비스의 다양한 시나리오를 검증합니다.
  * 사용자 프로필 정보 및 가입 후 경과 일수 계산을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("GetMyProfileService 테스트")

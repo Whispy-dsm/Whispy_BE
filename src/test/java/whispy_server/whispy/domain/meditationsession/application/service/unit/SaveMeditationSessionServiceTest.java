@@ -28,10 +28,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * SaveMeditationSessionService의 단위 테스트 클래스
- * <p>
+ *
  * 명상 세션 저장 서비스의 다양한 시나리오를 검증합니다.
  * 명상 세션 생성 및 저장, 오늘의 총 명상 시간 계산을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SaveMeditationSessionService 테스트")

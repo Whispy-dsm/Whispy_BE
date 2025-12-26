@@ -20,10 +20,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * UserLogoutService의 단위 테스트 클래스
- * <p>
+ *
  * 로그?�웃 ?�비?�의 ?�작??검증합?�다.
  * RefreshToken 삭제를 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserLogoutService 테스트")

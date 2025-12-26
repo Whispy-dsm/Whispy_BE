@@ -9,9 +9,9 @@ import javax.sql.DataSource;
 /**
  * Spring Batch 기능을 활성화하는 설정 클래스.
  *
- * <p>
+ *
  * tbl_batch_ 프리픽스를 사용하는 메타데이터 테이블을 위한 설정을 제공합니다.
- * </p>
+ *
  */
 @Configuration
 @EnableBatchProcessing

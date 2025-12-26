@@ -16,10 +16,9 @@ import java.util.UUID;
 
 /**
  * 관리자 JPA 엔티티
- * <p>
+ *
  * 헥사고날 아키텍처의 아웃바운드 어댑터 계층에서 사용되는 영속성 엔티티입니다.
  * 데이터베이스 테이블 'tbl_admin'과 매핑되며, 관리자 정보를 저장합니다.
- * </p>
  */
 @Entity(name = "AdminJpaEntity")
 @Table(name = "tbl_admin")

@@ -25,10 +25,10 @@ import static org.mockito.Mockito.*;
 
 /**
  * UserRegisterService의 단위 테스트 클래스
- * <p>
+ *
  * ?�원가???�비?�의 ?�양???�나리오�?검증합?�다.
  * ?�용???�록, ?�메??중복 ?�인, 비�?번호 ?�호?? FCM ?�픽 초기?��? ?�스?�합?�다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserRegisterService 테스트")

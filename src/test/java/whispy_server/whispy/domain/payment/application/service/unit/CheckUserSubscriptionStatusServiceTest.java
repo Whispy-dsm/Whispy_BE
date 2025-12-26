@@ -21,10 +21,10 @@ import static org.mockito.BDDMockito.given;
 
 /**
  * CheckUserSubscriptionStatusService의 단위 테스트 클래스
- * <p>
+ *
  * 사용자 구독 상태 확인 서비스의 다양한 시나리오를 검증합니다.
  * 구독 상태별 활성 여부 판단 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CheckUserSubscriptionStatusService 테스트")

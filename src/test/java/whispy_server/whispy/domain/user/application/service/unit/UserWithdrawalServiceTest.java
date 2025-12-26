@@ -29,10 +29,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * UserWithdrawalService의 단위 테스트 클래스
- * <p>
+ *
  * ?�원 ?�퇴 ?�비?�의 ?�양???�나리오�?검증합?�다.
  * ?�용?��? 관?�된 모든 ?�이?�의 ??���??�스?�합?�다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserWithdrawalService 테스트")

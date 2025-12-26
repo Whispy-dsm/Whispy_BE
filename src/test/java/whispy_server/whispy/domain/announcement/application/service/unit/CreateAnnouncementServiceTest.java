@@ -18,10 +18,10 @@ import static org.mockito.Mockito.verify;
 
 /**
  * CreateAnnouncementService의 단위 테스트 클래스
- * <p>
+ *
  * 공지사항 생성 서비스의 다양한 시나리오를 검증합니다.
  * 공지사항 생성 및 푸시 알림 전송 로직을 테스트합니다.
- * </p>
+ *
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CreateAnnouncementService 테스트")

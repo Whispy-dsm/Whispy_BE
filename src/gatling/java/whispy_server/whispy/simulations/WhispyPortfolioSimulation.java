@@ -13,18 +13,16 @@ import static io.gatling.javaapi.http.HttpDsl.*;
 
 /**
  * Whispy 포트폴리오용 통합 성능 테스트 시뮬레이션
- * <p>
+ *
  * 핵심 3개 API(수면 통계, 음악 검색, 수면 세션)를 통합하여
  * 실제 사용자 행동 패턴을 반영한 종합 성능 테스트를 수행합니다.
- * </p>
- * <p>
+ *
  * 포트폴리오 작성을 위한 주요 성능 지표:
  * - TPS (Transactions Per Second): 초당 처리 트랜잭션 수
  * - 95 Percentile 응답시간: 95%의 요청이 이 시간 내에 응답
  * - Mean 응답시간: 평균 응답 시간
  * - 성공률: 전체 요청 대비 성공한 요청의 비율
  * - 동시 사용자 수: 피크 타임 동시 접속자 수
- * </p>
  */
 public class WhispyPortfolioSimulation extends Simulation {
 
@@ -215,13 +213,12 @@ public class WhispyPortfolioSimulation extends Simulation {
 
     /**
      * 부하 테스트 설정
-     * <p>
+     *
      * 포트폴리오용 종합 성능 테스트:
      * - 총 3분간 실행
      * - 5가지 사용자 패턴 동시 실행
      * - 최대 동시 사용자 수: 약 300명
      * - 예상 TPS: 100~150
-     * </p>
      */
     {
         setUp(

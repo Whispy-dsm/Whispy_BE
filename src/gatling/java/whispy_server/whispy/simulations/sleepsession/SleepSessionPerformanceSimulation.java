@@ -13,10 +13,10 @@ import static io.gatling.javaapi.http.HttpDsl.*;
 
 /**
  * 수면 세션 API 성능 테스트 시뮬레이션
- * <p>
+ *
  * 수면 세션 저장(쓰기)과 조회(읽기) 성능을 측정합니다.
  * 동시성 처리 능력과 트랜잭션 성능을 검증하기 위한 포트폴리오용 시뮬레이션입니다.
- * </p>
+ *
  */
 public class SleepSessionPerformanceSimulation extends Simulation {
 
@@ -164,12 +164,12 @@ public class SleepSessionPerformanceSimulation extends Simulation {
 
     /**
      * 부하 테스트 설정
-     * <p>
+     *
      * 읽기/쓰기 성능 균형 테스트:
      * - 읽기 : 쓰기 비율 = 7:3 (일반적인 패턴)
      * - 동시성 처리 능력 검증
      * - TPS(Transaction Per Second) 측정
-     * </p>
+     *
      */
     {
         setUp(
