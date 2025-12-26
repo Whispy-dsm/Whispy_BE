@@ -12,14 +12,11 @@ import whispy_server.whispy.global.exception.domain.file.FileNoExtensionExceptio
 import whispy_server.whispy.global.exception.domain.file.FileSizeExceededException;
 
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * 파일 확장자, MIME, 크기, 이름 등을 검증하는 유틸리티.
  */
 public final class FileValidator {
-
-    private static final Pattern SAFE_FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9가-힣._\\-() ]+$");
 
     private static final int MAX_FILENAME_LENGTH = 255;
     
@@ -70,10 +67,6 @@ public final class FileValidator {
 
         if (originalFileName.contains("..") || originalFileName.contains("/") || originalFileName.contains("\\")) {
             throw FileNameContainsPathException.EXCEPTION;
-        }
-
-        if (!SAFE_FILENAME_PATTERN.matcher(originalFileName).matches()) {
-            throw FileNameInvalidCharException.EXCEPTION;
         }
 
         if (originalFileName.length() > MAX_FILENAME_LENGTH) {
