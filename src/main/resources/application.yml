@@ -61,7 +61,8 @@ spring:
 
   discord:
     webhook:
-      url: ${DISCORD_WEBHOOK}
+      exception-url: ${DISCORD_WEBHOOK}
+      log-url: ${DISCORD_LOG_WEBHOOK}
 
   security:
     oauth2:
