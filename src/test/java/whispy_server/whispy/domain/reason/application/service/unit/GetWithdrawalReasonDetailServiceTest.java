@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonResponse;
+import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonDetailResponse;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
 import whispy_server.whispy.domain.reason.application.service.GetWithdrawalReasonDetailService;
 import whispy_server.whispy.domain.reason.model.WithdrawalReason;
@@ -52,7 +52,7 @@ class GetWithdrawalReasonDetailServiceTest {
         given(withdrawalReasonQueryPort.findById(reasonId)).willReturn(Optional.of(reason));
 
         // when
-        WithdrawalReasonResponse response = getWithdrawalReasonDetailService.execute(reasonId);
+        WithdrawalReasonDetailResponse response = getWithdrawalReasonDetailService.execute(reasonId);
 
         // then
         assertThat(response).isNotNull();
