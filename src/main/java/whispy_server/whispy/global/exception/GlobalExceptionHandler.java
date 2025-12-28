@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleWhispyException(WhispyException e) {
 
         ErrorCode errorCode = e.getErrorCode();
-        ErrorResponse response = ErrorResponse.of(errorCode, errorCode.getMessage(), e);
+        ErrorResponse response = ErrorResponse.of(errorCode, errorCode.getMessage());
 
         errorNotificationHandler.handleWhispyException(e);
 
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
         errorNotificationHandler.handleExceptionException(e);
 
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
-        ErrorResponse response = ErrorResponse.of(errorCode, e.getMessage(), e);
+        ErrorResponse response = ErrorResponse.of(errorCode, "Internal Server Error");
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

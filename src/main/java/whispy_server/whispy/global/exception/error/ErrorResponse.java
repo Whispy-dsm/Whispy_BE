@@ -44,5 +44,33 @@ public record ErrorResponse(
                 .build();
     }
 
+    /**
+     * 도메인 ErrorCode 기반 응답 팩토리 메서드 (예외 객체 없이).
+     * 프로덕션 환경에서 예외 정보를 클라이언트에 노출하지 않기 위해 사용.
+     */
+    public static ErrorResponse of(ErrorCode errorCode, String description){
+        return ErrorResponse.builder()
+                .message(errorCode.getMessage())
+                .status(errorCode.getStatusCode())
+                .timestamp(LocalDateTime.now())
+                .description(description)
+                .exception(null)
+                .build();
+    }
+
+    /**
+     * 상태코드/메시지를 직접 지정하는 팩토리 메서드 (예외 객체 없이).
+     * 프로덕션 환경에서 예외 정보를 클라이언트에 노출하지 않기 위해 사용.
+     */
+    public static ErrorResponse of(int statusCode, String description){
+        return ErrorResponse.builder()
+                .message(description)
+                .status(statusCode)
+                .timestamp(LocalDateTime.now())
+                .description(description)
+                .exception(null)
+                .build();
+    }
+
 
 }

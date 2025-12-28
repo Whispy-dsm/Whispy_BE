@@ -43,14 +43,14 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
             errorNotificationHandler.handleWhispyException(e);
 
             ErrorCode errorCode = e.getErrorCode();
-            writeErrorResponse(response, errorCode.getStatusCode(), ErrorResponse.of(errorCode, errorCode.getMessage(), e));
+            writeErrorResponse(response, errorCode.getStatusCode(), ErrorResponse.of(errorCode, errorCode.getMessage()));
         } catch (Exception e){
             log.debug("[Filter] 일반 예외 포착 - URI: {}, ExceptionType: {}",
                 request.getRequestURI(), e.getClass().getSimpleName());
             errorNotificationHandler.handleExceptionException(e);
 
             writeErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    ErrorResponse.of(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage(), e));
+                    ErrorResponse.of(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error"));
         }
 
     }
