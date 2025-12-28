@@ -54,8 +54,8 @@ public class JwtTokenProvider {
     /**
      * 사용자 식별자/역할을 기반으로 Access·Refresh 토큰을 생성·저장한다.
      */
-    public TokenResponse generateToken(String id, String role){
-        String accessToken = generateAccessToken(id, role, ACCESS_TOKEN, jwtProperties.accessExpiration());
+    public TokenResponse generateToken(Long id, String role){
+        String accessToken = generateAccessToken(id.toString(), role, ACCESS_TOKEN, jwtProperties.accessExpiration());
         String refreshToken = generateRefreshToken(role, REFRESH_TOKEN, jwtProperties.refreshExpiration());
         refreshTokenRepository.save(
                 new RefreshToken(id, refreshToken, jwtProperties.refreshExpiration())
@@ -108,7 +108,7 @@ public class JwtTokenProvider {
         RefreshToken token = refreshTokenRepository.findByToken(refreshToken)
                 .orElseThrow(() -> InvalidJwtException.EXCEPTION);
 
-        String id = token.getId();
+        Long id = token.getId();
         String role = getRole(token.getToken());
 
         TokenResponse tokenResponse = generateToken(id, role);
