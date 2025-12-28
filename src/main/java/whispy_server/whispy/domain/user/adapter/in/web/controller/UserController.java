@@ -18,6 +18,7 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfile
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.TokenReissueRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UpdateFcmTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyAccountInfoResponse;
@@ -89,7 +90,7 @@ public class UserController implements UserApiDocument {
      */
     @PostMapping("/oauth/kakao")
     public TokenResponse authenticateWithKakaoToken(@Valid @RequestBody KakaoOauthTokenRequest request){
-        return kakaoOauthUseCase.loginWithKakao(request.accessToken(), request.fcmToken());
+        return kakaoOauthUseCase.loginWithKakao(request);
     }
 
     /**
@@ -100,7 +101,7 @@ public class UserController implements UserApiDocument {
      */
     @PutMapping("/reissue")
     public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String token) {
-        return userTokenReissueUseCase.reissue(token);
+        return userTokenReissueUseCase.reissue(new TokenReissueRequest(token));
     }
 
     /**
