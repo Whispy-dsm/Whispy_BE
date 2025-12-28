@@ -23,7 +23,7 @@ public class AdminPersistenceAdapter implements AdminPort {
     private final AdminRepository adminRepository;
 
     /**
-     * 관리자 ID로 관리자 정보를 조회합니다.
+     * 관리자 로그인 ID로 관리자 정보를 조회합니다.
      *
      * @param adminId 조회할 관리자 로그인 ID
      * @return 조회된 관리자 정보 (Optional)
@@ -31,5 +31,16 @@ public class AdminPersistenceAdapter implements AdminPort {
     @Override
     public Optional<Admin> findByAdminId(String adminId) {
         return adminEntityMapper.toOptionalModel(adminRepository.findByAdminId(adminId));
+    }
+
+    /**
+     * 관리자 ID (PK)로 관리자 정보를 조회합니다.
+     *
+     * @param id 조회할 관리자 ID (PK)
+     * @return 조회된 관리자 정보 (Optional)
+     */
+    @Override
+    public Optional<Admin> findById(Long id) {
+        return adminEntityMapper.toOptionalModel(adminRepository.findById(id));
     }
 }
