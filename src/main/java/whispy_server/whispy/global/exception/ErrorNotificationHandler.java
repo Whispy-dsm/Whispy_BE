@@ -39,7 +39,8 @@ public class ErrorNotificationHandler {
                 discordNotificationService.sendLogNotification(
                         "ERROR",
                         e.getErrorCode().getMessage(),
-                        e.getErrorCode().name()
+                        e.getErrorCode().name(),
+                        e
                 );
             } else {
                 log.debug("[로컬 환경] Sentry/Discord 전송 생략 - Profile: {}", activeProfile);
@@ -63,7 +64,8 @@ public class ErrorNotificationHandler {
             discordNotificationService.sendLogNotification(
                     "ERROR",
                     e.getMessage() != null ? e.getMessage() : "메시지 없음",
-                    e.getClass().getSimpleName()
+                    e.getClass().getSimpleName(),
+                    e
             );
         } else {
             log.debug("[로컬 환경] Sentry/Discord 전송 생략 - Profile: {}", activeProfile);

@@ -53,21 +53,30 @@ public class DiscordNotificationService {
      * @param level 로그 레벨 (ERROR, WARN, INFO, DEBUG)
      * @param message 로그 메시지
      * @param errorCode 에러 코드 (WhispyException의 ErrorCode)
+     * @param exception 예외 객체 (스택 트레이스 포함용, null 가능)
      */
     @Async
-    public void sendLogNotification(String level, String message, String errorCode) {
+    public void sendLogNotification(String level, String message, String errorCode, Exception exception) {
         try {
-            String logMessage = String.format(
-                    "**로그 레벨**: `%s`\n" +
-                    "**에러 코드**: `%s`\n" +
-                    "**메시지**: %s",
-                    level,
-                    errorCode,
-                    message
-            );
+            StringBuilder logMessageBuilder = new StringBuilder();
+            logMessageBuilder.append("**로그 레벨**: `").append(level).append("`\n");
+            logMessageBuilder.append("**에러 코드**: `").append(errorCode).append("`\n");
+            logMessageBuilder.append("**메시지**: ").append(message).append("\n");
+
+            if (exception != null) {
+                logMessageBuilder.append("\n**스택 트레이스**:\n```\n");
+
+                // 스택 트레이스를 문자열로 변환 (최대 1500자로 제한)
+                String stackTrace = getStackTraceAsString(exception);
+                if (stackTrace.length() > 1500) {
+                    stackTrace = stackTrace.substring(0, 1500) + "...\n(생략됨)";
+                }
+                logMessageBuilder.append(stackTrace);
+                logMessageBuilder.append("\n```");
+            }
 
             int color = getColorByLevel(level);
-            DiscordEmbed embeds = new DiscordEmbed("📝 로그 발생", logMessage, color);
+            DiscordEmbed embeds = new DiscordEmbed("📝 로그 발생", logMessageBuilder.toString(), color);
             DiscordPayload payload = new DiscordPayload(List.of(embeds));
             discordLogClient.sendWebhook(payload);
 
@@ -116,5 +125,26 @@ public class DiscordNotificationService {
             case "INFO" -> 3447003;    // 파랑
             default -> 9807270;        // 회색
         };
+    }
+
+    /**
+     * 예외 객체의 스택 트레이스를 문자열로 변환한다.
+     *
+     * @param exception 변환할 예외 객체
+     * @return 스택 트레이스 문자열
+     */
+    private String getStackTraceAsString(Exception exception) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(exception.getClass().getName());
+        if (exception.getMessage() != null) {
+            sb.append(": ").append(exception.getMessage());
+        }
+        sb.append("\n");
+
+        for (StackTraceElement element : exception.getStackTrace()) {
+            sb.append("    at ").append(element.toString()).append("\n");
+        }
+
+        return sb.toString();
     }
 }
