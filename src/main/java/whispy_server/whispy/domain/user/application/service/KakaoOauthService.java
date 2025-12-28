@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.notification.application.port.in.SendToDevice
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
 import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
@@ -42,14 +43,16 @@ public class KakaoOauthService implements KakaoOauthUseCase {
      * 카카오 액세스 토큰으로 로그인하고 JWT 토큰을 발급합니다.
      * 신규 사용자의 경우 자동으로 회원가입이 진행됩니다.
      *
-     * @param accessToken 카카오에서 발급받은 액세스 토큰
-     * @param fcmToken Firebase Cloud Messaging 토큰 (선택)
+     * @param request 카카오 액세스 토큰과 FCM 토큰
      * @return JWT 액세스 토큰과 리프레시 토큰
      */
     @Override
     @Transactional
     @UserAction("카카오 OAuth 로그인")
-    public TokenResponse loginWithKakao(String accessToken, String fcmToken) {
+    public TokenResponse loginWithKakao(KakaoOauthTokenRequest request) {
+        String accessToken = request.accessToken();
+        String fcmToken = request.fcmToken();
+
         Map<String, Object> userAttribute = kakaoUserInfoAdapter.fetchUserInfo(accessToken);
         OauthUserInfo oauthUserInfo = new KakaoOauthUserInfoParser().parse(userAttribute);
         User user = oauthUserUseCase.findOrCreateOauthUser(oauthUserInfo, "kakao");
