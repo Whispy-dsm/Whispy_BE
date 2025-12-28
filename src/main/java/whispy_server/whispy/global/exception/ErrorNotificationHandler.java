@@ -36,6 +36,11 @@ public class ErrorNotificationHandler {
             if (isProductionEnvironment()) {
                 Sentry.captureException(e);
                 discordNotificationService.sendErrorNotification(e);
+                discordNotificationService.sendLogNotification(
+                        "ERROR",
+                        e.getErrorCode().getMessage(),
+                        e.getErrorCode().name()
+                );
             } else {
                 log.debug("[로컬 환경] Sentry/Discord 전송 생략 - Profile: {}", activeProfile);
             }
@@ -55,6 +60,11 @@ public class ErrorNotificationHandler {
         if (isProductionEnvironment()) {
             Sentry.captureException(e);
             discordNotificationService.sendErrorNotification(e);
+            discordNotificationService.sendLogNotification(
+                    "ERROR",
+                    e.getMessage() != null ? e.getMessage() : "메시지 없음",
+                    e.getClass().getSimpleName()
+            );
         } else {
             log.debug("[로컬 환경] Sentry/Discord 전송 생략 - Profile: {}", activeProfile);
         }
