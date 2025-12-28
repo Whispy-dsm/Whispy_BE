@@ -1,4 +1,5 @@
 package whispy_server.whispy.domain.user.application.service.unit;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UpdateFcmTokenRequest;
 import whispy_server.whispy.domain.user.application.service.UpdateFcmTokenService;
 
 import org.junit.jupiter.api.DisplayName;
@@ -65,7 +66,7 @@ class UpdateFcmTokenServiceTest {
         given(userFacade.currentUser()).willReturn(user);
 
         // when
-        updateFcmTokenService.execute(NEW_FCM_TOKEN);
+        updateFcmTokenService.execute(new UpdateFcmTokenRequest(NEW_FCM_TOKEN));
 
         // then
         verify(userSavePort).save(any(User.class));
@@ -80,7 +81,7 @@ class UpdateFcmTokenServiceTest {
         given(userFacade.currentUser()).willReturn(user);
 
         // when
-        updateFcmTokenService.execute(NEW_FCM_TOKEN);
+        updateFcmTokenService.execute(new UpdateFcmTokenRequest(NEW_FCM_TOKEN));
 
         // then
         verify(sendToDeviceTokensUseCase).execute(any());
@@ -94,7 +95,7 @@ class UpdateFcmTokenServiceTest {
         given(userFacade.currentUser()).willReturn(user);
 
         // when
-        updateFcmTokenService.execute(NEW_FCM_TOKEN);
+        updateFcmTokenService.execute(new UpdateFcmTokenRequest(NEW_FCM_TOKEN));
 
         // then
         verify(refreshTokenRepository).deleteById(TEST_EMAIL);
@@ -108,7 +109,7 @@ class UpdateFcmTokenServiceTest {
         given(userFacade.currentUser()).willReturn(user);
 
         // when
-        updateFcmTokenService.execute(OLD_FCM_TOKEN);
+        updateFcmTokenService.execute(new UpdateFcmTokenRequest(OLD_FCM_TOKEN));
 
         // then
         verify(userSavePort, never()).save(any());
@@ -124,7 +125,7 @@ class UpdateFcmTokenServiceTest {
         given(userFacade.currentUser()).willReturn(user);
 
         // when
-        updateFcmTokenService.execute(null);
+        updateFcmTokenService.execute(new UpdateFcmTokenRequest(null));
 
         // then
         verify(userSavePort, never()).save(any());
@@ -139,7 +140,7 @@ class UpdateFcmTokenServiceTest {
         given(userFacade.currentUser()).willReturn(user);
 
         // when
-        updateFcmTokenService.execute(NEW_FCM_TOKEN);
+        updateFcmTokenService.execute(new UpdateFcmTokenRequest(NEW_FCM_TOKEN));
 
         // then
         verify(userSavePort).save(any(User.class));
@@ -155,7 +156,7 @@ class UpdateFcmTokenServiceTest {
         given(userFacade.currentUser()).willReturn(user);
 
         // when
-        updateFcmTokenService.execute(NEW_FCM_TOKEN);
+        updateFcmTokenService.execute(new UpdateFcmTokenRequest(NEW_FCM_TOKEN));
 
         // then
         verify(userSavePort).save(any(User.class));
@@ -172,7 +173,7 @@ class UpdateFcmTokenServiceTest {
                 .when(sendToDeviceTokensUseCase).execute(any());
 
         // when
-        updateFcmTokenService.execute(NEW_FCM_TOKEN);
+        updateFcmTokenService.execute(new UpdateFcmTokenRequest(NEW_FCM_TOKEN));
 
         // then
         verify(refreshTokenRepository).deleteById(TEST_EMAIL);
