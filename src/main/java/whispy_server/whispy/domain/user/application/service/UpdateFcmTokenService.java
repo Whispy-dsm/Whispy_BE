@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.Notif
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UpdateFcmTokenRequest;
 import whispy_server.whispy.domain.user.application.port.in.UpdateFcmTokenUseCase;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.facade.UserFacade;
@@ -35,12 +36,13 @@ public class UpdateFcmTokenService implements UpdateFcmTokenUseCase {
      * FCM 토큰을 업데이트합니다.
      * 토큰 변경 시 이전 기기에 로그아웃 알림을 보내고 기존 세션을 무효화합니다.
      *
-     * @param fcmToken 새로운 FCM 토큰
+     * @param request FCM 토큰 업데이트 요청
      */
     @Override
     @UserAction("FCM 토큰 업데이트")
-    public void execute(String fcmToken) {
+    public void execute(UpdateFcmTokenRequest request) {
         User currentUser = userFacade.currentUser();
+        String fcmToken = request.fcmToken();
 
         if (fcmToken != null && !fcmToken.equals(currentUser.fcmToken())) {
             // 기존 토큰으로 로그아웃 알림 전송

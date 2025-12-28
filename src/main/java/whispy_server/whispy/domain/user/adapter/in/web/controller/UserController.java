@@ -127,7 +127,7 @@ public class UserController implements UserApiDocument {
      */
     @PatchMapping("/fcm-token")
     public void updateFcmToken(@Valid @RequestBody UpdateFcmTokenRequest request) {
-        updateFcmTokenUseCase.execute(request.fcmToken());
+        updateFcmTokenUseCase.execute(request);
     }
 
     /**
