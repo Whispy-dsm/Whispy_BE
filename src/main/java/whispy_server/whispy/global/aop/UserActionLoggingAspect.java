@@ -4,10 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.utils.security.SecurityUtil;
 
 import java.util.Arrays;
 
@@ -26,7 +25,7 @@ public class UserActionLoggingAspect {
      */
     @Around("@annotation(userAction)")
     public Object logUserAction(ProceedingJoinPoint joinPoint, UserAction userAction) throws Throwable {
-        String userId = getUserIdentifier();
+        String userId = SecurityUtil.getCurrentUserIdentifier();
         String action = userAction.value();
         Object[] args = joinPoint.getArgs();
 
@@ -38,25 +37,9 @@ public class UserActionLoggingAspect {
             log.info("[USER_ACTION] userId: {} - {} - SUCCESS", userId, action);
             return result;
         } catch (Exception e) {
-            log.error("[USER_ACTION] userId: {} - {} - FAILED: {}",
-                    userId, action, e.getMessage());
+            log.error("[USER_ACTION] userId: {} - {} - FAILED",
+                    userId, action, e);
             throw e;
         }
-    }
-
-    /**
-     * 현재 인증된 사용자 식별자를 반환한다.
-     *
-     * @return 사용자 이메일 또는 "anonymous"
-     */
-    private String getUserIdentifier() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.isAuthenticated()
-                && !"anonymousUser".equals(authentication.getPrincipal())) {
-            return authentication.getName();
-        }
-
-        return "anonymous";
     }
 }

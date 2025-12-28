@@ -5,10 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import whispy_server.whispy.global.utils.security.SecurityUtil;
 
 import java.io.IOException;
 
@@ -32,7 +31,7 @@ public class AccessLogFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } finally {
             long duration = System.currentTimeMillis() - startTime;
-            String userIdentifier = getUserIdentifier();
+            String userIdentifier = SecurityUtil.getCurrentUserIdentifier();
 
             log.info("[ACCESS] {} {} → {} ({}ms) - User: {}",
                     request.getMethod(),
@@ -42,20 +41,5 @@ public class AccessLogFilter extends OncePerRequestFilter {
                     userIdentifier
             );
         }
-    }
-
-    /**
-     * 현재 인증된 사용자 식별자를 반환한다.
-     *
-     * @return 사용자 이메일 또는 "anonymous"
-     */
-    private String getUserIdentifier() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.isAuthenticated()
-                && !"anonymousUser".equals(authentication.getPrincipal())) {
-            return authentication.getName();
-        }
-        return "anonymous";
     }
 }
