@@ -77,7 +77,7 @@ public class SecurityConfig {
                                          "/file/music_folder/**",
                                          "/file/music_banner_image_folder/**",
                                          "/file/music_video_folder/**",
-                                         "file/announcement_banner_image_folder/**"
+                                         "/file/announcement_banner_image_folder/**"
                         ).permitAll()
                         .requestMatchers("/auth/email/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
