@@ -50,8 +50,7 @@ public class OauthUserService implements OauthUserUseCase {
                             null,
                             null
                     );
-                    userSavePort.save(newUser);
-                    return newUser;
+                    return userSavePort.save(newUser);
                 });
     }
 }

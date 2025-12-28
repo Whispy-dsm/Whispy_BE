@@ -13,6 +13,7 @@ public interface UserSavePort {
      * 신규 생성 또는 업데이트 모두 이 메서드를 사용합니다.
      *
      * @param user 저장할 사용자 도메인 객체
+     * @return 저장된 사용자 도메인 객체 (ID 포함)
      */
-    void save(User user);
+    User save(User user);
 }

@@ -25,10 +25,11 @@ public class UserPersistenceAdapter implements UserPort {
      * 사용자를 저장합니다.
      *
      * @param user 저장할 사용자 도메인 객체
+     * @return 저장된 사용자 도메인 객체 (ID 포함)
      */
     @Override
-    public void save(User user){
-        userRepository.save(userEntityMapper.toEntity(user));
+    public User save(User user){
+        return userEntityMapper.toModel(userRepository.save(userEntityMapper.toEntity(user)));
     }
 
     /**
