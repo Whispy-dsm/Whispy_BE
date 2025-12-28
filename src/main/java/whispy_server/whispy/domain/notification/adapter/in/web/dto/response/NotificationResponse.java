@@ -59,4 +59,11 @@ public record NotificationResponse(
                 notification.createdAt()
         );
     }
+
+    @Override
+    public String toString() {
+        return "NotificationResponse[id=" + id + ", email=***, title=" + title +
+               ", body=" + body + ", topic=" + topic + ", data=" + data +
+               ", read=" + read + ", createdAt=" + createdAt + "]";
+    }
 }

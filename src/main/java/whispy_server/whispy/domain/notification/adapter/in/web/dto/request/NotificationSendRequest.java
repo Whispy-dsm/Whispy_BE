@@ -49,7 +49,7 @@ public record NotificationSendRequest(
 ) {
     @Override
     public String toString() {
-        return "NotificationSendRequest[email=" + email + ", deviceTokens=***, topic=" + topic +
+        return "NotificationSendRequest[email=***, deviceTokens=***, topic=" + topic +
                ", title=" + title + ", body=" + body + ", data=" + data + "]";
     }
 }

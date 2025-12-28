@@ -27,4 +27,10 @@ public record TopicSubscriptionResponse(
                 subscription.subscribed()
         );
     }
+
+    @Override
+    public String toString() {
+        return "TopicSubscriptionResponse[id=" + id + ", email=***, topic=" + topic +
+               ", Subscribed=" + Subscribed + "]";
+    }
 }

@@ -25,6 +25,6 @@ public record VerifyEmailCodeRequest(
 ) {
     @Override
     public String toString() {
-        return "VerifyEmailCodeRequest[email=" + email + ", code=***]";
+        return "VerifyEmailCodeRequest[email=***, code=***]";
     }
 }
