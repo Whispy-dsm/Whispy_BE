@@ -18,11 +18,14 @@ public class CustomAdminDetailsService implements UserDetailsService {
     private final AdminFacadeUseCase adminFacadeUseCase;
 
     /**
-     * 관리자 ID로 사용자 정보를 조회해 UserDetails를 반환한다.
+     * 관리자 ID (PK)로 사용자 정보를 조회해 UserDetails를 반환한다.
+     *
+     * @param id 관리자 ID (PK)
+     * @return UserDetails 구현체
      */
     @Override
-    public UserDetails loadUserByUsername(String adminId){
-        Admin admin = adminFacadeUseCase.getAdminByAdminId(adminId);
-        return new AuthDetails(admin.adminId(), Role.ADMIN.name(), AuthDetails.EMPTY_ATTRIBUTES);
+    public UserDetails loadUserByUsername(String id){
+        Admin admin = adminFacadeUseCase.getAdminById(Long.parseLong(id));
+        return new AuthDetails(admin.id(), Role.ADMIN.name(), AuthDetails.EMPTY_ATTRIBUTES);
     }
 }

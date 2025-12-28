@@ -14,7 +14,7 @@ import java.util.Map;
  * 세션/토큰 기반 인증 모두에서 동일한 Principal 표현을 재사용한다.
  */
 public record AuthDetails(
-        String id,
+        Long id,
         String role,
         Map<String,Object> attributes
 
@@ -29,7 +29,7 @@ public record AuthDetails(
 
     @Override
     public String getUsername() {
-        return id;
+        return id.toString();
     }
 
     @Override
@@ -62,7 +62,7 @@ public record AuthDetails(
 
     @Override
     public String getName() {
-        return id;
+        return id.toString();
     }
 
 }
