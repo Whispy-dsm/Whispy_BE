@@ -67,7 +67,7 @@ public class UserWithdrawalService implements UserWithdrawalUseCase {
         deleteTopicSubscriptionPort.deleteByEmail(email);
 
         // User 삭제
-        refreshTokenRepository.deleteById(email);
+        refreshTokenRepository.deleteById(userId);
         userDeletePort.deleteById(userId);
     }
 }

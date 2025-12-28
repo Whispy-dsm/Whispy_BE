@@ -51,7 +51,7 @@ public class UpdateFcmTokenService implements UpdateFcmTokenUseCase {
             }
 
             // 기존 RefreshToken 강제 삭제 (기존 세션 무효화)
-            refreshTokenRepository.deleteById(currentUser.email());
+            refreshTokenRepository.deleteById(currentUser.id());
 
             User updatedUser = currentUser.updateFcmToken(fcmToken);
             userSavePort.save(updatedUser);

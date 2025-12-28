@@ -27,7 +27,7 @@ public class UserLogoutService implements UserLogoutUseCase {
     @UserAction("사용자 로그아웃")
     public void logout(){
         User currentUser = userFacadeUseCase.currentUser();
-        refreshTokenRepository.deleteById(currentUser.email());
+        refreshTokenRepository.deleteById(currentUser.id());
     }
 }
 
