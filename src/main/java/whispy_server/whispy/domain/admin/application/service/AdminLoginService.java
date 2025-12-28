@@ -56,9 +56,9 @@ public class AdminLoginService implements AdminLoginUseCase {
             throw PasswordMissMatchException.EXCEPTION;
         }
 
-        TokenResponse tokenResponse = jwtTokenProvider.generateToken(admin.adminId(), Role.ADMIN.name());
+        TokenResponse tokenResponse = jwtTokenProvider.generateToken(admin.id(), Role.ADMIN.name());
         RefreshToken token = new RefreshToken(
-                admin.adminId(),
+                admin.id(),
                 tokenResponse.refreshToken(),
                 jwtProperties.refreshExpiration()
         );

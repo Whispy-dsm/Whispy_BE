@@ -71,9 +71,9 @@ public class KakaoOauthService implements KakaoOauthUseCase {
         }
 
         // (기존 세션 무효화)
-        refreshTokenRepository.deleteById(user.email());
+        refreshTokenRepository.deleteById(user.id());
 
-        return jwtTokenProvider.generateToken(user.email(), user.role().name());
+        return jwtTokenProvider.generateToken(user.id(), user.role().name());
     }
 
     /** 이전 기기에 로그아웃 알림을 전송합니다 */

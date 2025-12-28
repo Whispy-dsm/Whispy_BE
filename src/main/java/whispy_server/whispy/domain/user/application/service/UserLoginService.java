@@ -53,10 +53,10 @@ public class UserLoginService implements UserLoginUseCase {
         User user = authenticatedUser(request);
 
         // (기존 세션 무효화)
-        refreshTokenRepository.deleteById(user.email());
+        refreshTokenRepository.deleteById(user.id());
 
 
-        return generateToken(user.email());
+        return generateToken(user.id());
     }
 
     /** 사용자 인증을 수행하고 FCM 토큰을 업데이트합니다 */
@@ -106,7 +106,7 @@ public class UserLoginService implements UserLoginUseCase {
     }
 
     /** JWT 토큰을 생성합니다 */
-    private TokenResponse generateToken(String email) {
-        return jwtTokenProvider.generateToken(email, Role.USER.toString());
+    private TokenResponse generateToken(Long userId) {
+        return jwtTokenProvider.generateToken(userId, Role.USER.toString());
     }
 }
