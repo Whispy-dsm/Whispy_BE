@@ -49,7 +49,8 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
                 request.getRequestURI(), e.getClass().getSimpleName());
             errorNotificationHandler.handleExceptionException(e);
 
-            writeErrorResponse(response, response.getStatus(), ErrorResponse.of(response.getStatus(),e.getMessage(), e));
+            writeErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    ErrorResponse.of(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage(), e));
         }
 
     }
