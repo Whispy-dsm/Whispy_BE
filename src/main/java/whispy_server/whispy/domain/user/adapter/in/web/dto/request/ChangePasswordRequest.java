@@ -29,6 +29,6 @@ public record ChangePasswordRequest(
 ) {
     @Override
     public String toString() {
-        return "ChangePasswordRequest[email=" + email + ", newPassword=***]";
+        return "ChangePasswordRequest[email=***, newPassword=***]";
     }
 }
