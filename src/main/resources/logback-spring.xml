@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property name="LOG_PATH" value="${LOG_PATH:-/opt/whispy/logs}"/>
-    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <timestamp key="byDate" datePattern="yyyy-MM-dd" timeReference="Asia/Seoul"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -17,9 +19,12 @@
             <charset>UTF-8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/whispy.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/whispy.%d{yyyy-MM-dd, Asia/Seoul}.log.gz</fileNamePattern>
             <maxHistory>90</maxHistory>
             <totalSizeCap>10GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <timeZone>Asia/Seoul</timeZone>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
@@ -35,9 +40,12 @@
             <charset>UTF-8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/whispy-error.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/whispy-error.%d{yyyy-MM-dd, Asia/Seoul}.log.gz</fileNamePattern>
             <maxHistory>90</maxHistory>
             <totalSizeCap>3GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <timeZone>Asia/Seoul</timeZone>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
