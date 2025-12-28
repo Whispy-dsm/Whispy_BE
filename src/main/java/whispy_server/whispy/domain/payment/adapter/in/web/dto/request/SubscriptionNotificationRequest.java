@@ -1,7 +1,6 @@
 package whispy_server.whispy.domain.payment.adapter.in.web.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.ToString;
 
 /**
  * 구독 알림 요청 DTO.
@@ -13,7 +12,6 @@ import lombok.ToString;
  * @param purchaseToken 구매 토큰
  * @param subscriptionId 구독 ID
  */
-@ToString(exclude = {"purchaseToken"})
 @Schema(description = "구독 알림 요청")
 public record SubscriptionNotificationRequest(
         @Schema(description = "API 버전", example = "1.0")
@@ -24,4 +22,10 @@ public record SubscriptionNotificationRequest(
         String purchaseToken,
         @Schema(description = "구독 ID", example = "premium_monthly")
         String subscriptionId
-) {}
+) {
+    @Override
+    public String toString() {
+        return "SubscriptionNotificationRequest[version=" + version + ", notificationType=" + notificationType +
+               ", purchaseToken=***, subscriptionId=" + subscriptionId + "]";
+    }
+}
