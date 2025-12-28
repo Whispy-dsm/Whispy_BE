@@ -80,7 +80,7 @@ class KakaoOauthServiceTest {
 
         given(kakaoUserInfoAdapter.fetchUserInfo(TEST_ACCESS_TOKEN)).willReturn(userAttribute);
         given(oauthUserUseCase.findOrCreateOauthUser(any(OauthUserInfo.class), eq("kakao"))).willReturn(user);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.name())).willReturn(expectedToken);
 
         // when
         TokenResponse response = kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, null));
@@ -88,7 +88,7 @@ class KakaoOauthServiceTest {
         // then
         assertThat(response).isNotNull();
         assertThat(response.accessToken()).isEqualTo("access-token");
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
     }
 
     @Test
@@ -101,7 +101,7 @@ class KakaoOauthServiceTest {
 
         given(kakaoUserInfoAdapter.fetchUserInfo(TEST_ACCESS_TOKEN)).willReturn(userAttribute);
         given(oauthUserUseCase.findOrCreateOauthUser(any(OauthUserInfo.class), eq("kakao"))).willReturn(user);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.name())).willReturn(expectedToken);
 
         // when
         kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
@@ -121,7 +121,7 @@ class KakaoOauthServiceTest {
 
         given(kakaoUserInfoAdapter.fetchUserInfo(TEST_ACCESS_TOKEN)).willReturn(userAttribute);
         given(oauthUserUseCase.findOrCreateOauthUser(any(OauthUserInfo.class), eq("kakao"))).willReturn(user);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.name())).willReturn(expectedToken);
 
         // when
         kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
@@ -140,7 +140,7 @@ class KakaoOauthServiceTest {
 
         given(kakaoUserInfoAdapter.fetchUserInfo(TEST_ACCESS_TOKEN)).willReturn(userAttribute);
         given(oauthUserUseCase.findOrCreateOauthUser(any(OauthUserInfo.class), eq("kakao"))).willReturn(user);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.name())).willReturn(expectedToken);
 
         // when
         kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, OLD_FCM_TOKEN));
@@ -160,7 +160,7 @@ class KakaoOauthServiceTest {
 
         given(kakaoUserInfoAdapter.fetchUserInfo(TEST_ACCESS_TOKEN)).willReturn(userAttribute);
         given(oauthUserUseCase.findOrCreateOauthUser(any(OauthUserInfo.class), eq("kakao"))).willReturn(user);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.name())).willReturn(expectedToken);
 
         // when
         kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
@@ -180,7 +180,7 @@ class KakaoOauthServiceTest {
 
         given(kakaoUserInfoAdapter.fetchUserInfo(TEST_ACCESS_TOKEN)).willReturn(userAttribute);
         given(oauthUserUseCase.findOrCreateOauthUser(any(OauthUserInfo.class), eq("kakao"))).willReturn(user);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.name())).willReturn(expectedToken);
 
         // when
         kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
@@ -200,13 +200,13 @@ class KakaoOauthServiceTest {
 
         given(kakaoUserInfoAdapter.fetchUserInfo(TEST_ACCESS_TOKEN)).willReturn(userAttribute);
         given(oauthUserUseCase.findOrCreateOauthUser(any(OauthUserInfo.class), eq("kakao"))).willReturn(user);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.name())).willReturn(expectedToken);
 
         // when
         kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, null));
 
         // then
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
     }
 
     @Test
@@ -219,7 +219,7 @@ class KakaoOauthServiceTest {
 
         given(kakaoUserInfoAdapter.fetchUserInfo(TEST_ACCESS_TOKEN)).willReturn(userAttribute);
         given(oauthUserUseCase.findOrCreateOauthUser(any(OauthUserInfo.class), eq("kakao"))).willReturn(user);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.name())).willReturn(expectedToken);
         doThrow(new RuntimeException("FCM 전송 실패")).when(sendToDeviceTokensUseCase).execute(any());
 
         // when

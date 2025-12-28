@@ -135,7 +135,7 @@ class UserWithdrawalServiceTest {
         userWithdrawalService.withdrawal();
 
         // then
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
     }
 
     @Test
@@ -176,7 +176,7 @@ class UserWithdrawalServiceTest {
         verify(deleteTopicSubscriptionPort).deleteByEmail(TEST_EMAIL);
 
         // User 삭제
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
         verify(userDeletePort).deleteById(TEST_USER_ID);
     }
 

@@ -98,7 +98,7 @@ class UpdateFcmTokenServiceTest {
         updateFcmTokenService.execute(new UpdateFcmTokenRequest(NEW_FCM_TOKEN));
 
         // then
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
     }
 
     @Test
@@ -114,7 +114,7 @@ class UpdateFcmTokenServiceTest {
         // then
         verify(userSavePort, never()).save(any());
         verify(sendToDeviceTokensUseCase, never()).execute(any());
-        verify(refreshTokenRepository, never()).deleteById(anyString());
+        verify(refreshTokenRepository, never()).deleteById(anyLong());
     }
 
     @Test
@@ -176,7 +176,7 @@ class UpdateFcmTokenServiceTest {
         updateFcmTokenService.execute(new UpdateFcmTokenRequest(NEW_FCM_TOKEN));
 
         // then
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
         verify(userSavePort).save(any(User.class));
         verify(initializeTopicsUseCase).execute(eq(TEST_EMAIL), eq(NEW_FCM_TOKEN), eq(false));
     }
