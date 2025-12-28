@@ -2,6 +2,7 @@ package whispy_server.whispy.global.feign.discord;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.global.exception.WhispyException;
 import whispy_server.whispy.global.exception.error.ErrorCode;
@@ -27,9 +28,11 @@ public class DiscordNotificationService {
 
     /**
      * 예외 정보를 Embed 형태로 구성해 Discord 예외 웹훅으로 전송한다.
+     * 비동기로 처리되어 메인 비즈니스 로직의 성능에 영향을 주지 않습니다.
      *
      * @param exception 전송할 예외 객체
      */
+    @Async
     public void sendErrorNotification(Exception exception) {
         String errorMessage = getErrorMessage(exception);
 
@@ -45,11 +48,13 @@ public class DiscordNotificationService {
 
     /**
      * 로그 정보를 Embed 형태로 구성해 Discord 로그 웹훅으로 전송한다.
+     * 비동기로 처리되어 메인 비즈니스 로직의 성능에 영향을 주지 않습니다.
      *
      * @param level 로그 레벨 (ERROR, WARN, INFO, DEBUG)
      * @param message 로그 메시지
      * @param errorCode 에러 코드 (WhispyException의 ErrorCode)
      */
+    @Async
     public void sendLogNotification(String level, String message, String errorCode) {
         try {
             String logMessage = String.format(
