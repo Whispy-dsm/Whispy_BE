@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.soundspace.application.port.in.CheckMusicInSo
 import whispy_server.whispy.domain.soundspace.application.port.out.QuerySoundSpaceMusicPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 특정 음악의 사운드 스페이스 포함 여부를 확인하는 서비스.
@@ -19,6 +20,7 @@ public class CheckMusicInSoundSpaceService implements CheckMusicInSoundSpaceUseC
     private final QuerySoundSpaceMusicPort querySoundSpaceMusicPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    @UserAction("사운드 스페이스 음악 포함 여부 확인")
     @Transactional(readOnly = true)
     @Override
     public MusicInSoundSpaceCheckResponse execute(Long musicId) {

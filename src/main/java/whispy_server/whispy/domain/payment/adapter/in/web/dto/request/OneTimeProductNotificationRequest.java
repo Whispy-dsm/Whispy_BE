@@ -22,4 +22,10 @@ public record OneTimeProductNotificationRequest(
         String purchaseToken,
         @Schema(description = "SKU", example = "premium_month")
         String sku
-) {}
+) {
+    @Override
+    public String toString() {
+        return "OneTimeProductNotificationRequest[version=" + version + ", notificationType=" + notificationType +
+               ", purchaseToken=***, sku=" + sku + "]";
+    }
+}

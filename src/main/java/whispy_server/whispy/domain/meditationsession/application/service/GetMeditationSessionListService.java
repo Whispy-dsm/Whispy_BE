@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.meditationsession.adapter.in.web.dto.response
 import whispy_server.whispy.domain.meditationsession.application.port.in.GetMeditationSessionListUseCase;
 import whispy_server.whispy.domain.meditationsession.application.port.out.QueryMeditationSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 명상 세션 목록 조회 서비스.
@@ -29,6 +30,7 @@ public class GetMeditationSessionListService implements GetMeditationSessionList
      * @param pageable 페이지 정보 (페이지 번호, 크기, 정렬)
      * @return 명상 세션 목록 응답 DTO의 페이지
      */
+    @UserAction("명상 세션 목록 조회")
     @Override
     public Page<MeditationSessionListResponse> execute(Pageable pageable) {
         Long userId = userFacadeUseCase.currentUser().id();

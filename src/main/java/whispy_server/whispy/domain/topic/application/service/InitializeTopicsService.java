@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.topic.application.port.out.QueryTopicSubscrip
 import whispy_server.whispy.domain.topic.application.service.component.TopicInitializer;
 import whispy_server.whispy.domain.topic.model.TopicSubscription;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,7 @@ public class InitializeTopicsService implements InitializeTopicsUseCase {
      * @param fcmToken FCM 토큰
      * @param isEventAgreed 이벤트 수신 동의 여부
      */
+    @UserAction("토픽 초기화")
     @Override
     public void execute(String email, String fcmToken, boolean isEventAgreed) {
         executeForUser(email, fcmToken, isEventAgreed);

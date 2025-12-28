@@ -10,6 +10,7 @@ import whispy_server.whispy.domain.file.application.utils.ImageCompressionConver
 import whispy_server.whispy.domain.file.type.ImageFolder;
 import whispy_server.whispy.global.exception.domain.file.FileUploadFailedException;
 import whispy_server.whispy.global.file.FileProperties;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +40,7 @@ public class FileUploadService implements FileUploadUseCase {
      * @return 업로드 결과 응답
      */
     @Override
+    @UserAction("파일 업로드")
     public FileUploadResponse uploadFile(MultipartFile file, ImageFolder imageFolder) {
         FileValidator.validateFile(file, imageFolder);
 

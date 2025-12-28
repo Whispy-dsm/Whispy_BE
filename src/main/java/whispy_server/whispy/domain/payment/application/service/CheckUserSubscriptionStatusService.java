@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.CheckUser
 import whispy_server.whispy.domain.payment.application.port.in.CheckUserSubscriptionStatusUseCase;
 import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
 import whispy_server.whispy.domain.payment.model.Subscription;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class CheckUserSubscriptionStatusService implements CheckUserSubscription
      * @param email 사용자 이메일
      * @return 구독 상태 정보
      */
+    @UserAction("구독 상태 확인")
     @Override
     public CheckUserSubscriptionStatusResponse isUserSubscribed(String email) {
 

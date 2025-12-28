@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import whispy_server.whispy.global.feign.discord.dto.DiscordPayload;
 
 /**
- * Discord Webhook 호출을 위한 Feign 클라이언트.
+ * Discord 예외 Webhook 호출을 위한 Feign 클라이언트.
  */
-@FeignClient(name = "discord-webhook", url = "${spring.discord.webhook.url}")
+@FeignClient(name = "discord-exception-webhook", url = "${spring.discord.webhook.exception-url}")
 public interface DiscordBugClient {
 
     /**

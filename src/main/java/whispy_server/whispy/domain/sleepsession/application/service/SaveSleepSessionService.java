@@ -10,6 +10,7 @@ import whispy_server.whispy.domain.sleepsession.application.port.out.SleepSessio
 import whispy_server.whispy.domain.sleepsession.model.SleepSession;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +33,7 @@ public class SaveSleepSessionService implements SaveSleepSessionUseCase {
      * @param request 수면 세션 저장 요청
      * @return 저장된 세션 정보
      */
+    @UserAction("수면 세션 저장")
     @Transactional
     @Override
     public SleepSessionResponse execute(SaveSleepSessionRequest request) {

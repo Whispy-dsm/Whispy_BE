@@ -15,6 +15,7 @@ import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.Focu
 import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.TagMinutesDto;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class GetFocusStatisticsService implements GetFocusStatisticsUseCase {
 
     @Override
     @Transactional(readOnly = true)
+    @UserAction("집중 통계 조회")
     public FocusStatisticsResponse execute(FocusPeriodType period, LocalDate date) {
         DateValidator.validateNotFutureDate(date);
 

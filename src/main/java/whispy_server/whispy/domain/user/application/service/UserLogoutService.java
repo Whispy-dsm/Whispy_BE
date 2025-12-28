@@ -6,6 +6,7 @@ import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRe
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserLogoutUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 사용자 로그아웃 서비스.
@@ -23,6 +24,7 @@ public class UserLogoutService implements UserLogoutUseCase {
      * Redis에서 리프레시 토큰을 삭제합니다.
      */
     @Override
+    @UserAction("사용자 로그아웃")
     public void logout(){
         User currentUser = userFacadeUseCase.currentUser();
         refreshTokenRepository.deleteById(currentUser.email());

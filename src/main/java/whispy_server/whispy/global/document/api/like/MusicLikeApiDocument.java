@@ -53,4 +53,18 @@ public interface MusicLikeApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     List<LikedMusicResponse> getMyLikedMusics();
+
+    @Operation(
+            summary = "음악 좋아요 여부 확인",
+            description = "현재 사용자가 특정 음악에 좋아요를 눌렀는지 확인합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "좋아요 여부 조회 성공"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    boolean checkMusicLike(@Parameter(description = "음악 ID", required = true, in = ParameterIn.PATH) Long musicId);
 }

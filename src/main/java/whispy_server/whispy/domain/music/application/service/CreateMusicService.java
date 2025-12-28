@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.music.adapter.in.web.dto.request.CreateMusicR
 import whispy_server.whispy.domain.music.application.port.in.CreateMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicSavePort;
 import whispy_server.whispy.domain.music.model.Music;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 음악 생성 서비스.
@@ -26,6 +27,7 @@ public class CreateMusicService implements CreateMusicUseCase {
      *
      * @param request 생성할 음악 정보가 포함된 요청
      */
+    @UserAction("음악 생성")
     @Transactional
     @Override
     public void execute(CreateMusicRequest request) {

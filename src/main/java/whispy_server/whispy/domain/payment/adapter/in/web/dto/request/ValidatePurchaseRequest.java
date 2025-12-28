@@ -19,4 +19,9 @@ public record ValidatePurchaseRequest(
         @Schema(description = "구독 ID", example = "premium_monthly", requiredMode = Schema.RequiredMode.REQUIRED)
         @NotBlank
         String subscriptionId
-) {}
+) {
+    @Override
+    public String toString() {
+        return "ValidatePurchaseRequest[purchaseToken=***, subscriptionId=" + subscriptionId + "]";
+    }
+}

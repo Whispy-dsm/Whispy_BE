@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.VerifyEmailCodeRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.response.VerifyEmailCodeResponse;
 import whispy_server.whispy.domain.auth.application.port.in.VerifyEmailCodeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.utils.redis.RedisUtil;
 
 import java.time.Duration;
@@ -30,6 +31,7 @@ public class VerifyEmailCodeService implements VerifyEmailCodeUseCase {
      * @param request 이메일·코드 정보
      * @return 인증 성공 여부 응답
      */
+    @UserAction("이메일 인증 코드 검증")
     @Override
     public VerifyEmailCodeResponse execute(VerifyEmailCodeRequest request) {
         String codeKey = VERIFICATION_CODE_KEY + request.email();

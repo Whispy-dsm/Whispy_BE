@@ -46,4 +46,10 @@ public record NotificationSendRequest(
         String body,
         @Schema(description = "추가 데이터")
         Map<String, String> data
-) {}
+) {
+    @Override
+    public String toString() {
+        return "NotificationSendRequest[email=" + email + ", deviceTokens=***, topic=" + topic +
+               ", title=" + title + ", body=" + body + ", data=" + data + "]";
+    }
+}

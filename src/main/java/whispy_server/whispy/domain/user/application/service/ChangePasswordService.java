@@ -12,6 +12,7 @@ import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.exception.domain.auth.EmailNotVerifiedException;
 import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 import whispy_server.whispy.global.utils.redis.RedisUtil;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 비밀번호 변경 서비스.
@@ -36,6 +37,7 @@ public class ChangePasswordService implements ChangePasswordUseCase {
      */
     @Override
     @Transactional
+    @UserAction("비밀번호 변경")
     public void execute(ChangePasswordRequest request) {
         String statusKey = VERIFICATION_STATUS_KEY + request.email();
         String status = redisUtil.get(statusKey);

@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.response.Slee
 import whispy_server.whispy.domain.sleepsession.application.port.in.GetSleepSessionDetailUseCase;
 import whispy_server.whispy.domain.sleepsession.application.port.out.QuerySleepSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.sleepsession.SleepSessionNotFoundException;
 
 /**
@@ -30,6 +31,7 @@ public class GetSleepSessionDetailService implements GetSleepSessionDetailUseCas
      * @return 수면 세션 상세 정보
      * @throws SleepSessionNotFoundException 해당 ID의 세션이 없거나 현재 사용자의 세션이 아닐 경우
      */
+    @UserAction("수면 세션 상세 조회")
     @Override
     public SleepSessionDetailResponse execute(Long sleepSessionId) {
         Long userId = userFacadeUseCase.currentUser().id();

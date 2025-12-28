@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.user.application.service;
 
 import lombok.RequiredArgsConstructor;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ public class OauthUserService implements OauthUserUseCase {
      */
     @Override
     @Transactional
+    @UserAction("OAuth 사용자 처리")
     public User findOrCreateOauthUser(OauthUserInfo oauthUserInfo, String provider) {
         return queryUserPort.findByEmail(oauthUserInfo.email())
                 .orElseGet(() -> {

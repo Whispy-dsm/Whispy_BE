@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.meditationsession.application.port.in.DeleteM
 import whispy_server.whispy.domain.meditationsession.application.port.out.DeleteMeditationSessionPort;
 import whispy_server.whispy.domain.meditationsession.application.port.out.QueryMeditationSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.meditationsession.MeditationSessionNotFoundException;
 
 /**
@@ -28,6 +29,7 @@ public class DeleteMeditationSessionService implements DeleteMeditationSessionUs
      * @param meditationSessionId 삭제할 명상 세션 ID
      * @throws MeditationSessionNotFoundException 해당 ID의 세션이 존재하지 않거나 접근 권한이 없을 경우
      */
+    @UserAction("명상 세션 삭제")
     @Transactional
     @Override
     public void execute(Long meditationSessionId) {

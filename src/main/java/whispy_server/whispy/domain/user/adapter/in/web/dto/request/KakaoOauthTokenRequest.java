@@ -21,4 +21,8 @@ public record KakaoOauthTokenRequest(
         @Size(max = 255)
         String fcmToken
 ) {
+    @Override
+    public String toString() {
+        return "KakaoOauthTokenRequest[accessToken=***, fcmToken=***]";
+    }
 }

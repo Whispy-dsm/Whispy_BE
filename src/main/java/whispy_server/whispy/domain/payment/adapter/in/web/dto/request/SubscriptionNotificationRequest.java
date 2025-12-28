@@ -22,4 +22,10 @@ public record SubscriptionNotificationRequest(
         String purchaseToken,
         @Schema(description = "구독 ID", example = "premium_monthly")
         String subscriptionId
-) {}
+) {
+    @Override
+    public String toString() {
+        return "SubscriptionNotificationRequest[version=" + version + ", notificationType=" + notificationType +
+               ", purchaseToken=***, subscriptionId=" + subscriptionId + "]";
+    }
+}

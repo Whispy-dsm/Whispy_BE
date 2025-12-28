@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.soundspace.application.port.in.GetSoundSpaceM
 import whispy_server.whispy.domain.soundspace.application.port.out.QuerySoundSpaceMusicPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class GetSoundSpaceMusicsService implements GetSoundSpaceMusicsUseCase {
     private final QuerySoundSpaceMusicPort querySoundSpaceMusicPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    @UserAction("사운드 스페이스 음악 목록 조회")
     @Override
     public List<SoundSpaceMusicResponse> execute() {
         User currentUser = userFacadeUseCase.currentUser();

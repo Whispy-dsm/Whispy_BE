@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.TokenReissueRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 
@@ -41,7 +42,7 @@ class UserTokenReissueServiceTest {
         given(jwtTokenProvider.reissue(REFRESH_TOKEN)).willReturn(expectedToken);
 
         // when
-        TokenResponse response = userTokenReissueService.reissue(REFRESH_TOKEN);
+        TokenResponse response = userTokenReissueService.reissue(new TokenReissueRequest(REFRESH_TOKEN));
 
         // then
         assertThat(response).isNotNull();
@@ -57,7 +58,7 @@ class UserTokenReissueServiceTest {
         given(jwtTokenProvider.reissue(REFRESH_TOKEN)).willReturn(expectedToken);
 
         // when
-        userTokenReissueService.reissue(REFRESH_TOKEN);
+        userTokenReissueService.reissue(new TokenReissueRequest(REFRESH_TOKEN));
 
         // then
         verify(jwtTokenProvider).reissue(REFRESH_TOKEN);

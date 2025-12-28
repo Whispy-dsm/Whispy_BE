@@ -52,4 +52,10 @@ public record RegisterRequest(
         @Schema(name = "is_event_agreed", description = "이벤트 알림 수신 동의 여부", example = "true")
         boolean isEventAgreed
 ) {
+    @Override
+    public String toString() {
+        return "RegisterRequest[email=" + email + ", password=***, name=" + name +
+               ", profileImageUrl=" + profileImageUrl + ", gender=" + gender +
+               ", fcmToken=***, isEventAgreed=" + isEventAgreed + "]";
+    }
 }

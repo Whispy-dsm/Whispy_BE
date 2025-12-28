@@ -13,4 +13,9 @@ public record UpdateFcmTokenRequest(
         @NotBlank
         @Size(max = 255)
         String fcmToken
-) {}
+) {
+    @Override
+    public String toString() {
+        return "UpdateFcmTokenRequest[fcmToken=***]";
+    }
+}

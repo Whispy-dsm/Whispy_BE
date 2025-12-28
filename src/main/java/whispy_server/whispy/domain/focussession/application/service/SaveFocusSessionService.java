@@ -11,6 +11,7 @@ import whispy_server.whispy.domain.focussession.model.FocusSession;
 import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.QueryFocusStatisticsPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +36,7 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
      * @param request 집중 세션 저장 요청
      * @return 저장된 세션 정보 및 오늘의 총 집중 시간
      */
+    @UserAction("집중 세션 저장")
     @Transactional
     @Override
     public FocusSessionResponse execute(SaveFocusSessionRequest request) {

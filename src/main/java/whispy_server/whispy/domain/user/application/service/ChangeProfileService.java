@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.user.application.port.in.ChangeProfileUseCase
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 프로필 변경 서비스.
@@ -27,6 +28,7 @@ public class ChangeProfileService implements ChangeProfileUseCase {
      */
     @Override
     @Transactional
+    @UserAction("프로필 변경")
     public void execute(ChangeProfileRequest request) {
         User user = userFacadeUseCase.currentUser();
 

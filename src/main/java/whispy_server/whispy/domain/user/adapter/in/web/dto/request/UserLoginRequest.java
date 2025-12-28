@@ -29,4 +29,8 @@ public record UserLoginRequest(
     @Size(max = 255)
     String fcmToken
 ) {
+    @Override
+    public String toString() {
+        return "UserLoginRequest[email=" + email + ", password=***, fcmToken=***]";
+    }
 }

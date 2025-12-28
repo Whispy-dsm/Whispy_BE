@@ -6,6 +6,7 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyAccountInf
 import whispy_server.whispy.domain.user.application.port.in.GetMyAccountInfoUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 내 계정 정보 조회 서비스.
@@ -26,6 +27,7 @@ public class GetMyAccountInfoService implements GetMyAccountInfoUseCase {
      * @return 계정 정보 (이메일, 이름, 프로필 이미지, 성별, OAuth 제공자, 마스킹된 비밀번호)
      */
     @Override
+    @UserAction("내 계정 정보 조회")
     public MyAccountInfoResponse execute() {
         User currentUser = userFacadeUseCase.currentUser();
 

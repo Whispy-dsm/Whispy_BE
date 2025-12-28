@@ -27,4 +27,8 @@ public record ChangePasswordRequest(
         @NotBlank
         String newPassword
 ) {
+    @Override
+    public String toString() {
+        return "ChangePasswordRequest[email=" + email + ", newPassword=***]";
+    }
 }

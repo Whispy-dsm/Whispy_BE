@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.auth.adapter.in.dto.request.CheckEmailVerificationRequest;
 import whispy_server.whispy.domain.auth.adapter.in.dto.response.CheckEmailVerificationResponse;
 import whispy_server.whispy.domain.auth.application.port.in.CheckEmailVerificationUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.utils.redis.RedisUtil;
 
 /**
@@ -30,6 +31,7 @@ public class CheckEmailVerificationService implements CheckEmailVerificationUseC
      * @param request 인증 상태를 확인할 이메일 주소가 포함된 요청
      * @return 인증 완료 여부가 포함된 응답
      */
+    @UserAction("이메일 인증 상태 확인")
     @Override
     public CheckEmailVerificationResponse execute(CheckEmailVerificationRequest request) {
         String statusKey = VERIFICATION_STATUS_KEY + request.email();

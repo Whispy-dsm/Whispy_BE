@@ -10,6 +10,7 @@ import whispy_server.whispy.domain.soundspace.application.port.out.SaveSoundSpac
 import whispy_server.whispy.domain.soundspace.model.SoundSpaceMusic;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class ToggleSoundSpaceMusicService implements ToggleSoundSpaceMusicUseCas
     private final QueryMusicPort queryMusicPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    @UserAction("사운드 스페이스 음악 토글")
     @Override
     public void execute(Long musicId) {
         User currentUser = userFacadeUseCase.currentUser();

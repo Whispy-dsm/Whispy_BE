@@ -11,6 +11,7 @@ import whispy_server.whispy.domain.statistics.activity.model.MonthIndicator;
 import whispy_server.whispy.domain.statistics.activity.model.WeekActivityData;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,6 +43,7 @@ import java.util.stream.Stream;
      *
      * @return 주간 활동 통계 응답
      */
+    @UserAction("주간 활동 통계 조회")
     @Override
     @Transactional(readOnly = true)
     public WeeklyActivityResponse execute() {

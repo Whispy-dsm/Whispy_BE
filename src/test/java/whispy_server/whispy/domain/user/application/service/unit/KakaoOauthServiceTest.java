@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.adapter.out.external.KakaoUserInfoAdapter;
 import whispy_server.whispy.domain.user.application.port.in.OauthUserUseCase;
@@ -82,7 +83,7 @@ class KakaoOauthServiceTest {
         given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
 
         // when
-        TokenResponse response = kakaoOauthService.loginWithKakao(TEST_ACCESS_TOKEN, null);
+        TokenResponse response = kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, null));
 
         // then
         assertThat(response).isNotNull();
@@ -103,7 +104,7 @@ class KakaoOauthServiceTest {
         given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
 
         // when
-        kakaoOauthService.loginWithKakao(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN);
+        kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
 
         // then
         verify(userSavePort).save(any(User.class));
@@ -123,7 +124,7 @@ class KakaoOauthServiceTest {
         given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
 
         // when
-        kakaoOauthService.loginWithKakao(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN);
+        kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
 
         // then
         verify(sendToDeviceTokensUseCase).execute(any());
@@ -142,7 +143,7 @@ class KakaoOauthServiceTest {
         given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
 
         // when
-        kakaoOauthService.loginWithKakao(TEST_ACCESS_TOKEN, OLD_FCM_TOKEN);
+        kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, OLD_FCM_TOKEN));
 
         // then
         verify(userSavePort, never()).save(any());
@@ -162,7 +163,7 @@ class KakaoOauthServiceTest {
         given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
 
         // when
-        kakaoOauthService.loginWithKakao(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN);
+        kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
 
         // then
         verify(userSavePort).save(any(User.class));
@@ -182,7 +183,7 @@ class KakaoOauthServiceTest {
         given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
 
         // when
-        kakaoOauthService.loginWithKakao(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN);
+        kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
 
         // then
         verify(userSavePort).save(any(User.class));
@@ -202,7 +203,7 @@ class KakaoOauthServiceTest {
         given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.name())).willReturn(expectedToken);
 
         // when
-        kakaoOauthService.loginWithKakao(TEST_ACCESS_TOKEN, null);
+        kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, null));
 
         // then
         verify(refreshTokenRepository).deleteById(TEST_EMAIL);
@@ -222,7 +223,7 @@ class KakaoOauthServiceTest {
         doThrow(new RuntimeException("FCM 전송 실패")).when(sendToDeviceTokensUseCase).execute(any());
 
         // when
-        TokenResponse response = kakaoOauthService.loginWithKakao(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN);
+        TokenResponse response = kakaoOauthService.loginWithKakao(new KakaoOauthTokenRequest(TEST_ACCESS_TOKEN, NEW_FCM_TOKEN));
 
         // then
         assertThat(response).isNotNull();

@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.notification.application.port.out.SaveNotific
 import whispy_server.whispy.domain.notification.model.Notification;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class MarkAllNotificationsAsReadService implements MarkAllNotificationsAs
     /**
      * 모든 알림을 읽음 상태로 변경합니다.
      */
+    @UserAction("모든 알림 읽음 처리")
     @Override
     public void execute(){
         User currentUser = userFacadeUseCase.currentUser();

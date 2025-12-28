@@ -13,6 +13,7 @@ import whispy_server.whispy.domain.statistics.sleep.comparison.model.SleepPeriod
 import whispy_server.whispy.domain.statistics.sleep.types.SleepPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -44,6 +45,7 @@ public class GetSleepPeriodComparisonService implements GetSleepPeriodComparison
      */
     @Override
     @Transactional(readOnly = true)
+    @UserAction("수면 기간 비교 조회")
     public SleepPeriodComparisonResponse execute(SleepPeriodType period, LocalDate date) {
         DateValidator.validateNotFutureDate(date);
 

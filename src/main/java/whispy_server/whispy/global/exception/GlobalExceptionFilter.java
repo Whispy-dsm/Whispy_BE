@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 import whispy_server.whispy.global.exception.error.ErrorCode;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
@@ -16,6 +17,7 @@ import java.io.IOException;
 /**
  * Filter 단계에서 발생한 예외를 잡아 표준 ErrorResponse 로 응답하고 모니터링에 전파하는 필터.
  */
+@Slf4j
 @RequiredArgsConstructor
 public class GlobalExceptionFilter extends OncePerRequestFilter {
 
@@ -36,15 +38,19 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
         try{
             filterChain.doFilter(request,response);
         }catch (WhispyException e){
+            log.debug("[Filter] Whispy 예외 포착 - URI: {}, ErrorCode: {}",
+                request.getRequestURI(), e.getErrorCode());
             errorNotificationHandler.handleWhispyException(e);
 
             ErrorCode errorCode = e.getErrorCode();
-            writeErrorResponse(response, errorCode.getStatusCode(), ErrorResponse.of(errorCode, errorCode.getMessage(), e));
+            writeErrorResponse(response, errorCode.getStatusCode(), ErrorResponse.of(errorCode, errorCode.getMessage()));
         } catch (Exception e){
+            log.debug("[Filter] 일반 예외 포착 - URI: {}, ExceptionType: {}",
+                request.getRequestURI(), e.getClass().getSimpleName());
             errorNotificationHandler.handleExceptionException(e);
-            e.printStackTrace();
 
-            writeErrorResponse(response, response.getStatus(), ErrorResponse.of(response.getStatus(),e.getMessage(), e));
+            writeErrorResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    ErrorResponse.of(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error"));
         }
 
     }

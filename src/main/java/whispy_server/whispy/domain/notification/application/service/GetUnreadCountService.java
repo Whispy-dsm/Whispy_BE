@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.notification.adapter.in.web.dto.response.Unre
 import whispy_server.whispy.domain.notification.application.port.in.GetUnreadCountUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.QueryNotificationPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 읽지 않은 알림 개수 조회 서비스.
@@ -26,6 +27,7 @@ public class GetUnreadCountService implements GetUnreadCountUseCase {
      *
      * @return 읽지 않은 알림 개수 응답
      */
+    @UserAction("읽지 않은 알림 개수 조회")
     @Override
     public UnreadCountResponse execute(){
         int count = queryNotificationPort.countByEmailAndIsReadFalse(

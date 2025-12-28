@@ -24,4 +24,8 @@ public record AdminLoginRequest(
         @Size(min = 8, max = 70)
         String password
 ) {
+    @Override
+    public String toString() {
+        return "AdminLoginRequest[adminId=" + adminId + ", password=***]";
+    }
 }

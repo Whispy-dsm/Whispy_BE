@@ -16,6 +16,7 @@ import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserWithdrawalUseCase;
 import whispy_server.whispy.domain.user.application.port.out.UserDeletePort;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 사용자 회원 탈퇴 서비스.
@@ -47,6 +48,7 @@ public class UserWithdrawalService implements UserWithdrawalUseCase {
      */
     @Override
     @Transactional
+    @UserAction("회원 탈퇴")
     public void withdrawal(){
         User currentUser = userFacadeUseCase.currentUser();
         Long userId = currentUser.id();
