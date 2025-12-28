@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.like.application.port.in.QueryMyLikedMusicsUs
 import whispy_server.whispy.domain.like.application.port.out.QueryMusicLikePort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class QueryMyLikedMusicsService implements QueryMyLikedMusicsUseCase {
     private final QueryMusicLikePort queryMusicLikePort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    @UserAction("좋아요한 음악 목록 조회")
     @Transactional(readOnly = true)
     @Override
     public List<LikedMusicResponse> execute() {

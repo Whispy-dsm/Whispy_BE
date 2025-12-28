@@ -9,6 +9,7 @@ import whispy_server.whispy.global.exception.domain.auth.EmailAlreadySentExcepti
 import whispy_server.whispy.global.exception.domain.auth.EmailRateLimitExceededException;
 import whispy_server.whispy.global.exception.domain.auth.EmailSendFailedException;
 import whispy_server.whispy.global.utils.redis.RedisUtil;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -46,6 +47,7 @@ public class SendEmailVerificationService implements SendEmailVerificationUseCas
      * @throws EmailSendFailedException 이메일 발송 실패 시
      */
     @Override
+    @UserAction("이메일 인증 코드 발송")
     public void execute(SendEmailVerificationRequest request) {
         String email = request.email();
         String code = generateVerificationCode();

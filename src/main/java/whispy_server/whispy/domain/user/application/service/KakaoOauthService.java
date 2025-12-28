@@ -17,6 +17,7 @@ import whispy_server.whispy.domain.user.adapter.out.external.KakaoUserInfoAdapte
 import whispy_server.whispy.global.oauth.dto.OauthUserInfo;
 import whispy_server.whispy.global.oauth.parser.KakaoOauthUserInfoParser;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,7 @@ public class KakaoOauthService implements KakaoOauthUseCase {
      */
     @Override
     @Transactional
+    @UserAction("카카오 OAuth 로그인")
     public TokenResponse loginWithKakao(String accessToken, String fcmToken) {
         Map<String, Object> userAttribute = kakaoUserInfoAdapter.fetchUserInfo(accessToken);
         OauthUserInfo oauthUserInfo = new KakaoOauthUserInfoParser().parse(userAttribute);

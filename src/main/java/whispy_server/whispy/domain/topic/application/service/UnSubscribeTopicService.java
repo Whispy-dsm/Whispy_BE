@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.topic.application.port.in.UnSubscribeTopicUse
 import whispy_server.whispy.domain.topic.application.service.component.TopicUnsubscriber;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 토픽 구독 취소 서비스.
@@ -28,6 +29,7 @@ public class UnSubscribeTopicService implements UnSubscribeTopicUseCase {
      * @param request 토픽 구독 취소 요청
      */
     @Override
+    @UserAction("토픽 구독 취소")
     public void execute(TopicSubscriptionRequest request){
         User currentUser = userFacadeUseCase.currentUser();
 

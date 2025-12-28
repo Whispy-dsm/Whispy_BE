@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.QueryAllAnnouncementResponse;
 import whispy_server.whispy.domain.announcement.application.port.in.QueryAllAnnouncementUseCase;
 import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 모든 공지사항 조회 서비스.
@@ -26,6 +27,7 @@ public class QueryAllAnnouncementService implements QueryAllAnnouncementUseCase 
      * @param pageable 페이지 정보
      * @return 공지사항 목록 (생성일시 기준 내림차순 정렬)
      */
+    @UserAction("공지사항 목록 조회")
     @Transactional(readOnly = true)
     @Override
     public Page<QueryAllAnnouncementResponse> execute(Pageable pageable) {

@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.file.type.ImageFolder;
 import whispy_server.whispy.global.exception.domain.file.FileDeleteFailedException;
 import whispy_server.whispy.global.exception.domain.file.FileNotFoundException;
 import whispy_server.whispy.global.file.FileProperties;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,6 +29,7 @@ public class FileDeleteService implements FileDeleteUseCase {
      * @param fileName    삭제할 파일명
      */
     @Override
+    @UserAction("파일 삭제")
     public void deleteFile(ImageFolder imageFolder, String fileName){
 
         try {

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.UserTokenReissueUseCase;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 토큰 재발급 서비스.
@@ -25,6 +26,7 @@ public class UserTokenReissueService implements UserTokenReissueUseCase {
      */
     @Transactional
     @Override
+    @UserAction("토큰 재발급")
     public TokenResponse reissue(String token) {
         return jwtTokenProvider.reissue(token);
     }

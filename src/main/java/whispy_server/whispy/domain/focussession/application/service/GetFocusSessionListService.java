@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.focussession.adapter.in.web.dto.response.Focu
 import whispy_server.whispy.domain.focussession.application.port.in.GetFocusSessionListUseCase;
 import whispy_server.whispy.domain.focussession.application.port.out.QueryFocusSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 집중 세션 목록 조회 서비스.
@@ -29,6 +30,7 @@ public class GetFocusSessionListService implements GetFocusSessionListUseCase {
      * @param pageable 페이지 정보
      * @return 집중 세션 목록 페이지
      */
+    @UserAction("집중 세션 목록 조회")
     @Override
     public Page<FocusSessionListResponse> execute(Pageable pageable) {
         Long userId = userFacadeUseCase.currentUser().id();

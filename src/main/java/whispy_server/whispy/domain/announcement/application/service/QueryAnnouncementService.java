@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.announcement.adapter.in.web.dto.response.Quer
 import whispy_server.whispy.domain.announcement.application.port.in.QueryAnnouncementUseCase;
 import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
 import whispy_server.whispy.domain.announcement.model.Announcement;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.announcement.AnnouncementNotFoundException;
 
 /**
@@ -27,6 +28,7 @@ public class QueryAnnouncementService implements QueryAnnouncementUseCase {
      * @return 공지사항 상세 정보
      * @throws AnnouncementNotFoundException 공지사항을 찾을 수 없는 경우
      */
+    @UserAction("공지사항 상세 조회")
     @Transactional(readOnly = true)
     @Override
     public QueryAnnouncementResponse execute(Long id) {

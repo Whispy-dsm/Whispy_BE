@@ -11,6 +11,7 @@ import whispy_server.whispy.domain.like.model.MusicLike;
 import whispy_server.whispy.domain.music.application.port.out.QueryMusicPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
 /**
@@ -27,6 +28,7 @@ public class ToggleMusicLikeService implements ToggleMusicLikeUseCase {
     private final UserFacadeUseCase userFacadeUseCase;
     private final QueryMusicPort queryMusicPort;
 
+    @UserAction("음악 좋아요 토글")
     @Transactional
     @Override
     public void execute(Long musicId) {

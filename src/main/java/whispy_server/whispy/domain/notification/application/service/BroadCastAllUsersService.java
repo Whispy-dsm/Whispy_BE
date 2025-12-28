@@ -6,6 +6,7 @@ import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.Notif
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 모든 사용자에게 알림 전송 서비스.
@@ -23,6 +24,7 @@ public class BroadCastAllUsersService implements BroadCastToAllUsersUseCase {
      *
      * @param request 알림 토픽 전송 요청
      */
+    @UserAction("모든 사용자에게 알림 전송")
     @Override
     public void execute(NotificationTopicSendRequest request){
 

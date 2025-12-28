@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.reason.application.port.in.SaveWithdrawalReas
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonSavePort;
 import whispy_server.whispy.domain.reason.model.WithdrawalReason;
 import whispy_server.whispy.domain.reason.model.types.WithdrawalReasonType;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.reason.InvalidWithdrawalReasonDetailException;
 
 /**
@@ -22,6 +23,7 @@ public class SaveWithdrawalReasonService implements SaveWithdrawalReasonUseCase 
     /**
      * 탈퇴 사유 저장 요청을 처리한다.
      */
+    @UserAction("탈퇴 사유 저장")
     @Override
     @Transactional
     public void execute(SaveWithdrawalReasonRequest request) {

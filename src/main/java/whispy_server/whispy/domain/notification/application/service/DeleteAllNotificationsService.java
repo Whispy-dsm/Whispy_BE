@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.notification.application.port.in.DeleteAllNot
 import whispy_server.whispy.domain.notification.application.port.out.DeleteNotificationPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 모든 알림 삭제 서비스.
@@ -24,6 +25,7 @@ public class DeleteAllNotificationsService implements DeleteAllNotificationsUseC
     /**
      * 모든 알림을 삭제합니다.
      */
+    @UserAction("모든 알림 삭제")
     @Override
     public void execute() {
         User currentUser = userFacadeUseCase.currentUser();

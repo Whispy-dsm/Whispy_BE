@@ -17,6 +17,7 @@ import whispy_server.whispy.domain.statistics.sleep.daily.model.MonthlySleepData
 import whispy_server.whispy.domain.statistics.sleep.types.SleepPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,6 +39,7 @@ public class GetDailySleepStatisticsService implements GetDailySleepStatisticsUs
 
     @Override
     @Transactional(readOnly = true)
+    @UserAction("일별 수면 통계 조회")
     public DailySleepStatisticsResponse execute(SleepPeriodType period, LocalDate date) {
         DateValidator.validateNotFutureDate(date);
 

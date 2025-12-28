@@ -14,6 +14,7 @@ import whispy_server.whispy.domain.user.application.port.in.UserRegisterUseCase;
 import whispy_server.whispy.domain.user.application.port.out.ExistsUserPort;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.global.exception.domain.user.UserAlreadyExistException;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 사용자 회원가입 서비스.
@@ -39,6 +40,7 @@ public class UserRegisterService implements UserRegisterUseCase {
      */
     @Transactional
     @Override
+    @UserAction("사용자 회원가입")
     public void register(RegisterRequest request){
 
         if(existsUserPort.existsByEmail(request.email())){

@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.focussession.adapter.in.web.dto.response.Focu
 import whispy_server.whispy.domain.focussession.application.port.in.GetFocusSessionDetailUseCase;
 import whispy_server.whispy.domain.focussession.application.port.out.QueryFocusSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.focussession.FocusSessionNotFoundException;
 
 /**
@@ -30,6 +31,7 @@ public class GetFocusSessionDetailService implements GetFocusSessionDetailUseCas
      * @return 집중 세션 상세 정보
      * @throws FocusSessionNotFoundException 해당 ID의 세션이 없거나 현재 사용자의 세션이 아닐 경우
      */
+    @UserAction("집중 세션 상세 조회")
     @Override
     public FocusSessionDetailResponse execute(Long focusSessionId) {
         Long userId = userFacadeUseCase.currentUser().id();

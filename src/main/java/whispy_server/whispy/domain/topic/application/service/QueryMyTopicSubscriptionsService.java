@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.topic.application.port.out.QueryTopicSubscrip
 import whispy_server.whispy.domain.topic.model.TopicSubscription;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class QueryMyTopicSubscriptionsService implements QueryMyTopicSubscriptio
      *
      * @return 토픽 구독 목록
      */
+    @UserAction("내 토픽 구독 목록 조회")
     @Override
     public List<TopicSubscriptionResponse> execute(){
         String currentUserEmail = userFacadeUseCase.currentUser().email();

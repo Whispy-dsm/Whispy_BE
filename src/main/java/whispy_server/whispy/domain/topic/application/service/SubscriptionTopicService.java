@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.topic.application.port.in.SubscriptionTopicUs
 import whispy_server.whispy.domain.topic.application.service.component.TopicSubscriber;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 토픽 구독 서비스.
@@ -28,6 +29,7 @@ public class SubscriptionTopicService implements SubscriptionTopicUseCase {
      * @param request 토픽 구독 요청
      */
     @Override
+    @UserAction("토픽 구독")
     public void execute(TopicSubscriptionRequest request){
         User currentUser = userFacadeUseCase.currentUser();
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.response.MusicSearchResponse;
 import whispy_server.whispy.domain.music.application.port.in.SearchMusicTitleUseCase;
 import whispy_server.whispy.domain.music.application.port.out.SearchMusicPort;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 음악 제목 검색 서비스.
@@ -26,6 +27,7 @@ public class SearchMusicTitleService implements SearchMusicTitleUseCase {
      * @param pageable 페이지 정보
      * @return 검색된 음악 페이지
      */
+    @UserAction("음악 제목 검색")
     @Override
     public Page<MusicSearchResponse> searchMusic(String keyword, Pageable pageable) {
         return searchMusicPort.searchByTitle(keyword, pageable)

@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPor
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.payment.InvalidPaymentStateException;
 
 /**
@@ -30,6 +31,7 @@ public class PurchaseValidationService implements ValidatePurchaseUseCase {
      * @param request 구매 검증 요청
      * @return 구매 검증 결과
      */
+    @UserAction("구매 검증")
     @Override
     public ValidatePurchaseResponse validateAndProcessPurchase(ValidatePurchaseRequest request) {
 

@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.like.application.port.in.CheckMusicLikeUseCas
 import whispy_server.whispy.domain.like.application.port.out.QueryMusicLikePort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 사용자의 음악 좋아요 여부를 확인하는 서비스.
@@ -18,6 +19,7 @@ public class CheckMusicLikeService implements CheckMusicLikeUseCase {
     private final QueryMusicLikePort queryMusicLikePort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    @UserAction("음악 좋아요 여부 확인")
     @Transactional(readOnly = true)
     @Override
     public boolean execute(Long musicId) {

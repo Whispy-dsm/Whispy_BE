@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.focussession.application.port.in.DeleteFocusS
 import whispy_server.whispy.domain.focussession.application.port.out.DeleteFocusSessionPort;
 import whispy_server.whispy.domain.focussession.application.port.out.QueryFocusSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.focussession.FocusSessionNotFoundException;
 
 /**
@@ -31,6 +32,7 @@ public class DeleteFocusSessionService implements DeleteFocusSessionUseCase {
      * @param focusSessionId 삭제할 집중 세션 ID
      * @throws FocusSessionNotFoundException 해당 ID의 세션이 없거나 현재 사용자의 세션이 아닐 경우
      */
+    @UserAction("집중 세션 삭제")
     @Override
     public void execute(Long focusSessionId) {
         Long userId = userFacadeUseCase.currentUser().id();

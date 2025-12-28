@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.statistics.activity.applicatoin.port.in.GetWe
 import whispy_server.whispy.domain.statistics.activity.applicatoin.port.out.CheckWeeklySessionExistsPort;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ public class GetWeeklySessionExistsService implements GetWeeklySessionExistsUseC
      *
      * @return 주간 세션 존재 여부 응답
      */
+    @UserAction("주간 세션 존재 여부 조회")
     @Override
     @Transactional(readOnly = true)
     public WeeklySessionExistsResponse execute() {

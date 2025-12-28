@@ -10,6 +10,7 @@ import whispy_server.whispy.domain.payment.application.port.out.SubscriptionSave
 import whispy_server.whispy.domain.payment.application.service.domain.SubscriptionFactory;
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.payment.model.Subscription;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.payment.SubscriptionAcknowledgmentFailedException;
 
 import java.util.Optional;
@@ -37,6 +38,7 @@ public class PurchaseProcessingService {
      * @param subscriptionInfo Google Play 구독 정보
      * @return 구매 처리 결과
      */
+    @UserAction("구매 처리")
     @Transactional(noRollbackFor = SubscriptionAcknowledgmentFailedException.class)
     public ValidatePurchaseResponse processValidatedPurchase(
             String email,

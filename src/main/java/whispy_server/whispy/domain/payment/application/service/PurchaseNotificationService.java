@@ -14,6 +14,7 @@ import whispy_server.whispy.domain.payment.application.port.in.ProcessPurchaseNo
 import whispy_server.whispy.domain.payment.application.port.out.GooglePlayApiPort;
 import whispy_server.whispy.domain.payment.model.GooglePlaySubscriptionInfo;
 import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -47,6 +48,7 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
      *
      * @param pubSubMessage 처리할 Pub/Sub 메시지
      */
+    @UserAction("구매 알림 처리")
     @Override
     public void processPubSubMessage(PubSubMessageRequest pubSubMessage) {
         try {

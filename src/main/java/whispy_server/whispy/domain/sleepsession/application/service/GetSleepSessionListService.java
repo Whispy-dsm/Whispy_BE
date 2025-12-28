@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.response.Slee
 import whispy_server.whispy.domain.sleepsession.application.port.in.GetSleepSessionListUseCase;
 import whispy_server.whispy.domain.sleepsession.application.port.out.QuerySleepSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 수면 세션 목록 조회 서비스.
@@ -29,6 +30,7 @@ public class GetSleepSessionListService implements GetSleepSessionListUseCase {
      * @param pageable 페이지 정보
      * @return 수면 세션 목록 페이지
      */
+    @UserAction("수면 세션 목록 조회")
     @Override
     public Page<SleepSessionListResponse> execute(Pageable pageable) {
         Long userId = userFacadeUseCase.currentUser().id();

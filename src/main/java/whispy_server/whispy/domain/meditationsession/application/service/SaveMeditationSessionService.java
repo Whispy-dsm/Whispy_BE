@@ -11,6 +11,7 @@ import whispy_server.whispy.domain.meditationsession.model.MeditationSession;
 import whispy_server.whispy.domain.statistics.meditation.daily.application.port.out.QueryMeditationStatisticsPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class SaveMeditationSessionService implements SaveMeditationSessionUseCas
      * @param request 저장할 명상 세션의 요청 DTO
      * @return 저장된 명상 세션과 오늘의 총 명상 시간(분)을 포함한 응답 DTO
      */
+    @UserAction("명상 세션 저장")
     @Transactional
     @Override
     public MeditationSessionResponse execute(SaveMeditationSessionRequest request) {

@@ -19,6 +19,7 @@ import whispy_server.whispy.domain.user.application.port.out.QueryUserPort;
 import whispy_server.whispy.global.exception.domain.user.PasswordMissMatchException;
 import whispy_server.whispy.global.exception.domain.user.UserNotFoundException;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class UserLoginService implements UserLoginUseCase {
      */
     @Transactional
     @Override
+    @UserAction("사용자 로그인")
     public TokenResponse login(UserLoginRequest request) {
         User user = authenticatedUser(request);
 

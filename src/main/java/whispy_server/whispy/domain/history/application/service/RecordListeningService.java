@@ -10,6 +10,7 @@ import whispy_server.whispy.domain.history.model.ListeningHistory;
 import whispy_server.whispy.domain.music.application.port.out.QueryMusicPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ public class RecordListeningService implements RecordListeningUseCase {
      *
      * @param musicId 청취한 음악 ID
      */
+    @UserAction("음악 청취 기록")
     @Transactional
     @Override
     public void execute(Long musicId) {

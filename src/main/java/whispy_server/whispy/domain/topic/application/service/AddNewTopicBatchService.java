@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.topic.application.port.in.AddNewTopicForAllUsersUseCase;
 import whispy_server.whispy.domain.topic.batch.trigger.AddNewTopicBatchTrigger;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 새로운 토픽 추가 서비스.
@@ -23,6 +24,7 @@ public class AddNewTopicBatchService implements AddNewTopicForAllUsersUseCase {
      * @param newTopic 새로운 토픽
      * @param defaultSubscribed 기본 구독 여부
      */
+    @UserAction("새로운 토픽 추가")
     @Override
     public void execute(NotificationTopic newTopic, boolean defaultSubscribed) {
         addNewTopicBatchTrigger.trigger(newTopic, defaultSubscribed);

@@ -12,6 +12,7 @@ import whispy_server.whispy.domain.user.application.port.in.UpdateFcmTokenUseCas
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.facade.UserFacade;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class UpdateFcmTokenService implements UpdateFcmTokenUseCase {
      * @param fcmToken 새로운 FCM 토큰
      */
     @Override
+    @UserAction("FCM 토큰 업데이트")
     public void execute(String fcmToken) {
         User currentUser = userFacade.currentUser();
 

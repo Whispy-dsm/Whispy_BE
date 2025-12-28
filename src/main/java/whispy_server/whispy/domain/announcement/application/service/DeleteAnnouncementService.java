@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.announcement.application.port.in.DeleteAnnouncementUseCase;
 import whispy_server.whispy.domain.announcement.application.port.out.AnnouncementPort;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 공지사항 삭제 서비스.
@@ -22,6 +23,7 @@ public class DeleteAnnouncementService implements DeleteAnnouncementUseCase {
      *
      * @param id 삭제할 공지사항 ID
      */
+    @UserAction("공지사항 삭제")
     @Transactional
     @Override
     public void execute(Long id) {

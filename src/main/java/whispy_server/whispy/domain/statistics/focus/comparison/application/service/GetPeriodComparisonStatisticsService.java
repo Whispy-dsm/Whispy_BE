@@ -14,6 +14,7 @@ import whispy_server.whispy.domain.statistics.focus.comparison.model.PeriodCompa
 import whispy_server.whispy.domain.statistics.focus.types.FocusPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class GetPeriodComparisonStatisticsService implements GetPeriodComparison
     private final QueryFocusComparisonPort queryFocusComparisonPort;
     private final UserFacadeUseCase userFacadeUseCase;
 
+    @UserAction("집중 기간 비교 통계 조회")
     @Override
     @Transactional(readOnly = true)
     public PeriodComparisonResponse execute(FocusPeriodType period, LocalDate date) {

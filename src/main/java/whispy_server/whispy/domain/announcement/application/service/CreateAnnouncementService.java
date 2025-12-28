@@ -10,6 +10,7 @@ import whispy_server.whispy.domain.announcement.model.Announcement;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationTopicSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.BroadCastToAllUsersUseCase;
 import whispy_server.whispy.global.exception.domain.announcement.AnnouncementPublicationFailedException;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +33,7 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
      * @param request 생성할 공지사항 정보가 포함된 요청
      */
     @Override
+    @UserAction("공지사항 생성")
     public void execute(CreateAnnouncementRequest request) {
         // Announcement 객체 생성 (서비스의 책임)
         Announcement announcement = new Announcement(

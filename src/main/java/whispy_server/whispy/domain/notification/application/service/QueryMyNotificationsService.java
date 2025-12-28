@@ -10,6 +10,7 @@ import whispy_server.whispy.domain.notification.application.port.in.QueryMyNotif
 import whispy_server.whispy.domain.notification.application.port.out.QueryNotificationPort;
 import whispy_server.whispy.domain.notification.model.Notification;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 내 알림 목록 조회 서비스.
@@ -30,6 +31,7 @@ public class QueryMyNotificationsService implements QueryMyNotificationsUseCase 
      * @param pageable 페이지 정보
      * @return 알림 목록 페이지
      */
+    @UserAction("내 알림 목록 조회")
     @Override
     public Page<NotificationResponse> execute(Pageable pageable){
         Page<Notification> notifications = queryNotificationPort.findByEmailOrderByCreatedAtDesc(

@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.notification.application.port.out.QueryNotifi
 import whispy_server.whispy.domain.notification.model.Notification;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.fcm.NotificationNotFoundException;
 
 /**
@@ -32,6 +33,7 @@ public class DeleteNotificationService implements DeleteNotificationUseCase {
      * @param notificationId 삭제할 알림 ID
      * @throws NotificationNotFoundException 알림을 찾을 수 없거나 소유자가 아닌 경우
      */
+    @UserAction("알림 삭제")
     @Override
     public void execute(Long notificationId) {
         User currentUser = userFacadeUseCase.currentUser();

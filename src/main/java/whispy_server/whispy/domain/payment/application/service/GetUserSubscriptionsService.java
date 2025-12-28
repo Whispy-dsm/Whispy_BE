@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.GetUserSu
 import whispy_server.whispy.domain.payment.application.port.in.GetUserSubscriptionsUseCase;
 import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
 import whispy_server.whispy.domain.payment.model.Subscription;
+import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class GetUserSubscriptionsService implements GetUserSubscriptionsUseCase 
      * @param email 사용자 이메일
      * @return 사용자의 구독 정보 목록
      */
+    @UserAction("구독 정보 조회")
     @Override
     public GetUserSubscriptionsResponse getUserSubscriptions(String email) {
         Optional<Subscription> subscriptions = querySubscriptionPort.findByEmail(email);
