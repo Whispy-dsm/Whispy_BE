@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.admin.model.Admin;
 import whispy_server.whispy.domain.admin.application.port.in.AdminFacadeUseCase;
 import whispy_server.whispy.domain.admin.application.port.out.QueryAdminPort;
 import whispy_server.whispy.global.exception.domain.admin.AdminNotFoundException;
+import whispy_server.whispy.global.security.auth.AuthDetails;
 
 /**
  * 관리자 파사드.
@@ -30,20 +31,20 @@ public class AdminFacade implements AdminFacadeUseCase {
      */
     @Override
     public Admin currentAdmin(){
-        String adminId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return getAdminByAdminId(adminId);
+        AuthDetails authDetails = (AuthDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return getAdminById(authDetails.id());
     }
 
     /**
-     * 관리자 ID로 관리자를 조회합니다.
+     * 관리자 ID (PK)로 관리자를 조회합니다.
      *
-     * @param adminId 조회할 관리자 ID
+     * @param id 조회할 관리자 ID (PK)
      * @return 관리자 도메인 모델
      * @throws AdminNotFoundException 관리자를 찾을 수 없는 경우
      */
     @Override
-    public Admin getAdminByAdminId(String adminId){
-        return queryAdminPort.findByAdminId(adminId)
-                .orElseThrow(() -> AdminNotFoundException.EXCEPTION );
+    public Admin getAdminById(Long id){
+        return queryAdminPort.findById(id)
+                .orElseThrow(() -> AdminNotFoundException.EXCEPTION);
     }
 }

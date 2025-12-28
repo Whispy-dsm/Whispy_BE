@@ -21,4 +21,9 @@ public record PubSubMessageDataRequest(
         String data,
         @Schema(description = "메시지 ID", example = "1234567890")
         String messageId
-) {}
+) {
+    @Override
+    public String toString() {
+        return "PubSubMessageDataRequest[attributes=" + attributes + ", data=***, messageId=" + messageId + "]";
+    }
+}

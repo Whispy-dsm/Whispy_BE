@@ -23,12 +23,12 @@ public interface AdminFacadeUseCase {
     Admin currentAdmin();
 
     /**
-     * 관리자 로그인 ID로 관리자 정보를 조회합니다.
+     * 관리자 ID (PK)로 관리자 정보를 조회합니다.
      *
-     * @param adminId 조회할 관리자 로그인 ID
+     * @param id 조회할 관리자 ID (PK)
      * @return 조회된 관리자 정보
      * @throws AdminNotFoundException 관리자를 찾을 수 없는 경우
      */
-    Admin getAdminByAdminId(String adminId);
+    Admin getAdminById(Long id);
 
 }

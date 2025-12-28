@@ -12,8 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 /**
  * 관리자 JPA 엔티티
  *
@@ -32,8 +30,8 @@ public class AdminJpaEntity {
      * 관리자 고유 식별자
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
      * 관리자 로그인 ID

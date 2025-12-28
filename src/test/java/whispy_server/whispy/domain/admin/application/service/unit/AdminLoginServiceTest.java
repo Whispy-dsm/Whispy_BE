@@ -58,7 +58,8 @@ class AdminLoginServiceTest {
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
 
-    private static final String TEST_ADMIN_ID = "admin";
+    private static final Long TEST_ADMIN_ID = 1L;
+    private static final String TEST_ADMIN_LOGIN_ID = "admin";
     private static final String TEST_PASSWORD = "adminpass123";
     private static final String ENCODED_PASSWORD = "encoded_password";
     private static final Long REFRESH_EXPIRATION = 604800000L;
@@ -67,11 +68,11 @@ class AdminLoginServiceTest {
     @DisplayName("유효한 자격증명으로 관리자 로그인에 성공한다")
     void whenValidCredentials_thenLoginSuccessfully() {
         // given
-        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_ID, TEST_PASSWORD);
+        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_LOGIN_ID, TEST_PASSWORD);
         Admin admin = createAdmin();
         TokenResponse expectedToken = new TokenResponse("access-token", "refresh-token");
 
-        given(queryAdminPort.findByAdminId(TEST_ADMIN_ID)).willReturn(Optional.of(admin));
+        given(queryAdminPort.findByAdminId(TEST_ADMIN_LOGIN_ID)).willReturn(Optional.of(admin));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
         given(jwtTokenProvider.generateToken(TEST_ADMIN_ID, Role.ADMIN.name())).willReturn(expectedToken);
         given(jwtProperties.refreshExpiration()).willReturn(REFRESH_EXPIRATION);
@@ -89,11 +90,11 @@ class AdminLoginServiceTest {
     @DisplayName("로그인 성공 시 리프레시 토큰을 Redis에 저장한다")
     void whenLoginSuccess_thenSavesRefreshToken() {
         // given
-        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_ID, TEST_PASSWORD);
+        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_LOGIN_ID, TEST_PASSWORD);
         Admin admin = createAdmin();
         TokenResponse expectedToken = new TokenResponse("access-token", "refresh-token");
 
-        given(queryAdminPort.findByAdminId(TEST_ADMIN_ID)).willReturn(Optional.of(admin));
+        given(queryAdminPort.findByAdminId(TEST_ADMIN_LOGIN_ID)).willReturn(Optional.of(admin));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
         given(jwtTokenProvider.generateToken(TEST_ADMIN_ID, Role.ADMIN.name())).willReturn(expectedToken);
         given(jwtProperties.refreshExpiration()).willReturn(REFRESH_EXPIRATION);
@@ -128,10 +129,10 @@ class AdminLoginServiceTest {
     @DisplayName("비밀번호가 일치하지 않으면 예외가 발생한다")
     void whenPasswordMismatch_thenThrowsException() {
         // given
-        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_ID, "wrongpassword");
+        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_LOGIN_ID, "wrongpassword");
         Admin admin = createAdmin();
 
-        given(queryAdminPort.findByAdminId(TEST_ADMIN_ID)).willReturn(Optional.of(admin));
+        given(queryAdminPort.findByAdminId(TEST_ADMIN_LOGIN_ID)).willReturn(Optional.of(admin));
         given(passwordEncoder.matches("wrongpassword", ENCODED_PASSWORD)).willReturn(false);
 
         // when & then
@@ -143,11 +144,11 @@ class AdminLoginServiceTest {
     @DisplayName("JWT 토큰 생성 시 ADMIN 역할을 사용한다")
     void whenGenerateToken_thenUsesAdminRole() {
         // given
-        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_ID, TEST_PASSWORD);
+        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_LOGIN_ID, TEST_PASSWORD);
         Admin admin = createAdmin();
         TokenResponse expectedToken = new TokenResponse("access-token", "refresh-token");
 
-        given(queryAdminPort.findByAdminId(TEST_ADMIN_ID)).willReturn(Optional.of(admin));
+        given(queryAdminPort.findByAdminId(TEST_ADMIN_LOGIN_ID)).willReturn(Optional.of(admin));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
         given(jwtTokenProvider.generateToken(TEST_ADMIN_ID, Role.ADMIN.name())).willReturn(expectedToken);
         given(jwtProperties.refreshExpiration()).willReturn(REFRESH_EXPIRATION);
@@ -163,12 +164,12 @@ class AdminLoginServiceTest {
     @DisplayName("리프레시 토큰의 만료 시간은 JwtProperties에서 가져온다")
     void whenSaveRefreshToken_thenUsesExpirationFromProperties() {
         // given
-        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_ID, TEST_PASSWORD);
+        AdminLoginRequest request = new AdminLoginRequest(TEST_ADMIN_LOGIN_ID, TEST_PASSWORD);
         Admin admin = createAdmin();
         TokenResponse expectedToken = new TokenResponse("access-token", "refresh-token");
         Long customExpiration = 1000000L;
 
-        given(queryAdminPort.findByAdminId(TEST_ADMIN_ID)).willReturn(Optional.of(admin));
+        given(queryAdminPort.findByAdminId(TEST_ADMIN_LOGIN_ID)).willReturn(Optional.of(admin));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
         given(jwtTokenProvider.generateToken(TEST_ADMIN_ID, Role.ADMIN.name())).willReturn(expectedToken);
         given(jwtProperties.refreshExpiration()).willReturn(customExpiration);
@@ -207,8 +208,8 @@ class AdminLoginServiceTest {
      */
     private Admin createAdmin() {
         return new Admin(
-                UUID.randomUUID(),
                 TEST_ADMIN_ID,
+                TEST_ADMIN_LOGIN_ID,
                 ENCODED_PASSWORD
         );
     }

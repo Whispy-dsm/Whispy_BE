@@ -17,11 +17,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserFacadeUseCase userFacadeUseCase;
 
     /**
-     * 이메일 기준으로 사용자 정보를 조회하고 UserDetails로 변환한다.
+     * 사용자 ID 기준으로 사용자 정보를 조회하고 UserDetails로 변환한다.
+     *
+     * @param userId 사용자 ID (PK)
+     * @return UserDetails 구현체
      */
     @Override
-    public UserDetails loadUserByUsername(String email){
-        User user = userFacadeUseCase.getUserByEmail(email);
-                return new AuthDetails(user.email(),user.role().name(), AuthDetails.EMPTY_ATTRIBUTES);
+    public UserDetails loadUserByUsername(String userId){
+        User user = userFacadeUseCase.getUserById(Long.parseLong(userId));
+        return new AuthDetails(user.id(), user.role().name(), AuthDetails.EMPTY_ATTRIBUTES);
     }
 }

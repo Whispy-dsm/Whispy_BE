@@ -16,7 +16,7 @@ public record TopicSubscriptionResponse(
         @Schema(description = "알림 주제")
         NotificationTopic topic,
         @Schema(description = "구독 여부", example = "true")
-        boolean Subscribed
+        boolean subscribed
 ){
 
     public static TopicSubscriptionResponse from(TopicSubscription subscription) {
@@ -26,5 +26,11 @@ public record TopicSubscriptionResponse(
                 subscription.topic(),
                 subscription.subscribed()
         );
+    }
+
+    @Override
+    public String toString() {
+        return "TopicSubscriptionResponse[id=" + id + ", email=***, topic=" + topic +
+               ", subscribed=" + subscribed + "]";
     }
 }

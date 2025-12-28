@@ -20,7 +20,7 @@ import java.util.Objects;
 public class RefreshToken {
 
     @Id
-    String id;
+    Long id;
 
     @Indexed
     String token;

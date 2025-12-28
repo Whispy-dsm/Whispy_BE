@@ -30,7 +30,7 @@ public class OauthSuccessHandler implements AuthenticationSuccessHandler {
         AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
 
         TokenResponse tokenResponse = jwtTokenProvider.generateToken(
-                authDetails.getUsername(),
+                Long.parseLong(authDetails.getUsername()),
                 authDetails.role()
         );
 

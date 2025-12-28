@@ -18,6 +18,14 @@ public interface QueryUserPort {
      */
     Optional<User> findByEmail(String email);
 
+    /**
+     * 사용자 ID로 사용자를 조회합니다.
+     *
+     * @param userId 조회할 사용자 ID (PK)
+     * @return 사용자 도메인 객체 (Optional)
+     */
+    Optional<User> findById(Long userId);
+
 }
 
 

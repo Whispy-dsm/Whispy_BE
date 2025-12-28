@@ -54,7 +54,7 @@ public record RegisterRequest(
 ) {
     @Override
     public String toString() {
-        return "RegisterRequest[email=" + email + ", password=***, name=" + name +
+        return "RegisterRequest[email=***, password=***, name=" + name +
                ", profileImageUrl=" + profileImageUrl + ", gender=" + gender +
                ", fcmToken=***, isEventAgreed=" + isEventAgreed + "]";
     }

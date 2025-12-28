@@ -47,4 +47,10 @@ public record MyAccountInfoResponse(
                 maskedPassword
         );
     }
+
+    @Override
+    public String toString() {
+        return "MyAccountInfoResponse[name=" + name + ", profileImageUrl=" + profileImageUrl +
+               ", email=***, gender=" + gender + ", provider=" + provider + ", password=***]";
+    }
 }

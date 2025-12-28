@@ -52,7 +52,7 @@ class UserLogoutServiceTest {
         userLogoutService.logout();
 
         // then
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
     }
 
     @Test
@@ -67,7 +67,7 @@ class UserLogoutServiceTest {
 
         // then
         verify(userFacadeUseCase).currentUser();
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
     }
 
     /**

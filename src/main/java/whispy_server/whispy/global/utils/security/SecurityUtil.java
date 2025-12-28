@@ -17,7 +17,7 @@ public final class SecurityUtil {
     /**
      * 현재 요청의 사용자 식별자를 반환합니다.
      *
-     * @return 인증된 사용자의 이름(이메일), 또는 익명 사용자인 경우 "anonymous"
+     * @return 인증된 사용자의 ID (Long을 String으로 변환), 또는 익명 사용자인 경우 "ANONYMOUS"
      */
     public static String getCurrentUserIdentifier() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -26,6 +26,6 @@ public final class SecurityUtil {
                 && !"anonymousUser".equals(authentication.getPrincipal())) {
             return authentication.getName();
         }
-        return "anonymous";
+        return "ANONYMOUS";
     }
 }

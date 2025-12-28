@@ -18,12 +18,12 @@ public interface UserFacadeUseCase {
     User currentUser();
 
     /**
-     * 이메일로 사용자를 조회합니다.
+     * 사용자 ID로 사용자를 조회합니다.
      *
-     * @param email 조회할 이메일 주소
+     * @param userId 조회할 사용자 ID (PK)
      * @return 사용자 도메인 객체
      */
-    User getUserByEmail(String email);
+    User getUserById(Long userId);
 
 
 }

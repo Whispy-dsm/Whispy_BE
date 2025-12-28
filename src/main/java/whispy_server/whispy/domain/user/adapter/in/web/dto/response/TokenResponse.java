@@ -16,4 +16,8 @@ public record TokenResponse(
         @Schema(description = "리프레시 토큰", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
         String refreshToken
 ) {
+    @Override
+    public String toString() {
+        return "TokenResponse[accessToken=***, refreshToken=***]";
+    }
 }

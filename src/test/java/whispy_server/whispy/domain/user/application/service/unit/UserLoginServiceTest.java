@@ -84,7 +84,7 @@ class UserLoginServiceTest {
 
         given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.toString())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.toString())).willReturn(expectedToken);
 
         // when
         TokenResponse response = userLoginService.login(request);
@@ -92,7 +92,7 @@ class UserLoginServiceTest {
         // then
         assertThat(response).isNotNull();
         assertThat(response.accessToken()).isEqualTo("access-token");
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
     }
 
     @Test
@@ -133,13 +133,13 @@ class UserLoginServiceTest {
 
         given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.toString())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.toString())).willReturn(expectedToken);
 
         // when
         userLoginService.login(request);
 
         // then
-        verify(refreshTokenRepository).deleteById(TEST_EMAIL);
+        verify(refreshTokenRepository).deleteById(TEST_USER_ID);
     }
 
     @Test
@@ -152,7 +152,7 @@ class UserLoginServiceTest {
 
         given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.toString())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.toString())).willReturn(expectedToken);
 
         // when
         userLoginService.login(request);
@@ -172,7 +172,7 @@ class UserLoginServiceTest {
 
         given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.toString())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.toString())).willReturn(expectedToken);
 
         // when
         userLoginService.login(request);
@@ -191,7 +191,7 @@ class UserLoginServiceTest {
 
         given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.toString())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.toString())).willReturn(expectedToken);
 
         // when
         userLoginService.login(request);
@@ -211,7 +211,7 @@ class UserLoginServiceTest {
 
         given(queryUserPort.findByEmail(TEST_EMAIL)).willReturn(Optional.of(user));
         given(passwordEncoder.matches(TEST_PASSWORD, ENCODED_PASSWORD)).willReturn(true);
-        given(jwtTokenProvider.generateToken(TEST_EMAIL, Role.USER.toString())).willReturn(expectedToken);
+        given(jwtTokenProvider.generateToken(TEST_USER_ID, Role.USER.toString())).willReturn(expectedToken);
 
         // when
         userLoginService.login(request);

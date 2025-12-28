@@ -19,4 +19,12 @@ public interface QueryAdminPort {
      * @return 조회된 관리자 정보 (Optional)
      */
     Optional<Admin> findByAdminId(String adminId);
+
+    /**
+     * 관리자 ID (PK)로 관리자 정보를 조회합니다.
+     *
+     * @param id 조회할 관리자 ID (PK)
+     * @return 조회된 관리자 정보 (Optional)
+     */
+    Optional<Admin> findById(Long id);
 }

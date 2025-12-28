@@ -31,6 +31,6 @@ public record UserLoginRequest(
 ) {
     @Override
     public String toString() {
-        return "UserLoginRequest[email=" + email + ", password=***, fcmToken=***]";
+        return "UserLoginRequest[email=***, password=***, fcmToken=***]";
     }
 }

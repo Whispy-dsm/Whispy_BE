@@ -33,7 +33,7 @@ public class CustomOauthUserDetailsService extends DefaultOAuth2UserService {
         OauthUserInfo oauthUserInfo = OauthUserInfoParserFactory.getParser(provider).parse(oAuth2User.getAttributes());
         User user = oauthUserUseCase.findOrCreateOauthUser(oauthUserInfo, provider);
 
-        return new AuthDetails(user.email(), user.role().name(), oAuth2User.getAttributes());
+        return new AuthDetails(user.id(), user.role().name(), oAuth2User.getAttributes());
     }
 
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.notification.batch.trigger.DeleteOldNotificationBatchTrigger;
+import whispy_server.whispy.global.annotation.SystemAction;
 import whispy_server.whispy.global.feign.discord.DiscordNotificationService;
 
 /**
@@ -22,6 +23,7 @@ public class NotificationScheduler {
     /**
      * 매일 새벽 3시에 30일이 지난 오래된 알림을 삭제합니다.
      */
+    @SystemAction("오래된 알림 삭제 배치")
     @Scheduled(cron = "0 0 3 * * *", zone = "Asia/Seoul")
     public void deleteOldNotifications() {
 

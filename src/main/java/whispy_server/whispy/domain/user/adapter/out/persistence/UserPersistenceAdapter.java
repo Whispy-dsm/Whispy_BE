@@ -43,6 +43,17 @@ public class UserPersistenceAdapter implements UserPort {
     }
 
     /**
+     * 사용자 ID로 사용자를 조회합니다.
+     *
+     * @param userId 조회할 사용자 ID (PK)
+     * @return 사용자 도메인 객체 (Optional)
+     */
+    @Override
+    public Optional<User> findById(Long userId) {
+        return userEntityMapper.toOptionalDomain(userRepository.findById(userId));
+    }
+
+    /**
      * 이메일로 사용자 존재 여부를 확인합니다.
      *
      * @param email 확인할 이메일 주소
