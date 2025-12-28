@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.ToString;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 
 import java.util.List;
@@ -24,7 +23,6 @@ import java.util.Map;
  * @param body 알림 내용
  * @param data 추가 데이터
  */
-@ToString(exclude = {"deviceTokens"})
 @Schema(description = "알림 전송 요청")
 public record NotificationSendRequest(
         @Schema(description = "사용자 이메일", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -48,4 +46,10 @@ public record NotificationSendRequest(
         String body,
         @Schema(description = "추가 데이터")
         Map<String, String> data
-) {}
+) {
+    @Override
+    public String toString() {
+        return "NotificationSendRequest[email=" + email + ", deviceTokens=***, topic=" + topic +
+               ", title=" + title + ", body=" + body + ", data=" + data + "]";
+    }
+}
