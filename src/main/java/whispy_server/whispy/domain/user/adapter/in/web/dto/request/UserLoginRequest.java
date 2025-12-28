@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.ToString;
 
 /**
  * 사용자 로그인 요청 DTO.
@@ -14,7 +13,6 @@ import lombok.ToString;
  * @param password 비밀번호
  * @param fcmToken Firebase Cloud Messaging 토큰
  */
-@ToString(exclude = {"password", "fcmToken"})
 @Schema(description = "사용자 로그인 요청")
 public record UserLoginRequest(
 
@@ -31,4 +29,8 @@ public record UserLoginRequest(
     @Size(max = 255)
     String fcmToken
 ) {
+    @Override
+    public String toString() {
+        return "UserLoginRequest[email=" + email + ", password=***, fcmToken=***]";
+    }
 }

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.ToString;
 
 /**
  * 비밀번호 변경 요청 DTO.
@@ -14,7 +13,6 @@ import lombok.ToString;
  * @param email 자신의 이메일 (본인 확인용)
  * @param newPassword 새로운 비밀번호 (8자 이상, 숫자 및 특수문자 포함)
  */
-@ToString(exclude = {"newPassword"})
 @Schema(description = "비밀번호 변경 요청")
 public record ChangePasswordRequest(
         @NotBlank
@@ -29,4 +27,8 @@ public record ChangePasswordRequest(
         @NotBlank
         String newPassword
 ) {
+    @Override
+    public String toString() {
+        return "ChangePasswordRequest[email=" + email + ", newPassword=***]";
+    }
 }
