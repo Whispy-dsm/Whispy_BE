@@ -41,7 +41,7 @@ public class ErrorNotificationHandler {
             }
         } else {
             log.warn("[Whispy] 일반적인 클라이언트 에러 발생 (4xx) - Status: {}, ErrorCode: {}, Message: {}",
-                statusCode, e.getErrorCode(), e.getErrorCode().getMessage(), e);
+                statusCode, e.getErrorCode(), e.getErrorCode().getMessage());
         }
     }
 
