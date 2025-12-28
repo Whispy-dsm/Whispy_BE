@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.ToString;
 
 /**
  * 비밀번호 재설정 요청 DTO.
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.Size;
  * @param email 이메일 주소
  * @param newPassword 새로운 비밀번호 (8자 이상, 숫자 및 특수문자 포함)
  */
+@ToString(exclude = {"newPassword"})
 @Schema(description = "비밀번호 재설정 요청")
 public record ResetPasswordRequest(
         @Schema(description = "이메일", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)

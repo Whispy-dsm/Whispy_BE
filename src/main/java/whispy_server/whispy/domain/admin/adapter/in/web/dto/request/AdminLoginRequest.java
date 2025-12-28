@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.admin.adapter.in.web.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.ToString;
 
 /**
  * 관리자 로그인 요청 DTO
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.Size;
  * @param adminId 관리자 로그인 ID
  * @param password 평문 비밀번호 (서버에서 암호화된 비밀번호와 비교됨)
  */
+@ToString(exclude = {"password"})
 @Schema(description = "관리자 로그인 요청")
 public record AdminLoginRequest(
         @Schema(description = "관리자 ID", example = "admin", requiredMode = Schema.RequiredMode.REQUIRED)

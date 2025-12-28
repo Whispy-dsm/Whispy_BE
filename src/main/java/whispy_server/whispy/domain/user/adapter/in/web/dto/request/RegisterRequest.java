@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.ToString;
 import whispy_server.whispy.domain.user.model.types.Gender;
 
 /**
@@ -19,6 +20,7 @@ import whispy_server.whispy.domain.user.model.types.Gender;
  * @param fcmToken Firebase Cloud Messaging 토큰 (선택)
  * @param isEventAgreed 이벤트 알림 수신 동의 여부
  */
+@ToString(exclude = {"password", "fcmToken"})
 @Schema(description = "회원가입 요청")
 public record RegisterRequest(
         @Email

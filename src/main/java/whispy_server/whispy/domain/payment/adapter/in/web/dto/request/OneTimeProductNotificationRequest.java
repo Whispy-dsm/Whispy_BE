@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.payment.adapter.in.web.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.ToString;
 
 /**
  * 일회성 상품 알림 요청 DTO.
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @param purchaseToken 구매 토큰
  * @param sku SKU
  */
+@ToString(exclude = {"purchaseToken"})
 @Schema(description = "일회성 상품 알림 요청")
 public record OneTimeProductNotificationRequest(
         @Schema(description = "API 버전", example = "1.0")
