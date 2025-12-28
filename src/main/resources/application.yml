@@ -48,7 +48,8 @@ spring:
       enabled: true
 
   jackson:
-    property-naming-strategy : SNAKE_CASE
+    property-naming-strategy: SNAKE_CASE
+    time-zone: Asia/Seoul
 
   jwt:
     header: ${JWT_HEADER}
