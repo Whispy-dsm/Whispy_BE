@@ -22,9 +22,6 @@
             <fileNamePattern>${LOG_PATH}/whispy.%d{yyyy-MM-dd, Asia/Seoul}.log.gz</fileNamePattern>
             <maxHistory>90</maxHistory>
             <totalSizeCap>10GB</totalSizeCap>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <timeZone>Asia/Seoul</timeZone>
-            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
@@ -43,9 +40,6 @@
             <fileNamePattern>${LOG_PATH}/whispy-error.%d{yyyy-MM-dd, Asia/Seoul}.log.gz</fileNamePattern>
             <maxHistory>90</maxHistory>
             <totalSizeCap>3GB</totalSizeCap>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <timeZone>Asia/Seoul</timeZone>
-            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
