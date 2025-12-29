@@ -16,7 +16,6 @@ import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
 import whispy_server.whispy.global.security.jwt.domain.entity.RefreshToken;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
-import whispy_server.whispy.global.annotation.UserAction;
 
 /**
  * 관리자 로그인 서비스.
@@ -47,7 +46,6 @@ public class AdminLoginService implements AdminLoginUseCase {
      */
     @Override
     @Transactional
-    @UserAction("관리자 로그인")
     public TokenResponse execute(AdminLoginRequest request) {
         Admin admin = queryAdminPort.findByAdminId(request.adminId())
                 .orElseThrow(() -> AdminNotFoundException.EXCEPTION);
