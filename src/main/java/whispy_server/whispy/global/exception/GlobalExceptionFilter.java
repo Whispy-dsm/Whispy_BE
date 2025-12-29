@@ -43,7 +43,7 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
             errorNotificationHandler.handleWhispyException(e);
 
             ErrorCode errorCode = e.getErrorCode();
-            writeErrorResponse(response, errorCode.getStatusCode(), ErrorResponse.of(errorCode, errorCode.getMessage()));
+            writeErrorResponse(response, errorCode.getStatusCode(), ErrorResponse.of(errorCode));
         } catch (Exception e){
             log.debug("[Filter] 일반 예외 포착 - URI: {}, ExceptionType: {}",
                 request.getRequestURI(), e.getClass().getSimpleName());

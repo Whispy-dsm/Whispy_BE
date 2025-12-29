@@ -29,7 +29,7 @@ public class OauthFailureHandler implements AuthenticationFailureHandler {
                                         AuthenticationException exception) throws IOException, ServletException {
 
         ErrorCode errorCode = ErrorCode.OAUTH_AUTHENTICATION_FAILED;
-        ErrorResponse errorResponse = ErrorResponse.of(errorCode, request.getRequestURI(), exception);
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode);
 
         response.setStatus(errorCode.getStatusCode());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
