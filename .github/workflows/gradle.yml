@@ -73,10 +73,31 @@ jobs:
               --image ${{ secrets.DOCKER_REPO }}/whispy_be:${{ steps.vars.outputs.sha_short }} \
               --with-registry-auth \
               whispy-springboot
-              
+            
             echo "Waiting 5 seconds for old container to stop..."
             sleep 5
 
-            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"  
-            
+            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
             docker image prune -a -f
+
+      - name: Discord Notification
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            COLOR=3066993
+            STATUS="✅ PROD 배포 완료"
+          else
+            COLOR=15158332
+            STATUS="❌ PROD 배포 실패"
+          fi
+          
+          curl -H "Content-Type: application/json" \
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"${STATUS}\",
+                   \"description\": \"Commit: \`${{ steps.vars.outputs.sha_short }}\`\n브랜치: \`${{ github.ref_name }}\`\",
+                   \"color\": ${COLOR},
+                   \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)\"
+                 }]
+               }" \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
