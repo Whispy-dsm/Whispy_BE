@@ -89,7 +89,6 @@ spring:
           auth: true
           starttls:
             enable: true
-          localhost: localhost
 
 sentry:
   dsn: ${DSN_KEY}

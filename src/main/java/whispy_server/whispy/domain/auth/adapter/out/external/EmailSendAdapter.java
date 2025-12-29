@@ -23,6 +23,7 @@ public class EmailSendAdapter implements EmailSendPort {
 
     private static final String VERIFICATION_SUBJECT = "Whispy 이메일 인증 코드";
     private static final String VERIFICATION_TEMPLATE = "email/verification-email";
+    private static final String EMAIL_FROM = "Whispy <noreply@whispy.app>";
 
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
@@ -55,6 +56,7 @@ public class EmailSendAdapter implements EmailSendPort {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
+        helper.setFrom(EMAIL_FROM);
         helper.setTo(email);
         helper.setSubject(VERIFICATION_SUBJECT);
 
