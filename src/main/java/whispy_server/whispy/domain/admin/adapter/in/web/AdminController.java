@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.admin.adapter.in.web.dto.request.AdminLoginRequest;
 import whispy_server.whispy.domain.admin.application.port.in.AdminLoginUseCase;
+import whispy_server.whispy.domain.admin.application.port.in.AdminLogoutUseCase;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.CreateAnnouncementRequest;
 import whispy_server.whispy.domain.announcement.adapter.in.web.dto.request.UpdateAnnouncementRequest;
 import whispy_server.whispy.domain.announcement.application.port.in.CreateAnnouncementUseCase;
@@ -62,6 +63,7 @@ public class AdminController implements AdminApiDocument {
     private final UpdateAnnouncementUseCase updateAnnouncementUseCase;
     private final DeleteAnnouncementUseCase deleteAnnouncementUseCase;
     private final AdminLoginUseCase adminLoginUseCase;
+    private final AdminLogoutUseCase adminLogoutUseCase;
     private final GetWithdrawalReasonsUseCase getWithdrawalReasonsUseCase;
     private final GetWithdrawalReasonDetailUseCase getWithdrawalReasonDetailUseCase;
     private final DeleteWithdrawalReasonUseCase deleteWithdrawalReasonUseCase;
@@ -79,6 +81,16 @@ public class AdminController implements AdminApiDocument {
     @ResponseStatus(HttpStatus.OK)
     public TokenResponse login(@RequestBody @Valid AdminLoginRequest request) {
         return adminLoginUseCase.execute(request);
+    }
+
+    /**
+     * 관리자 로그아웃을 처리합니다.
+     * Redis에서 리프레시 토큰을 삭제합니다.
+     */
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout() {
+        adminLogoutUseCase.execute();
     }
 
     /**

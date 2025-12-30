@@ -55,6 +55,20 @@ public interface AdminApiDocument {
     );
 
     @Operation(
+            summary = "관리자 로그아웃",
+            description = "현재 인증된 관리자를 로그아웃합니다. Redis에서 리프레시 토큰을 삭제합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "로그아웃 성공"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    void logout();
+
+    @Operation(
             summary = "모든 유저에게 새 토픽 추가",
             description = "모든 유저에게 새로운 토픽을 추가합니다.",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
