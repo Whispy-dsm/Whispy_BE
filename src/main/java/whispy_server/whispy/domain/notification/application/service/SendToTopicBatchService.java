@@ -6,7 +6,7 @@ import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.Notif
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.notification.batch.trigger.SaveNotificationBatchTrigger;
-import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.annotation.AdminAction;
 
 /**
  * 토픽으로 알림 전송 서비스.
@@ -25,7 +25,7 @@ public class SendToTopicBatchService implements SendToTopicUseCase {
      *
      * @param request 알림 토픽 전송 요청
      */
-    @UserAction("토픽으로 알림 전송")
+    @AdminAction("토픽으로 알림 전송")
     @Override
     public void execute(NotificationTopicSendRequest request) {
 

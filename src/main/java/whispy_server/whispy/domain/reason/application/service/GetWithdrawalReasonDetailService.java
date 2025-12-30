@@ -9,7 +9,7 @@ import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReaso
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
 import whispy_server.whispy.domain.reason.model.WithdrawalReason;
 import whispy_server.whispy.global.exception.domain.reason.WithdrawalReasonNotFoundException;
-import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.annotation.AdminAction;
 
 /**
  * 탈퇴 사유 상세 조회 UseCase 구현체.
@@ -28,7 +28,7 @@ public class GetWithdrawalReasonDetailService implements GetWithdrawalReasonDeta
      */
     @Override
     @Transactional(readOnly = true)
-    @UserAction("탈퇴 사유 상세 조회")
+    @AdminAction("탈퇴 사유 상세 조회")
     public WithdrawalReasonDetailResponse execute(Long id) {
         WithdrawalReason withdrawalReason = withdrawalReasonQueryPort.findById(id)
                 .orElseThrow(() -> WithdrawalReasonNotFoundException.EXCEPTION);

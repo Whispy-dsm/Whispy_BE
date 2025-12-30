@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonSummaryResponse;
 import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReasonsUseCase;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
-import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.annotation.AdminAction;
 
 /**
  * 탈퇴 사유 목록 조회 UseCase 구현체.
@@ -22,7 +22,7 @@ public class GetWithdrawalReasonsService implements GetWithdrawalReasonsUseCase 
     /**
      * 탈퇴 사유 목록을 페이지 단위로 조회한다.
      */
-    @UserAction("탈퇴 사유 목록 조회")
+    @AdminAction("탈퇴 사유 목록 조회")
     @Override
     @Transactional(readOnly = true)
     public Page<WithdrawalReasonSummaryResponse> execute(Pageable pageable) {

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.reason.application.port.in.DeleteWithdrawalReasonUseCase;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonDeletePort;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
-import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.annotation.AdminAction;
 import whispy_server.whispy.global.exception.domain.reason.WithdrawalReasonNotFoundException;
 
 /**
@@ -24,7 +24,7 @@ public class DeleteWithdrawalReasonService implements DeleteWithdrawalReasonUseC
      *
      * @param id 삭제할 ID
      */
-    @UserAction("탈퇴 사유 삭제")
+    @AdminAction("탈퇴 사유 삭제")
     @Override
     @Transactional
     public void execute(Long id) {

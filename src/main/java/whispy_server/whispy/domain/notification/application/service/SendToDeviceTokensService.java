@@ -7,7 +7,7 @@ import whispy_server.whispy.domain.notification.application.port.in.SendToDevice
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.notification.application.service.component.NotificationPersister;
 import whispy_server.whispy.domain.notification.model.Notification;
-import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.annotation.AdminAction;
 
 /**
  * 디바이스 토큰으로 알림 전송 서비스.
@@ -26,7 +26,7 @@ public class SendToDeviceTokensService implements SendToDeviceTokensUseCase {
      *
      * @param request 알림 전송 요청
      */
-    @UserAction("디바이스 토큰으로 알림 전송")
+    @AdminAction("디바이스 토큰으로 알림 전송")
     @Override
     public void execute(NotificationSendRequest request){
         // 1. 외부 API 호출 (실패 시 여기서 예외 발생 -> 저장 로직 실행 안 됨)

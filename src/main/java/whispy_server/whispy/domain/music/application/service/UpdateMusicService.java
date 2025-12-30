@@ -9,7 +9,7 @@ import whispy_server.whispy.domain.music.application.port.in.UpdateMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicSavePort;
 import whispy_server.whispy.domain.music.application.port.out.QueryMusicPort;
 import whispy_server.whispy.domain.music.model.Music;
-import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.annotation.AdminAction;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
 /**
@@ -31,7 +31,7 @@ public class UpdateMusicService implements UpdateMusicUseCase {
      * @param request 수정할 음악 정보가 포함된 요청
      * @throws MusicNotFoundException 음악을 찾을 수 없을 때 발생
      */
-    @UserAction("음악 정보 수정")
+    @AdminAction("음악 정보 수정")
     @Transactional
     @Override
     public void execute(UpdateMusicRequest request) {
