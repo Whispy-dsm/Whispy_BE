@@ -52,6 +52,8 @@ public class FileUploadService implements FileUploadUseCase {
 
             if (imageFolder == ImageFolder.MUSIC_FOLDER || imageFolder == ImageFolder.MUSIC_VIDEO_FOLDER) {
                 uploadOriginalFile(file, folder, fileName);
+            } else if (isWebPFile(file)) {
+                uploadOriginalFile(file, folder, fileName);
             } else {
                 uploadCompressedImage(file, folder, fileName);
             }
@@ -116,5 +118,16 @@ public class FileUploadService implements FileUploadUseCase {
      */
     private String generateFileUrl(String folder, String fileName) {
         return fileProperties.baseUrl() + "/file/" + folder + "/" + fileName;
+    }
+
+    /**
+     * 파일이 WebP 형식인지 확인한다.
+     */
+    private boolean isWebPFile(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        if (originalFileName == null) {
+            return false;
+        }
+        return originalFileName.toLowerCase().endsWith(".webp");
     }
 }
