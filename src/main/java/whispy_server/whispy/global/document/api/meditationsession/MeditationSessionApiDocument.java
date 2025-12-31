@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import whispy_server.whispy.domain.meditationsession.adapter.in.web.dto.request.SaveMeditationSessionRequest;
@@ -54,7 +54,11 @@ public interface MeditationSessionApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    MeditationSessionResponse saveMeditationSession(@Valid SaveMeditationSessionRequest request);
+    MeditationSessionResponse saveMeditationSession(
+            @RequestBody(description = "명상 세션 저장 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = SaveMeditationSessionRequest.class)))
+            SaveMeditationSessionRequest request
+    );
 
     @Operation(
             summary = "명상 세션 목록 조회",

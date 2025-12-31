@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import whispy_server.whispy.domain.focussession.adapter.in.web.dto.request.SaveFocusSessionRequest;
@@ -60,7 +60,11 @@ public interface FocusSessionApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    FocusSessionResponse saveFocusSession(@Valid SaveFocusSessionRequest request);
+    FocusSessionResponse saveFocusSession(
+            @RequestBody(description = "집중 세션 저장 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = SaveFocusSessionRequest.class)))
+            SaveFocusSessionRequest request
+    );
 
     @Operation(
             summary = "집중 세션 목록 조회",
