@@ -3,6 +3,7 @@ package whispy_server.whispy.global.document.api.auth;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,7 +33,11 @@ public interface EmailVerificationApiDocument {
             @ApiResponse(responseCode = "500", description = "이메일 발송에 실패했습니다. 다시 시도해주세요.",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void sendVerificationCode(SendEmailVerificationRequest request);
+    void sendVerificationCode(
+            @RequestBody(description = "이메일 인증 코드 발송 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = SendEmailVerificationRequest.class)))
+            SendEmailVerificationRequest request
+    );
 
     @Operation(summary = "이메일 인증 코드 검증", description = "발송된 6자리 인증 코드를 검증합니다.")
     @ApiResponses({
@@ -43,7 +48,11 @@ public interface EmailVerificationApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    VerifyEmailCodeResponse verifyCode(VerifyEmailCodeRequest request);
+    VerifyEmailCodeResponse verifyCode(
+            @RequestBody(description = "이메일 인증 코드 검증 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = VerifyEmailCodeRequest.class)))
+            VerifyEmailCodeRequest request
+    );
 
     @Operation(summary = "이메일 인증 상태 확인", description = "해당 이메일의 인증 완료 여부를 확인합니다.")
     @ApiResponses({
@@ -54,5 +63,9 @@ public interface EmailVerificationApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    CheckEmailVerificationResponse checkVerificationStatus(CheckEmailVerificationRequest request);
+    CheckEmailVerificationResponse checkVerificationStatus(
+            @RequestBody(description = "이메일 인증 상태 확인 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = CheckEmailVerificationRequest.class)))
+            CheckEmailVerificationRequest request
+    );
 }
