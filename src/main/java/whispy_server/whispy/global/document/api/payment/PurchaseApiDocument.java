@@ -3,6 +3,7 @@ package whispy_server.whispy.global.document.api.payment;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,5 +40,9 @@ public interface PurchaseApiDocument {
             @ApiResponse(responseCode = "503", description = "Google Play 서비스 일시적 오류",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ValidatePurchaseResponse validatePurchase(ValidatePurchaseRequest request);
+    ValidatePurchaseResponse validatePurchase(
+            @RequestBody(description = "구매 검증 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = ValidatePurchaseRequest.class)))
+            ValidatePurchaseRequest request
+    );
 }
