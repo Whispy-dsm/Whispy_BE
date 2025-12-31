@@ -3,6 +3,7 @@ package whispy_server.whispy.global.document.api.topic;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -43,7 +44,11 @@ public interface TopicApiDocument {
             @ApiResponse(responseCode = "502", description = "FCM 서비스 연결 오류",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void subscribeTopic(TopicSubscriptionRequest request);
+    void subscribeTopic(
+            @RequestBody(description = "토픽 구독 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = TopicSubscriptionRequest.class)))
+            TopicSubscriptionRequest request
+    );
 
     @Operation(
             summary = "토픽 구독 해제",
@@ -63,7 +68,11 @@ public interface TopicApiDocument {
             @ApiResponse(responseCode = "502", description = "FCM 서비스 연결 오류",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void unsubscribeTopic(TopicSubscriptionRequest request);
+    void unsubscribeTopic(
+            @RequestBody(description = "토픽 구독 해제 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = TopicSubscriptionRequest.class)))
+            TopicSubscriptionRequest request
+    );
 
     @Operation(
             summary = "내 토픽 구독 목록 조회",
