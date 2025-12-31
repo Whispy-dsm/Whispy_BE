@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -44,7 +45,11 @@ public interface UserApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    TokenResponse login(UserLoginRequest request);
+    TokenResponse login(
+            @RequestBody(description = "사용자 로그인 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = UserLoginRequest.class)))
+            UserLoginRequest request
+    );
 
     @Operation(summary = "사용자 회원가입", description = "새로운 사용자를 등록합니다.")
     @ApiResponses({
@@ -58,7 +63,11 @@ public interface UserApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void register(RegisterRequest request);
+    void register(
+            @RequestBody(description = "사용자 회원가입 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = RegisterRequest.class)))
+            RegisterRequest request
+    );
 
     @Operation(summary = "토큰 재발급", description = "리프레시 토큰으로 새로운 액세스 토큰을 발급받습니다.")
     @ApiResponses({
@@ -92,7 +101,11 @@ public interface UserApiDocument {
             @ApiResponse(responseCode = "503", description = "카카오 서비스 일시적 오류",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    TokenResponse authenticateWithKakaoToken(KakaoOauthTokenRequest request);
+    TokenResponse authenticateWithKakaoToken(
+            @RequestBody(description = "카카오 OAuth 로그인 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = KakaoOauthTokenRequest.class)))
+            KakaoOauthTokenRequest request
+    );
 
     @Operation(
             summary = "로그아웃",
@@ -140,7 +153,11 @@ public interface UserApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void changePassword(ChangePasswordRequest request);
+    void changePassword(
+            @RequestBody(description = "비밀번호 변경 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = ChangePasswordRequest.class)))
+            ChangePasswordRequest request
+    );
 
     @Operation(
             summary = "비밀번호 재설정",
@@ -158,7 +175,11 @@ public interface UserApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void resetPassword(ResetPasswordRequest request);
+    void resetPassword(
+            @RequestBody(description = "비밀번호 재설정 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = ResetPasswordRequest.class)))
+            ResetPasswordRequest request
+    );
 
     @Operation(
             summary = "프로필 수정",
@@ -176,7 +197,11 @@ public interface UserApiDocument {
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void changeProfile(ChangeProfileRequest request);
+    void changeProfile(
+            @RequestBody(description = "프로필 수정 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = ChangeProfileRequest.class)))
+            ChangeProfileRequest request
+    );
 
     @Operation(
             summary = "내 프로필 조회",
