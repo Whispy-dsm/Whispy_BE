@@ -96,7 +96,8 @@ sentry:
   environment: development
 
 default:
-  profile: ${DEFAULT_PROFILE_IMAGE}
+  profile:
+    default-image-url: ${DEFAULT_PROFILE_IMAGE}
 
 fcm:
   key:
