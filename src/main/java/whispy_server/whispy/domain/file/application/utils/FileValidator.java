@@ -19,9 +19,9 @@ import java.util.Set;
 public final class FileValidator {
 
     private static final int MAX_FILENAME_LENGTH = 255;
-    
-    private static final long IMAGE_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
-    private static final long MUSIC_MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50MB
+
+    private static final long IMAGE_MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+    private static final long MUSIC_MAX_SIZE_BYTES = 100 * 1024 * 1024; // 100MB
     private static final long VIDEO_MAX_SIZE_BYTES = 100 * 1024 * 1024; // 100MB
 
     private static final Set<String> IMAGE_VALID_EXTENSIONS = Set.of(".jpg", ".jpeg", ".png", ".heic", ".heif", ".webp", ".gif");
