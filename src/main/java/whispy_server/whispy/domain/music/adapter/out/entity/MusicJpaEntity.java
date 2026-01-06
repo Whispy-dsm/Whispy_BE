@@ -43,6 +43,12 @@ public class MusicJpaEntity {
     @Column(name = "title", nullable = false, length = 200)
     private String title;
 
+    @Column(name = "artist", length = 200)
+    private String artist;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
     @Column(name = "file_path", nullable = false)
     private String filePath;
 

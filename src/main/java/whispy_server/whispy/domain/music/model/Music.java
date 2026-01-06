@@ -10,6 +10,8 @@ import whispy_server.whispy.global.annotation.Aggregate;
  *
  * @param id 음악 ID
  * @param title 음악 제목
+ * @param artist 아티스트/제작자
+ * @param description 음악 설명
  * @param filePath 음악 파일 경로
  * @param duration 음악 길이(초)
  * @param category 음악 카테고리
@@ -20,6 +22,8 @@ import whispy_server.whispy.global.annotation.Aggregate;
 public record Music(
         Long id,
         String title,
+        String artist,
+        String description,
         String filePath,
         int duration,
         MusicCategory category,
@@ -31,6 +35,8 @@ public record Music(
      * 음악 정보를 업데이트합니다.
      *
      * @param newTitle 새로운 제목 (null이면 기존 값 유지)
+     * @param newArtist 새로운 아티스트 (null이면 기존 값 유지)
+     * @param newDescription 새로운 설명 (null이면 기존 값 유지)
      * @param newFilePath 새로운 파일 경로 (null이면 기존 값 유지)
      * @param newDuration 새로운 길이 (null이면 기존 값 유지)
      * @param newCategory 새로운 카테고리 (null이면 기존 값 유지)
@@ -40,6 +46,8 @@ public record Music(
      */
     public Music update(
             String newTitle,
+            String newArtist,
+            String newDescription,
             String newFilePath,
             Integer newDuration,
             MusicCategory newCategory,
@@ -49,6 +57,8 @@ public record Music(
         return new Music(
                 this.id,
                 newTitle != null ? newTitle : this.title,
+                newArtist != null ? newArtist : this.artist,
+                newDescription != null ? newDescription : this.description,
                 newFilePath != null ? newFilePath : this.filePath,
                 newDuration != null ? newDuration : this.duration,
                 newCategory != null ? newCategory : this.category,
