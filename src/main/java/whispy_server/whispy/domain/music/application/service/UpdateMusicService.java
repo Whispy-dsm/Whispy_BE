@@ -40,6 +40,8 @@ public class UpdateMusicService implements UpdateMusicUseCase {
 
         Music updatedMusic = existingMusic.update(
                 request.title(),
+                request.artist(),
+                request.description(),
                 request.filePath(),
                 request.duration(),
                 request.category(),

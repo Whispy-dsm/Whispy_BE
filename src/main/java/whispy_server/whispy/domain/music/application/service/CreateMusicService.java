@@ -34,6 +34,8 @@ public class CreateMusicService implements CreateMusicUseCase {
         Music music = new Music(
                 null,
                 request.title(),
+                request.artist(),
+                request.description(),
                 request.filePath(),
                 request.duration(),
                 request.category(),
