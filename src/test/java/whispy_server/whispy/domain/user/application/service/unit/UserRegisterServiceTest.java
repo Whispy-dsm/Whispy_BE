@@ -26,8 +26,8 @@ import static org.mockito.Mockito.*;
 /**
  * UserRegisterService의 단위 테스트 클래스
  *
- * ?�원가???�비?�의 ?�양???�나리오�?검증합?�다.
- * ?�용???�록, ?�메??중복 ?�인, 비�?번호 ?�호?? FCM ?�픽 초기?��? ?�스?�합?�다.
+ * 회원가입 서비스의 다양한 시나리오를 검증합니다.
+ * 사용자 등록, 이메일 중복 확인, 비밀번호 암호화, FCM 토픽 초기화를 테스트합니다.
  *
  */
 @ExtendWith(MockitoExtension.class)

@@ -30,8 +30,8 @@ import static org.mockito.Mockito.verify;
 /**
  * UserWithdrawalService의 단위 테스트 클래스
  *
- * ?�원 ?�퇴 ?�비?�의 ?�양???�나리오�?검증합?�다.
- * ?�용?��? 관?�된 모든 ?�이?�의 ??���??�스?�합?�다.
+ * 회원 탈퇴 서비스의 다양한 시나리오를 검증합니다.
+ * 사용자와 관련된 모든 데이터의 삭제를 테스트합니다.
  *
  */
 @ExtendWith(MockitoExtension.class)

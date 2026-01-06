@@ -18,8 +18,8 @@ import static org.mockito.Mockito.verify;
 /**
  * UserTokenReissueService의 단위 테스트 클래스
  *
- * ?�큰 ?�발�??�비?�의 ?�작??검증합?�다.
- * JwtTokenProvider�??�한 ?�큰 ?�발급을 ?�스?�합?�다.
+ * 토큰 재발급 서비스의 동작을 검증합니다.
+ * JwtTokenProvider를 통한 토큰 재발급을 테스트합니다.
  *
  */
 @ExtendWith(MockitoExtension.class)

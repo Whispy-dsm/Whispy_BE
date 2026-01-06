@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 /**
  * UserLogoutService의 단위 테스트 클래스
  *
- * 로그?�웃 ?�비?�의 ?�작??검증합?�다.
+ * 로그아웃 서비스의 동작을 검증합니다.
  * RefreshToken 삭제를 테스트합니다.
  *
  */
