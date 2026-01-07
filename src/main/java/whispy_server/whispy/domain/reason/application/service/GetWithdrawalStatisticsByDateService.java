@@ -35,11 +35,11 @@ public class GetWithdrawalStatisticsByDateService implements GetWithdrawalStatis
      * QueryDSL을 통해 데이터베이스에서 직접 집계된 결과를 반환합니다.
      *
      * @param startDate 시작 날짜
-     * @param endDate 종료 날짜
+     * @param endDate   종료 날짜
      * @return 날짜별 탈퇴 통계 목록
      * @throws InvalidStatisticsDateException 미래 날짜를 조회하려는 경우
-     * @throws InvalidDateRangeException 시작 날짜가 종료 날짜보다 늦은 경우
-     * @throws DateRangeExceededException 조회 기간이 1년을 초과하는 경우
+     * @throws InvalidDateRangeException      시작 날짜가 종료 날짜보다 늦은 경우
+     * @throws DateRangeExceededException     조회 기간이 1년을 초과하는 경우
      */
     @AdminAction("날짜별 탈퇴 통계 조회")
     @Transactional(readOnly = true)
@@ -47,19 +47,16 @@ public class GetWithdrawalStatisticsByDateService implements GetWithdrawalStatis
     public List<WithdrawalStatisticsByDateResponse> execute(LocalDate startDate, LocalDate endDate) {
         validateDateRange(startDate, endDate);
 
-        Map<LocalDate, Long> statisticsMap = withdrawalReasonQueryPort.aggregateDailyStatistics(startDate, endDate)
+        Map<LocalDate, Integer> statisticsMap = withdrawalReasonQueryPort.aggregateDailyStatistics(startDate, endDate)
                 .stream()
                 .collect(Collectors.toMap(
                         WithdrawalStatisticsDto::date,
-                        WithdrawalStatisticsDto::count
-                ));
+                        WithdrawalStatisticsDto::count));
 
-        // 기간 내 모든 날짜를 생성하고, 데이터가 없는 날짜는 0으로 채움
         return startDate.datesUntil(endDate.plusDays(1))
                 .map(date -> new WithdrawalStatisticsByDateResponse(
                         date,
-                        statisticsMap.getOrDefault(date, 0L)
-                ))
+                        statisticsMap.getOrDefault(date, 0)))
                 .toList();
     }
 
@@ -67,10 +64,10 @@ public class GetWithdrawalStatisticsByDateService implements GetWithdrawalStatis
      * 날짜 범위를 검증합니다.
      *
      * @param startDate 시작 날짜
-     * @param endDate 종료 날짜
+     * @param endDate   종료 날짜
      * @throws InvalidStatisticsDateException 미래 날짜를 조회하려는 경우
-     * @throws InvalidDateRangeException 시작 날짜가 종료 날짜보다 늦은 경우
-     * @throws DateRangeExceededException 조회 기간이 1년을 초과하는 경우
+     * @throws InvalidDateRangeException      시작 날짜가 종료 날짜보다 늦은 경우
+     * @throws DateRangeExceededException     조회 기간이 1년을 초과하는 경우
      */
     private void validateDateRange(LocalDate startDate, LocalDate endDate) {
         // 미래 날짜 검증
