@@ -285,13 +285,15 @@ public interface AdminApiDocument {
     );
 
     @Operation(
-            summary = "날짜별 탈퇴 사유 목록 조회",
-            description = "특정 날짜의 탈퇴 사유 목록을 페이징하여 조회합니다.",
+            summary = "날짜 범위별 탈퇴 사유 목록 조회",
+            description = "날짜 범위 내의 탈퇴 사유 목록을 페이징하여 조회합니다. 시작 날짜와 종료 날짜를 모두 포함합니다.",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "날짜별 탈퇴 사유 조회 성공",
+            @ApiResponse(responseCode = "200", description = "날짜 범위별 탈퇴 사유 조회 성공",
                     content = @Content(schema = @Schema(implementation = Page.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 날짜 범위 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "403", description = "권한 없음",
@@ -300,8 +302,10 @@ public interface AdminApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     Page<WithdrawalReasonsByDateResponse> getWithdrawalReasonsByDate(
-            @Parameter(description = "조회할 날짜 (yyyy-MM-dd)", required = true, example = "2024-01-15")
-            LocalDate date,
+            @Parameter(description = "시작 날짜 (yyyy-MM-dd)", required = true, example = "2024-01-01")
+            LocalDate startDate,
+            @Parameter(description = "종료 날짜 (yyyy-MM-dd)", required = true, example = "2024-01-31")
+            LocalDate endDate,
             Pageable pageable
     );
 
@@ -312,7 +316,9 @@ public interface AdminApiDocument {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "탈퇴 통계 조회 성공",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = WithdrawalStatisticsByDateResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 날짜 범위 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "403", description = "권한 없음",

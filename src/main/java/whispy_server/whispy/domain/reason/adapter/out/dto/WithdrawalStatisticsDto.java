@@ -12,5 +12,19 @@ import java.time.LocalDate;
  */
 public record WithdrawalStatisticsDto(
                 LocalDate date,
-                Integer count) {
+                int count) {
+
+    /**
+     * year, month, day를 받아 WithdrawalStatisticsDto를 생성합니다.
+     *
+     * QueryDSL의 year(), month(), dayOfMonth() 프로젝션을 위한 생성자입니다.
+     *
+     * @param year  연도
+     * @param month 월
+     * @param day   일
+     * @param count 탈퇴 건수
+     */
+    public WithdrawalStatisticsDto(Integer year, Integer month, Integer day, int count) {
+        this(LocalDate.of(year, month, day), count);
+    }
 }

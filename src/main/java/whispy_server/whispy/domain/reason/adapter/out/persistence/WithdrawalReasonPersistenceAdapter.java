@@ -76,15 +76,15 @@ public class WithdrawalReasonPersistenceAdapter implements WithdrawalReasonPort 
     }
 
     /**
-     * 특정 날짜의 탈퇴 사유를 조회한다.
+     * 날짜 범위 내의 탈퇴 사유를 조회한다.
      */
     @Override
-    public Page<WithdrawalReason> findAllByDate(LocalDate date, Pageable pageable) {
-        LocalDateTime startOfDay = date.atStartOfDay();
-        LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+    public Page<WithdrawalReason> findAllByDateRange(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
 
         Page<WithdrawalReasonJpaEntity> entities = withdrawalReasonJpaRepository
-                .findAllByCreatedAtBetweenOrderByCreatedAtDesc(startOfDay, endOfDay, pageable);
+                .findAllByCreatedAtBetweenOrderByCreatedAtDesc(startDateTime, endDateTime, pageable);
 
         return withdrawalReasonMapper.toPageModel(entities);
     }
@@ -101,20 +101,23 @@ public class WithdrawalReasonPersistenceAdapter implements WithdrawalReasonPort 
 
         QWithdrawalReasonJpaEntity withdrawalReason = QWithdrawalReasonJpaEntity.withdrawalReasonJpaEntity;
 
-        DateTemplate<LocalDate> dateExpression = Expressions.dateTemplate(
-                LocalDate.class,
-                "DATE({0})",
-                withdrawalReason.createdAt);
-
         return jpaQueryFactory
                 .select(Projections.constructor(
                         WithdrawalStatisticsDto.class,
-                        dateExpression,
+                        withdrawalReason.createdAt.year(),
+                        withdrawalReason.createdAt.month(),
+                        withdrawalReason.createdAt.dayOfMonth(),
                         withdrawalReason.count().intValue()))
                 .from(withdrawalReason)
                 .where(withdrawalReason.createdAt.between(startDateTime, endDateTime))
-                .groupBy(dateExpression)
-                .orderBy(dateExpression.asc())
+                .groupBy(
+                        withdrawalReason.createdAt.year(),
+                        withdrawalReason.createdAt.month(),
+                        withdrawalReason.createdAt.dayOfMonth())
+                .orderBy(
+                        withdrawalReason.createdAt.year().asc(),
+                        withdrawalReason.createdAt.month().asc(),
+                        withdrawalReason.createdAt.dayOfMonth().asc())
                 .fetch();
     }
 }
