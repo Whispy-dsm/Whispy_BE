@@ -69,15 +69,17 @@ class GetWithdrawalStatisticsByDateServiceTest {
         List<WithdrawalStatisticsByDateResponse> result = service.execute(startDate, endDate);
 
         // then
-        assertThat(result).hasSize(4);
+        assertThat(result).hasSize(7); // 1월 1일 ~ 1월 7일 (7일)
         assertThat(result.get(0).date()).isEqualTo(LocalDate.of(2024, 1, 1));
         assertThat(result.get(0).count()).isEqualTo(3L);
-        assertThat(result.get(1).count()).isEqualTo(5L);
+        assertThat(result.get(1).count()).isEqualTo(0L); // 1월 2일 (데이터 없음)
+        assertThat(result.get(2).count()).isEqualTo(5L); // 1월 3일
+        assertThat(result.get(6).count()).isEqualTo(4L); // 1월 7일
     }
 
     @Test
-    @DisplayName("탈퇴가 없는 날짜는 결과에 포함되지 않는다")
-    void whenNoWithdrawalsOnSomeDates_thenReturnsOnlyDatesWithData() {
+    @DisplayName("탈퇴가 없는 날짜는 count 0으로 채워서 반환한다")
+    void whenNoWithdrawalsOnSomeDates_thenFillsWithZero() {
         // given
         LocalDate startDate = LocalDate.of(2024, 1, 1);
         LocalDate endDate = LocalDate.of(2024, 1, 10);
@@ -95,9 +97,13 @@ class GetWithdrawalStatisticsByDateServiceTest {
         List<WithdrawalStatisticsByDateResponse> result = service.execute(startDate, endDate);
 
         // then
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(10); // 1월 1일 ~ 1월 10일 (10일)
         assertThat(result.get(0).date()).isEqualTo(LocalDate.of(2024, 1, 1));
-        assertThat(result.get(1).date()).isEqualTo(LocalDate.of(2024, 1, 5));
+        assertThat(result.get(0).count()).isEqualTo(2L);
+        assertThat(result.get(1).count()).isEqualTo(0L); // 1월 2일 (데이터 없음)
+        assertThat(result.get(4).date()).isEqualTo(LocalDate.of(2024, 1, 5));
+        assertThat(result.get(4).count()).isEqualTo(3L);
+        assertThat(result.get(9).count()).isEqualTo(0L); // 1월 10일 (데이터 없음)
     }
 
     @Test
@@ -168,7 +174,10 @@ class GetWithdrawalStatisticsByDateServiceTest {
         List<WithdrawalStatisticsByDateResponse> result = service.execute(startDate, endDate);
 
         // then
-        assertThat(result).hasSize(3);
+        assertThat(result).hasSize(366); // 2023-01-01 ~ 2024-01-01 (366일, 2023년은 평년 365일 + 2024-01-01)
+        assertThat(result.get(0).date()).isEqualTo(LocalDate.of(2023, 1, 1));
+        assertThat(result.get(0).count()).isEqualTo(5L);
+        assertThat(result.get(365).date()).isEqualTo(LocalDate.of(2024, 1, 1));
     }
 
     @Test
@@ -190,7 +199,11 @@ class GetWithdrawalStatisticsByDateServiceTest {
         List<WithdrawalStatisticsByDateResponse> result = service.execute(startDate, endDate);
 
         // then
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(8); // 7일 전 ~ 오늘 (8일)
+        assertThat(result.get(0).date()).isEqualTo(startDate);
+        assertThat(result.get(0).count()).isEqualTo(2L);
+        assertThat(result.get(7).date()).isEqualTo(endDate);
+        assertThat(result.get(7).count()).isEqualTo(3L);
     }
 
     @Test
@@ -216,8 +229,8 @@ class GetWithdrawalStatisticsByDateServiceTest {
     }
 
     @Test
-    @DisplayName("기간 내 탈퇴가 없으면 빈 리스트를 반환한다")
-    void whenNoWithdrawalsInRange_thenReturnsEmptyList() {
+    @DisplayName("기간 내 탈퇴가 없으면 모든 날짜를 count 0으로 반환한다")
+    void whenNoWithdrawalsInRange_thenReturnsAllDatesWithZero() {
         // given
         LocalDate startDate = LocalDate.of(2024, 1, 1);
         LocalDate endDate = LocalDate.of(2024, 1, 7);
@@ -229,6 +242,71 @@ class GetWithdrawalStatisticsByDateServiceTest {
         List<WithdrawalStatisticsByDateResponse> result = service.execute(startDate, endDate);
 
         // then
-        assertThat(result).isEmpty();
+        assertThat(result).hasSize(7); // 1월 1일 ~ 1월 7일 (7일)
+        assertThat(result).allMatch(stat -> stat.count() == 0L); // 모두 0
+    }
+
+    @Test
+    @DisplayName("[버그 수정 검증] 윤년을 포함한 정확히 1년(366일)은 조회할 수 있다")
+    void whenLeapYearIncluded_thenCanQueryFullYear() {
+        // given
+        LocalDate startDate = LocalDate.of(2024, 1, 1); // 2024년은 윤년
+        LocalDate endDate = LocalDate.of(2025, 1, 1); // 정확히 1년 후, 366일
+
+        List<WithdrawalStatisticsDto> statistics = List.of(
+                createStatistics(LocalDate.of(2024, 1, 1), 5L),
+                createStatistics(LocalDate.of(2025, 1, 1), 3L)
+        );
+
+        given(withdrawalReasonQueryPort.aggregateDailyStatistics(startDate, endDate))
+                .willReturn(statistics);
+
+        // when
+        List<WithdrawalStatisticsByDateResponse> result = service.execute(startDate, endDate);
+
+        // then
+        // 수정 전: ChronoUnit.DAYS(366일) > MAX_DAYS(365)로 예외 발생 (버그!)
+        // 수정 후: ChronoUnit.YEARS(1년) && endDate == startDate.plusYears(1)로 정상 조회
+        assertThat(result).hasSize(367); // 2024-01-01 ~ 2025-01-01 (367일, 윤년 366일 + 2025-01-01)
+        assertThat(result.get(0).date()).isEqualTo(LocalDate.of(2024, 1, 1));
+        assertThat(result.get(366).date()).isEqualTo(LocalDate.of(2025, 1, 1));
+    }
+
+    @Test
+    @DisplayName("[버그 수정 검증] 윤년의 정확히 1년 후(2024-02-29 ~ 2025-02-28)는 조회할 수 있다")
+    void whenExactlyOneYearFromLeapDay_thenReturnsResults() {
+        // given
+        LocalDate startDate = LocalDate.of(2024, 2, 29); // 윤년의 2월 29일
+        LocalDate endDate = LocalDate.of(2025, 2, 28); // 정확히 1년 후 (2025년은 평년)
+
+        List<WithdrawalStatisticsDto> statistics = List.of(
+                createStatistics(startDate, 2L),
+                createStatistics(endDate, 3L)
+        );
+
+        given(withdrawalReasonQueryPort.aggregateDailyStatistics(startDate, endDate))
+                .willReturn(statistics);
+
+        // when
+        List<WithdrawalStatisticsByDateResponse> result = service.execute(startDate, endDate);
+
+        // then
+        // 2024-02-29.plusYears(1) = 2025-02-28 (정확히 1년)
+        // ChronoUnit.YEARS.between() = 0년이지만, 실제로는 startDate.plusYears(1)과 같으므로 통과
+        assertThat(result).isNotEmpty();
+        assertThat(result.get(0).date()).isEqualTo(startDate);
+    }
+
+    @Test
+    @DisplayName("[버그 수정 검증] 윤년의 1년 + 1일은 예외가 발생한다")
+    void whenLeapYearPlusOneDay_thenThrowsException() {
+        // given
+        LocalDate startDate = LocalDate.of(2024, 2, 29); // 윤년의 2월 29일
+        LocalDate endDate = LocalDate.of(2025, 3, 1); // 1년 + 1일
+
+        // when & then
+        // endDate > startDate.plusYears(1) (2025-02-28)이므로 예외 발생
+        assertThatThrownBy(() -> service.execute(startDate, endDate))
+                .isInstanceOf(DateRangeExceededException.class);
     }
 }

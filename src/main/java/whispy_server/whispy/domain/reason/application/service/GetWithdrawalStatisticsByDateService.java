@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalStatisticsByDateResponse;
+import whispy_server.whispy.domain.reason.adapter.out.dto.WithdrawalStatisticsDto;
 import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalStatisticsByDateUseCase;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
 import whispy_server.whispy.global.annotation.AdminAction;
@@ -14,6 +15,8 @@ import whispy_server.whispy.global.exception.domain.statistics.InvalidStatistics
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 날짜별 탈퇴 통계 조회 서비스.
@@ -24,7 +27,7 @@ public class GetWithdrawalStatisticsByDateService implements GetWithdrawalStatis
 
     private final WithdrawalReasonQueryPort withdrawalReasonQueryPort;
 
-    private static final long MAX_DAYS = 365; // 최대 1년
+    private static final int MAX_YEARS = 1; // 최대 1년
 
     /**
      * 기간 내 날짜별 탈퇴 통계를 조회합니다.
@@ -44,9 +47,19 @@ public class GetWithdrawalStatisticsByDateService implements GetWithdrawalStatis
     public List<WithdrawalStatisticsByDateResponse> execute(LocalDate startDate, LocalDate endDate) {
         validateDateRange(startDate, endDate);
 
-        return withdrawalReasonQueryPort.aggregateDailyStatistics(startDate, endDate)
+        Map<LocalDate, Long> statisticsMap = withdrawalReasonQueryPort.aggregateDailyStatistics(startDate, endDate)
                 .stream()
-                .map(dto -> new WithdrawalStatisticsByDateResponse(dto.date(), dto.count()))
+                .collect(Collectors.toMap(
+                        WithdrawalStatisticsDto::date,
+                        WithdrawalStatisticsDto::count
+                ));
+
+        // 기간 내 모든 날짜를 생성하고, 데이터가 없는 날짜는 0으로 채움
+        return startDate.datesUntil(endDate.plusDays(1))
+                .map(date -> new WithdrawalStatisticsByDateResponse(
+                        date,
+                        statisticsMap.getOrDefault(date, 0L)
+                ))
                 .toList();
     }
 
@@ -71,9 +84,13 @@ public class GetWithdrawalStatisticsByDateService implements GetWithdrawalStatis
             throw InvalidDateRangeException.EXCEPTION;
         }
 
-        // 날짜 범위가 1년을 초과하는지 검증
-        long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
-        if (daysBetween > MAX_DAYS) {
+        // 날짜 범위가 1년을 초과하는지 검증 (윤년 고려)
+        long yearsBetween = ChronoUnit.YEARS.between(startDate, endDate);
+        if (yearsBetween > MAX_YEARS) {
+            throw DateRangeExceededException.EXCEPTION;
+        }
+        // 정확히 1년인 경우 endDate가 startDate보다 1년 후를 넘는지 확인
+        if (yearsBetween == MAX_YEARS && endDate.isAfter(startDate.plusYears(MAX_YEARS))) {
             throw DateRangeExceededException.EXCEPTION;
         }
     }
