@@ -7,11 +7,10 @@ import java.time.LocalDate;
  *
  * QueryDSL 프로젝션을 통해 데이터베이스에서 직접 집계된 결과를 받습니다.
  *
- * @param date 탈퇴 날짜
+ * @param date  탈퇴 날짜
  * @param count 탈퇴 건수
  */
 public record WithdrawalStatisticsDto(
-        LocalDate date,
-        Long count
-) {
+                LocalDate date,
+                Integer count) {
 }
