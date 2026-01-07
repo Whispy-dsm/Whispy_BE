@@ -29,13 +29,14 @@ public interface WithdrawalReasonQueryPort {
     boolean existsById(Long id);
 
     /**
-     * 특정 날짜의 탈퇴 사유를 페이지로 조회한다.
+     * 날짜 범위 내의 탈퇴 사유를 페이지로 조회한다.
      *
-     * @param date 조회할 날짜
+     * @param startDate 시작 날짜
+     * @param endDate 종료 날짜
      * @param pageable 페이지 정보
      * @return 탈퇴 사유 페이지
      */
-    Page<WithdrawalReason> findAllByDate(LocalDate date, Pageable pageable);
+    Page<WithdrawalReason> findAllByDateRange(LocalDate startDate, LocalDate endDate, Pageable pageable);
 
     /**
      * 기간 내 날짜별 탈퇴 통계를 집계하여 조회한다.
