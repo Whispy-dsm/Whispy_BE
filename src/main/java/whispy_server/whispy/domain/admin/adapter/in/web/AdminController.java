@@ -215,18 +215,20 @@ public class AdminController implements AdminApiDocument {
     }
 
     /**
-     * 특정 날짜의 회원 탈퇴 사유 목록을 페이지네이션하여 조회합니다.
+     * 날짜 범위 내의 회원 탈퇴 사유 목록을 페이지네이션하여 조회합니다.
      *
-     * @param date 조회할 날짜
+     * @param startDate 시작 날짜
+     * @param endDate 종료 날짜
      * @param pageable 페이지 정보
-     * @return 해당 날짜의 탈퇴 사유 목록
+     * @return 해당 기간의 탈퇴 사유 목록
      */
     @GetMapping("/withdrawal-reasons/by-date")
     @ResponseStatus(HttpStatus.OK)
     public Page<WithdrawalReasonsByDateResponse> getWithdrawalReasonsByDate(
-            @RequestParam @Valid LocalDate date,
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate,
             Pageable pageable) {
-        return getWithdrawalReasonsByDateUseCase.execute(date, pageable);
+        return getWithdrawalReasonsByDateUseCase.execute(startDate, endDate, pageable);
     }
 
     /**
