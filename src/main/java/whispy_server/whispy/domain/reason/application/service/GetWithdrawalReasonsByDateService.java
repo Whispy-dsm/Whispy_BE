@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.Withdrawal
 import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReasonsByDateUseCase;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
 import whispy_server.whispy.global.annotation.AdminAction;
+import whispy_server.whispy.global.exception.domain.statistics.InvalidStatisticsDateException;
 
 import java.time.LocalDate;
 
@@ -27,12 +28,27 @@ public class GetWithdrawalReasonsByDateService implements GetWithdrawalReasonsBy
      * @param date 조회할 날짜
      * @param pageable 페이지 정보
      * @return 탈퇴 이유 목록 페이지
+     * @throws InvalidStatisticsDateException 미래 날짜를 조회하려는 경우
      */
     @AdminAction("날짜별 탈퇴 이유 목록 조회")
     @Transactional(readOnly = true)
     @Override
     public Page<WithdrawalReasonsByDateResponse> execute(LocalDate date, Pageable pageable) {
+        validateDate(date);
+
         return withdrawalReasonQueryPort.findAllByDate(date, pageable)
                 .map(WithdrawalReasonsByDateResponse::from);
+    }
+
+    /**
+     * 조회 날짜가 미래인지 검증합니다.
+     *
+     * @param date 조회할 날짜
+     * @throws InvalidStatisticsDateException 미래 날짜인 경우
+     */
+    private void validateDate(LocalDate date) {
+        if (date.isAfter(LocalDate.now())) {
+            throw InvalidStatisticsDateException.EXCEPTION;
+        }
     }
 }
