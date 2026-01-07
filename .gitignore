@@ -37,6 +37,4 @@ out/
 .vscode/
 
 ### claude.md ###
-/CLAUDE.md
 .claude
-.agent
