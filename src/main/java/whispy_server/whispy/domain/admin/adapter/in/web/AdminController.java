@@ -221,10 +221,10 @@ public class AdminController implements AdminApiDocument {
      * @param pageable 페이지 정보
      * @return 해당 날짜의 탈퇴 사유 목록
      */
-    @GetMapping("/withdrawal-reasons/date/{date}")
+    @GetMapping("/withdrawal-reasons/by-date")
     @ResponseStatus(HttpStatus.OK)
     public Page<WithdrawalReasonsByDateResponse> getWithdrawalReasonsByDate(
-            @PathVariable LocalDate date,
+            @RequestParam @Valid LocalDate date,
             Pageable pageable) {
         return getWithdrawalReasonsByDateUseCase.execute(date, pageable);
     }
@@ -239,8 +239,8 @@ public class AdminController implements AdminApiDocument {
     @GetMapping("/withdrawal-reasons/statistics")
     @ResponseStatus(HttpStatus.OK)
     public List<WithdrawalStatisticsByDateResponse> getWithdrawalStatisticsByDate(
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
+            @RequestParam @Valid LocalDate startDate,
+            @RequestParam @Valid LocalDate endDate) {
         return getWithdrawalStatisticsByDateUseCase.execute(startDate, endDate);
     }
 
