@@ -12,5 +12,5 @@ import java.time.LocalDate;
  */
 public record WithdrawalStatisticsDto(
                 LocalDate date,
-                Integer count) {
+                int count) {
 }
