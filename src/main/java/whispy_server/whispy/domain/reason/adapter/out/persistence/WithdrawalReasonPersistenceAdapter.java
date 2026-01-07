@@ -101,20 +101,23 @@ public class WithdrawalReasonPersistenceAdapter implements WithdrawalReasonPort 
 
         QWithdrawalReasonJpaEntity withdrawalReason = QWithdrawalReasonJpaEntity.withdrawalReasonJpaEntity;
 
-        DateTemplate<LocalDate> dateExpression = Expressions.dateTemplate(
-                LocalDate.class,
-                "DATE({0})",
-                withdrawalReason.createdAt);
-
         return jpaQueryFactory
                 .select(Projections.constructor(
                         WithdrawalStatisticsDto.class,
-                        dateExpression,
+                        withdrawalReason.createdAt.year(),
+                        withdrawalReason.createdAt.month(),
+                        withdrawalReason.createdAt.dayOfMonth(),
                         withdrawalReason.count().intValue()))
                 .from(withdrawalReason)
                 .where(withdrawalReason.createdAt.between(startDateTime, endDateTime))
-                .groupBy(dateExpression)
-                .orderBy(dateExpression.asc())
+                .groupBy(
+                        withdrawalReason.createdAt.year(),
+                        withdrawalReason.createdAt.month(),
+                        withdrawalReason.createdAt.dayOfMonth())
+                .orderBy(
+                        withdrawalReason.createdAt.year().asc(),
+                        withdrawalReason.createdAt.month().asc(),
+                        withdrawalReason.createdAt.dayOfMonth().asc())
                 .fetch();
     }
 }

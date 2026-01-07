@@ -312,7 +312,9 @@ public interface AdminApiDocument {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "탈퇴 통계 조회 성공",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = WithdrawalStatisticsByDateResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 날짜 범위 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "403", description = "권한 없음",
