@@ -45,6 +45,8 @@ class GetMusicDetailServiceTest {
         Music music = new Music(
                 musicId,
                 "빗소리",
+                "Nature Sounds",
+                "편안한 빗소리",
                 "http://example.com/music.mp3",
                 180,
                 MusicCategory.NATURE,

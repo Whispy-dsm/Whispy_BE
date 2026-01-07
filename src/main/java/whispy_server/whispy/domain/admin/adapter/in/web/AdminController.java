@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.admin.adapter.in.web.dto.request.AdminLoginRequest;
@@ -34,15 +35,21 @@ import whispy_server.whispy.domain.notification.application.port.in.BroadCastToA
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
 import whispy_server.whispy.domain.notification.application.port.in.SendToTopicUseCase;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonDetailResponse;
-import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonResponse;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonSummaryResponse;
+import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonsByDateResponse;
+import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalStatisticsByDateResponse;
 import whispy_server.whispy.domain.reason.application.port.in.DeleteWithdrawalReasonUseCase;
 import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReasonDetailUseCase;
+import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReasonsByDateUseCase;
 import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReasonsUseCase;
+import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalStatisticsByDateUseCase;
 import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.AddNewTopicRequest;
 import whispy_server.whispy.domain.topic.application.port.in.AddNewTopicForAllUsersUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.global.document.api.admin.AdminApiDocument;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 관리자 REST 컨트롤러.
@@ -67,6 +74,8 @@ public class AdminController implements AdminApiDocument {
     private final GetWithdrawalReasonsUseCase getWithdrawalReasonsUseCase;
     private final GetWithdrawalReasonDetailUseCase getWithdrawalReasonDetailUseCase;
     private final DeleteWithdrawalReasonUseCase deleteWithdrawalReasonUseCase;
+    private final GetWithdrawalReasonsByDateUseCase getWithdrawalReasonsByDateUseCase;
+    private final GetWithdrawalStatisticsByDateUseCase getWithdrawalStatisticsByDateUseCase;
     private final SendToDeviceTokensUseCase sendToDeviceTokensUseCase;
     private final SendToTopicUseCase sendToTopicUseCase;
     private final BroadCastToAllUsersUseCase broadCastToAllUsersUseCase;
@@ -203,6 +212,36 @@ public class AdminController implements AdminApiDocument {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteWithdrawalReason(@PathVariable Long id) {
         deleteWithdrawalReasonUseCase.execute(id);
+    }
+
+    /**
+     * 특정 날짜의 회원 탈퇴 사유 목록을 페이지네이션하여 조회합니다.
+     *
+     * @param date 조회할 날짜
+     * @param pageable 페이지 정보
+     * @return 해당 날짜의 탈퇴 사유 목록
+     */
+    @GetMapping("/withdrawal-reasons/date/{date}")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<WithdrawalReasonsByDateResponse> getWithdrawalReasonsByDate(
+            @PathVariable LocalDate date,
+            Pageable pageable) {
+        return getWithdrawalReasonsByDateUseCase.execute(date, pageable);
+    }
+
+    /**
+     * 기간 내 날짜별 탈퇴 통계를 조회합니다.
+     *
+     * @param startDate 시작 날짜
+     * @param endDate 종료 날짜
+     * @return 날짜별 탈퇴 건수 통계 목록
+     */
+    @GetMapping("/withdrawal-reasons/statistics")
+    @ResponseStatus(HttpStatus.OK)
+    public List<WithdrawalStatisticsByDateResponse> getWithdrawalStatisticsByDate(
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate) {
+        return getWithdrawalStatisticsByDateUseCase.execute(startDate, endDate);
     }
 
     /**

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonDetailResponse;
-import whispy_server.whispy.domain.reason.adapter.in.web.dto.response.WithdrawalReasonResponse;
 import whispy_server.whispy.domain.reason.application.port.in.GetWithdrawalReasonDetailUseCase;
 import whispy_server.whispy.domain.reason.application.port.out.WithdrawalReasonQueryPort;
 import whispy_server.whispy.domain.reason.model.WithdrawalReason;

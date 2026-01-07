@@ -49,6 +49,8 @@ class UpdateMusicServiceTest {
         Music existingMusic = new Music(
                 musicId,
                 "기존 제목",
+                "Old Artist",
+                "기존 설명",
                 "http://example.com/old.mp3",
                 180,
                 MusicCategory.NATURE,
@@ -59,6 +61,8 @@ class UpdateMusicServiceTest {
         UpdateMusicRequest request = new UpdateMusicRequest(
                 musicId,
                 "새로운 제목",
+                "New Artist",
+                "새로운 설명",
                 "http://example.com/new.mp3",
                 200,
                 MusicCategory.NATURE,
@@ -84,6 +88,8 @@ class UpdateMusicServiceTest {
         UpdateMusicRequest request = new UpdateMusicRequest(
                 musicId,
                 "새로운 제목",
+                "New Artist",
+                "새로운 설명",
                 "http://example.com/new.mp3",
                 200,
                 MusicCategory.NATURE,

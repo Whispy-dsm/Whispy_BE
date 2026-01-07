@@ -38,6 +38,8 @@ class CreateMusicServiceTest {
         // given
         CreateMusicRequest request = new CreateMusicRequest(
                 "빗소리",
+                "Nature Sounds",
+                "편안한 빗소리",
                 "http://example.com/music.mp3",
                 180,
                 MusicCategory.NATURE,
@@ -58,6 +60,8 @@ class CreateMusicServiceTest {
         // given
         CreateMusicRequest request = new CreateMusicRequest(
                 "자연의 소리",
+                null,
+                null,
                 "http://example.com/nature.mp3",
                 240,
                 MusicCategory.NATURE,
