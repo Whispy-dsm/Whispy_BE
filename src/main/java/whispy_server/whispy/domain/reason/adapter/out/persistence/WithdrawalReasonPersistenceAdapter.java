@@ -48,8 +48,7 @@ public class WithdrawalReasonPersistenceAdapter implements WithdrawalReasonPort 
     @Override
     public Page<WithdrawalReason> findAll(Pageable pageable) {
         return withdrawalReasonMapper.toPageModel(
-            withdrawalReasonJpaRepository.findAllByOrderByCreatedAtDesc(pageable)
-        );
+                withdrawalReasonJpaRepository.findAllByOrderByCreatedAtDesc(pageable));
     }
 
     /**
@@ -105,15 +104,13 @@ public class WithdrawalReasonPersistenceAdapter implements WithdrawalReasonPort 
         DateTemplate<LocalDate> dateExpression = Expressions.dateTemplate(
                 LocalDate.class,
                 "DATE({0})",
-                withdrawalReason.createdAt
-        );
+                withdrawalReason.createdAt);
 
         return jpaQueryFactory
                 .select(Projections.constructor(
                         WithdrawalStatisticsDto.class,
                         dateExpression,
-                        withdrawalReason.count()
-                ))
+                        withdrawalReason.count().intValue()))
                 .from(withdrawalReason)
                 .where(withdrawalReason.createdAt.between(startDateTime, endDateTime))
                 .groupBy(dateExpression)
