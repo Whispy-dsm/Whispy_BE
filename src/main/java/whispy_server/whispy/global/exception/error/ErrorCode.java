@@ -37,6 +37,8 @@ public enum ErrorCode {
     MEDITATION_SESSION_DURATION_EXCEEDED(400, "명상시간이 전체 시간을 초과할 수 없습니다."),
     INVALID_MEDITATION_SESSION_DURATION(400, "명상시간은 1초 이상이어야 합니다."),
     INVALID_STATISTICS_DATE(400, "통계 조회는 미래 날짜로 할 수 없습니다."),
+    INVALID_DATE_RANGE(400, "시작 날짜가 종료 날짜보다 늦을 수 없습니다."),
+    DATE_RANGE_EXCEEDED(400, "조회 기간은 최대 1년까지 가능합니다."),
     INVALID_WITHDRAWAL_REASON_DETAIL(400, "탈퇴 사유 상세 내용이 유효하지 않습니다."),
 
     USER_NOT_FOUND(404, "일치하는 유저를 찾을 수 없습니다"),
