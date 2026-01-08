@@ -70,6 +70,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/oauth2/authorization/google", "/login/oauth2/code/google").permitAll()
                         .requestMatchers("/users/login","/users/register","/users/reissue").permitAll()
+                        .requestMatchers("/users/password/reset").permitAll()
                         .requestMatchers("/admin/login").permitAll()
                         .requestMatchers("/users/oauth/kakao").permitAll()
                         .requestMatchers("/oauth/success/**").permitAll()
