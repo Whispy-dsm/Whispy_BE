@@ -161,8 +161,7 @@ public interface UserApiDocument {
 
     @Operation(
             summary = "비밀번호 재설정",
-            description = "이메일 인증 완료 후 비밀번호를 재설정합니다.",
-            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+            description = "이메일 인증 완료 후 비밀번호를 재설정합니다."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "비밀번호 재설정 성공"),

@@ -70,6 +70,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/oauth2/authorization/google", "/login/oauth2/code/google").permitAll()
                         .requestMatchers("/users/login","/users/register","/users/reissue").permitAll()
+                        .requestMatchers("/users/password/reset").permitAll()
                         .requestMatchers("/admin/login").permitAll()
                         .requestMatchers("/users/oauth/kakao").permitAll()
                         .requestMatchers("/oauth/success/**").permitAll()
@@ -81,7 +82,6 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/auth/email/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
-                        .requestMatchers("/purchase/validate").permitAll()
                         .requestMatchers("/webhook/google-play").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
