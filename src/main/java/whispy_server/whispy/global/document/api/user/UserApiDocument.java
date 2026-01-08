@@ -15,6 +15,7 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfile
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UpdateFcmTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyAccountInfoResponse;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileResponse;
@@ -231,4 +232,24 @@ public interface UserApiDocument {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     MyAccountInfoResponse getMyAccountInfo();
+
+    @Operation(
+            summary = "FCM 토큰 업데이트",
+            description = "푸시 알림을 위한 Firebase Cloud Messaging 토큰을 업데이트합니다. 토큰 변경 시 이전 기기는 자동 로그아웃됩니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "FCM 토큰 업데이트 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    void updateFcmToken(
+            @RequestBody(description = "FCM 토큰 업데이트 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = UpdateFcmTokenRequest.class)))
+            UpdateFcmTokenRequest request
+    );
 }
