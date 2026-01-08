@@ -82,7 +82,6 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/auth/email/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
-                        .requestMatchers("/purchase/validate").permitAll()
                         .requestMatchers("/webhook/google-play").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/actuator/**").permitAll()

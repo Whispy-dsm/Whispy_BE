@@ -6,10 +6,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.request.ValidatePurchaseRequest;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.ValidatePurchaseResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
+
+import static whispy_server.whispy.global.config.swagger.SwaggerConfig.SECURITY_SCHEME_NAME;
 
 /**
  * Google Play 결제 검증/처리를 위한 Swagger 인터페이스이다.
@@ -17,7 +20,11 @@ import whispy_server.whispy.global.exception.error.ErrorResponse;
 @Tag(name = "PURCHASE API", description = "구매 검증 관련 API")
 public interface PurchaseApiDocument {
 
-    @Operation(summary = "구매 검증", description = "Google Play 구매를 검증하고 처리합니다.")
+    @Operation(
+            summary = "구매 검증",
+            description = "Google Play 구매를 검증하고 처리합니다.",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "구매 검증 성공",
                     content = @Content(schema = @Schema(implementation = ValidatePurchaseResponse.class))),
