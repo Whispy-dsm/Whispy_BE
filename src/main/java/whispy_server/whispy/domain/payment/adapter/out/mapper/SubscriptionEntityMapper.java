@@ -31,7 +31,6 @@ public interface SubscriptionEntityMapper {
      * @param subscription 도메인 모델
      * @return JPA 엔티티
      */
-    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
     SubscriptionJpaEntity toEntity(Subscription subscription);
 

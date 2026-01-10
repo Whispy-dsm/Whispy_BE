@@ -22,7 +22,6 @@ public interface UserEntityMapper {
      * @param userModel User 도메인 모델
      * @return UserJpaEntity 엔티티
      */
-    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
     UserJpaEntity toEntity(User userModel);
 
