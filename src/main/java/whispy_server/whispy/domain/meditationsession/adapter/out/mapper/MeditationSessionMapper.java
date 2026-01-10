@@ -28,12 +28,11 @@ public interface MeditationSessionMapper {
 
     /**
      * 도메인 모델을 JPA 엔티티로 변환합니다.
-     * createdAt과 modifiedAt은 자동으로 생성되므로 무시됩니다.
+     * modifiedAt은 자동으로 생성되므로 무시됩니다.
      *
      * @param domain 변환할 도메인 모델
      * @return 변환된 JPA 엔티티
      */
-    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
     MeditationSessionJpaEntity toEntity(MeditationSession domain);
 

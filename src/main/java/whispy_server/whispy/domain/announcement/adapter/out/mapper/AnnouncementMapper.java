@@ -33,7 +33,6 @@ public interface AnnouncementMapper {
      * @param model 공지사항 도메인 모델
      * @return 공지사항 JPA 엔티티
      */
-    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
     AnnouncementJpaEntity toEntity(Announcement model);
 

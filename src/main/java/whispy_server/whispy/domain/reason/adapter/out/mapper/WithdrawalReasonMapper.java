@@ -18,7 +18,6 @@ public interface WithdrawalReasonMapper {
 
     WithdrawalReason toModel(WithdrawalReasonJpaEntity entity);
 
-    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
     WithdrawalReasonJpaEntity toEntity(WithdrawalReason model);
 
