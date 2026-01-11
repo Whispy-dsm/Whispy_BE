@@ -11,11 +11,8 @@ import whispy_server.whispy.domain.admin.model.Admin;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.global.exception.domain.admin.AdminNotFoundException;
 import whispy_server.whispy.global.exception.domain.user.PasswordMissMatchException;
-import whispy_server.whispy.global.security.jwt.JwtProperties;
 import whispy_server.whispy.global.security.jwt.JwtTokenProvider;
-import whispy_server.whispy.global.security.jwt.domain.entity.RefreshToken;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
-import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 
 /**
  * 관리자 로그인 서비스.
@@ -30,14 +27,12 @@ public class AdminLoginService implements AdminLoginUseCase {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final QueryAdminPort queryAdminPort;
-    private final JwtProperties jwtProperties;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     /**
      * 관리자 로그인을 실행합니다.
      *
      * 관리자 ID로 계정을 조회하고 비밀번호를 검증합니다.
-     * 인증 성공 시 JWT 토큰을 생성하고 리프레시 토큰을 Redis에 저장합니다.
+     * 인증 성공 시 JWT 토큰을 생성합니다.
      *
      * @param request 관리자 ID와 비밀번호가 포함된 요청
      * @return JWT 액세스 토큰과 리프레시 토큰
@@ -54,13 +49,6 @@ public class AdminLoginService implements AdminLoginUseCase {
             throw PasswordMissMatchException.EXCEPTION;
         }
 
-        TokenResponse tokenResponse = jwtTokenProvider.generateToken(admin.id(), Role.ADMIN.name());
-        RefreshToken token = new RefreshToken(
-                admin.id(),
-                tokenResponse.refreshToken(),
-                jwtProperties.refreshExpiration()
-        );
-        refreshTokenRepository.save(token);
-        return tokenResponse;
+        return jwtTokenProvider.generateToken(admin.id(), Role.ADMIN.name());
     }
 }
