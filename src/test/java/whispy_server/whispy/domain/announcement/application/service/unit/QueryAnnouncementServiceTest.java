@@ -45,8 +45,7 @@ class QueryAnnouncementServiceTest {
         Announcement announcement = createAnnouncement(
                 announcementId,
                 "새로운 기능 출시",
-                "Whispy에 새로운 기능이 추가되었습니다.",
-                "https://example.com/banner.jpg"
+                "Whispy에 새로운 기능이 추가되었습니다."
         );
 
         given(announcementPort.findById(announcementId)).willReturn(Optional.of(announcement));
@@ -58,7 +57,6 @@ class QueryAnnouncementServiceTest {
         assertThat(response).isNotNull();
         assertThat(response.title()).isEqualTo("새로운 기능 출시");
         assertThat(response.content()).isEqualTo("Whispy에 새로운 기능이 추가되었습니다.");
-        assertThat(response.bannerImageUrl()).isEqualTo("https://example.com/banner.jpg");
         verify(announcementPort).findById(announcementId);
     }
 
@@ -76,30 +74,6 @@ class QueryAnnouncementServiceTest {
     }
 
     @Test
-    @DisplayName("배너 이미지가 없는 공지사항을 조회할 수 있다")
-    void whenNoBannerImage_thenReturnsDetailsWithNullBanner() {
-        // given
-        Long announcementId = 1L;
-        Announcement announcement = createAnnouncement(
-                announcementId,
-                "간단한 공지",
-                "간단한 공지사항 내용입니다.",
-                null
-        );
-
-        given(announcementPort.findById(announcementId)).willReturn(Optional.of(announcement));
-
-        // when
-        QueryAnnouncementResponse response = queryAnnouncementService.execute(announcementId);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response.title()).isEqualTo("간단한 공지");
-        assertThat(response.content()).isEqualTo("간단한 공지사항 내용입니다.");
-        assertThat(response.bannerImageUrl()).isNull();
-    }
-
-    @Test
     @DisplayName("긴 내용의 공지사항을 조회할 수 있다")
     void whenLongContent_thenReturnsFullContent() {
         // given
@@ -108,8 +82,7 @@ class QueryAnnouncementServiceTest {
         Announcement announcement = createAnnouncement(
                 announcementId,
                 "상세 공지사항",
-                longContent,
-                "https://example.com/banner.jpg"
+                longContent
         );
 
         given(announcementPort.findById(announcementId)).willReturn(Optional.of(announcement));
@@ -128,15 +101,13 @@ class QueryAnnouncementServiceTest {
      * @param id 공지사항 ID
      * @param title 공지사항 제목
      * @param content 공지사항 내용
-     * @param bannerImageUrl 배너 이미지 URL
      * @return 생성된 Announcement 객체
      */
-    private Announcement createAnnouncement(Long id, String title, String content, String bannerImageUrl) {
+    private Announcement createAnnouncement(Long id, String title, String content) {
         return new Announcement(
                 id,
                 title,
                 content,
-                bannerImageUrl,
                 LocalDateTime.now()
         );
     }

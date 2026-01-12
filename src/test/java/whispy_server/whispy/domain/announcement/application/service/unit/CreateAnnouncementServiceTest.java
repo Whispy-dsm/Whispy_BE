@@ -45,8 +45,7 @@ class CreateAnnouncementServiceTest {
         // given
         CreateAnnouncementRequest request = new CreateAnnouncementRequest(
                 "새로운 기능 출시",
-                "Whispy에 새로운 기능이 추가되었습니다.",
-                "https://example.com/banner.jpg"
+                "Whispy에 새로운 기능이 추가되었습니다."
         );
 
         // when
@@ -62,32 +61,13 @@ class CreateAnnouncementServiceTest {
         // given
         CreateAnnouncementRequest request = new CreateAnnouncementRequest(
                 "서비스 점검 안내",
-                "내일 새벽 1시부터 3시까지 서비스 점검이 있습니다.",
-                "https://example.com/maintenance.jpg"
+                "내일 새벽 1시부터 3시까지 서비스 점검이 있습니다."
         );
 
         // when
         createAnnouncementService.execute(request);
 
         // then
-        verify(broadCastToAllUsersUseCase).execute(any(NotificationTopicSendRequest.class));
-    }
-
-    @Test
-    @DisplayName("배너 이미지 없이 공지사항을 생성할 수 있다")
-    void whenNoBannerImage_thenCreatesSuccessfully() {
-        // given
-        CreateAnnouncementRequest request = new CreateAnnouncementRequest(
-                "간단한 공지",
-                "간단한 공지사항 내용입니다.",
-                null
-        );
-
-        // when
-        createAnnouncementService.execute(request);
-
-        // then
-        verify(announcementSaver).save(any());
         verify(broadCastToAllUsersUseCase).execute(any(NotificationTopicSendRequest.class));
     }
 
@@ -98,8 +78,7 @@ class CreateAnnouncementServiceTest {
         String longContent = "이것은 매우 긴 공지사항 내용입니다. ".repeat(50);
         CreateAnnouncementRequest request = new CreateAnnouncementRequest(
                 "상세 공지사항",
-                longContent,
-                "https://example.com/banner.jpg"
+                longContent
         );
 
         // when
