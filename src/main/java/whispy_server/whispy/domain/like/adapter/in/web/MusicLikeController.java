@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.like.adapter.in.web;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import whispy_server.whispy.domain.like.adapter.in.web.dto.response.CheckMusicLikeResponse;
 import whispy_server.whispy.domain.like.adapter.in.web.dto.response.LikedMusicResponse;
 import whispy_server.whispy.domain.like.application.port.in.CheckMusicLikeUseCase;
 import whispy_server.whispy.domain.like.application.port.in.QueryMyLikedMusicsUseCase;
@@ -50,10 +51,10 @@ public class MusicLikeController implements MusicLikeApiDocument {
      * 특정 음악에 대한 좋아요 여부를 확인합니다.
      *
      * @param musicId 음악 ID
-     * @return 좋아요 여부 (true: 좋아요 누름, false: 좋아요 안 누름)
+     * @return 좋아요 여부 응답
      */
     @GetMapping("/{musicId}/check")
-    public boolean checkMusicLike(@PathVariable Long musicId) {
+    public CheckMusicLikeResponse checkMusicLike(@PathVariable Long musicId) {
         return checkMusicLikeUseCase.execute(musicId);
     }
 }
