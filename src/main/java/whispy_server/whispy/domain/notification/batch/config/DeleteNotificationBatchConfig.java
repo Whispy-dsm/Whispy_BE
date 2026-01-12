@@ -8,9 +8,7 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JpaPagingItemReader;
-import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import whispy_server.whispy.domain.notification.adapter.out.entity.NotificationJpaEntity;
 import whispy_server.whispy.domain.notification.batch.dto.DeleteOldNotificationJobParameters;
 import whispy_server.whispy.domain.notification.batch.processor.DeleteOldNotificationItemProcessor;
+import whispy_server.whispy.domain.notification.batch.reader.ZeroOffsetJpaPagingItemReader;
 import whispy_server.whispy.domain.notification.batch.writer.DeleteOldNotificationItemWriter;
 import whispy_server.whispy.global.exception.domain.batch.BatchItemReaderInitializationFailedException;
 
@@ -63,10 +62,10 @@ public class DeleteNotificationBatchConfig {
      */
     @Bean("deleteOldNotificationStep")
     public Step deleteOldNotificationStep(
-            JpaPagingItemReader<NotificationJpaEntity> oldNotificationReader
-    ) {
+            JpaPagingItemReader<NotificationJpaEntity> oldNotificationReader) {
         return new StepBuilder("deleteOldNotificationStep", jobRepository)
-                .<NotificationJpaEntity, DeleteOldNotificationJobParameters>chunk(CHUNK_SIZE, platformTransactionManager)
+                .<NotificationJpaEntity, DeleteOldNotificationJobParameters>chunk(CHUNK_SIZE,
+                        platformTransactionManager)
                 .reader(oldNotificationReader)
                 .processor(deleteOldNotificationItemProcessor)
                 .writer(deleteOldNotificationItemWriter)
@@ -76,23 +75,26 @@ public class DeleteNotificationBatchConfig {
     /**
      * 30일이 지난 오래된 알림을 조회하는 Reader를 생성합니다.
      *
+     * ZeroOffsetJpaPagingItemReader를 사용하여 항상 0페이지(OFFSET 0)에서만 읽습니다.
+     * 이렇게 하면 삭제된 데이터 수만큼 앞으로 당겨진 데이터도 놓치지 않고 처리할 수 있습니다.
+     *
      * @return 오래된 알림 Reader
      */
     @Bean
     @StepScope
     public JpaPagingItemReader<NotificationJpaEntity> oldNotificationReader(
-            EntityManagerFactory entityManagerFactory
-    ) {
+            EntityManagerFactory entityManagerFactory) {
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
 
         try {
-            return new JpaPagingItemReaderBuilder<NotificationJpaEntity>()
-                    .name("oldNotificationReader")
-                    .entityManagerFactory(entityManagerFactory)
-                    .queryString("SELECT n FROM NotificationJpaEntity n WHERE n.createdAt < :thirtyDaysAgo")
-                    .parameterValues(Map.of("thirtyDaysAgo", thirtyDaysAgo))
-                    .pageSize(CHUNK_SIZE)
-                    .build();
+            ZeroOffsetJpaPagingItemReader<NotificationJpaEntity> reader = new ZeroOffsetJpaPagingItemReader<>();
+            reader.setName("oldNotificationReader");
+            reader.setEntityManagerFactory(entityManagerFactory);
+            reader.setQueryString(
+                    "SELECT n FROM NotificationJpaEntity n WHERE n.createdAt < :thirtyDaysAgo ORDER BY n.id ASC");
+            reader.setParameterValues(Map.of("thirtyDaysAgo", thirtyDaysAgo));
+            reader.setPageSize(CHUNK_SIZE);
+            return reader;
         } catch (Exception e) {
             throw new BatchItemReaderInitializationFailedException(e);
         }
