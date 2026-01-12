@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.like.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import whispy_server.whispy.domain.like.adapter.in.web.dto.response.CheckMusicLikeResponse;
 import whispy_server.whispy.domain.like.application.port.in.CheckMusicLikeUseCase;
 import whispy_server.whispy.domain.like.application.port.out.QueryMusicLikePort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
@@ -22,8 +23,9 @@ public class CheckMusicLikeService implements CheckMusicLikeUseCase {
     @UserAction("음악 좋아요 여부 확인")
     @Transactional(readOnly = true)
     @Override
-    public boolean execute(Long musicId) {
+    public CheckMusicLikeResponse execute(Long musicId) {
         User currentUser = userFacadeUseCase.currentUser();
-        return queryMusicLikePort.existsByUserIdAndMusicId(currentUser.id(), musicId);
+        boolean isLiked = queryMusicLikePort.existsByUserIdAndMusicId(currentUser.id(), musicId);
+        return new CheckMusicLikeResponse(isLiked);
     }
 }
