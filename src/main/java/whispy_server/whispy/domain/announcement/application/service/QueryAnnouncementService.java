@@ -34,11 +34,10 @@ public class QueryAnnouncementService implements QueryAnnouncementUseCase {
     public QueryAnnouncementResponse execute(Long id) {
         Announcement announcement = announcementPort.findById(id)
                 .orElseThrow(() -> AnnouncementNotFoundException.EXCEPTION);
-        
+
         return new QueryAnnouncementResponse(
                 announcement.title(),
-                announcement.content(),
-                announcement.bannerImageUrl()
+                announcement.content()
         );
     }
 }

@@ -40,7 +40,6 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
                 null,
                 request.title(),
                 request.content(),
-                request.bannerImageUrl(),
                 LocalDateTime.now()
         );
 
