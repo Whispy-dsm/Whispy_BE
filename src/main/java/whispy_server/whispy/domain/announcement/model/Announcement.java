@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
  * 공지사항 도메인 모델.
  *
  * DDD의 Aggregate Root로 공지사항 관련 비즈니스 로직을 캡슐화합니다.
+ * 공지사항 내용은 마크다운 형식으로 작성되며, 이미지는 마크다운 문법으로 포함할 수 있습니다.
  *
  * @param id 공지사항 ID
  * @param title 공지사항 제목
- * @param content 공지사항 내용
- * @param bannerImageUrl 배너 이미지 URL
+ * @param content 공지사항 내용 (마크다운 형식)
  * @param createdAt 생성 일시
  */
 @Aggregate
@@ -21,7 +21,6 @@ public record Announcement(
         Long id,
         String title,
         String content,
-        String bannerImageUrl,
         LocalDateTime createdAt
 ) {
     /**
@@ -35,7 +34,6 @@ public record Announcement(
                 this.id,
                 request.title() != null ? request.title() : this.title,
                 request.content() != null ? request.content() : this.content,
-                request.bannerImageUrl() != null ? request.bannerImageUrl() : this.bannerImageUrl,
                 this.createdAt
         );
     }

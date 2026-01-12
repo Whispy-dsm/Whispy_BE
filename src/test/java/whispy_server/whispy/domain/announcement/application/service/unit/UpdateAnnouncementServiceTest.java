@@ -45,15 +45,13 @@ class UpdateAnnouncementServiceTest {
         Announcement existingAnnouncement = createAnnouncement(
                 announcementId,
                 "기존 제목",
-                "기존 내용",
-                "https://example.com/old-banner.jpg"
+                "기존 내용"
         );
 
         UpdateAnnouncementRequest request = new UpdateAnnouncementRequest(
                 announcementId,
                 "수정된 제목",
-                "수정된 내용",
-                "https://example.com/new-banner.jpg"
+                "수정된 내용"
         );
 
         given(announcementPort.findById(announcementId)).willReturn(Optional.of(existingAnnouncement));
@@ -74,8 +72,7 @@ class UpdateAnnouncementServiceTest {
         UpdateAnnouncementRequest request = new UpdateAnnouncementRequest(
                 announcementId,
                 "수정된 제목",
-                "수정된 내용",
-                "https://example.com/new-banner.jpg"
+                "수정된 내용"
         );
 
         given(announcementPort.findById(announcementId)).willReturn(Optional.empty());
@@ -94,14 +91,12 @@ class UpdateAnnouncementServiceTest {
         Announcement existingAnnouncement = createAnnouncement(
                 announcementId,
                 "기존 제목",
-                "기존 내용",
-                "https://example.com/banner.jpg"
+                "기존 내용"
         );
 
         UpdateAnnouncementRequest request = new UpdateAnnouncementRequest(
                 announcementId,
                 "새로운 제목",
-                null,
                 null
         );
 
@@ -122,43 +117,13 @@ class UpdateAnnouncementServiceTest {
         Announcement existingAnnouncement = createAnnouncement(
                 announcementId,
                 "기존 제목",
-                "기존 내용",
-                "https://example.com/banner.jpg"
+                "기존 내용"
         );
 
         UpdateAnnouncementRequest request = new UpdateAnnouncementRequest(
                 announcementId,
                 null,
-                "새로운 내용",
-                null
-        );
-
-        given(announcementPort.findById(announcementId)).willReturn(Optional.of(existingAnnouncement));
-
-        // when
-        updateAnnouncementService.execute(request);
-
-        // then
-        verify(announcementPort).save(any(Announcement.class));
-    }
-
-    @Test
-    @DisplayName("배너 이미지만 수정할 수 있다")
-    void whenUpdatingBannerOnly_thenUpdatesSuccessfully() {
-        // given
-        Long announcementId = 1L;
-        Announcement existingAnnouncement = createAnnouncement(
-                announcementId,
-                "기존 제목",
-                "기존 내용",
-                "https://example.com/old-banner.jpg"
-        );
-
-        UpdateAnnouncementRequest request = new UpdateAnnouncementRequest(
-                announcementId,
-                null,
-                null,
-                "https://example.com/new-banner.jpg"
+                "새로운 내용"
         );
 
         given(announcementPort.findById(announcementId)).willReturn(Optional.of(existingAnnouncement));
@@ -178,15 +143,13 @@ class UpdateAnnouncementServiceTest {
         Announcement existingAnnouncement = createAnnouncement(
                 announcementId,
                 "기존 제목",
-                "기존 내용",
-                "https://example.com/old-banner.jpg"
+                "기존 내용"
         );
 
         UpdateAnnouncementRequest request = new UpdateAnnouncementRequest(
                 announcementId,
                 "완전히 새로운 제목",
-                "완전히 새로운 내용",
-                "https://example.com/completely-new-banner.jpg"
+                "완전히 새로운 내용"
         );
 
         given(announcementPort.findById(announcementId)).willReturn(Optional.of(existingAnnouncement));
@@ -205,15 +168,13 @@ class UpdateAnnouncementServiceTest {
      * @param id 공지사항 ID
      * @param title 공지사항 제목
      * @param content 공지사항 내용
-     * @param bannerImageUrl 배너 이미지 URL
      * @return 생성된 Announcement 객체
      */
-    private Announcement createAnnouncement(Long id, String title, String content, String bannerImageUrl) {
+    private Announcement createAnnouncement(Long id, String title, String content) {
         return new Announcement(
                 id,
                 title,
                 content,
-                bannerImageUrl,
                 LocalDateTime.now()
         );
     }

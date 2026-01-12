@@ -136,7 +136,6 @@ class QueryAllAnnouncementServiceTest {
                 id,
                 title,
                 content,
-                "https://example.com/banner.jpg",
                 LocalDateTime.now()
         );
     }

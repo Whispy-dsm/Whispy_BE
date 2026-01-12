@@ -18,6 +18,7 @@ import whispy_server.whispy.global.entity.BaseTimeEntity;
  *
  * tbl_announcement 테이블과 매핑되는 엔티티입니다.
  * BaseTimeEntity를 상속하여 생성일시, 수정일시를 자동으로 관리합니다.
+ * content는 마크다운 형식으로 저장됩니다.
  */
 @Entity(name = "AnnouncementJpaEntity")
 @Table(name = "tbl_announcement")
@@ -36,7 +37,4 @@ public class AnnouncementJpaEntity extends BaseTimeEntity {
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String content;
-
-    @Column(name = "banner_image_url")
-    private String bannerImageUrl;
 }
