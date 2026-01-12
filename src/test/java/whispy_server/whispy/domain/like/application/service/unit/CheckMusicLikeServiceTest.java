@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import whispy_server.whispy.domain.like.adapter.in.web.dto.response.CheckMusicLikeResponse;
 import whispy_server.whispy.domain.like.application.port.out.QueryMusicLikePort;
 import whispy_server.whispy.domain.like.application.service.CheckMusicLikeService;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
@@ -53,10 +54,11 @@ class CheckMusicLikeServiceTest {
                 .willReturn(true);
 
         // when
-        boolean result = checkMusicLikeService.execute(TEST_MUSIC_ID);
+        CheckMusicLikeResponse result = checkMusicLikeService.execute(TEST_MUSIC_ID);
 
         // then
-        assertThat(result).isTrue();
+        assertThat(result).isNotNull();
+        assertThat(result.isLiked()).isTrue();
         verify(userFacadeUseCase).currentUser();
         verify(queryMusicLikePort).existsByUserIdAndMusicId(TEST_USER_ID, TEST_MUSIC_ID);
     }
@@ -72,10 +74,11 @@ class CheckMusicLikeServiceTest {
                 .willReturn(false);
 
         // when
-        boolean result = checkMusicLikeService.execute(TEST_MUSIC_ID);
+        CheckMusicLikeResponse result = checkMusicLikeService.execute(TEST_MUSIC_ID);
 
         // then
-        assertThat(result).isFalse();
+        assertThat(result).isNotNull();
+        assertThat(result.isLiked()).isFalse();
         verify(userFacadeUseCase).currentUser();
         verify(queryMusicLikePort).existsByUserIdAndMusicId(TEST_USER_ID, TEST_MUSIC_ID);
     }
@@ -92,10 +95,11 @@ class CheckMusicLikeServiceTest {
                 .willReturn(true);
 
         // when
-        boolean result = checkMusicLikeService.execute(differentMusicId);
+        CheckMusicLikeResponse result = checkMusicLikeService.execute(differentMusicId);
 
         // then
-        assertThat(result).isTrue();
+        assertThat(result).isNotNull();
+        assertThat(result.isLiked()).isTrue();
         verify(queryMusicLikePort).existsByUserIdAndMusicId(TEST_USER_ID, differentMusicId);
     }
 
