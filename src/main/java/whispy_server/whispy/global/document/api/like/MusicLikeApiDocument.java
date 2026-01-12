@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import whispy_server.whispy.domain.like.adapter.in.web.dto.response.CheckMusicLikeResponse;
 import whispy_server.whispy.domain.like.adapter.in.web.dto.response.LikedMusicResponse;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
@@ -60,11 +61,12 @@ public interface MusicLikeApiDocument {
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "좋아요 여부 조회 성공"),
+            @ApiResponse(responseCode = "200", description = "좋아요 여부 조회 성공",
+                    content = @Content(schema = @Schema(implementation = CheckMusicLikeResponse.class))),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    boolean checkMusicLike(@Parameter(description = "음악 ID", required = true, in = ParameterIn.PATH) Long musicId);
+    CheckMusicLikeResponse checkMusicLike(@Parameter(description = "음악 ID", required = true, in = ParameterIn.PATH) Long musicId);
 }
