@@ -70,6 +70,7 @@ class GetFocusStatisticsServiceTest {
         given(queryFocusStatisticsPort.aggregateByPeriod(eq(TEST_USER_ID), any(), any()))
                 .willReturn(aggregation);
         given(queryFocusStatisticsPort.sumMinutesByDate(TEST_USER_ID, testDate)).willReturn(0);
+        given(queryFocusStatisticsPort.countDistinctDays(eq(TEST_USER_ID), any(), any())).willReturn(0);
         given(queryFocusStatisticsPort.aggregateByTag(eq(TEST_USER_ID), any(), any()))
                 .willReturn(Collections.emptyList());
 
@@ -80,6 +81,7 @@ class GetFocusStatisticsServiceTest {
         assertThat(response.totalCount()).isEqualTo(0);
         assertThat(response.totalMinutes()).isEqualTo(0);
         assertThat(response.todayMinutes()).isEqualTo(0);
+        assertThat(response.totalDays()).isEqualTo(0);
         assertThat(response.tagMinutes()).hasSize(FocusTag.values().length);
         assertThat(response.tagMinutes().values()).allMatch(minutes -> minutes == 0);
     }
@@ -101,6 +103,7 @@ class GetFocusStatisticsServiceTest {
         given(queryFocusStatisticsPort.aggregateByPeriod(eq(TEST_USER_ID), any(), any()))
                 .willReturn(aggregation);
         given(queryFocusStatisticsPort.sumMinutesByDate(TEST_USER_ID, testDate)).willReturn(60);
+        given(queryFocusStatisticsPort.countDistinctDays(eq(TEST_USER_ID), any(), any())).willReturn(2);
         given(queryFocusStatisticsPort.aggregateByTag(eq(TEST_USER_ID), any(), any()))
                 .willReturn(tagAggregations);
 
@@ -111,6 +114,7 @@ class GetFocusStatisticsServiceTest {
         assertThat(response.totalCount()).isEqualTo(3);
         assertThat(response.totalMinutes()).isEqualTo(180);
         assertThat(response.todayMinutes()).isEqualTo(60);
+        assertThat(response.totalDays()).isEqualTo(2);
         assertThat(response.tagMinutes().get(FocusTag.WORK)).isEqualTo(180);
         assertThat(response.tagMinutes().get(FocusTag.STUDY)).isEqualTo(0);
     }
@@ -134,6 +138,7 @@ class GetFocusStatisticsServiceTest {
         given(queryFocusStatisticsPort.aggregateByPeriod(eq(TEST_USER_ID), any(), any()))
                 .willReturn(aggregation);
         given(queryFocusStatisticsPort.sumMinutesByDate(TEST_USER_ID, testDate)).willReturn(90);
+        given(queryFocusStatisticsPort.countDistinctDays(eq(TEST_USER_ID), any(), any())).willReturn(3);
         given(queryFocusStatisticsPort.aggregateByTag(eq(TEST_USER_ID), any(), any()))
                 .willReturn(tagAggregations);
 
@@ -172,6 +177,7 @@ class GetFocusStatisticsServiceTest {
         given(queryFocusStatisticsPort.aggregateByPeriod(eq(TEST_USER_ID), any(), any()))
                 .willReturn(aggregation);
         given(queryFocusStatisticsPort.sumMinutesByDate(TEST_USER_ID, testDate)).willReturn(120);
+        given(queryFocusStatisticsPort.countDistinctDays(eq(TEST_USER_ID), any(), any())).willReturn(5);
         given(queryFocusStatisticsPort.aggregateByTag(eq(TEST_USER_ID), any(), any()))
                 .willReturn(tagAggregations);
 
@@ -208,6 +214,7 @@ class GetFocusStatisticsServiceTest {
         given(queryFocusStatisticsPort.aggregateByPeriod(eq(TEST_USER_ID), any(), any()))
                 .willReturn(aggregation);
         given(queryFocusStatisticsPort.sumMinutesByDate(TEST_USER_ID, date)).willReturn(60);
+        given(queryFocusStatisticsPort.countDistinctDays(eq(TEST_USER_ID), any(), any())).willReturn(1);
         given(queryFocusStatisticsPort.aggregateByTag(eq(TEST_USER_ID), any(), any()))
                 .willReturn(tagAggregations);
 
@@ -217,6 +224,7 @@ class GetFocusStatisticsServiceTest {
         // then
         assertThat(response.totalCount()).isEqualTo(2);
         assertThat(response.totalMinutes()).isEqualTo(120);
+        assertThat(response.totalDays()).isEqualTo(1);
         verify(queryFocusStatisticsPort).aggregateByPeriod(eq(TEST_USER_ID), any(), any());
     }
 
@@ -233,6 +241,7 @@ class GetFocusStatisticsServiceTest {
         given(queryFocusStatisticsPort.aggregateByPeriod(eq(TEST_USER_ID), any(), any()))
                 .willReturn(aggregation);
         given(queryFocusStatisticsPort.sumMinutesByDate(TEST_USER_ID, wednesday)).willReturn(0);
+        given(queryFocusStatisticsPort.countDistinctDays(eq(TEST_USER_ID), any(), any())).willReturn(0);
         given(queryFocusStatisticsPort.aggregateByTag(eq(TEST_USER_ID), any(), any()))
                 .willReturn(Collections.emptyList());
 
@@ -260,6 +269,7 @@ class GetFocusStatisticsServiceTest {
         given(queryFocusStatisticsPort.aggregateByPeriod(eq(TEST_USER_ID), any(), any()))
                 .willReturn(aggregation);
         given(queryFocusStatisticsPort.sumMinutesByDate(TEST_USER_ID, midMonth)).willReturn(0);
+        given(queryFocusStatisticsPort.countDistinctDays(eq(TEST_USER_ID), any(), any())).willReturn(0);
         given(queryFocusStatisticsPort.aggregateByTag(eq(TEST_USER_ID), any(), any()))
                 .willReturn(Collections.emptyList());
 
@@ -287,6 +297,7 @@ class GetFocusStatisticsServiceTest {
         given(queryFocusStatisticsPort.aggregateByPeriod(eq(TEST_USER_ID), any(), any()))
                 .willReturn(aggregation);
         given(queryFocusStatisticsPort.sumMinutesByDate(TEST_USER_ID, midYear)).willReturn(0);
+        given(queryFocusStatisticsPort.countDistinctDays(eq(TEST_USER_ID), any(), any())).willReturn(0);
         given(queryFocusStatisticsPort.aggregateByTag(eq(TEST_USER_ID), any(), any()))
                 .willReturn(Collections.emptyList());
 
