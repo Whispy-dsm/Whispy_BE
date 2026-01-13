@@ -58,6 +58,7 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         double sleepConsistency = calculateConsistencyScore(sessions, aggregation);
         LocalTime averageBedTime = convertMinutesToLocalTime(aggregation.averageBedTimeMinutes());
         LocalTime averageWakeTime = convertMinutesToLocalTime(aggregation.averageWakeTimeMinutes());
+        int totalCount = aggregation.totalCount();
 
         SleepStatistics statistics = new SleepStatistics(
                 todayMinutes,
@@ -65,7 +66,8 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
                 sleepConsistency,
                 averageBedTime,
                 averageWakeTime,
-                aggregation.totalMinutes()
+                aggregation.totalMinutes(),
+                totalCount
         );
 
         return SleepStatisticsResponse.from(statistics);
