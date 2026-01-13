@@ -14,6 +14,7 @@ import java.time.LocalTime;
  * @param averageBedTime 평균 취침 시간
  * @param averageWakeTime 평균 기상 시간
  * @param totalMinutes 누적 수면 시간(분)
+ * @param totalCount 총 수면 세션 수
  */
 @Aggregate
 public record SleepStatistics(
@@ -22,6 +23,7 @@ public record SleepStatistics(
         double sleepConsistency,
         LocalTime averageBedTime,
         LocalTime averageWakeTime,
-        int totalMinutes
+        int totalMinutes,
+        int totalCount
 ) {
 }

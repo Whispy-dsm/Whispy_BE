@@ -15,6 +15,7 @@ import java.time.LocalTime;
  * @param averageBedTime 평균 취침 시각
  * @param averageWakeTime 평균 기상 시각
  * @param totalMinutes 총 수면 시간(분)
+ * @param totalCount 총 수면 세션 수
  */
 @Schema(description = "수면 통계 응답")
 public record SleepStatisticsResponse(
@@ -29,7 +30,9 @@ public record SleepStatisticsResponse(
         @Schema(description = "평균 기상 시각", example = "07:00:00")
         LocalTime averageWakeTime,
         @Schema(description = "총 수면 시간(분)", example = "13500")
-        int totalMinutes
+        int totalMinutes,
+        @Schema(description = "총 수면 세션 수", example = "30")
+        int totalCount
 ) {
     public static SleepStatisticsResponse from(SleepStatistics statistics) {
         return new SleepStatisticsResponse(
@@ -38,7 +41,8 @@ public record SleepStatisticsResponse(
                 statistics.sleepConsistency(),
                 statistics.averageBedTime(),
                 statistics.averageWakeTime(),
-                statistics.totalMinutes()
+                statistics.totalMinutes(),
+                statistics.totalCount()
         );
     }
 }
