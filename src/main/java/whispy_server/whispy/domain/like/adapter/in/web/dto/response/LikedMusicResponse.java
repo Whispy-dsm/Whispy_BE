@@ -24,7 +24,10 @@ public record LikedMusicResponse(
         Integer duration,
 
         @Schema(description = "음악 카테고리")
-        MusicCategory category
+        MusicCategory category,
+
+        @Schema(description = "배너 이미지 URL", example = "https://example.com/banner.jpg")
+        String bannerImageUrl
         ) {
 
         public static LikedMusicResponse from(MusicLikeWithMusicDto dto) {
@@ -33,7 +36,8 @@ public record LikedMusicResponse(
                         dto.title(),
                         dto.filePath(),
                         dto.duration(),
-                        dto.category()
+                        dto.category(),
+                        dto.bannerImageUrl()
                 );
         }
 
