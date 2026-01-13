@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.focussession.adapter.out.entity.QFocusSessionJpaEntity;
+import whispy_server.whispy.domain.meditationsession.adapter.out.entity.QMeditationSessionJpaEntity;
 import whispy_server.whispy.domain.sleepsession.adapter.out.entity.QSleepSessionJpaEntity;
 import whispy_server.whispy.domain.statistics.activity.applicatoin.port.out.ActivityPort;
 
@@ -151,6 +152,38 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
                 .fetch()
                 .forEach(tuple ->
                     mergeMinutesToResult(tuple, dateExpression, sleepSession.durationSeconds.sum(), result)
+                );
+    }
+
+    /**
+     * 명상 세션의 날짜별 누적 시간을 집계합니다.
+     *
+     * @param userId 사용자 ID
+     * @param start 조회 시작 시간
+     * @param end 조회 종료 시간
+     * @param meditation 명상 세션 QueryDSL 엔티티
+     * @param result 집계 결과를 저장할 맵
+     */
+    private void aggregateMeditationMinutes(
+            Long userId,
+            LocalDateTime start,
+            LocalDateTime end,
+            QMeditationSessionJpaEntity meditation,
+            Map<LocalDate, Integer> result
+    ) {
+        Expression<LocalDate> dateExpression = toDateExpression(meditation.startedAt);
+
+        jpaQueryFactory
+                .select(dateExpression, meditation.durationSeconds.sum())
+                .from(meditation)
+                .where(
+                        meditation.userId.eq(userId),
+                        meditation.startedAt.between(start, end)
+                )
+                .groupBy(dateExpression)
+                .fetch()
+                .forEach(tuple ->
+                    mergeMinutesToResult(tuple, dateExpression, meditation.durationSeconds.sum(), result)
                 );
     }
 
