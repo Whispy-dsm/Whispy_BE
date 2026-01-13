@@ -90,6 +90,15 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
         return result;
     }
 
+    /**
+     * 집중 세션의 날짜별 누적 시간을 집계합니다.
+     *
+     * @param userId 사용자 ID
+     * @param start 조회 시작 시간
+     * @param end 조회 종료 시간
+     * @param focusSession 집중 세션 QueryDSL 엔티티
+     * @param result 집계 결과를 저장할 맵
+     */
     private void aggregateFocusMinutes(
             Long userId,
             LocalDateTime start,
@@ -97,20 +106,31 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
             QFocusSessionJpaEntity focusSession,
             Map<LocalDate, Integer> result
     ) {
+        Expression<LocalDate> dateExpression = toDateExpression(focusSession.startedAt);
+
         jpaQueryFactory
-                .select(focusSession.startedAt, focusSession.durationSeconds.sum())
+                .select(dateExpression, focusSession.durationSeconds.sum())
                 .from(focusSession)
                 .where(
                         focusSession.userId.eq(userId),
                         focusSession.startedAt.between(start, end)
                 )
-                .groupBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", focusSession.startedAt))
+                .groupBy(dateExpression)
                 .fetch()
                 .forEach(tuple ->
-                    mergeMinutesToResult(tuple, focusSession.startedAt, focusSession.durationSeconds.sum(), result)
+                    mergeMinutesToResult(tuple, dateExpression, focusSession.durationSeconds.sum(), result)
                 );
     }
 
+    /**
+     * 수면 세션의 날짜별 누적 시간을 집계합니다.
+     *
+     * @param userId 사용자 ID
+     * @param start 조회 시작 시간
+     * @param end 조회 종료 시간
+     * @param sleepSession 수면 세션 QueryDSL 엔티티
+     * @param result 집계 결과를 저장할 맵
+     */
     private void aggregateSleepMinutes(
             Long userId,
             LocalDateTime start,
@@ -118,27 +138,47 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
             QSleepSessionJpaEntity sleepSession,
             Map<LocalDate, Integer> result
     ) {
+        Expression<LocalDate> dateExpression = toDateExpression(sleepSession.startedAt);
+
         jpaQueryFactory
-                .select(sleepSession.startedAt, sleepSession.durationSeconds.sum())
+                .select(dateExpression, sleepSession.durationSeconds.sum())
                 .from(sleepSession)
                 .where(
                         sleepSession.userId.eq(userId),
                         sleepSession.startedAt.between(start, end)
                 )
-                .groupBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", sleepSession.startedAt))
+                .groupBy(dateExpression)
                 .fetch()
                 .forEach(tuple ->
-                    mergeMinutesToResult(tuple, sleepSession.startedAt, sleepSession.durationSeconds.sum(), result)
+                    mergeMinutesToResult(tuple, dateExpression, sleepSession.durationSeconds.sum(), result)
                 );
     }
 
+    /**
+     * LocalDateTime 경로를 LocalDate Expression으로 변환합니다.
+     *
+     * @param dateTimePath LocalDateTime 경로
+     * @return DATE() 함수를 적용한 LocalDate Expression
+     */
+    private Expression<LocalDate> toDateExpression(DateTimePath<LocalDateTime> dateTimePath) {
+        return Expressions.dateTemplate(LocalDate.class, "DATE({0})", dateTimePath);
+    }
+
+    /**
+     * 쿼리 결과를 결과 맵에 병합합니다.
+     *
+     * @param tuple QueryDSL 쿼리 결과 튜플
+     * @param dateExpression 날짜 Expression
+     * @param durationSumExpression 지속 시간 합계 Expression
+     * @param result 집계 결과를 저장할 맵
+     */
     private void mergeMinutesToResult(
             Tuple tuple,
-            DateTimePath<LocalDateTime> startedAtPath,
+            Expression<LocalDate> dateExpression,
             Expression<Integer> durationSumExpression,
             Map<LocalDate, Integer> result
     ) {
-        LocalDate date = tuple.get(startedAtPath).toLocalDate();
+        LocalDate date = tuple.get(dateExpression);
         Integer seconds = tuple.get(durationSumExpression);
         int minutes = seconds != null ? seconds / 60 : 0;
         result.merge(date, minutes, Integer::sum);
