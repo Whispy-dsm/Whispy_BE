@@ -73,7 +73,8 @@ public class MusicLikePersistenceAdapter implements MusicLikePort {
                         music.title,
                         music.filePath,
                         music.duration,
-                        music.category
+                        music.category,
+                        music.bannerImageUrl
                 ))
                 .from(musicLike)
                 .innerJoin(music).on(musicLike.musicId.eq(music.id))
