@@ -144,7 +144,8 @@ class QueryMyLikedMusicsServiceTest {
                 musicTitle,
                 "http://example.com/music.mp3",
                 180,
-                whispy_server.whispy.domain.music.model.type.MusicCategory.NATURE
+                whispy_server.whispy.domain.music.model.type.MusicCategory.NATURE,
+                "http://example.com/banner.jpg"
         );
     }
 }
