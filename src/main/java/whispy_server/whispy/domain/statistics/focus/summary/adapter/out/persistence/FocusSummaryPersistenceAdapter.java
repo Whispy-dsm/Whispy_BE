@@ -115,4 +115,20 @@ public class FocusSummaryPersistenceAdapter implements QueryFocusStatisticsPort 
                 .groupBy(focusSession.tag)
                 .fetch();
     }
+
+    @Override
+    public int countDistinctDays(Long userId, LocalDateTime start, LocalDateTime end) {
+        QFocusSessionJpaEntity focusSession = QFocusSessionJpaEntity.focusSessionJpaEntity;
+
+        Long count = jpaQueryFactory
+                .select(focusSession.startedAt.stringValue().substring(0, 10).countDistinct())
+                .from(focusSession)
+                .where(
+                        focusSession.userId.eq(userId),
+                        focusSession.startedAt.between(start, end)
+                )
+                .fetchOne();
+
+        return count != null ? count.intValue() : 0;
+    }
 }

@@ -52,4 +52,14 @@ public interface QueryFocusStatisticsPort {
      * @return 태그별 시간 DTO 목록
      */
     List<TagMinutesDto> aggregateByTag(Long userId, LocalDateTime start, LocalDateTime end);
+
+    /**
+     * 기간 내 집중 세션이 있는 일수를 계산합니다.
+     *
+     * @param userId 사용자 ID
+     * @param start 조회 시작 시간
+     * @param end 조회 종료 시간
+     * @return 집중 세션이 있는 일수
+     */
+    int countDistinctDays(Long userId, LocalDateTime start, LocalDateTime end);
 }
