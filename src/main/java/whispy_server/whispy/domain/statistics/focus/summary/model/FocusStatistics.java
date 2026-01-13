@@ -13,6 +13,7 @@ import java.util.Map;
  * @param totalCount 총 세션 수
  * @param totalMinutes 누적 집중 시간(분)
  * @param todayMinutes 오늘 집중 시간(분)
+ * @param totalDays 누적 집중 일수
  * @param tagMinutes 태그별 집중 시간 맵
  */
 @Aggregate
@@ -20,6 +21,7 @@ public record FocusStatistics(
         int totalCount,
         int totalMinutes,
         int todayMinutes,
+        int totalDays,
         Map<FocusTag, Integer> tagMinutes
 ) {
 }

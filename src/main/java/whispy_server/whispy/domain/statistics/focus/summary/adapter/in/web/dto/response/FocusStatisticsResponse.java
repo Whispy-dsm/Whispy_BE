@@ -14,6 +14,7 @@ import java.util.Map;
  * @param totalCount 총 집중 세션 수
  * @param totalMinutes 누적 집중 시간(분)
  * @param todayMinutes 오늘 집중 시간(분)
+ * @param totalDays 누적 집중 일수
  * @param tagMinutes 태그별 집중 시간 맵
  */
 @Schema(description = "집중 통계 응답")
@@ -24,6 +25,8 @@ public record FocusStatisticsResponse(
         int totalMinutes,
         @Schema(description = "오늘 집중 시간(분)", example = "120")
         int todayMinutes,
+        @Schema(description = "누적 집중 일수", example = "30")
+        int totalDays,
         @Schema(description = "태그별 집중 시간(분)")
         Map<FocusTag, Integer> tagMinutes
 ) {
@@ -32,6 +35,7 @@ public record FocusStatisticsResponse(
                 statistics.totalCount(),
                 statistics.totalMinutes(),
                 statistics.todayMinutes(),
+                statistics.totalDays(),
                 statistics.tagMinutes()
         );
     }
