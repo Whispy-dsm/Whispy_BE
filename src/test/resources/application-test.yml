@@ -1,0 +1,91 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    time-zone: Asia/Seoul
+
+  jwt:
+    header: Authorization
+    prefix: Bearer
+    secret: test-secret-key-for-integration-test-minimum-256-bits-required-for-hs256-algorithm
+    accessExpiration: 3600
+    refreshExpiration: 604800
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DATABASE_TO_UPPER=FALSE
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: false
+        dialect: org.hibernate.dialect.H2Dialect
+
+  flyway:
+    enabled: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+
+  mail:
+    host: localhost
+    port: 1025
+
+  batch:
+    jdbc:
+      initialize-schema: always
+
+  whispy:
+    file:
+      upload-path: C:\Users\user\Desktop
+      base-url: http://localhost:8080
+
+  discord:
+    webhook:
+      exception-url: https://discord.com/api/webhooks/test
+      log-url: https://discord.com/api/webhooks/test
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-google-client
+            client-secret: test-google-secret
+            scope:
+              - profile
+              - email
+
+default:
+  profile:
+    default-image-url: https://example.com/default.jpg
+
+sentry:
+  dsn: https://test@sentry.io/test
+  enable-tracing: false
+  environment: test
+
+fcm:
+  key:
+    type: service_account
+    project_id: test-project
+    private_key_id: test-private-key-id
+    private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7VJTUt9Us8cKj\nMzEfYyjiWA4R4/M2bS1+fWIcPm15j9w8S8KQRk6vqHOwMvBK9/QYPJHRI5Cp7W0Q\nBs9HqMb7Ls8q6SPcvMp0n4b3p3z3pP3rN3wS9S6jVPn3p3p3p3p3p3p3p3p3p3pQ\n-----END PRIVATE KEY-----"
+    client_email: test@test-project.iam.gserviceaccount.com
+    client_id: test-client-id
+    auth_uri: https://accounts.google.com/o/oauth2/auth
+    token_uri: https://oauth2.googleapis.com/token
+    auth_provider_x509_cert_url: https://www.googleapis.com/oauth2/v1/certs
+    client_x509_cert_url: https://www.googleapis.com/robot/v1/metadata/x509/test
+    universe_domain: googleapis.com

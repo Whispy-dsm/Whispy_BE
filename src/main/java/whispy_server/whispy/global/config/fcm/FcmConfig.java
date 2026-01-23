@@ -7,6 +7,7 @@ import com.google.firebase.FirebaseOptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import whispy_server.whispy.global.fcm.properties.FcmProperties;
 
 import java.io.ByteArrayInputStream;
@@ -16,9 +17,12 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Firebase Admin SDK 초기화를 위한 설정.
+ *
+ * test 프로파일에서는 비활성화됩니다.
  */
 @Configuration
 @RequiredArgsConstructor
+@Profile("!test")
 public class FcmConfig {
 
     private final ObjectMapper objectMapper;
