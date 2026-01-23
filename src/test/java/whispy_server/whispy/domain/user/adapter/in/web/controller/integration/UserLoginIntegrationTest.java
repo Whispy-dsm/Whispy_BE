@@ -17,6 +17,7 @@ import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -104,7 +105,7 @@ class UserLoginIntegrationTest extends IntegrationTestSupport {
                                 .content(objectMapper.writeValueAsString(request)));
 
                 // then
-                result.andExpect(status().is4xxClientError())
+                result.andExpect(status().isNotFound())
                                 .andDo(print());
         }
 
@@ -123,7 +124,7 @@ class UserLoginIntegrationTest extends IntegrationTestSupport {
                                 .content(objectMapper.writeValueAsString(request)));
 
                 // then
-                result.andExpect(status().is4xxClientError())
+                result.andExpect(status().isUnauthorized())
                                 .andDo(print());
         }
 
@@ -144,14 +145,14 @@ class UserLoginIntegrationTest extends IntegrationTestSupport {
 
                 // then
                 UserJpaEntity updatedUser = userRepository.findByEmail(TEST_EMAIL).orElseThrow();
-                assert updatedUser.getFcmToken().equals(TEST_FCM_TOKEN);
+                assertThat(updatedUser.getFcmToken()).isEqualTo(TEST_FCM_TOKEN);
         }
 
         @Test
-        @DisplayName("로그인 시 기존 Refresh Token이 삭제된다")
-        void whenLogin_thenOldRefreshTokenDeleted() throws Exception {
+        @DisplayName("재로그인 시 기존 Refresh Token은 삭제되고 새로운 토큰이 발급된다")
+        void whenReLogin_thenOldRefreshTokenDeletedAndNewTokenIssued() throws Exception {
                 // given
-                UserLoginRequest firstRequest = new UserLoginRequest(
+                UserLoginRequest request = new UserLoginRequest(
                                 TEST_EMAIL,
                                 TEST_PASSWORD,
                                 TEST_FCM_TOKEN);
@@ -159,23 +160,34 @@ class UserLoginIntegrationTest extends IntegrationTestSupport {
                 // 첫 번째 로그인
                 mockMvc.perform(post("/users/login")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(firstRequest)))
+                                .content(objectMapper.writeValueAsString(request)))
                                 .andExpect(status().isOk());
 
                 UserJpaEntity user = userRepository.findByEmail(TEST_EMAIL).orElseThrow();
                 Long userId = user.getId();
 
-                // 기존 Refresh Token 존재 확인
-                assert refreshTokenRepository.findById(userId).isPresent();
+                // 첫 번째 Refresh Token 저장
+                String firstRefreshToken = refreshTokenRepository.findById(userId)
+                                .orElseThrow()
+                                .getToken();
+
+                // 토큰 발급 시간을 다르게 하기 위해 1초 대기
+                Thread.sleep(1000);
 
                 // when - 두 번째 로그인 (기존 세션 무효화)
                 mockMvc.perform(post("/users/login")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(firstRequest)))
+                                .content(objectMapper.writeValueAsString(request)))
                                 .andExpect(status().isOk());
 
-                // then - 새로운 Refresh Token 생성 확인
-                assert refreshTokenRepository.findById(userId).isPresent();
+                // then - 새로운 Refresh Token이 발급되었는지 확인
+                String secondRefreshToken = refreshTokenRepository.findById(userId)
+                                .orElseThrow()
+                                .getToken();
+
+                assertThat(secondRefreshToken)
+                                .isNotEqualTo(firstRefreshToken)
+                                .as("재로그인 시 새로운 Refresh Token이 발급되어야 합니다");
         }
 
         @Test
