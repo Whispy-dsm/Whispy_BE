@@ -8,6 +8,7 @@ import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
@@ -19,10 +20,13 @@ import java.util.Map;
 
 /**
  * Firebase Cloud Messaging 전송을 담당하는 유틸 컴포넌트.
+ *
+ * test 프로파일에서는 비활성화됩니다.
  */
 @Component
 @Slf4j
 @RequiredArgsConstructor
+@Profile("!test")
 public class FcmUtil implements FcmSendPort {
 
     private final FirebaseApp firebaseApp;
