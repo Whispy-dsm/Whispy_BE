@@ -38,3 +38,7 @@ out/
 
 ### claude.md ###
 .claude
+/CLAUDE.md
+/FCM_알림_시스템_구현.md
+/결제_시스템_구현.md
+/논리적_FK_설계_포트폴리오.md
