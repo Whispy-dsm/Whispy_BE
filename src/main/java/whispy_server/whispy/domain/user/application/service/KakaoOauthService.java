@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
@@ -66,7 +67,9 @@ public class KakaoOauthService implements KakaoOauthUseCase {
             User updatedUser = user.updateFcmToken(fcmToken);
             userSavePort.save(updatedUser);
 
-            initializeTopicsUseCase.execute(user.email(), fcmToken, false);
+            initializeTopicsUseCase.execute(
+                    new InitializeTopicsRequest(user.email(), fcmToken, false)
+            );
             user = updatedUser;
         }
 

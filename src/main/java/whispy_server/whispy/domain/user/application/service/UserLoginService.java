@@ -8,6 +8,7 @@ import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.security.jwt.domain.repository.RefreshTokenRepository;
 import whispy_server.whispy.domain.notification.adapter.in.web.dto.request.NotificationSendRequest;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.topic.model.types.NotificationTopic;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UserLoginRequest;
@@ -76,7 +77,9 @@ public class UserLoginService implements UserLoginUseCase {
             userSavePort.save(updatedUser);
 
             // 새 기기 토픽 초기화
-            initializeTopicsUseCase.execute(user.email(), request.fcmToken(), false);
+            initializeTopicsUseCase.execute(
+                    new InitializeTopicsRequest(user.email(), request.fcmToken(), false)
+            );
 
             return updatedUser;
         }

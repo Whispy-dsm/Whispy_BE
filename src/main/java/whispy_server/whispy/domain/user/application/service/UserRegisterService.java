@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.global.file.DefaultImageProperties;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.model.User;
@@ -68,7 +69,9 @@ public class UserRegisterService implements UserRegisterUseCase {
         userSavePort.save(user);
 
         if(request.fcmToken() != null){
-            initializeTopicsUseCase.execute(user.email(), request.fcmToken(), request.isEventAgreed());
+            initializeTopicsUseCase.execute(
+                    new InitializeTopicsRequest(user.email(), request.fcmToken(), request.isEventAgreed())
+            );
         }
     }
 }

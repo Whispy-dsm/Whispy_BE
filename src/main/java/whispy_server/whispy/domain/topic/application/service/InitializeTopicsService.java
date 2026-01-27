@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.topic.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.topic.application.port.out.QueryTopicSubscriptionPort;
 import whispy_server.whispy.domain.topic.application.service.component.TopicInitializer;
@@ -29,15 +30,12 @@ public class InitializeTopicsService implements InitializeTopicsUseCase {
     /**
      * 사용자의 토픽을 초기화합니다.
      *
-     * @param email 사용자 이메일
-     * @param fcmToken FCM 토큰
-     * @param isEventAgreed 이벤트 수신 동의 여부
+     * @param request 토픽 초기화 요청 (이메일, FCM 토큰, 이벤트 수신 동의 여부)
      */
     @UserAction("토픽 초기화")
     @Override
-    public void execute(String email, String fcmToken, boolean isEventAgreed) {
-        executeForUser(email, fcmToken, isEventAgreed);
-
+    public void execute(InitializeTopicsRequest request) {
+        executeForUser(request.email(), request.fcmToken(), request.isEventAgreed());
     }
 
     /**

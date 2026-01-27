@@ -1,5 +1,6 @@
 package whispy_server.whispy.domain.topic.application.port.in;
 
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.global.annotation.UseCase;
 
 /**
@@ -12,9 +13,7 @@ public interface InitializeTopicsUseCase {
     /**
      * 사용자의 토픽을 초기화합니다.
      *
-     * @param email 사용자 이메일
-     * @param fcmToken FCM 토큰
-     * @param isEventAgreed 이벤트 수신 동의 여부
+     * @param request 토픽 초기화 요청 (이메일, FCM 토큰, 이벤트 수신 동의 여부)
      */
-    void execute(String email, String fcmToken, boolean isEventAgreed);
+    void execute(InitializeTopicsRequest request);
 }
