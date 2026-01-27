@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.notification.application.port.out.FcmSendPort;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.domain.topic.application.port.out.QueryTopicSubscriptionPort;
 import whispy_server.whispy.domain.topic.application.service.InitializeTopicsService;
 import whispy_server.whispy.domain.topic.application.service.component.TopicInitializer;
@@ -46,10 +47,11 @@ class InitializeTopicsServiceTest {
         // given
         String email = "test@test.com";
         String fcmToken = "fcm-token";
+        InitializeTopicsRequest request = new InitializeTopicsRequest(email, fcmToken, true);
         given(queryTopicSubscriptionPort.findByEmail(email)).willReturn(List.of());
 
         // when
-        service.execute(email, fcmToken, true);
+        service.execute(request);
 
         // then
         verify(queryTopicSubscriptionPort).findByEmail(email);

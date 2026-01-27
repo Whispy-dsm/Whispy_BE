@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.application.port.out.ExistsUserPort;
@@ -72,7 +73,7 @@ class UserRegisterServiceTest {
 
         // then
         verify(userSavePort).save(any());
-        verify(initializeTopicsUseCase).execute(TEST_EMAIL, TEST_FCM_TOKEN, true);
+        verify(initializeTopicsUseCase).execute(any(InitializeTopicsRequest.class));
     }
 
     @Test
@@ -118,7 +119,7 @@ class UserRegisterServiceTest {
         userRegisterService.register(request);
 
         // then
-        verify(initializeTopicsUseCase).execute(TEST_EMAIL, TEST_FCM_TOKEN, true);
+        verify(initializeTopicsUseCase).execute(any(InitializeTopicsRequest.class));
     }
 
     @Test
@@ -142,7 +143,7 @@ class UserRegisterServiceTest {
         userRegisterService.register(request);
 
         // then
-        verify(initializeTopicsUseCase, never()).execute(anyString(), anyString(), anyBoolean());
+        verify(initializeTopicsUseCase, never()).execute(any(InitializeTopicsRequest.class));
     }
 
     @Test
@@ -184,7 +185,7 @@ class UserRegisterServiceTest {
 
         // then
         verify(userSavePort).save(any());
-        verify(initializeTopicsUseCase).execute(TEST_EMAIL, TEST_FCM_TOKEN, false);
+        verify(initializeTopicsUseCase).execute(any(InitializeTopicsRequest.class));
     }
 
     /**

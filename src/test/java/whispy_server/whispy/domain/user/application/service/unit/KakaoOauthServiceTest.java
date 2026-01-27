@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
@@ -108,7 +109,7 @@ class KakaoOauthServiceTest {
 
         // then
         verify(userSavePort).save(any(User.class));
-        verify(initializeTopicsUseCase).execute(TEST_EMAIL, NEW_FCM_TOKEN, false);
+        verify(initializeTopicsUseCase).execute(any(InitializeTopicsRequest.class));
     }
 
     @Test
@@ -147,7 +148,7 @@ class KakaoOauthServiceTest {
 
         // then
         verify(userSavePort, never()).save(any());
-        verify(initializeTopicsUseCase, never()).execute(anyString(), anyString(), anyBoolean());
+        verify(initializeTopicsUseCase, never()).execute(any(InitializeTopicsRequest.class));
     }
 
     @Test

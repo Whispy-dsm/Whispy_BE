@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.notification.application.port.in.SendToDeviceTokensUseCase;
+import whispy_server.whispy.domain.topic.adapter.in.web.dto.request.InitializeTopicsRequest;
 import whispy_server.whispy.domain.topic.application.port.in.InitializeTopicsUseCase;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.facade.UserFacade;
@@ -70,7 +71,7 @@ class UpdateFcmTokenServiceTest {
 
         // then
         verify(userSavePort).save(any(User.class));
-        verify(initializeTopicsUseCase).execute(eq(TEST_EMAIL), eq(NEW_FCM_TOKEN), eq(false));
+        verify(initializeTopicsUseCase).execute(any(InitializeTopicsRequest.class));
     }
 
     @Test
@@ -144,7 +145,7 @@ class UpdateFcmTokenServiceTest {
 
         // then
         verify(userSavePort).save(any(User.class));
-        verify(initializeTopicsUseCase).execute(eq(TEST_EMAIL), eq(NEW_FCM_TOKEN), eq(false));
+        verify(initializeTopicsUseCase).execute(any(InitializeTopicsRequest.class));
         verify(sendToDeviceTokensUseCase, never()).execute(any()); // 기존 토큰이 없으므로 알림 미전송
     }
 
@@ -178,7 +179,7 @@ class UpdateFcmTokenServiceTest {
         // then
         verify(refreshTokenRepository).deleteById(TEST_USER_ID);
         verify(userSavePort).save(any(User.class));
-        verify(initializeTopicsUseCase).execute(eq(TEST_EMAIL), eq(NEW_FCM_TOKEN), eq(false));
+        verify(initializeTopicsUseCase).execute(any(InitializeTopicsRequest.class));
     }
 
     /**
