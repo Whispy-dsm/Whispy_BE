@@ -51,6 +51,14 @@ public class EmailSendAdapter implements EmailSendPort {
 
     /**
      * 이메일 메시지를 생성합니다.
+     *
+     * Thymeleaf 템플릿 엔진을 사용하여 HTML 형식의 이메일 본문을 생성합니다.
+     * 템플릿 경로: resources/templates/email/verification-email.html
+     *
+     * @param email 수신자 이메일 주소
+     * @param code  인증 코드 (템플릿에 삽입)
+     * @return 생성된 MimeMessage
+     * @throws MessagingException 메시지 생성 실패 시
      */
     private MimeMessage createMessage(String email, String code) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();

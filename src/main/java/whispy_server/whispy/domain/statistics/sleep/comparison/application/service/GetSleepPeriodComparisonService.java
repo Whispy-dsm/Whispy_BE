@@ -67,6 +67,22 @@ public class GetSleepPeriodComparisonService implements GetSleepPeriodComparison
         return SleepPeriodComparisonResponse.from(comparison);
     }
 
+    /**
+     * 특정 기간의 총 수면 시간을 계산합니다.
+     *
+     * 기준 날짜로부터 N개 기간 이전의 수면 세션을 조회하여 총 수면 시간을 분 단위로 계산합니다.
+     *
+     * 예시:
+     * - period=WEEK, baseDate=2024-01-15, periodsAgo=0: 2024-01-15가 속한 주의 수면 시간
+     * - period=WEEK, baseDate=2024-01-15, periodsAgo=1: 그 전 주의 수면 시간
+     * - period=MONTH, baseDate=2024-01-15, periodsAgo=2: 2개월 전의 수면 시간
+     *
+     * @param userId     사용자 ID
+     * @param period     기간 타입 (주간/월간/연간)
+     * @param baseDate   기준 날짜
+     * @param periodsAgo 몇 기간 이전인지 (0=현재 기간, 1=이전 기간, 2=2기간 전)
+     * @return 해당 기간의 총 수면 시간 (분)
+     */
     private int calculatePeriodMinutes(Long userId, SleepPeriodType period, LocalDate baseDate, int periodsAgo) {
         LocalDateTime[] range = calculatePeriodRange(period, baseDate, periodsAgo);
         List<SleepSessionDto> sessions = querySleepComparisonPort.findByUserIdAndPeriod(
@@ -80,6 +96,25 @@ public class GetSleepPeriodComparisonService implements GetSleepPeriodComparison
                 .sum();
     }
 
+    /**
+     * 수면 비교 기간의 시작일시와 종료일시를 계산합니다.
+     *
+     * 기준 날짜로부터 N개 기간 이전의 시작/종료 범위를 계산합니다.
+     * 각 기간 타입에 따라 다른 계산 방식을 사용합니다:
+     * - WEEK: 월요일 00:00 ~ 일요일 23:59
+     * - MONTH: 1일 00:00 ~ 말일 23:59
+     * - YEAR: 1월 1일 00:00 ~ 12월 31일 23:59
+     *
+     * 예시:
+     * - WEEK, 2024-01-15 (월), periodsAgo=0: 2024-01-15 00:00 ~ 2024-01-21 23:59
+     * - WEEK, 2024-01-15 (월), periodsAgo=1: 2024-01-08 00:00 ~ 2024-01-14 23:59
+     * - MONTH, 2024-01-15, periodsAgo=0: 2024-01-01 00:00 ~ 2024-01-31 23:59
+     *
+     * @param period     기간 타입 (주간/월간/연간)
+     * @param date       기준 날짜
+     * @param periodsAgo 몇 기간 이전인지
+     * @return [시작일시, 종료일시] 배열
+     */
     private LocalDateTime[] calculatePeriodRange(SleepPeriodType period, LocalDate date, int periodsAgo) {
         LocalDate targetDate = switch (period) {
             case WEEK -> date.minusWeeks(periodsAgo);

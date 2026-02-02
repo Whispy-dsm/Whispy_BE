@@ -30,6 +30,12 @@ public record LikedMusicResponse(
         String bannerImageUrl
         ) {
 
+        /**
+         * MusicLikeWithMusicDto를 LikedMusicResponse로 변환합니다.
+         *
+         * @param dto 좋아요 + 음악 정보 DTO
+         * @return 좋아요한 음악 응답 DTO
+         */
         public static LikedMusicResponse from(MusicLikeWithMusicDto dto) {
                 return new LikedMusicResponse(
                         dto.musicId(),
@@ -41,6 +47,12 @@ public record LikedMusicResponse(
                 );
         }
 
+        /**
+         * MusicLikeWithMusicDto 리스트를 LikedMusicResponse 리스트로 변환합니다.
+         *
+         * @param dtos 좋아요 + 음악 정보 DTO 리스트
+         * @return 좋아요한 음악 응답 DTO 리스트
+         */
         public static List<LikedMusicResponse> fromList(List<MusicLikeWithMusicDto> dtos) {
                 return dtos.stream()
                         .map(LikedMusicResponse::from)

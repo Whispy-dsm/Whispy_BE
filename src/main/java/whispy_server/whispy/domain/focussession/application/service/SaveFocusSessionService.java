@@ -62,6 +62,9 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
     /**
      * 오늘의 총 집중 시간(분 단위)을 계산합니다.
      *
+     * 오늘 00:00:00부터 23:59:59까지의 집중 세션 총 시간을 집계합니다.
+     * 방금 저장한 세션을 포함한 총 시간이 반환됩니다.
+     *
      * @param userId 사용자 ID
      * @return 오늘의 총 집중 시간(분 단위)
      */

@@ -57,7 +57,21 @@ public class ImageCompressionConverter {
     }
 
     /**
-     * BufferedImage를 WebP 포맷으로 변환한다.
+     * BufferedImage를 WebP 포맷으로 변환합니다.
+     *
+     * ImageIO의 WebP Writer를 사용하여 이미지를 WebP 포맷으로 인코딩합니다.
+     * Lossy 압축 모드를 사용하며, 품질은 0.8(80%)로 설정됩니다.
+     *
+     * 프로세스:
+     * 1. WebP ImageWriter 조회 (없으면 예외)
+     * 2. 압축 파라미터 설정 (Lossy, 품질 0.8)
+     * 3. ByteArrayOutputStream에 인코딩
+     * 4. InputStream으로 변환하여 반환
+     *
+     * @param image 변환할 BufferedImage
+     * @return WebP 포맷의 InputStream
+     * @throws IOException 이미지 인코딩 실패 시
+     * @throws WebPConverterNotFoundException WebP Writer를 찾을 수 없는 경우
      */
     private InputStream convertToWebP(BufferedImage image) throws IOException {
         Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType("image/webp");

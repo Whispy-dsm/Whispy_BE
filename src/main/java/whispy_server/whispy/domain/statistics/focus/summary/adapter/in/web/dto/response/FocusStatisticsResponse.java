@@ -30,6 +30,12 @@ public record FocusStatisticsResponse(
         @Schema(description = "태그별 집중 시간(분)")
         Map<FocusTag, Integer> tagMinutes
 ) {
+    /**
+     * FocusStatistics 도메인 모델을 FocusStatisticsResponse로 변환합니다.
+     *
+     * @param statistics 집중 통계 도메인 모델
+     * @return 집중 통계 응답 DTO
+     */
     public static FocusStatisticsResponse from(FocusStatistics statistics) {
         return new FocusStatisticsResponse(
                 statistics.totalCount(),

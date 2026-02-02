@@ -70,7 +70,19 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
     /**
      * 구독 알림을 처리합니다.
      *
-     * @param notification 구독 알림 정보
+     * Google Play Pub/Sub 알림 타입별 처리:
+     * - RECOVERED(1): 결제 문제 해결됨 → ACTIVE
+     * - RENEWED(2): 구독 갱신됨 → 별도 처리 (handleSubscriptionRenewed)
+     * - CANCELED(3): 구독 취소됨 → CANCELED
+     * - PURCHASED(4): 신규 구매 → 무처리 (validateAndProcessPurchase에서 처리)
+     * - ON_HOLD(5): 결제 보류 중 → ON_HOLD
+     * - IN_GRACE_PERIOD(6): 유예 기간 → GRACE_PERIOD
+     * - PAUSED(10): 일시 중지 → PAUSED
+     * - REVOKED(12): 구독 취소 및 환불 → REVOKED
+     * - EXPIRED(13): 구독 만료 → EXPIRED
+     *
+     * @param notification 구독 알림 정보 (notificationType, purchaseToken, subscriptionId)
+     * @throws InvalidSubscriptionNotificationException 알 수 없는 알림 타입인 경우
      */
     private void handleSubscriptionNotification(SubscriptionNotificationRequest notification) {
         switch (notification.notificationType()) {
@@ -90,7 +102,15 @@ public class PurchaseNotificationService implements ProcessPurchaseNotificationU
     /**
      * 구독 갱신을 처리합니다.
      *
-     * @param notification 구독 알림 정보
+     * 프로세스:
+     * 1. Google Play API에서 최신 구독 정보 조회 (트랜잭션 밖)
+     * 2. DB에 구독 갱신 정보 업데이트 (트랜잭션 안)
+     *
+     * 이유:
+     * - 외부 API 호출은 트랜잭션 밖에서 실행하여 DB 커넥션 점유 최소화
+     * - 조회한 정보로 DB 업데이트는 트랜잭션 안에서 원자성 보장
+     *
+     * @param notification 구독 알림 정보 (purchaseToken, subscriptionId)
      */
     private void handleSubscriptionRenewed(SubscriptionNotificationRequest notification) {
         // 트랜잭션 밖에서 외부 API 호출

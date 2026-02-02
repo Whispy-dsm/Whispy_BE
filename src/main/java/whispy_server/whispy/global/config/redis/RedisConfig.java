@@ -69,7 +69,13 @@ public class RedisConfig {
     }
 
     /**
-     * Redis 직렬화에 사용할 ObjectMapper 설정.
+     * Redis 직렬화에 사용할 ObjectMapper를 생성합니다.
+     *
+     * 설정:
+     * - activateDefaultTyping: 역직렬화 시 타입 정보 포함 (다형성 지원)
+     * - FAIL_ON_UNKNOWN_PROPERTIES: false → 알 수 없는 필드 무시
+     *
+     * @return 설정된 ObjectMapper
      */
     private ObjectMapper objectMapper(){
         ObjectMapper mapper = new ObjectMapper();

@@ -49,9 +49,18 @@ public class PurchaseValidationService implements ValidatePurchaseUseCase {
     /**
      * Google Play로 구매를 검증합니다.
      *
-     * @param request 구매 검증 요청
+     * Google Play API를 호출하여 구독 정보를 가져온 후,
+     * paymentState가 1(결제 완료)인지 검증합니다.
+     *
+     * paymentState:
+     * - 0: 결제 대기중
+     * - 1: 결제 완료 (유효)
+     * - 2: 무료 체험
+     * - 3: 결제 보류
+     *
+     * @param request 구매 검증 요청 (subscriptionId, purchaseToken)
      * @return Google Play 구독 정보
-     * @throws InvalidPaymentStateException 결제 상태가 유효하지 않은 경우
+     * @throws InvalidPaymentStateException 결제 상태가 1(결제 완료)이 아닌 경우
      */
     private GooglePlaySubscriptionInfo validateWithGooglePlay(ValidatePurchaseRequest request){
 

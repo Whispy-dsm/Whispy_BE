@@ -79,7 +79,17 @@ public class KakaoOauthService implements KakaoOauthUseCase {
         return jwtTokenProvider.generateToken(user.id(), user.role().name());
     }
 
-    /** 이전 기기에 로그아웃 알림을 전송합니다 */
+    /**
+     * 이전 기기에 로그아웃 알림을 전송합니다.
+     *
+     * 새로운 기기에서 로그인할 때, 기존 기기에 푸시 알림을 보내
+     * 다른 기기에서 로그인하여 자동 로그아웃되었음을 알립니다.
+     *
+     * 알림 전송 실패 시에도 예외를 던지지 않고 로그인은 계속 진행합니다.
+     *
+     * @param oldToken 이전 기기의 FCM 토큰
+     * @param email    사용자 이메일
+     */
     private void sendLogoutNotification(String oldToken, String email) {
         try {
             NotificationSendRequest request = new NotificationSendRequest(

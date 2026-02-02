@@ -32,7 +32,11 @@ public class FcmUtil implements FcmSendPort {
     private final FirebaseApp firebaseApp;
 
     /**
-     * FirebaseMessaging 인스턴스를 반환한다.
+     * FirebaseMessaging 인스턴스를 반환합니다.
+     *
+     * FirebaseApp으로부터 FirebaseMessaging 싱글톤 인스턴스를 가져옵니다.
+     *
+     * @return FirebaseMessaging 인스턴스
      */
     private FirebaseMessaging getFirebaseMessaging(){
         return FirebaseMessaging.getInstance(firebaseApp);
@@ -137,7 +141,13 @@ public class FcmUtil implements FcmSendPort {
 
 
     /**
-     * 텍스트 타이틀/본문으로 FCM Notification 객체를 생성한다.
+     * 텍스트 타이틀/본문으로 FCM Notification 객체를 생성합니다.
+     *
+     * 알림 바에 표시될 제목과 본문을 포함한 Notification 객체를 생성합니다.
+     *
+     * @param title 알림 제목
+     * @param body  알림 본문
+     * @return FCM Notification 객체
      */
     private Notification buildNotification(String title, String body){
         return Notification.builder()
@@ -147,7 +157,15 @@ public class FcmUtil implements FcmSendPort {
     }
 
     /**
-     * 안드로이드 디바이스에서 받을 커스텀 데이터 구성을 생성한다.
+     * 안드로이드 디바이스에서 받을 커스텀 데이터 구성을 생성합니다.
+     *
+     * 알림과 함께 전달될 커스텀 데이터를 Android 전용 Config로 생성합니다.
+     * 앱이 포그라운드 상태일 때 알림 커스터마이징에 사용됩니다.
+     *
+     * @param title 알림 제목
+     * @param body  알림 본문
+     * @param topic 알림 토픽 (null 가능)
+     * @return AndroidConfig 객체
      */
     private AndroidConfig buildAndroidConfig(String title, String body, NotificationTopic topic){
         return AndroidConfig.builder()

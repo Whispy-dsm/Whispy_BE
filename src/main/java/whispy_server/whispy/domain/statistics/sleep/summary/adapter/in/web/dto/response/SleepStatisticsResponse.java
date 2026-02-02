@@ -34,6 +34,12 @@ public record SleepStatisticsResponse(
         @Schema(description = "총 수면 세션 수", example = "30")
         int totalCount
 ) {
+    /**
+     * SleepStatistics 도메인 모델을 SleepStatisticsResponse로 변환합니다.
+     *
+     * @param statistics 수면 통계 도메인 모델
+     * @return 수면 통계 응답 DTO
+     */
     public static SleepStatisticsResponse from(SleepStatistics statistics) {
         return new SleepStatisticsResponse(
                 statistics.todayMinutes(),

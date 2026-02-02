@@ -43,27 +43,48 @@ public class NotificationController implements NotificationApiDocument {
         return queryMyNotificationsUseCase.execute(pageable);
     }
 
+    /**
+     * 읽지 않은 알림 개수를 조회합니다.
+     *
+     * @return 읽지 않은 알림 개수
+     */
     @GetMapping("/unread/count")
     public UnreadCountResponse getUnreadCount() {
         return getUnReadCountUseCase.execute();
     }
 
+    /**
+     * 특정 알림을 읽음 처리합니다.
+     *
+     * @param notificationId 읽음 처리할 알림 ID
+     */
     @PatchMapping("/{notificationId}/read")
     public void markAsRead(@PathVariable Long notificationId) {
         markNotificationAsReadUseCase.execute(notificationId);
     }
 
+    /**
+     * 모든 알림을 읽음 처리합니다.
+     */
     @PatchMapping("/read-all")
     public void markAllAsRead() {
         markAllNotificationsAsReadUseCase.execute();
     }
 
+    /**
+     * 특정 알림을 삭제합니다.
+     *
+     * @param notificationId 삭제할 알림 ID
+     */
     @DeleteMapping("/{notificationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNotification(@PathVariable Long notificationId) {
         deleteNotificationUseCase.execute(notificationId);
     }
 
+    /**
+     * 모든 알림을 삭제합니다.
+     */
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAllNotifications() {

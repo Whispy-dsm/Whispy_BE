@@ -19,6 +19,12 @@ public record TopicSubscriptionResponse(
         boolean subscribed
 ){
 
+    /**
+     * TopicSubscription 도메인 모델을 TopicSubscriptionResponse로 변환합니다.
+     *
+     * @param subscription 토픽 구독 도메인 모델
+     * @return 토픽 구독 응답 DTO
+     */
     public static TopicSubscriptionResponse from(TopicSubscription subscription) {
         return new TopicSubscriptionResponse(
                 subscription.id(),

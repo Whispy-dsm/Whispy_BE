@@ -24,6 +24,12 @@ public record PeriodComparisonResponse(
         @Schema(description = "이전 기간 대비 차이(분)", example = "20")
         int differenceFromPrevious
 ) {
+    /**
+     * PeriodComparisonStatistics 도메인 모델을 PeriodComparisonResponse로 변환합니다.
+     *
+     * @param statistics 집중 기간 비교 통계 도메인 모델
+     * @return 집중 기간 비교 응답 DTO
+     */
     public static PeriodComparisonResponse from(PeriodComparisonStatistics statistics) {
         return new PeriodComparisonResponse(
                 statistics.currentPeriodMinutes(),

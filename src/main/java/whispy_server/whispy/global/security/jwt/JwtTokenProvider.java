@@ -71,6 +71,22 @@ public class JwtTokenProvider {
     }
 
 
+    /**
+     * Access Token을 생성합니다.
+     *
+     * JWT Claims:
+     * - subject: 사용자 ID
+     * - type: "access_token"
+     * - role: 사용자 역할 (USER/ADMIN)
+     * - iat: 발급 시각
+     * - exp: 만료 시각
+     *
+     * @param id   사용자 ID
+     * @param role 사용자 역할
+     * @param type 토큰 타입
+     * @param exp  만료 시간 (초 단위)
+     * @return 생성된 Access Token
+     */
     private String generateAccessToken(String id, String role, String type, Long exp){
 
         Date now = new Date();
@@ -85,6 +101,23 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    /**
+     * Refresh Token을 생성합니다.
+     *
+     * Access Token과 달리 subject(사용자 ID)를 포함하지 않으며,
+     * Redis에 별도로 사용자 ID와 매핑되어 저장됩니다.
+     *
+     * JWT Claims:
+     * - type: "refresh_token"
+     * - role: 사용자 역할 (USER/ADMIN)
+     * - iat: 발급 시각
+     * - exp: 만료 시각
+     *
+     * @param role 사용자 역할
+     * @param type 토큰 타입
+     * @param exp  만료 시간 (초 단위)
+     * @return 생성된 Refresh Token
+     */
     private String generateRefreshToken(String role, String type, Long exp){
 
         Date now = new Date();
@@ -120,10 +153,25 @@ public class JwtTokenProvider {
 
     }
 
+    /**
+     * JWT 토큰에서 role claim을 추출합니다.
+     *
+     * @param token JWT 토큰
+     * @return 사용자 역할 (USER/ADMIN)
+     */
     private String getRole(String token){
         return getJws(token).getBody().get("role").toString();
     }
 
+    /**
+     * JWT 토큰이 Refresh Token인지 검증합니다.
+     *
+     * 토큰의 type claim을 확인하여 "refresh_token"인지 판별합니다.
+     * 토큰이 null, 빈 문자열이거나 파싱에 실패하면 false를 반환합니다.
+     *
+     * @param token 검증할 JWT 토큰
+     * @return Refresh Token이면 true, 그렇지 않으면 false
+     */
     private Boolean isRefreshToken(String token) {
         if (token == null || token.isEmpty()) {
             return false;
@@ -138,6 +186,18 @@ public class JwtTokenProvider {
         }
     }
 
+    /**
+     * JWT 토큰을 파싱하여 서명을 검증하고 Claims를 추출합니다.
+     *
+     * JWT 파싱 실패 시 적절한 예외를 발생시킵니다:
+     * - 만료된 토큰: ExpiredTokenException
+     * - 서명 불일치/손상된 토큰: InvalidJwtException
+     *
+     * @param token 파싱할 JWT 토큰
+     * @return 검증된 JWT Claims
+     * @throws ExpiredTokenException 토큰이 만료된 경우
+     * @throws InvalidJwtException   토큰이 유효하지 않은 경우
+     */
     private Jws<Claims> getJws(String token) {
         try {
             return Jwts.parserBuilder()
@@ -182,6 +242,15 @@ public class JwtTokenProvider {
 
     }
 
+    /**
+     * JWT Claims에서 사용자 정보를 로드합니다.
+     *
+     * role claim을 확인하여 ADMIN인 경우 AdminDetailsService를,
+     * 그 외의 경우 UserDetailsService를 통해 UserDetails를 조회합니다.
+     *
+     * @param body JWT Claims
+     * @return Spring Security UserDetails 객체
+     */
     private UserDetails getDetails(Claims body){
         String role = body.get("role").toString();
 

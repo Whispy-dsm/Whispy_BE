@@ -88,6 +88,13 @@ public class SendEmailVerificationService implements SendEmailVerificationUseCas
 
     /**
      * 6자리 숫자 인증 코드를 생성합니다.
+     *
+     * SecureRandom을 사용하여 000000~999999 범위의 랜덤 숫자를 생성하고,
+     * 6자리 문자열 형식(앞자리 0 포함)으로 변환합니다.
+     *
+     * 예시: 123 → "000123", 45678 → "045678"
+     *
+     * @return 6자리 숫자 인증 코드
      */
     private String generateVerificationCode() {
         return String.format("%06d", secureRandom.nextInt(1000000));

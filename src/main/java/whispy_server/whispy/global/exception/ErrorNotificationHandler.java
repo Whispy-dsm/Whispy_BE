@@ -73,9 +73,12 @@ public class ErrorNotificationHandler {
     }
 
     /**
-     * 운영 환경 여부를 확인한다.
+     * 운영 환경 여부를 확인합니다.
      *
-     * @return 운영 환경이면 true, 그 외 false
+     * 운영 환경(prod, stag)에서만 Sentry와 Discord로 알림을 전송하고,
+     * 로컬 환경에서는 로그만 기록합니다.
+     *
+     * @return 운영 환경(prod 또는 stag)이면 true, 그 외(local 등) false
      */
     private boolean isProductionEnvironment() {
         return "prod".equals(activeProfile) ||

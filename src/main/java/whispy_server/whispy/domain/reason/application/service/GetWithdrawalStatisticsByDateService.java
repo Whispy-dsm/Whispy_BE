@@ -63,6 +63,16 @@ public class GetWithdrawalStatisticsByDateService implements GetWithdrawalStatis
     /**
      * 날짜 범위를 검증합니다.
      *
+     * 검증 항목:
+     * 1. 미래 날짜 조회 불가
+     * 2. 시작 날짜 <= 종료 날짜
+     * 3. 조회 기간 <= 1년 (윤년 고려)
+     *
+     * 예시:
+     * - startDate: 2024-01-01, endDate: 2024-12-31 → 통과
+     * - startDate: 2024-01-01, endDate: 2025-01-02 → 실패 (1년 초과)
+     * - startDate: 2024-02-29, endDate: 2025-02-28 → 통과 (윤년 1년)
+     *
      * @param startDate 시작 날짜
      * @param endDate   종료 날짜
      * @throws InvalidStatisticsDateException 미래 날짜를 조회하려는 경우

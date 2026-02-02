@@ -41,8 +41,12 @@ public class InitializeTopicsService implements InitializeTopicsUseCase {
     /**
      * 사용자별 토픽 초기화를 수행합니다.
      *
-     * @param email 사용자 이메일
-     * @param fcmToken FCM 토큰
+     * 로직:
+     * 1. 기존 구독 정보가 없으면 → 신규 사용자로 판단, 모든 토픽 생성
+     * 2. 기존 구독 정보가 있으면 → FCM 토큰만 재등록 (기기 변경)
+     *
+     * @param email         사용자 이메일
+     * @param fcmToken      FCM 토큰
      * @param isEventAgreed 이벤트 수신 동의 여부
      */
     private void executeForUser(String email, String fcmToken, boolean isEventAgreed) {
@@ -58,8 +62,17 @@ public class InitializeTopicsService implements InitializeTopicsUseCase {
     /**
      * 신규 사용자를 위한 모든 토픽을 생성합니다.
      *
-     * @param email 사용자 이메일
-     * @param fcmToken FCM 토큰
+     * 토픽 구독 규칙:
+     * - ONLY_ADMIN: 구독 안 함 (관리자 전용)
+     * - GENERAL_ANNOUNCEMENT: 이벤트 수신 동의 여부에 따름
+     * - 나머지 토픽: 모두 구독 (SYSTEM_ANNOUNCEMENT, SUBSCRIPTION_NOTICE 등)
+     *
+     * 프로세스:
+     * 1. 트랜잭션 안에서 DB에 토픽 구독 정보 저장
+     * 2. 트랜잭션 밖에서 Firebase에 FCM 토큰 구독
+     *
+     * @param email         사용자 이메일
+     * @param fcmToken      FCM 토큰
      * @param isEventAgreed 이벤트 수신 동의 여부
      */
     private void createAllTopicsForNewUser(String email, String fcmToken, boolean isEventAgreed) {
@@ -86,8 +99,15 @@ public class InitializeTopicsService implements InitializeTopicsUseCase {
     /**
      * 기존 사용자의 FCM 토큰을 재등록합니다.
      *
+     * 사용자가 새 기기에서 로그인했을 때, 기존 토픽 구독 정보를 바탕으로
+     * 새 FCM 토큰을 Firebase에 재구독합니다.
+     *
+     * 조건:
+     * - subscription.subscribed() == true: 사용자가 해당 토픽을 구독 중인 경우
+     * - fcmToken != null: FCM 토큰이 제공된 경우
+     *
      * @param subscriptions 토픽 구독 목록
-     * @param fcmToken FCM 토큰
+     * @param fcmToken      FCM 토큰
      */
     private void reRegisterFcmTokenForExistingUser(List<TopicSubscription> subscriptions, String fcmToken) {
         subscriptions.forEach(subscription -> {

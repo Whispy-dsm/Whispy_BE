@@ -44,8 +44,12 @@ public class GetWithdrawalReasonsByDateService implements GetWithdrawalReasonsBy
     /**
      * 날짜 범위가 유효한지 검증합니다.
      *
+     * 검증 항목:
+     * 1. startDate <= endDate (시작 날짜가 종료 날짜보다 늦으면 예외)
+     * 2. endDate <= 오늘 (미래 날짜 조회 불가)
+     *
      * @param startDate 시작 날짜
-     * @param endDate 종료 날짜
+     * @param endDate   종료 날짜
      * @throws InvalidStatisticsDateException 날짜 범위가 유효하지 않은 경우
      */
     private void validateDateRange(LocalDate startDate, LocalDate endDate) {

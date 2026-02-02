@@ -24,6 +24,12 @@ public record SleepPeriodComparisonResponse(
         @Schema(description = "이전 기간 대비 차이(분)", example = "60")
         int differenceFromPrevious
 ) {
+    /**
+     * SleepPeriodComparison 도메인 모델을 SleepPeriodComparisonResponse로 변환합니다.
+     *
+     * @param comparison 수면 기간 비교 통계 도메인 모델
+     * @return 수면 기간 비교 응답 DTO
+     */
     public static SleepPeriodComparisonResponse from(SleepPeriodComparison comparison) {
         return new SleepPeriodComparisonResponse(
                 comparison.currentPeriodMinutes(),

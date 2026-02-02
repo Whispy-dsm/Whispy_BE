@@ -34,6 +34,14 @@ public class SecurityConfig {
     private final DiscordNotificationService discordNotificationService;
     private final ErrorNotificationHandler errorNotificationHandler;
 
+    /**
+     * 비밀번호 암호화를 위한 BCryptPasswordEncoder 빈을 생성합니다.
+     *
+     * BCrypt는 단방향 해시 알고리즘으로, 비밀번호를 안전하게 저장하기 위해 사용됩니다.
+     * Salt가 자동으로 생성되며, 동일한 비밀번호도 매번 다른 해시 값을 생성합니다.
+     *
+     * @return BCryptPasswordEncoder 인스턴스
+     */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();

@@ -86,10 +86,16 @@ public class DiscordNotificationService {
     }
 
     /**
-     * WhispyException 여부에 따라 Discord 메시지 본문을 구성한다.
+     * WhispyException 여부에 따라 Discord 메시지 본문을 구성합니다.
+     *
+     * WhispyException인 경우:
+     * - 에러 코드, 상태 코드, 메시지를 포함한 상세 정보 제공
+     *
+     * 일반 Exception인 경우:
+     * - 예외 타입과 메시지만 제공
      *
      * @param exception 메시지를 구성할 예외 객체
-     * @return Discord Embed 본문 문자열
+     * @return Discord Embed 본문 문자열 (마크다운 형식)
      */
     private String getErrorMessage(Exception exception) {
         if (exception instanceof WhispyException) {
@@ -113,7 +119,13 @@ public class DiscordNotificationService {
     }
 
     /**
-     * 로그 레벨에 따라 Discord Embed 색상을 반환한다.
+     * 로그 레벨에 따라 Discord Embed 색상을 반환합니다.
+     *
+     * 색상 코드 (10진수):
+     * - ERROR: 15158332 (빨강)
+     * - WARN: 16776960 (노랑)
+     * - INFO: 3447003 (파랑)
+     * - 기타: 9807270 (회색)
      *
      * @param level 로그 레벨 (ERROR, WARN, INFO, DEBUG 등)
      * @return Discord Embed 색상 코드 (10진수)
@@ -128,7 +140,14 @@ public class DiscordNotificationService {
     }
 
     /**
-     * 예외 객체의 스택 트레이스를 문자열로 변환한다.
+     * 예외 객체의 스택 트레이스를 문자열로 변환합니다.
+     *
+     * 포맷:
+     * ```
+     * ExceptionClassName: 예외 메시지
+     *     at com.example.Class.method(File.java:123)
+     *     at com.example.Class.method2(File.java:456)
+     * ```
      *
      * @param exception 변환할 예외 객체
      * @return 스택 트레이스 문자열

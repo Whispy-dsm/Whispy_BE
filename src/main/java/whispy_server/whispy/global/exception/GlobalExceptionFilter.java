@@ -57,7 +57,15 @@ public class GlobalExceptionFilter extends OncePerRequestFilter {
 
 
     /**
-     * JSON 형태의 오류 응답을 작성한다.
+     * JSON 형태의 오류 응답을 작성합니다.
+     *
+     * HTTP 응답의 상태 코드를 설정하고, ErrorResponse 객체를 JSON으로 직렬화하여
+     * 응답 본문에 작성합니다.
+     *
+     * @param response      HttpServletResponse 객체
+     * @param statusCode    HTTP 상태 코드
+     * @param errorResponse 오류 응답 DTO
+     * @throws IOException JSON 쓰기 실패 시
      */
     private void writeErrorResponse(HttpServletResponse response, int statusCode, ErrorResponse errorResponse) throws IOException {
         response.setStatus(statusCode);

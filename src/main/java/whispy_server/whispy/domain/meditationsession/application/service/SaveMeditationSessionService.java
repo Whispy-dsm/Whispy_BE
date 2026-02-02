@@ -61,6 +61,9 @@ public class SaveMeditationSessionService implements SaveMeditationSessionUseCas
     /**
      * 오늘의 총 명상 시간을 계산합니다.
      *
+     * 오늘 00:00:00부터 23:59:59까지의 명상 세션 총 시간을 집계합니다.
+     * 방금 저장한 세션을 포함한 총 시간이 반환됩니다.
+     *
      * @param userId 계산할 사용자 ID
      * @return 오늘의 총 명상 시간(분)
      */

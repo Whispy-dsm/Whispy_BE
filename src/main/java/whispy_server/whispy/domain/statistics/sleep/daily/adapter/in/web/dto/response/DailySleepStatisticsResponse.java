@@ -24,6 +24,12 @@ public record DailySleepStatisticsResponse(
         @Schema(description = "월별 수면 데이터")
         List<MonthlySleepData> monthlyData
 ) {
+    /**
+     * DailySleepStatistics 도메인 모델을 DailySleepStatisticsResponse로 변환합니다.
+     *
+     * @param statistics 일별 수면 통계 도메인 모델
+     * @return 일별 수면 통계 응답 DTO
+     */
     public static DailySleepStatisticsResponse from(DailySleepStatistics statistics) {
         return new DailySleepStatisticsResponse(
                 statistics.dailyData(),

@@ -28,6 +28,12 @@ public record DailyFocusStatisticsResponse(
         @Schema(description = "월별 집중 데이터")
         List<MonthlyFocusData> monthlyData
 ) {
+    /**
+     * DailyFocusStatistics 도메인 모델을 DailyFocusStatisticsResponse로 변환합니다.
+     *
+     * @param statistics 일별 집중 통계 도메인 모델
+     * @return 일별 집중 통계 응답 DTO
+     */
     public static DailyFocusStatisticsResponse from(DailyFocusStatistics statistics) {
         return new DailyFocusStatisticsResponse(
                 statistics.hourlyData(),

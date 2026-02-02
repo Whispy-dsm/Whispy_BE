@@ -22,6 +22,12 @@ public record SoundSpaceMusicResponse(
         @Schema(description = "음악 카테고리")
         MusicCategory category
 ) {
+    /**
+     * SoundSpaceMusicWithDetailDto 리스트를 SoundSpaceMusicResponse 리스트로 변환합니다.
+     *
+     * @param dtos 사운드 스페이스 + 음악 상세 정보 DTO 리스트
+     * @return 사운드 스페이스 음악 응답 DTO 리스트
+     */
     public static List<SoundSpaceMusicResponse> fromList(List<SoundSpaceMusicWithDetailDto> dtos) {
         return dtos.stream()
                 .map(dto -> new SoundSpaceMusicResponse(

@@ -73,10 +73,36 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         return SleepStatisticsResponse.from(statistics);
     }
 
+    /**
+     * 수면 통계 조회 기간을 계산합니다.
+     *
+     * 기간 타입(DAILY, WEEKLY, MONTHLY)에 따라 시작일시와 종료일시를 계산하며,
+     * 수면 기록의 특성상 전날 밤부터 당일 아침까지를 하나의 단위로 처리합니다.
+     *
+     * @param period 통계 기간 타입 (일간/주간/월간)
+     * @param date   기준 날짜
+     * @return [시작일시, 종료일시] 배열
+     */
     private LocalDateTime[] calculatePeriodRange(SleepPeriodType period, LocalDate date) {
         return StatisticsPeriodRangeCalculator.calculateSleepPeriodRange(period, date);
     }
 
+    /**
+     * 수면 일관성 점수를 계산합니다.
+     *
+     * 취침 시간의 분산(variance)을 기반으로 수면 패턴의 규칙성을 0~100점으로 환산합니다.
+     * 분산이 클수록(취침 시간이 불규칙할수록) 점수가 낮아집니다.
+     *
+     * 계산 로직:
+     * - 세션이 2개 미만: 100점 (비교 불가)
+     * - 분산 기반 점수: 100 - (분산 / 120 * 50)
+     * - 최소 0점, 최대 100점으로 제한
+     * - 소수점 첫째 자리까지 반올림
+     *
+     * @param sessions    수면 세션 목록
+     * @param aggregation 집계 데이터 (평균 취침 시간 포함)
+     * @return 수면 일관성 점수 (0~100)
+     */
     private double calculateConsistencyScore(List<SleepSessionDto> sessions, SleepDetailedAggregationDto aggregation) {
         if (sessions.size() < MIN_SESSIONS_FOR_CONSISTENCY) {
             return MAX_CONSISTENCY_SCORE;
@@ -88,10 +114,26 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
                 MIN_CONSISTENCY_SCORE,
                 MAX_CONSISTENCY_SCORE - (variance / VARIANCE_TO_SCORE_DIVISOR * VARIANCE_TO_SCORE_MULTIPLIER)
         );
-        
+
         return Math.round(score * SCORE_ROUNDING_PRECISION) / SCORE_ROUNDING_PRECISION;
     }
 
+    /**
+     * 취침 시간의 분산(variance)을 계산합니다.
+     *
+     * 각 수면 세션의 취침 시간(startedAt)을 자정 이후 분(minutes) 단위로 변환한 후,
+     * 평균 취침 시간과의 차이를 제곱하여 평균낸 값의 제곱근(표준편차)을 반환합니다.
+     *
+     * 예시:
+     * - 평균 취침 시간: 23:00 (1380분)
+     * - 세션 1: 22:50 (1370분) → 차이 -10분
+     * - 세션 2: 23:10 (1390분) → 차이 +10분
+     * - 분산: sqrt(((−10)² + (10)²) / 2) ≈ 10분
+     *
+     * @param sessions       수면 세션 목록
+     * @param avgBedMinutes  평균 취침 시간 (자정 이후 분 단위)
+     * @return 취침 시간의 표준편차 (분 단위)
+     */
     private double calculateBedTimeVariance(List<SleepSessionDto> sessions, int avgBedMinutes) {
         if (sessions.isEmpty()) {
             return 0.0;
@@ -99,7 +141,7 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
 
         double sumSquaredDiff = sessions.stream()
                 .mapToDouble(session -> {
-                    int bedMinutes = session.startedAt().getHour() * TimeConstants.MINUTES_PER_HOUR 
+                    int bedMinutes = session.startedAt().getHour() * TimeConstants.MINUTES_PER_HOUR
                             + session.startedAt().getMinute();
                     double diff = bedMinutes - avgBedMinutes;
                     return diff * diff;
@@ -110,6 +152,19 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
         return Math.sqrt(sumSquaredDiff);
     }
 
+    /**
+     * 자정 이후 총 분(minutes)을 LocalTime 객체로 변환합니다.
+     *
+     * DB에 저장된 시간 데이터는 자정(00:00) 이후 경과한 총 분으로 저장되므로,
+     * 이를 시(hour)와 분(minute)으로 분해하여 LocalTime 객체로 변환합니다.
+     *
+     * 예시:
+     * - 1380분 → 23:00 (1380 / 60 = 23시간, 1380 % 60 = 0분)
+     * - 90분 → 01:30 (90 / 60 = 1시간, 90 % 60 = 30분)
+     *
+     * @param totalMinutes 자정 이후 경과한 총 분
+     * @return LocalTime 객체
+     */
     private LocalTime convertMinutesToLocalTime(int totalMinutes) {
         int hours = totalMinutes / TimeConstants.MINUTES_PER_HOUR;
         int minutes = totalMinutes % TimeConstants.MINUTES_PER_HOUR;

@@ -57,6 +57,9 @@ public class CreateAnnouncementService implements CreateAnnouncementUseCase {
 
     /**
      * 모든 사용자에게 공지사항 등록 알림을 전송합니다.
+     *
+     * SYSTEM_ANNOUNCEMENT 토픽을 구독한 모든 사용자에게 FCM 푸시 알림을 보냅니다.
+     * 알림 전송 실패 시 예외가 발생하며, 상위 메서드에서 이미 저장된 공지사항을 롤백합니다.
      */
     private void sendAnnouncementNotification() {
         NotificationTopicSendRequest notificationRequest = new NotificationTopicSendRequest(
