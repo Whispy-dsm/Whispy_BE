@@ -22,7 +22,8 @@ import java.time.LocalDateTime;
 @Entity(name = "SoundSpaceMusicJpaEntity")
 @Table(name = "tbl_soundspace_music",
         indexes = {
-                @Index(name = "idx_soundspace_music_music_id", columnList = "music_id")
+                @Index(name = "idx_soundspace_user_added", columnList = "user_id, added_at"),
+                @Index(name = "idx_soundspace_music_id", columnList = "music_id")
         },
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"user_id", "music_id"})

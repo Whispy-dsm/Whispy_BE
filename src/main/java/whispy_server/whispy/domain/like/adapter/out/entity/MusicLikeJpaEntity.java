@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "MusicLikeJpaEntity")
 @Table(name = "tbl_music_like",
         indexes = {
+                @Index(name = "idx_music_like_user_id", columnList = "user_id"),
                 @Index(name = "idx_music_like_music_id", columnList = "music_id")
         },
         uniqueConstraints = {

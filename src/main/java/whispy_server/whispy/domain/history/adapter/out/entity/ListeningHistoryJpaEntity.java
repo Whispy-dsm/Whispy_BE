@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tbl_listening_history",
         indexes = {
+                @Index(name = "idx_listening_history_user_listened", columnList = "user_id, listened_at"),
                 @Index(name = "idx_listening_history_music_id", columnList = "music_id")
         },
         uniqueConstraints = {
