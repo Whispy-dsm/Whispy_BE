@@ -12,6 +12,7 @@ import whispy_server.whispy.domain.meditationsession.adapter.out.entity.QMeditat
 import whispy_server.whispy.domain.sleepsession.adapter.out.entity.QSleepSessionJpaEntity;
 import whispy_server.whispy.domain.statistics.activity.applicatoin.port.out.ActivityPort;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -107,7 +108,7 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
             QFocusSessionJpaEntity focusSession,
             Map<LocalDate, Integer> result
     ) {
-        Expression<LocalDate> dateExpression = toDateExpression(focusSession.startedAt);
+        Expression<Date> dateExpression = toDateExpression(focusSession.startedAt);
 
         jpaQueryFactory
                 .select(dateExpression, focusSession.durationSeconds.sum())
@@ -139,7 +140,7 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
             QSleepSessionJpaEntity sleepSession,
             Map<LocalDate, Integer> result
     ) {
-        Expression<LocalDate> dateExpression = toDateExpression(sleepSession.startedAt);
+        Expression<Date> dateExpression = toDateExpression(sleepSession.startedAt);
 
         jpaQueryFactory
                 .select(dateExpression, sleepSession.durationSeconds.sum())
@@ -171,7 +172,7 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
             QMeditationSessionJpaEntity meditation,
             Map<LocalDate, Integer> result
     ) {
-        Expression<LocalDate> dateExpression = toDateExpression(meditation.startedAt);
+        Expression<Date> dateExpression = toDateExpression(meditation.startedAt);
 
         jpaQueryFactory
                 .select(dateExpression, meditation.durationSeconds.sum())
@@ -193,8 +194,8 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
      * @param dateTimePath LocalDateTime 경로
      * @return DATE() 함수를 적용한 LocalDate Expression
      */
-    private Expression<LocalDate> toDateExpression(DateTimePath<LocalDateTime> dateTimePath) {
-        return Expressions.dateTemplate(LocalDate.class, "DATE({0})", dateTimePath);
+    private Expression<Date> toDateExpression(DateTimePath<LocalDateTime> dateTimePath) {
+        return Expressions.dateTemplate(Date.class, "DATE({0})", dateTimePath);
     }
 
     /**
@@ -207,11 +208,17 @@ public class WeeklySessionCheckPersistenceAdapter implements ActivityPort {
      */
     private void mergeMinutesToResult(
             Tuple tuple,
-            Expression<LocalDate> dateExpression,
+            Expression<Date> dateExpression,
             Expression<Integer> durationSumExpression,
             Map<LocalDate, Integer> result
     ) {
-        LocalDate date = tuple.get(dateExpression);
+        Date sqlDate = tuple.get(dateExpression);
+
+        if (sqlDate == null) {
+            return;
+        }
+
+        LocalDate date = sqlDate.toLocalDate();
         Integer seconds = tuple.get(durationSumExpression);
         int minutes = seconds != null ? seconds / 60 : 0;
         result.merge(date, minutes, Integer::sum);
