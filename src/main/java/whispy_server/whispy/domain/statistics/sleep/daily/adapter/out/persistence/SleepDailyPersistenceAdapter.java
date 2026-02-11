@@ -12,6 +12,7 @@ import whispy_server.whispy.domain.statistics.sleep.daily.adapter.out.dto.Monthl
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.sleep.SleepSessionDto;
 import whispy_server.whispy.domain.statistics.sleep.daily.application.port.out.QuerySleepStatisticsPort;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,7 +66,7 @@ public class SleepDailyPersistenceAdapter implements QuerySleepStatisticsPort {
         return jpaQueryFactory
                 .select(Projections.constructor(
                         DailySleepAggregationDto.class,
-                        Expressions.dateTemplate(LocalDate.class, "DATE({0})", sleepSession.startedAt),
+                        Expressions.dateTemplate(Date.class, "DATE({0})", sleepSession.startedAt),
                         sleepSession.durationSeconds.sum().divide(TimeConstants.SECONDS_PER_MINUTE).intValue()
                 ))
                 .from(sleepSession)
@@ -73,8 +74,8 @@ public class SleepDailyPersistenceAdapter implements QuerySleepStatisticsPort {
                         sleepSession.userId.eq(userId),
                         sleepSession.startedAt.between(start, end)
                 )
-                .groupBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", sleepSession.startedAt))
-                .orderBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", sleepSession.startedAt).asc())
+                .groupBy(Expressions.dateTemplate(Date.class, "DATE({0})", sleepSession.startedAt))
+                .orderBy(Expressions.dateTemplate(Date.class, "DATE({0})", sleepSession.startedAt).asc())
                 .fetch();
     }
 

@@ -17,6 +17,7 @@ import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.TagM
 import whispy_server.whispy.domain.statistics.shared.adapter.out.dto.focus.FocusSessionDto;
 import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.QueryFocusStatisticsPort;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -91,7 +92,7 @@ public class FocusDailyPersistenceAdapter implements QueryFocusStatisticsPort {
         return jpaQueryFactory
                 .select(Projections.constructor(
                         DailyFocusAggregationDto.class,
-                        Expressions.dateTemplate(LocalDate.class, "DATE({0})", focusSession.startedAt),
+                        Expressions.dateTemplate(Date.class, "DATE({0})", focusSession.startedAt),
                         focusSession.durationSeconds.sum().divide(TimeConstants.SECONDS_PER_MINUTE).intValue()
                 ))
                 .from(focusSession)
@@ -99,8 +100,8 @@ public class FocusDailyPersistenceAdapter implements QueryFocusStatisticsPort {
                         focusSession.userId.eq(userId),
                         focusSession.startedAt.between(start, end)
                 )
-                .groupBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", focusSession.startedAt))
-                .orderBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", focusSession.startedAt).asc())
+                .groupBy(Expressions.dateTemplate(Date.class, "DATE({0})", focusSession.startedAt))
+                .orderBy(Expressions.dateTemplate(Date.class, "DATE({0})", focusSession.startedAt).asc())
                 .fetch();
     }
 
@@ -190,7 +191,7 @@ public class FocusDailyPersistenceAdapter implements QueryFocusStatisticsPort {
         return jpaQueryFactory
                 .select(Projections.constructor(
                         DailyTagFocusAggregationDto.class,
-                        Expressions.dateTemplate(LocalDate.class, "DATE({0})", focusSession.startedAt),
+                        Expressions.dateTemplate(Date.class, "DATE({0})", focusSession.startedAt),
                         focusSession.tag,
                         focusSession.durationSeconds.sum().divide(TimeConstants.SECONDS_PER_MINUTE).intValue()
                 ))
@@ -199,8 +200,8 @@ public class FocusDailyPersistenceAdapter implements QueryFocusStatisticsPort {
                         focusSession.userId.eq(userId),
                         focusSession.startedAt.between(start, end)
                 )
-                .groupBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", focusSession.startedAt), focusSession.tag)
-                .orderBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", focusSession.startedAt).asc(), focusSession.tag.asc())
+                .groupBy(Expressions.dateTemplate(Date.class, "DATE({0})", focusSession.startedAt), focusSession.tag)
+                .orderBy(Expressions.dateTemplate(Date.class, "DATE({0})", focusSession.startedAt).asc(), focusSession.tag.asc())
                 .fetch();
     }
 
