@@ -35,7 +35,7 @@ public class GetFocusSessionDetailService implements GetFocusSessionDetailUseCas
     @Override
     public FocusSessionDetailResponse execute(Long focusSessionId) {
         Long userId = userFacadeUseCase.currentUser().id();
-        return queryFocusSessionPort.findByIdAndUserId(userId, focusSessionId)
+        return queryFocusSessionPort.findByIdAndUserId(focusSessionId, userId)
                 .map(FocusSessionDetailResponse::from)
                 .orElseThrow(() -> FocusSessionNotFoundException.EXCEPTION);
     }

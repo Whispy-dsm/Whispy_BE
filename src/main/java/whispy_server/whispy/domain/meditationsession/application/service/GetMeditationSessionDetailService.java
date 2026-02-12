@@ -34,7 +34,7 @@ public class GetMeditationSessionDetailService implements GetMeditationSessionDe
     @Override
     public MeditationSessionDetailResponse execute(Long meditationSessionId) {
         Long userId = userFacadeUseCase.currentUser().id();
-        return queryMeditationSessionPort.findByIdAndUserId(userId, meditationSessionId)
+        return queryMeditationSessionPort.findByIdAndUserId(meditationSessionId, userId)
                 .map(MeditationSessionDetailResponse::from)
                 .orElseThrow(() -> MeditationSessionNotFoundException.EXCEPTION);
     }

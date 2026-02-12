@@ -56,7 +56,7 @@ class GetMeditationSessionDetailServiceTest {
         MeditationSession session = createMeditationSession();
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryMeditationSessionPort.findByIdAndUserId(TEST_USER_ID, TEST_SESSION_ID))
+        given(queryMeditationSessionPort.findByIdAndUserId(TEST_SESSION_ID, TEST_USER_ID))
                 .willReturn(Optional.of(session));
 
         // when
@@ -76,7 +76,7 @@ class GetMeditationSessionDetailServiceTest {
         User user = createUser();
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryMeditationSessionPort.findByIdAndUserId(TEST_USER_ID, TEST_SESSION_ID))
+        given(queryMeditationSessionPort.findByIdAndUserId(TEST_SESSION_ID, TEST_USER_ID))
                 .willReturn(Optional.empty());
 
         // when & then
@@ -91,7 +91,7 @@ class GetMeditationSessionDetailServiceTest {
         User user = createUser();
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryMeditationSessionPort.findByIdAndUserId(TEST_USER_ID, TEST_SESSION_ID))
+        given(queryMeditationSessionPort.findByIdAndUserId(TEST_SESSION_ID, TEST_USER_ID))
                 .willReturn(Optional.empty()); // 다른 사용자의 세션이므로 조회 안됨
 
         // when & then

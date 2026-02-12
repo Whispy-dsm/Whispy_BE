@@ -56,7 +56,7 @@ class GetFocusSessionDetailServiceTest {
         FocusSession session = createFocusSession();
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryFocusSessionPort.findByIdAndUserId(TEST_USER_ID, TEST_SESSION_ID))
+        given(queryFocusSessionPort.findByIdAndUserId(TEST_SESSION_ID, TEST_USER_ID))
                 .willReturn(Optional.of(session));
 
         // when
@@ -76,7 +76,7 @@ class GetFocusSessionDetailServiceTest {
         User user = createUser();
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryFocusSessionPort.findByIdAndUserId(TEST_USER_ID, TEST_SESSION_ID))
+        given(queryFocusSessionPort.findByIdAndUserId(TEST_SESSION_ID, TEST_USER_ID))
                 .willReturn(Optional.empty());
 
         // when & then
@@ -91,7 +91,7 @@ class GetFocusSessionDetailServiceTest {
         User user = createUser();
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
-        given(queryFocusSessionPort.findByIdAndUserId(TEST_USER_ID, TEST_SESSION_ID))
+        given(queryFocusSessionPort.findByIdAndUserId(TEST_SESSION_ID, TEST_USER_ID))
                 .willReturn(Optional.empty()); // 다른 사용자의 세션이므로 조회 안됨
 
         // when & then
