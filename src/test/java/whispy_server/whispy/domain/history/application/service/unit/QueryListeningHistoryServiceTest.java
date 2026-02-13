@@ -158,6 +158,7 @@ class QueryListeningHistoryServiceTest {
                 "http://example.com/music.mp3",
                 180,
                 whispy_server.whispy.domain.music.model.type.MusicCategory.NATURE,
+                "http://example.com/banner.jpg",
                 LocalDateTime.now()
         );
     }
