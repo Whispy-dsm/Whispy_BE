@@ -10,6 +10,7 @@ public record SoundSpaceMusicWithDetailDto(
         String title,
         String filePath,
         Integer duration,
-        MusicCategory category
+        MusicCategory category,
+        String bannerImageUrl
 ) {
 }

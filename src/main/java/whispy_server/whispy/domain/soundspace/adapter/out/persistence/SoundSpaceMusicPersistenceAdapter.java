@@ -52,7 +52,8 @@ public class SoundSpaceMusicPersistenceAdapter implements SoundSpaceMusicPort {
                         music.title,
                         music.filePath,
                         music.duration,
-                        music.category
+                        music.category,
+                        music.bannerImageUrl
                 ))
                 .from(soundSpaceMusic)
                 .innerJoin(music).on(soundSpaceMusic.musicId.eq(music.id))

@@ -20,7 +20,9 @@ public record SoundSpaceMusicResponse(
         @Schema(description = "음악 길이(초)", example = "180")
         Integer duration,
         @Schema(description = "음악 카테고리")
-        MusicCategory category
+        MusicCategory category,
+        @Schema(description = "배너 이미지 URL", example = "https://example.com/image.jpg")
+        String bannerImageUrl
 ) {
     /**
      * SoundSpaceMusicWithDetailDto 리스트를 SoundSpaceMusicResponse 리스트로 변환합니다.
@@ -35,7 +37,8 @@ public record SoundSpaceMusicResponse(
                         dto.title(),
                         dto.filePath(),
                         dto.duration(),
-                        dto.category()
+                        dto.category(),
+                        dto.bannerImageUrl()
                 ))
                 .toList();
     }
