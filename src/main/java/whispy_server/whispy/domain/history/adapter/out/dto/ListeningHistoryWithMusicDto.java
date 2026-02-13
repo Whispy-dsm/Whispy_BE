@@ -12,6 +12,7 @@ public record ListeningHistoryWithMusicDto(
         String filePath,
         Integer duration,
         MusicCategory category,
+        String bannerImageUrl,
         LocalDateTime listenedAt
 ) {
 }

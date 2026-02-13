@@ -59,6 +59,7 @@ public class ListeningHistoryPersistenceAdapter implements ListeningHistoryPort 
                         music.filePath,
                         music.duration,
                         music.category,
+                        music.bannerImageUrl,
                         history.listenedAt
                 ))
                 .from(history)

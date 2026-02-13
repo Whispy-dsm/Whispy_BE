@@ -20,6 +20,8 @@ public record ListeningHistoryResponse(
         Integer duration,
         @Schema(description = "음악 카테고리")
         MusicCategory category,
+        @Schema(description = "배너 이미지 URL", example = "https://example.com/image.jpg")
+        String bannerImageUrl,
         @Schema(description = "청취 일시", example = "2024-01-01T12:00:00")
         LocalDateTime listenedAt
 ) {
@@ -36,6 +38,7 @@ public record ListeningHistoryResponse(
                 dto.filePath(),
                 dto.duration(),
                 dto.category(),
+                dto.bannerImageUrl(),
                 dto.listenedAt()
         );
     }
