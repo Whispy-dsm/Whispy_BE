@@ -1,4 +1,4 @@
-package whispy_server.whispy.global.utils.redis;
+package whispy_server.whispy.global.cache.version;
 
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;

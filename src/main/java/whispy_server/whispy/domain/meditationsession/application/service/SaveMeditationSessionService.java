@@ -12,7 +12,7 @@ import whispy_server.whispy.domain.statistics.meditation.daily.application.port.
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
-import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
+import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

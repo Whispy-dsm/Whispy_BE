@@ -9,7 +9,7 @@ import whispy_server.whispy.domain.meditationsession.application.port.out.QueryM
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.meditationsession.MeditationSessionNotFoundException;
-import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
+import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
 /**
  * 명상 세션 삭제 서비스.

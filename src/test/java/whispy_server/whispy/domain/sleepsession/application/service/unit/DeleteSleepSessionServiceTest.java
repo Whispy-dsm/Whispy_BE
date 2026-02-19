@@ -15,7 +15,7 @@ import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.exception.domain.sleepsession.SleepSessionNotFoundException;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
-import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
+import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

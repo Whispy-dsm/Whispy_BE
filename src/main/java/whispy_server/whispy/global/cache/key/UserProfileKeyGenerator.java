@@ -1,4 +1,4 @@
-package whispy_server.whispy.global.config.cache;
+package whispy_server.whispy.global.cache.key;
 
 import java.lang.reflect.Method;
 import org.springframework.cache.interceptor.KeyGenerator;
