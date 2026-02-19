@@ -169,14 +169,7 @@ public class RedisConfig {
      * @return 설정된 ObjectMapper
      */
     private ObjectMapper objectMapper(){
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.activateDefaultTyping(
-                LaissezFaireSubTypeValidator.instance,
-                ObjectMapper.DefaultTyping.NON_FINAL,
-                JsonTypeInfo.As.PROPERTY
-        );
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return mapper;
+        return createObjectMapper(ObjectMapper.DefaultTyping.NON_FINAL);
     }
 
     /**
@@ -189,10 +182,20 @@ public class RedisConfig {
      * @return Cache 직렬화용 ObjectMapper
      */
     private ObjectMapper cacheObjectMapper() {
+        return createObjectMapper(ObjectMapper.DefaultTyping.EVERYTHING);
+    }
+
+    /**
+     * Redis 직렬화 공통 ObjectMapper를 생성한다.
+     *
+     * @param defaultTyping Jackson default typing 전략
+     * @return 설정된 ObjectMapper
+     */
+    private ObjectMapper createObjectMapper(ObjectMapper.DefaultTyping defaultTyping) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.activateDefaultTyping(
                 LaissezFaireSubTypeValidator.instance,
-                ObjectMapper.DefaultTyping.EVERYTHING,
+                defaultTyping,
                 JsonTypeInfo.As.PROPERTY
         );
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
