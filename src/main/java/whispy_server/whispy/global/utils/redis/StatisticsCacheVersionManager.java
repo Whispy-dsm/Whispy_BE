@@ -1,5 +1,6 @@
 package whispy_server.whispy.global.utils.redis;
 
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,6 +20,7 @@ public class StatisticsCacheVersionManager {
 
     private static final String USER_VERSION_KEY_PREFIX = "stats:ver:user:";
     private static final long INITIAL_VERSION = 0L;
+    private static final Duration USER_VERSION_KEY_TTL = Duration.ofDays(90);
 
     private final StringRedisTemplate stringRedisTemplate;
 
@@ -48,7 +50,9 @@ public class StatisticsCacheVersionManager {
      * @param userId 사용자 ID
      */
     public void bumpUserVersion(Long userId) {
-        stringRedisTemplate.opsForValue().increment(buildUserVersionKey(userId));
+        String key = buildUserVersionKey(userId);
+        stringRedisTemplate.opsForValue().increment(key);
+        stringRedisTemplate.expire(key, USER_VERSION_KEY_TTL);
     }
 
     /**
