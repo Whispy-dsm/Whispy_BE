@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.user.application.port.in;
 
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfileRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileResponse;
 import whispy_server.whispy.global.annotation.UseCase;
 
 /**
@@ -13,6 +14,7 @@ public interface ChangeProfileUseCase {
      * 사용자의 프로필 정보를 변경합니다.
      *
      * @param request 프로필 변경 요청 (이름, 프로필 이미지 URL, 성별)
+     * @return 변경된 사용자 프로필 정보
      */
-    void execute(ChangeProfileRequest request);
+    MyProfileResponse execute(ChangeProfileRequest request);
 }

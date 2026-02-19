@@ -1,10 +1,11 @@
 package whispy_server.whispy.domain.user.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfileRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileResponse;
 import whispy_server.whispy.domain.user.application.port.in.ChangeProfileUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
@@ -27,19 +28,21 @@ public class ChangeProfileService implements ChangeProfileUseCase {
      * 사용자의 프로필 정보를 변경합니다.
      *
      * @param request 프로필 변경 요청 (이름, 프로필 이미지 URL, 성별)
+     * @return 변경된 사용자 프로필 정보
      */
     @Override
     @Transactional
     @UserAction("프로필 변경")
-    @CacheEvict(
+    @CachePut(
             value = RedisConfig.USER_MY_PROFILE_CACHE,
             keyGenerator = "userProfileKeyGenerator"
     )
-    public void execute(ChangeProfileRequest request) {
+    public MyProfileResponse execute(ChangeProfileRequest request) {
         User user = userFacadeUseCase.currentUser();
 
         User updateUser = user.changeProfile(request.name(), request.profileImageUrl(), request.gender());
         userSavePort.save(updateUser);
 
+        return MyProfileResponse.from(updateUser);
     }
 }

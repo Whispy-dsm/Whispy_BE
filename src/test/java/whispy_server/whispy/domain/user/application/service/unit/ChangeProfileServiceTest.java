@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfileRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileResponse;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.User;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * ChangeProfileService의 단위 테스트 클래스
@@ -57,10 +59,12 @@ class ChangeProfileServiceTest {
         given(userFacadeUseCase.currentUser()).willReturn(user);
 
         // when
-        changeProfileService.execute(request);
+        MyProfileResponse result = changeProfileService.execute(request);
 
         // then
         verify(userSavePort).save(any(User.class));
+        assertEquals("NewName", result.name());
+        assertEquals("https://example.com/new-profile.jpg", result.profileImageUrl());
     }
 
     @Test
@@ -77,10 +81,12 @@ class ChangeProfileServiceTest {
         given(userFacadeUseCase.currentUser()).willReturn(user);
 
         // when
-        changeProfileService.execute(request);
+        MyProfileResponse result = changeProfileService.execute(request);
 
         // then
         verify(userSavePort).save(any(User.class));
+        assertEquals("NewName", result.name());
+        assertEquals(user.profileImageUrl(), result.profileImageUrl());
     }
 
     @Test
@@ -97,10 +103,12 @@ class ChangeProfileServiceTest {
         given(userFacadeUseCase.currentUser()).willReturn(user);
 
         // when
-        changeProfileService.execute(request);
+        MyProfileResponse result = changeProfileService.execute(request);
 
         // then
         verify(userSavePort).save(any(User.class));
+        assertEquals(user.name(), result.name());
+        assertEquals("https://example.com/new-image.jpg", result.profileImageUrl());
     }
 
     @Test
@@ -117,10 +125,12 @@ class ChangeProfileServiceTest {
         given(userFacadeUseCase.currentUser()).willReturn(user);
 
         // when
-        changeProfileService.execute(request);
+        MyProfileResponse result = changeProfileService.execute(request);
 
         // then
         verify(userSavePort).save(any(User.class));
+        assertEquals(user.name(), result.name());
+        assertEquals(user.profileImageUrl(), result.profileImageUrl());
     }
 
     /**
