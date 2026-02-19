@@ -7,7 +7,7 @@ import whispy_server.whispy.domain.sleepsession.application.port.out.DeleteSleep
 import whispy_server.whispy.domain.sleepsession.application.port.out.QuerySleepSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.global.annotation.UserAction;
-import whispy_server.whispy.global.exception.domain.focussession.FocusSessionNotFoundException;
+import whispy_server.whispy.global.exception.domain.sleepsession.SleepSessionNotFoundException;
 import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 /**
@@ -28,17 +28,17 @@ public class DeleteSleepSessionService implements DeleteSleepSessionUseCase {
     /**
      * 특정 수면 세션을 삭제합니다.
      *
-     * @param focusSessionId 삭제할 수면 세션 ID
-     * @throws FocusSessionNotFoundException 해당 ID의 세션이 없거나 현재 사용자의 세션이 아닐 경우
+     * @param sleepSessionId 삭제할 수면 세션 ID
+     * @throws SleepSessionNotFoundException 해당 ID의 세션이 없거나 현재 사용자의 세션이 아닐 경우
      */
     @UserAction("수면 세션 삭제")
     @Override
-    public void execute(Long focusSessionId) {
+    public void execute(Long sleepSessionId) {
         Long userId = userFacadeUseCase.currentUser().id();
-        querySleepSessionPort.findByIdAndUserId(focusSessionId, userId)
-                .orElseThrow(() -> FocusSessionNotFoundException.EXCEPTION);
+        querySleepSessionPort.findByIdAndUserId(sleepSessionId, userId)
+                .orElseThrow(() -> SleepSessionNotFoundException.EXCEPTION);
 
-        deleteSleepSessionPort.deleteById(focusSessionId);
+        deleteSleepSessionPort.deleteById(sleepSessionId);
         statisticsCacheVersionManager.bumpUserVersionAfterCommit(userId);
     }
 }

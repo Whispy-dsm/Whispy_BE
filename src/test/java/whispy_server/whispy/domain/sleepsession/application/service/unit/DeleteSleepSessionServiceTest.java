@@ -13,7 +13,7 @@ import whispy_server.whispy.domain.sleepsession.model.SleepSession;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
-import whispy_server.whispy.global.exception.domain.focussession.FocusSessionNotFoundException;
+import whispy_server.whispy.global.exception.domain.sleepsession.SleepSessionNotFoundException;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
@@ -85,7 +85,7 @@ class DeleteSleepSessionServiceTest {
 
         // when & then
         assertThatThrownBy(() -> deleteSleepSessionService.execute(TEST_SESSION_ID))
-                .isInstanceOf(FocusSessionNotFoundException.class);
+                .isInstanceOf(SleepSessionNotFoundException.class);
         verify(deleteSleepSessionPort, never()).deleteById(TEST_SESSION_ID);
     }
 
@@ -101,7 +101,7 @@ class DeleteSleepSessionServiceTest {
 
         // when & then
         assertThatThrownBy(() -> deleteSleepSessionService.execute(TEST_SESSION_ID))
-                .isInstanceOf(FocusSessionNotFoundException.class);
+                .isInstanceOf(SleepSessionNotFoundException.class);
         verify(deleteSleepSessionPort, never()).deleteById(TEST_SESSION_ID);
     }
 
