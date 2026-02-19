@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.statistics.sleep.summary.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
@@ -15,6 +16,7 @@ import whispy_server.whispy.domain.statistics.sleep.summary.model.SleepStatistic
 import whispy_server.whispy.domain.statistics.sleep.types.SleepPeriodType;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.config.redis.RedisConfig;
 import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDate;
@@ -42,6 +44,11 @@ public class GetSleepStatisticsService implements GetSleepStatisticsUseCase {
     @Override
     @Transactional(readOnly = true)
     @UserAction("수면 통계 조회")
+    @Cacheable(
+            value = RedisConfig.STATS_SLEEP_SUMMARY_CACHE,
+            keyGenerator = "statisticsSummaryKeyGenerator",
+            sync = true
+    )
     public SleepStatisticsResponse execute(SleepPeriodType period, LocalDate date) {
         DateValidator.validateNotFutureDate(date);
 

@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.statistics.focus.summary.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
@@ -15,6 +16,7 @@ import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.Focu
 import whispy_server.whispy.domain.statistics.focus.summary.adapter.out.dto.TagMinutesDto;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.global.config.redis.RedisConfig;
 import whispy_server.whispy.global.annotation.UserAction;
 
 import java.time.LocalDate;
@@ -36,6 +38,11 @@ public class GetFocusStatisticsService implements GetFocusStatisticsUseCase {
     @Override
     @Transactional(readOnly = true)
     @UserAction("집중 통계 조회")
+    @Cacheable(
+            value = RedisConfig.STATS_FOCUS_SUMMARY_CACHE,
+            keyGenerator = "statisticsSummaryKeyGenerator",
+            sync = true
+    )
     public FocusStatisticsResponse execute(FocusPeriodType period, LocalDate date) {
         DateValidator.validateNotFutureDate(date);
 
