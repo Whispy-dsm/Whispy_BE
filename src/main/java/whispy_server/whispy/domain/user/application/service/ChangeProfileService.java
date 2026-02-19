@@ -33,7 +33,7 @@ public class ChangeProfileService implements ChangeProfileUseCase {
     @UserAction("프로필 변경")
     @CacheEvict(
             value = RedisConfig.USER_MY_PROFILE_CACHE,
-            key = "T(whispy_server.whispy.global.utils.security.SecurityUtil).getCurrentUserIdentifier()"
+            keyGenerator = "userProfileKeyGenerator"
     )
     public void execute(ChangeProfileRequest request) {
         User user = userFacadeUseCase.currentUser();

@@ -29,7 +29,7 @@ public class GetMyProfileService implements GetMyProfileUseCase {
     @UserAction("내 프로필 조회")
     @Cacheable(
             value = RedisConfig.USER_MY_PROFILE_CACHE,
-            key = "T(whispy_server.whispy.global.utils.security.SecurityUtil).getCurrentUserIdentifier()",
+            keyGenerator = "userProfileKeyGenerator",
             sync = true
     )
     public MyProfileResponse execute() {
