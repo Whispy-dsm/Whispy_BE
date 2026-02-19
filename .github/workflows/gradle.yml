@@ -78,7 +78,7 @@ jobs:
             sleep 5
 
             docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
-            docker image prune -a -f
+            docker image prune -f
 
       - name: Discord Notification
         if: always()
