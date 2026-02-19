@@ -4,8 +4,9 @@ import java.lang.reflect.Method;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.global.security.auth.AuthDetails;
 import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 /**
@@ -17,12 +18,14 @@ import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 @RequiredArgsConstructor
 public class StatisticsSummaryKeyGenerator implements KeyGenerator {
 
-    private final UserFacadeUseCase userFacadeUseCase;
     private final StatisticsCacheVersionManager statisticsCacheVersionManager;
 
     @Override
     public Object generate(Object target, Method method, Object... params) {
-        Long userId = userFacadeUseCase.currentUser().id();
+        AuthDetails authDetails = (AuthDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        Long userId = authDetails.id();
         Enum<?> period = (Enum<?>) params[0];
         LocalDate date = (LocalDate) params[1];
         long version = statisticsCacheVersionManager.getUserVersion(userId);

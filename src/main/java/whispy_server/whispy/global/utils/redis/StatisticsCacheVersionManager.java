@@ -1,6 +1,7 @@
 package whispy_server.whispy.global.utils.redis;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronization;
@@ -12,6 +13,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * 사용자별 버전 키를 증가시켜 통계 캐시를 자연 무효화합니다.
  */
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class StatisticsCacheVersionManager {
 
@@ -34,7 +36,8 @@ public class StatisticsCacheVersionManager {
 
         try {
             return Long.parseLong(rawValue);
-        } catch (NumberFormatException ignored) {
+        } catch (NumberFormatException e) {
+            log.warn("통계 캐시 버전 키 파싱 실패 - userId: {}, rawValue: {}", userId, rawValue, e);
             return INITIAL_VERSION;
         }
     }
