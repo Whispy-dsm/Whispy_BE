@@ -2,6 +2,7 @@ package whispy_server.whispy.domain.music.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.history.application.port.out.DeleteListeningHistoryPort;
@@ -10,6 +11,7 @@ import whispy_server.whispy.domain.music.application.port.in.DeleteMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicDeletePort;
 import whispy_server.whispy.domain.music.application.port.out.QueryMusicPort;
 import whispy_server.whispy.domain.soundspace.application.port.out.DeleteSoundSpaceMusicPort;
+import whispy_server.whispy.global.config.redis.RedisConfig;
 import whispy_server.whispy.global.annotation.AdminAction;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
@@ -40,6 +42,7 @@ public class DeleteMusicService implements DeleteMusicUseCase {
      */
     @AdminAction("음악 삭제")
     @Transactional
+    @CacheEvict(value = RedisConfig.MUSIC_CATEGORY_SEARCH_CACHE, allEntries = true)
     @Override
     public void execute(Long id) {
         if (!queryMusicPort.existsById(id)) {

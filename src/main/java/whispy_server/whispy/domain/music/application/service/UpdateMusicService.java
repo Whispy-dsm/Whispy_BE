@@ -2,6 +2,7 @@ package whispy_server.whispy.domain.music.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.request.UpdateMusicRequest;
@@ -9,6 +10,7 @@ import whispy_server.whispy.domain.music.application.port.in.UpdateMusicUseCase;
 import whispy_server.whispy.domain.music.application.port.out.MusicSavePort;
 import whispy_server.whispy.domain.music.application.port.out.QueryMusicPort;
 import whispy_server.whispy.domain.music.model.Music;
+import whispy_server.whispy.global.config.redis.RedisConfig;
 import whispy_server.whispy.global.annotation.AdminAction;
 import whispy_server.whispy.global.exception.domain.music.MusicNotFoundException;
 
@@ -33,6 +35,7 @@ public class UpdateMusicService implements UpdateMusicUseCase {
      */
     @AdminAction("음악 정보 수정")
     @Transactional
+    @CacheEvict(value = RedisConfig.MUSIC_CATEGORY_SEARCH_CACHE, allEntries = true)
     @Override
     public void execute(UpdateMusicRequest request) {
         Music existingMusic = queryMusicPort.findById(request.id())
