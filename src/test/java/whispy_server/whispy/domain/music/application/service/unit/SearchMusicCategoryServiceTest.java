@@ -11,9 +11,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import whispy_server.whispy.domain.music.adapter.in.web.dto.response.MusicSearchResponse;
-import whispy_server.whispy.domain.music.application.port.out.SearchMusicPort;
+import whispy_server.whispy.domain.music.application.service.MusicCategorySearchCacheValue;
+import whispy_server.whispy.domain.music.application.service.SearchMusicCategoryCacheService;
 import whispy_server.whispy.domain.music.application.service.SearchMusicCategoryService;
-import whispy_server.whispy.domain.music.model.Music;
 import whispy_server.whispy.domain.music.model.type.MusicCategory;
 
 import java.util.List;
@@ -37,7 +37,7 @@ class SearchMusicCategoryServiceTest {
     private SearchMusicCategoryService searchMusicCategoryService;
 
     @Mock
-    private SearchMusicPort searchMusicPort;
+    private SearchMusicCategoryCacheService searchMusicCategoryCacheService;
 
     @Test
     @DisplayName("카테고리로 음악을 검색할 수 있다")
@@ -46,13 +46,14 @@ class SearchMusicCategoryServiceTest {
         MusicCategory category = MusicCategory.NATURE;
         Pageable pageable = PageRequest.of(0, 10);
 
-        List<Music> musics = List.of(
-                new Music(1L, "빗소리 1", "Nature Sounds", "편안한 빗소리", "http://example.com/music1.mp3", 180, MusicCategory.NATURE, "http://example.com/cover1.jpg", "http://example.com/video1.mp4"),
-                new Music(2L, "빗소리 2", "Nature Sounds", "부드러운 빗소리", "http://example.com/music2.mp3", 200, MusicCategory.NATURE, "http://example.com/cover2.jpg", "http://example.com/video2.mp4")
+        List<MusicSearchResponse> responses = List.of(
+                new MusicSearchResponse(1L, "빗소리 1", "Nature Sounds", "편안한 빗소리", "http://example.com/music1.mp3", 180, MusicCategory.NATURE, "http://example.com/cover1.jpg", "http://example.com/video1.mp4"),
+                new MusicSearchResponse(2L, "빗소리 2", "Nature Sounds", "부드러운 빗소리", "http://example.com/music2.mp3", 200, MusicCategory.NATURE, "http://example.com/cover2.jpg", "http://example.com/video2.mp4")
         );
-        Page<Music> musicPage = new PageImpl<>(musics, pageable, musics.size());
+        Page<MusicSearchResponse> musicPage = new PageImpl<>(responses, pageable, responses.size());
 
-        given(searchMusicPort.searchByCategory(category, pageable)).willReturn(musicPage);
+        given(searchMusicCategoryCacheService.searchByMusicCategory(category, pageable))
+                .willReturn(MusicCategorySearchCacheValue.from(musicPage));
 
         // when
         Page<MusicSearchResponse> result = searchMusicCategoryService.searchByMusicCategory(category, pageable);
@@ -60,7 +61,7 @@ class SearchMusicCategoryServiceTest {
         // then
         assertThat(result).isNotNull();
         assertThat(result.getContent()).hasSize(2);
-        verify(searchMusicPort).searchByCategory(category, pageable);
+        verify(searchMusicCategoryCacheService).searchByMusicCategory(category, pageable);
     }
 
     @Test
@@ -69,9 +70,10 @@ class SearchMusicCategoryServiceTest {
         // given
         MusicCategory category = MusicCategory.NATURE;
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Music> emptyPage = Page.empty(pageable);
+        Page<MusicSearchResponse> emptyPage = Page.empty(pageable);
 
-        given(searchMusicPort.searchByCategory(category, pageable)).willReturn(emptyPage);
+        given(searchMusicCategoryCacheService.searchByMusicCategory(category, pageable))
+                .willReturn(MusicCategorySearchCacheValue.from(emptyPage));
 
         // when
         Page<MusicSearchResponse> result = searchMusicCategoryService.searchByMusicCategory(category, pageable);
