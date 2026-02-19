@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.sleepsession.application.port.out.QuerySleepS
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.focussession.FocusSessionNotFoundException;
+import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 /**
  * 수면 세션 삭제 서비스.
@@ -22,6 +23,7 @@ public class DeleteSleepSessionService implements DeleteSleepSessionUseCase {
     private final QuerySleepSessionPort querySleepSessionPort;
     private final DeleteSleepSessionPort deleteSleepSessionPort;
     private final UserFacadeUseCase userFacadeUseCase;
+    private final StatisticsCacheVersionManager statisticsCacheVersionManager;
 
     /**
      * 특정 수면 세션을 삭제합니다.
@@ -37,5 +39,6 @@ public class DeleteSleepSessionService implements DeleteSleepSessionUseCase {
                 .orElseThrow(() -> FocusSessionNotFoundException.EXCEPTION);
 
         deleteSleepSessionPort.deleteById(focusSessionId);
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(userId);
     }
 }

@@ -9,6 +9,7 @@ import whispy_server.whispy.domain.meditationsession.application.port.out.QueryM
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.meditationsession.MeditationSessionNotFoundException;
+import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 /**
  * 명상 세션 삭제 서비스.
@@ -22,6 +23,7 @@ public class DeleteMeditationSessionService implements DeleteMeditationSessionUs
     private final QueryMeditationSessionPort queryMeditationSessionPort;
     private final DeleteMeditationSessionPort deleteMeditationSessionPort;
     private final UserFacadeUseCase userFacadeUseCase;
+    private final StatisticsCacheVersionManager statisticsCacheVersionManager;
 
     /**
      * 명상 세션을 삭제합니다.
@@ -38,5 +40,6 @@ public class DeleteMeditationSessionService implements DeleteMeditationSessionUs
                 .orElseThrow(() -> MeditationSessionNotFoundException.EXCEPTION);
 
         deleteMeditationSessionPort.deleteById(meditationSessionId);
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(userId);
     }
 }

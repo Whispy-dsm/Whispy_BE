@@ -15,6 +15,7 @@ import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.exception.domain.focussession.FocusSessionNotFoundException;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
+import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -46,6 +47,9 @@ class DeleteSleepSessionServiceTest {
 
     @Mock
     private UserFacadeUseCase userFacadeUseCase;
+
+    @Mock
+    private StatisticsCacheVersionManager statisticsCacheVersionManager;
 
     private static final String TEST_EMAIL = "test@example.com";
     private static final Long TEST_USER_ID = 1L;

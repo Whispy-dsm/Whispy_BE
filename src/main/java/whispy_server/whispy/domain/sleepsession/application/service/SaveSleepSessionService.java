@@ -11,6 +11,7 @@ import whispy_server.whispy.domain.sleepsession.model.SleepSession;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,7 @@ public class SaveSleepSessionService implements SaveSleepSessionUseCase {
 
     private final SleepSessionSavePort sleepSessionSavePort;
     private final UserFacadeUseCase userFacadeUseCase;
+    private final StatisticsCacheVersionManager statisticsCacheVersionManager;
 
     /**
      * 새로운 수면 세션을 저장합니다.
@@ -49,6 +51,7 @@ public class SaveSleepSessionService implements SaveSleepSessionUseCase {
         );
 
         SleepSession saved = sleepSessionSavePort.save(sleepSession);
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(user.id());
 
         return SleepSessionResponse.from(saved);
     }

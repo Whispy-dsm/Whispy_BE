@@ -12,6 +12,7 @@ import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.Q
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
     private final FocusSessionSavePort focusSessionSavePort;
     private final UserFacadeUseCase userFacadeUseCase;
     private final QueryFocusStatisticsPort queryFocusStatisticsPort;
+    private final StatisticsCacheVersionManager statisticsCacheVersionManager;
 
     /**
      * 새로운 집중 세션을 저장합니다.
@@ -55,6 +57,7 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
         FocusSession saved = focusSessionSavePort.save(focusSession);
 
         int todayTotalMinutes = calculateTodayTotalMinutes(user.id());
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(user.id());
 
         return FocusSessionResponse.from(saved, todayTotalMinutes);
     }

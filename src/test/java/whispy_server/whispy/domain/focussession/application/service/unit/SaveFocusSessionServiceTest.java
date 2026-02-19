@@ -17,6 +17,7 @@ import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
+import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 import java.time.LocalDateTime;
 
@@ -48,6 +49,9 @@ class SaveFocusSessionServiceTest {
 
     @Mock
     private QueryFocusStatisticsPort queryFocusStatisticsPort;
+
+    @Mock
+    private StatisticsCacheVersionManager statisticsCacheVersionManager;
 
     private static final String TEST_EMAIL = "test@example.com";
     private static final Long TEST_USER_ID = 1L;

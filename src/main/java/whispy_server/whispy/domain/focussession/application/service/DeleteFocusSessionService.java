@@ -10,6 +10,7 @@ import whispy_server.whispy.domain.focussession.application.port.out.QueryFocusS
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.global.annotation.UserAction;
 import whispy_server.whispy.global.exception.domain.focussession.FocusSessionNotFoundException;
+import whispy_server.whispy.global.utils.redis.StatisticsCacheVersionManager;
 
 /**
  * 집중 세션 삭제 서비스.
@@ -25,6 +26,7 @@ public class DeleteFocusSessionService implements DeleteFocusSessionUseCase {
     private final QueryFocusSessionPort queryFocusSessionPort;
     private final DeleteFocusSessionPort deleteFocusSessionPort;
     private final UserFacadeUseCase userFacadeUseCase;
+    private final StatisticsCacheVersionManager statisticsCacheVersionManager;
 
     /**
      * 특정 집중 세션을 삭제합니다.
@@ -40,5 +42,6 @@ public class DeleteFocusSessionService implements DeleteFocusSessionUseCase {
                 .orElseThrow(() -> FocusSessionNotFoundException.EXCEPTION);
 
         deleteFocusSessionPort.deleteById(focusSessionId);
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(userId);
     }
 }
