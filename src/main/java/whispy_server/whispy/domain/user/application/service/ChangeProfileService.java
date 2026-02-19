@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.user.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfileRequest;
@@ -9,6 +10,7 @@ import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.application.port.out.UserSavePort;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.config.redis.RedisConfig;
 
 /**
  * 프로필 변경 서비스.
@@ -29,6 +31,10 @@ public class ChangeProfileService implements ChangeProfileUseCase {
     @Override
     @Transactional
     @UserAction("프로필 변경")
+    @CacheEvict(
+            value = RedisConfig.USER_MY_PROFILE_CACHE,
+            key = "T(whispy_server.whispy.global.utils.security.SecurityUtil).getCurrentUserIdentifier()"
+    )
     public void execute(ChangeProfileRequest request) {
         User user = userFacadeUseCase.currentUser();
 

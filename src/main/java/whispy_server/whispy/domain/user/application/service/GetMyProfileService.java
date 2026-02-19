@@ -1,12 +1,14 @@
 package whispy_server.whispy.domain.user.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileResponse;
 import whispy_server.whispy.domain.user.application.port.in.GetMyProfileUseCase;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.config.redis.RedisConfig;
 
 /**
  * 내 프로필 조회 서비스.
@@ -25,6 +27,11 @@ public class GetMyProfileService implements GetMyProfileUseCase {
      */
     @Override
     @UserAction("내 프로필 조회")
+    @Cacheable(
+            value = RedisConfig.USER_MY_PROFILE_CACHE,
+            key = "T(whispy_server.whispy.global.utils.security.SecurityUtil).getCurrentUserIdentifier()",
+            sync = true
+    )
     public MyProfileResponse execute() {
         User currentUser = userFacadeUseCase.currentUser();
         return MyProfileResponse.from(currentUser);
