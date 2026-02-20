@@ -31,6 +31,13 @@ public class RedisUtil {
     }
 
     /**
+     * 키의 값을 조회하고 즉시 삭제한다.
+     */
+    public String getAndDelete(String key) {
+        return stringRedisTemplate.opsForValue().getAndDelete(key);
+    }
+
+    /**
      * 키를 삭제한다.
      */
     public void delete(String key) {

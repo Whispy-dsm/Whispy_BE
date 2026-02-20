@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangePasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfileRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.OauthCodeExchangeRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.TokenReissueRequest;
@@ -26,6 +27,7 @@ import whispy_server.whispy.domain.user.adapter.in.web.dto.response.MyProfileRes
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.ChangePasswordUseCase;
 import whispy_server.whispy.domain.user.application.port.in.ChangeProfileUseCase;
+import whispy_server.whispy.domain.user.application.port.in.ExchangeOauthCodeUseCase;
 import whispy_server.whispy.domain.user.application.port.in.GetMyAccountInfoUseCase;
 import whispy_server.whispy.domain.user.application.port.in.GetMyProfileUseCase;
 import whispy_server.whispy.domain.user.application.port.in.KakaoOauthUseCase;
@@ -51,6 +53,7 @@ public class UserController implements UserApiDocument {
     private final UserRegisterUseCase userRegisterUseCase;
     private final UserTokenReissueUseCase userTokenReissueUseCase;
     private final KakaoOauthUseCase kakaoOauthUseCase;
+    private final ExchangeOauthCodeUseCase exchangeOauthCodeUseCase;
     private final UserLogoutUseCase userLogoutUseCase;
     private final UserWithdrawalUseCase userWithdrawalUseCase;
     private final UpdateFcmTokenUseCase updateFcmTokenUseCase;
@@ -91,6 +94,17 @@ public class UserController implements UserApiDocument {
     @PostMapping("/oauth/kakao")
     public TokenResponse authenticateWithKakaoToken(@Valid @RequestBody KakaoOauthTokenRequest request){
         return kakaoOauthUseCase.loginWithKakao(request);
+    }
+
+    /**
+     * 앱 딥링크로 전달받은 OAuth 일회용 코드를 JWT 토큰으로 교환합니다.
+     *
+     * @param request OAuth 코드 교환 요청
+     * @return 액세스 토큰과 리프레시 토큰
+     */
+    @PostMapping("/oauth/exchange")
+    public TokenResponse exchangeOauthCode(@Valid @RequestBody OauthCodeExchangeRequest request) {
+        return exchangeOauthCodeUseCase.execute(request);
     }
 
     /**
