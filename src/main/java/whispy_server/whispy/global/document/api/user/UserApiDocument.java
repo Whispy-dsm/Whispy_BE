@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangePasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ChangeProfileRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.KakaoOauthTokenRequest;
+import whispy_server.whispy.domain.user.adapter.in.web.dto.request.OauthCodeExchangeRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.RegisterRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.ResetPasswordRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.UpdateFcmTokenRequest;
@@ -106,6 +107,23 @@ public interface UserApiDocument {
             @RequestBody(description = "카카오 OAuth 로그인 요청", required = true,
                     content = @Content(schema = @Schema(implementation = KakaoOauthTokenRequest.class)))
             KakaoOauthTokenRequest request
+    );
+
+    @Operation(summary = "OAuth 코드 교환", description = "딥링크로 전달받은 일회용 OAuth 코드를 JWT 토큰으로 교환합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "코드 교환 성공",
+                    content = @Content(schema = @Schema(implementation = TokenResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 유효성 검사 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "유효하지 않거나 만료된 OAuth 코드",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    TokenResponse exchangeOauthCode(
+            @RequestBody(description = "OAuth 코드 교환 요청", required = true,
+                    content = @Content(schema = @Schema(implementation = OauthCodeExchangeRequest.class)))
+            OauthCodeExchangeRequest request
     );
 
     @Operation(
