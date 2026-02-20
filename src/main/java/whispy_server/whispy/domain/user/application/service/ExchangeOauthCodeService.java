@@ -2,7 +2,6 @@ package whispy_server.whispy.domain.user.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.request.OauthCodeExchangeRequest;
 import whispy_server.whispy.domain.user.adapter.in.web.dto.response.TokenResponse;
 import whispy_server.whispy.domain.user.application.port.in.ExchangeOauthCodeUseCase;
@@ -28,7 +27,6 @@ public class ExchangeOauthCodeService implements ExchangeOauthCodeUseCase {
      * @return 발급된 액세스/리프레시 토큰
      */
     @Override
-    @Transactional
     public TokenResponse execute(OauthCodeExchangeRequest request) {
         String key = OauthCodeConstants.oauthCodeKey(request.code());
         String codePayload = redisUtil.getAndDelete(key);

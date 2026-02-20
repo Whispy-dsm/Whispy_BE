@@ -81,7 +81,6 @@ public class SecurityConfig {
                         .requestMatchers("/users/password/reset").permitAll()
                         .requestMatchers("/admin/login").permitAll()
                         .requestMatchers("/users/oauth/kakao", "/users/oauth/exchange").permitAll()
-                        .requestMatchers("/oauth/success/**").permitAll()
                         .requestMatchers("/file/profile_image_folder/**",
                                          "/file/music_folder/**",
                                          "/file/music_banner_image_folder/**",

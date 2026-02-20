@@ -20,6 +20,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OauthFailureHandler implements AuthenticationFailureHandler {
 
+    private static final String OAUTH_ERROR_CODE = "oauth_authentication_failed";
+
     /**
      * OAuth 실패 정보를 error, error_description 쿼리 파라미터로 구성해 앱으로 리디렉트한다.
      *
@@ -32,10 +34,10 @@ public class OauthFailureHandler implements AuthenticationFailureHandler {
                                         AuthenticationException exception) throws IOException, ServletException {
 
         ErrorCode errorCode = ErrorCode.OAUTH_AUTHENTICATION_FAILED;
-        String errorDescription = exception.getMessage() == null ? "OAuth2 인증에 실패했습니다" : exception.getMessage();
+        String errorDescription = errorCode.getMessage();
 
-        String redirectUrl = UriComponentsBuilder.fromUriString(OauthCodeConstants.OAUTH_DEEP_LINK_SUCCESS_URL)
-                .queryParam("error", errorCode.name().toLowerCase())
+        String redirectUrl = UriComponentsBuilder.fromUriString(OauthCodeConstants.OAUTH_DEEP_LINK_CALLBACK_URI)
+                .queryParam("error", OAUTH_ERROR_CODE)
                 .queryParam("error_description", errorDescription)
                 .build()
                 .encode()

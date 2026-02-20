@@ -10,7 +10,7 @@ public final class OauthCodeConstants {
     private OauthCodeConstants() {
     }
 
-    public static final String OAUTH_DEEP_LINK_SUCCESS_URL = "whispy://oauth/success";
+    public static final String OAUTH_DEEP_LINK_CALLBACK_URI = "whispy://oauth/success";
     public static final String OAUTH_CODE_KEY_PREFIX = "oauth:code:";
     public static final Duration OAUTH_CODE_TTL = Duration.ofMinutes(3);
 

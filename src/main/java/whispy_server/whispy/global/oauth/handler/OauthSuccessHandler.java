@@ -44,7 +44,7 @@ public class OauthSuccessHandler implements AuthenticationSuccessHandler {
                 OauthCodeConstants.OAUTH_CODE_TTL
         );
 
-        String redirectUrl = UriComponentsBuilder.fromUriString(OauthCodeConstants.OAUTH_DEEP_LINK_SUCCESS_URL)
+        String redirectUrl = UriComponentsBuilder.fromUriString(OauthCodeConstants.OAUTH_DEEP_LINK_CALLBACK_URI)
                 .queryParam("code", code)
                 .build()
                 .encode()
