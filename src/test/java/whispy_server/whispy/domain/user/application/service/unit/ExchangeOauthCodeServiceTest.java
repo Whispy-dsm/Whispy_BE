@@ -84,4 +84,34 @@ class ExchangeOauthCodeServiceTest {
 
         verify(jwtTokenProvider, never()).generateToken(anyLong(), anyString());
     }
+
+    @Test
+    @DisplayName("OAuth 코드 payload의 사용자 ID가 숫자가 아니면 예외가 발생한다")
+    void whenInvalidUserIdInPayload_thenThrowException() {
+        // given
+        String code = "invalid-user-id-code";
+        String key = OauthCodeConstants.oauthCodeKey(code);
+        given(redisUtil.getAndDelete(key)).willReturn("not-a-number:USER");
+
+        // when & then
+        assertThatThrownBy(() -> exchangeOauthCodeService.execute(new OauthCodeExchangeRequest(code)))
+                .isInstanceOf(InvalidOrExpiredOauthCodeException.class);
+
+        verify(jwtTokenProvider, never()).generateToken(anyLong(), anyString());
+    }
+
+    @Test
+    @DisplayName("OAuth 코드 payload의 권한 값이 비어 있으면 예외가 발생한다")
+    void whenBlankRoleInPayload_thenThrowException() {
+        // given
+        String code = "blank-role-code";
+        String key = OauthCodeConstants.oauthCodeKey(code);
+        given(redisUtil.getAndDelete(key)).willReturn("1:   ");
+
+        // when & then
+        assertThatThrownBy(() -> exchangeOauthCodeService.execute(new OauthCodeExchangeRequest(code)))
+                .isInstanceOf(InvalidOrExpiredOauthCodeException.class);
+
+        verify(jwtTokenProvider, never()).generateToken(anyLong(), anyString());
+    }
 }
