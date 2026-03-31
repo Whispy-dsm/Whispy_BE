@@ -1,14 +1,12 @@
 package whispy_server.whispy.global.exception.error;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * 도메인 전역에서 사용하는 표준 오류 코드 정의.
  */
 @Getter
-@AllArgsConstructor
 @JsonFormat(shape =  JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
 
@@ -71,6 +69,7 @@ public enum ErrorCode {
     EMAIL_RATE_LIMIT_EXCEEDED(429, "이메일 발송 요청이 너무 빈번합니다. 1분 후 다시 시도해주세요."),
 
     INTERNAL_SERVER_ERROR(500, "서버 오류 발생"),
+    FILE_READ_FAILED(500, "파일 조회에 실패했습니다"),
     FILE_DELETE_FAILED(500, "파일 삭제에 실패했습니다"),
     FILE_UPLOAD_FAILED(500, "파일 업로드에 실패했습니다"),
     WEBP_CONVERTER_NOT_FOUND(500, "WebP 변환기를 찾을 수 없습니다"),
@@ -86,4 +85,9 @@ public enum ErrorCode {
 
     private final int statusCode;
     private final String message;
+
+    ErrorCode(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
 }
