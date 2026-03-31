@@ -3,21 +3,19 @@ package whispy_server.whispy.domain.file.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import whispy_server.whispy.domain.file.adapter.in.web.dto.FileUploadResponse;
+import whispy_server.whispy.domain.file.adapter.in.web.dto.response.FileUploadResponse;
 import whispy_server.whispy.domain.file.application.port.in.FileUploadUseCase;
+import whispy_server.whispy.domain.file.application.port.out.FileStoragePort;
 import whispy_server.whispy.domain.file.application.utils.FileValidator;
+import whispy_server.whispy.domain.file.application.utils.ImageFolderPathResolver;
 import whispy_server.whispy.domain.file.application.utils.ImageCompressionConverter;
 import whispy_server.whispy.domain.file.type.ImageFolder;
 import whispy_server.whispy.global.exception.domain.file.FileUploadFailedException;
 import whispy_server.whispy.global.file.FileProperties;
 import whispy_server.whispy.global.annotation.UserAction;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 /**
@@ -31,6 +29,7 @@ public class FileUploadService implements FileUploadUseCase {
 
     private final FileProperties fileProperties;
     private final ImageCompressionConverter imageCompressionConverter;
+    private final FileStoragePort fileStoragePort;
 
     /**
      * 파일을 업로드하고 접근 URL을 반환한다.
@@ -45,17 +44,15 @@ public class FileUploadService implements FileUploadUseCase {
         FileValidator.validateFile(file, imageFolder);
 
         String fileName = generateFileName(file, imageFolder);
-        String folder = imageFolder.toString().toLowerCase();
+        String folder = ImageFolderPathResolver.toPathName(imageFolder);
 
         try {
-            Files.createDirectories(Paths.get(fileProperties.uploadPath(), folder));
-
             if (imageFolder == ImageFolder.MUSIC_FOLDER || imageFolder == ImageFolder.MUSIC_VIDEO_FOLDER) {
-                uploadOriginalFile(file, folder, fileName);
+                uploadOriginalFile(file, imageFolder, fileName);
             } else if (isWebPFile(file)) {
-                uploadOriginalFile(file, folder, fileName);
+                uploadOriginalFile(file, imageFolder, fileName);
             } else {
-                uploadCompressedImage(file, folder, fileName);
+                uploadCompressedImage(file, imageFolder, fileName);
             }
 
             String fileUrl = generateFileUrl(folder, fileName);
@@ -73,14 +70,20 @@ public class FileUploadService implements FileUploadUseCase {
      * 지정된 경로에 저장합니다.
      *
      * @param file     압축할 MultipartFile
-     * @param folder   저장 폴더 경로
+     * @param imageFolder   저장 폴더 경로
      * @param fileName 저장 파일명
      * @throws IOException 파일 저장 실패 시
      */
-    private void uploadCompressedImage(MultipartFile file, String folder, String fileName) throws IOException {
-        InputStream compressedImage = imageCompressionConverter.compressImage(file);
-        Path filePath = Paths.get(fileProperties.uploadPath(), folder, fileName);
-        Files.copy(compressedImage, filePath, StandardCopyOption.REPLACE_EXISTING);
+    private void uploadCompressedImage(MultipartFile file, ImageFolder imageFolder, String fileName) throws IOException {
+        try (var compressedImage = imageCompressionConverter.compressImage(file)) {
+            byte[] compressedBytes = compressedImage.readAllBytes();
+            fileStoragePort.upload(
+                    ImageFolderPathResolver.toObjectKey(imageFolder, fileName),
+                    "image/webp",
+                    new ByteArrayInputStream(compressedBytes),
+                    compressedBytes.length
+            );
+        }
     }
 
     /**
@@ -90,13 +93,18 @@ public class FileUploadService implements FileUploadUseCase {
      * 압축 없이 원본 그대로 저장합니다.
      *
      * @param file     저장할 MultipartFile
-     * @param folder   저장 폴더 경로
+     * @param imageFolder   저장 폴더 경로
      * @param fileName 저장 파일명
      * @throws IOException 파일 저장 실패 시
      */
-    private void uploadOriginalFile(MultipartFile file, String folder, String fileName) throws IOException {
-        Path filePath = Paths.get(fileProperties.uploadPath(), folder, fileName);
-        file.transferTo(filePath.toFile());
+    private void uploadOriginalFile(MultipartFile file, ImageFolder imageFolder, String fileName) throws IOException {
+        String contentType = file.getContentType();
+        fileStoragePort.upload(
+                ImageFolderPathResolver.toObjectKey(imageFolder, fileName),
+                contentType != null ? contentType : "application/octet-stream",
+                file.getInputStream(),
+                file.getSize()
+        );
     }
 
     /**

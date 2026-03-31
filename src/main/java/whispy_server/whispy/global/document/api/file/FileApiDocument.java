@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.multipart.MultipartFile;
-import whispy_server.whispy.domain.file.adapter.in.web.dto.FileUploadResponse;
+import whispy_server.whispy.domain.file.adapter.in.web.dto.response.FileUploadResponse;
 import whispy_server.whispy.domain.file.type.ImageFolder;
 import whispy_server.whispy.global.exception.error.ErrorResponse;
 
