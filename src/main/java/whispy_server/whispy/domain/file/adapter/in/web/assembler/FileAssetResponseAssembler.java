@@ -2,7 +2,6 @@ package whispy_server.whispy.domain.file.adapter.in.web.assembler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +9,6 @@ import org.springframework.stereotype.Component;
 import whispy_server.whispy.domain.file.application.port.in.FileReadUseCase;
 import whispy_server.whispy.domain.file.application.port.out.StoredFile;
 import whispy_server.whispy.domain.file.application.utils.ImageFolderPathResolver;
-
-import java.time.Duration;
-
 /**
  * 공개 파일 조회 결과를 HTTP 응답으로 조립하는 웹 어댑터 컴포넌트.
  */
@@ -39,7 +35,6 @@ public class FileAssetResponseAssembler {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(mediaType);
-        headers.setCacheControl(CacheControl.maxAge(Duration.ofDays(30)).cachePublic().getHeaderValue());
         if (storedFile.contentLength() >= 0) {
             headers.setContentLength(storedFile.contentLength());
         }

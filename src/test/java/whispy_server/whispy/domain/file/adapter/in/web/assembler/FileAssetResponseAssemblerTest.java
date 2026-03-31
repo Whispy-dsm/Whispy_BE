@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import whispy_server.whispy.domain.file.application.port.in.FileReadUseCase;
@@ -41,7 +42,7 @@ class FileAssetResponseAssemblerTest {
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.valueOf("audio/mpeg"));
         assertThat(response.getHeaders().getContentLength()).isEqualTo(content.length);
-        assertThat(response.getHeaders().getCacheControl()).contains("max-age");
+        assertThat(response.getHeaders().containsKey(HttpHeaders.CACHE_CONTROL)).isFalse();
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getInputStream().readAllBytes()).isEqualTo(content);
     }
