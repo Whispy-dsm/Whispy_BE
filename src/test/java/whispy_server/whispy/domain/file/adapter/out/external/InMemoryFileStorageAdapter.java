@@ -1,5 +1,6 @@
 package whispy_server.whispy.domain.file.adapter.out.external;
 
+import org.springframework.core.io.InputStreamSource;
 import whispy_server.whispy.domain.file.application.port.out.FileStoragePort;
 import whispy_server.whispy.domain.file.application.port.out.StoredFile;
 import whispy_server.whispy.global.exception.domain.file.FileNotFoundException;
@@ -24,12 +25,12 @@ public class InMemoryFileStorageAdapter implements FileStoragePort {
      *
      * @param objectKey 저장할 객체 키
      * @param contentType 파일 MIME 타입
-     * @param inputStream 업로드할 파일 스트림
+     * @param inputStreamSource 업로드 시마다 새 스트림을 제공하는 공급자
      * @param contentLength 파일 바이트 수
      */
     @Override
-    public void upload(String objectKey, String contentType, InputStream inputStream, long contentLength) {
-        try (InputStream stream = inputStream) {
+    public void upload(String objectKey, String contentType, InputStreamSource inputStreamSource, long contentLength) {
+        try (InputStream stream = inputStreamSource.getInputStream()) {
             storage.put(objectKey, new InMemoryFile(stream.readAllBytes(), normalizeContentType(contentType)));
         } catch (IOException exception) {
             throw new IllegalStateException("메모리 파일 저장에 실패했습니다.", exception);

@@ -32,7 +32,7 @@ class FileAssetControllerIntegrationTest extends IntegrationTestSupport {
         fileStoragePort.upload(
                 "music_folder/sample.mp3",
                 "audio/mpeg",
-                new ByteArrayInputStream(content),
+                () -> new ByteArrayInputStream(content),
                 content.length
         );
 

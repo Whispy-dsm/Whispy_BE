@@ -2,9 +2,11 @@ package whispy_server.whispy.domain.file.adapter.out.external;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.http.ContentStreamProvider;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -21,7 +23,9 @@ import whispy_server.whispy.global.exception.domain.file.FileReadFailedException
 import whispy_server.whispy.global.exception.domain.file.FileUploadFailedException;
 import whispy_server.whispy.global.file.R2Properties;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 
 /**
  * Cloudflare R2 기반 파일 저장소 외부 어댑터.
@@ -41,20 +45,31 @@ public class R2FileStorageAdapter implements FileStoragePort {
      *
      * @param objectKey 저장소 내부에서 사용할 객체 키
      * @param contentType 저장할 파일의 MIME 타입
-     * @param inputStream 업로드할 파일 스트림
+     * @param inputStreamSource 업로드 시마다 새 스트림을 제공하는 공급자
      * @param contentLength 업로드할 파일 바이트 수
      */
     @Override
-    public void upload(String objectKey, String contentType, InputStream inputStream, long contentLength) {
-        try (InputStream stream = inputStream) {
+    public void upload(String objectKey, String contentType, InputStreamSource inputStreamSource, long contentLength) {
+        String resolvedContentType = contentType != null && !contentType.isBlank() ? contentType : DEFAULT_CONTENT_TYPE;
+        ContentStreamProvider contentStreamProvider = () -> {
+            try {
+                return inputStreamSource.getInputStream();
+            } catch (IOException exception) {
+                throw new UncheckedIOException(exception);
+            }
+        };
+
+        try {
             s3Client.putObject(
                     PutObjectRequest.builder()
                             .bucket(r2Properties.bucket())
                             .key(objectKey)
-                            .contentType(contentType != null && !contentType.isBlank() ? contentType : DEFAULT_CONTENT_TYPE)
+                            .contentType(resolvedContentType)
                             .build(),
-                    RequestBody.fromInputStream(stream, contentLength)
+                    RequestBody.fromContentProvider(contentStreamProvider, contentLength, resolvedContentType)
             );
+        } catch (UncheckedIOException exception) {
+            throw new FileUploadFailedException(exception.getCause());
         } catch (Exception e) {
             throw new FileUploadFailedException(e);
         }

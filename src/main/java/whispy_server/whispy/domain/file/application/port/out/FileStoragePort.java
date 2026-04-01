@@ -1,6 +1,6 @@
 package whispy_server.whispy.domain.file.application.port.out;
 
-import java.io.InputStream;
+import org.springframework.core.io.InputStreamSource;
 
 /**
  * 파일 저장소 연동을 추상화한 outbound port.
@@ -12,10 +12,10 @@ public interface FileStoragePort {
      *
      * @param objectKey 저장소 내부에서 사용할 객체 키
      * @param contentType 저장할 파일의 MIME 타입
-     * @param inputStream 업로드할 파일 데이터 스트림
+     * @param inputStreamSource 업로드 시마다 새 스트림을 제공하는 공급자
      * @param contentLength 업로드할 파일 바이트 수
      */
-    void upload(String objectKey, String contentType, InputStream inputStream, long contentLength);
+    void upload(String objectKey, String contentType, InputStreamSource inputStreamSource, long contentLength);
 
     /**
      * object key에 해당하는 파일을 다운로드합니다.

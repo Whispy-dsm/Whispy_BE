@@ -80,7 +80,7 @@ public class FileUploadService implements FileUploadUseCase {
             fileStoragePort.upload(
                     ImageFolderPathResolver.toObjectKey(imageFolder, fileName),
                     "image/webp",
-                    new ByteArrayInputStream(compressedBytes),
+                    () -> new ByteArrayInputStream(compressedBytes),
                     compressedBytes.length
             );
         }
@@ -102,7 +102,7 @@ public class FileUploadService implements FileUploadUseCase {
         fileStoragePort.upload(
                 ImageFolderPathResolver.toObjectKey(imageFolder, fileName),
                 contentType != null ? contentType : "application/octet-stream",
-                file.getInputStream(),
+                file::getInputStream,
                 file.getSize()
         );
     }

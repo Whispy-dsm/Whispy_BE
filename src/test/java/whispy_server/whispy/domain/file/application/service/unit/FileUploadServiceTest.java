@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import whispy_server.whispy.domain.file.adapter.in.web.dto.response.FileUploadResponse;
@@ -19,8 +20,6 @@ import whispy_server.whispy.global.file.FileProperties;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -70,7 +69,7 @@ class FileUploadServiceTest {
         verify(fileStoragePort).upload(
                 eq(ImageFolderPathResolver.toObjectKey(ImageFolder.PROFILE_IMAGE_FOLDER, extractFileName(response.fileUrl()))),
                 eq("image/webp"),
-                any(InputStream.class),
+                any(InputStreamSource.class),
                 eq((long) imageContent.length)
         );
     }
@@ -98,7 +97,7 @@ class FileUploadServiceTest {
         verify(fileStoragePort).upload(
                 eq(ImageFolderPathResolver.toObjectKey(ImageFolder.ANNOUNCEMENT_BANNER_IMAGE_FOLDER, extractFileName(response.fileUrl()))),
                 eq("image/webp"),
-                any(InputStream.class),
+                any(InputStreamSource.class),
                 eq((long) imageContent.length)
         );
     }
@@ -122,14 +121,16 @@ class FileUploadServiceTest {
         assertThat(response.fileUrl()).endsWith(".mp3");
 
         ArgumentCaptor<String> fileNameCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<InputStreamSource> streamSourceCaptor = ArgumentCaptor.forClass(InputStreamSource.class);
         verify(fileStoragePort).upload(
                 fileNameCaptor.capture(),
                 eq("audio/mpeg"),
-                any(InputStream.class),
+                streamSourceCaptor.capture(),
                 eq((long) musicContent.length)
         );
         assertThat(fileNameCaptor.getValue()).startsWith("music_folder/");
         assertThat(fileNameCaptor.getValue()).endsWith(".mp3");
+        assertThat(streamSourceCaptor.getValue().getInputStream().readAllBytes()).isEqualTo(musicContent);
         verify(imageCompressionConverter, never()).compressImage(any(MultipartFile.class));
     }
 
@@ -211,7 +212,7 @@ class FileUploadServiceTest {
         verify(fileStoragePort).upload(
                 eq(ImageFolderPathResolver.toObjectKey(ImageFolder.PROFILE_IMAGE_FOLDER, extractFileName(response.fileUrl()))),
                 eq("image/webp"),
-                any(InputStream.class),
+                any(InputStreamSource.class),
                 eq((long) imageContent.length)
         );
         verify(imageCompressionConverter, never()).compressImage(any(MultipartFile.class));
