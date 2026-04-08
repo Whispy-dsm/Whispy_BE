@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import whispy_server.whispy.domain.file.adapter.in.web.dto.FileUploadResponse;
+import whispy_server.whispy.domain.file.adapter.in.web.dto.response.FileUploadResponse;
 import whispy_server.whispy.domain.file.application.port.in.FileDeleteUseCase;
 import whispy_server.whispy.domain.file.application.port.in.FileUploadUseCase;
 import whispy_server.whispy.domain.file.type.ImageFolder;

@@ -106,6 +106,9 @@ plugins {
         // WebP 인코딩
         implementation 'org.sejda.imageio:webp-imageio:0.1.6'
 
+        // Cloudflare R2 (S3-compatible)
+        implementation 'software.amazon.awssdk:s3:2.31.30'
+
     }
 
     test {
