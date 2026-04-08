@@ -1,8 +1,8 @@
 package whispy_server.whispy.domain.file.adapter.out.external;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.io.InputStreamSource;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -32,7 +32,7 @@ import java.io.UncheckedIOException;
  * Cloudflare R2 기반 파일 저장소 외부 어댑터.
  */
 @Component
-@ConditionalOnBean(S3Client.class)
+@Profile("!test")
 @RequiredArgsConstructor
 public class R2FileStorageAdapter implements FileStoragePort {
 
