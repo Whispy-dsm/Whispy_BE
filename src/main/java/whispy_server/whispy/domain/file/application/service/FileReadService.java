@@ -22,10 +22,11 @@ public class FileReadService implements FileReadUseCase {
      *
      * @param folder 파일이 속한 도메인 폴더
      * @param fileName 조회할 파일명
+     * @param byteRange HTTP Range 헤더 원본 값
      * @return 파일 스트림과 메타데이터
      */
     @Override
-    public StoredFile readFile(ImageFolder folder, String fileName) {
-        return fileStoragePort.download(ImageFolderPathResolver.toObjectKey(folder, fileName));
+    public StoredFile readFile(ImageFolder folder, String fileName, String byteRange) {
+        return fileStoragePort.download(ImageFolderPathResolver.toObjectKey(folder, fileName), byteRange);
     }
 }

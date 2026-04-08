@@ -3,6 +3,7 @@ package whispy_server.whispy.domain.file.adapter.in.web.controller.integration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import whispy_server.whispy.domain.file.application.port.out.FileStoragePort;
@@ -41,6 +42,41 @@ class FileAssetControllerIntegrationTest extends IntegrationTestSupport {
                 .andExpect(header().string("Content-Type", "audio/mpeg"))
                 .andExpect(header().longValue("Content-Length", content.length))
                 .andExpect(content().bytes(content));
+    }
+
+    @Test
+    @DisplayName("range 요청이 오면 206 partial content와 부분 바이트를 반환한다")
+    void getFile_returnsPartialContent_whenRangeHeaderIsPresent() throws Exception {
+        byte[] content = "music-data".getBytes();
+        fileStoragePort.upload(
+                "music_folder/sample.mp3",
+                "audio/mpeg",
+                () -> new ByteArrayInputStream(content),
+                content.length
+        );
+
+        mockMvc.perform(get("/file/music_folder/sample.mp3").header(HttpHeaders.RANGE, "bytes=0-4"))
+                .andExpect(status().isPartialContent())
+                .andExpect(header().string(HttpHeaders.ACCEPT_RANGES, "bytes"))
+                .andExpect(header().string(HttpHeaders.CONTENT_RANGE, "bytes 0-4/10"))
+                .andExpect(header().longValue("Content-Length", 5))
+                .andExpect(content().bytes("music".getBytes()));
+    }
+
+    @Test
+    @DisplayName("malformed range 요청이면 416을 반환한다")
+    void getFile_returnsRangeNotSatisfiable_whenRangeHeaderIsMalformed() throws Exception {
+        byte[] content = "music-data".getBytes();
+        fileStoragePort.upload(
+                "music_folder/sample.mp3",
+                "audio/mpeg",
+                () -> new ByteArrayInputStream(content),
+                content.length
+        );
+
+        mockMvc.perform(get("/file/music_folder/sample.mp3").header(HttpHeaders.RANGE, "bytes=a-b"))
+                .andExpect(status().isRequestedRangeNotSatisfiable())
+                .andExpect(jsonPath("$.status").value(416));
     }
 
     @Test

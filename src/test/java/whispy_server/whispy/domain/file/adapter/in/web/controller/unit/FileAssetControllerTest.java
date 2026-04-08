@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -44,11 +45,10 @@ class FileAssetControllerTest {
     void getFile_delegatesToAssembler() throws Exception {
         byte[] content = "music-data".getBytes();
         ResponseEntity<InputStreamResource> response = ResponseEntity.ok()
-                .header("Cache-Control", "public, max-age=2592000")
                 .header("Content-Type", "audio/mpeg")
                 .contentLength(content.length)
                 .body(new InputStreamResource(new ByteArrayInputStream(content)));
-        given(fileAssetResponseAssembler.toResponse("music_folder", "sample.mp3")).willReturn(response);
+        given(fileAssetResponseAssembler.toResponse("music_folder", "sample.mp3", null)).willReturn(response);
 
         mockMvc.perform(get("/file/music_folder/sample.mp3"))
                 .andExpect(status().isOk())
@@ -56,6 +56,26 @@ class FileAssetControllerTest {
                 .andExpect(header().longValue("Content-Length", content.length))
                 .andExpect(content().bytes(content));
 
-        verify(fileAssetResponseAssembler).toResponse("music_folder", "sample.mp3");
+        verify(fileAssetResponseAssembler).toResponse("music_folder", "sample.mp3", null);
+    }
+
+    @Test
+    @DisplayName("range header가 있으면 assembler에 그대로 전달한다")
+    void getFile_delegatesRangeHeaderToAssembler() throws Exception {
+        byte[] content = "music".getBytes();
+        ResponseEntity<InputStreamResource> response = ResponseEntity.status(206)
+                .header(HttpHeaders.CONTENT_TYPE, "audio/mpeg")
+                .header(HttpHeaders.ACCEPT_RANGES, "bytes")
+                .header(HttpHeaders.CONTENT_RANGE, "bytes 0-4/10")
+                .contentLength(content.length)
+                .body(new InputStreamResource(new ByteArrayInputStream(content)));
+        given(fileAssetResponseAssembler.toResponse("music_folder", "sample.mp3", "bytes=0-4")).willReturn(response);
+
+        mockMvc.perform(get("/file/music_folder/sample.mp3").header(HttpHeaders.RANGE, "bytes=0-4"))
+                .andExpect(status().isPartialContent())
+                .andExpect(header().string(HttpHeaders.CONTENT_RANGE, "bytes 0-4/10"))
+                .andExpect(content().bytes(content));
+
+        verify(fileAssetResponseAssembler).toResponse("music_folder", "sample.mp3", "bytes=0-4");
     }
 }

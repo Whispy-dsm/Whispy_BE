@@ -36,11 +36,25 @@ class FileReadServiceTest {
     void readFile_downloadsFromStorage() {
         byte[] content = "image-data".getBytes();
         StoredFile storedFile = new StoredFile(new ByteArrayInputStream(content), "image/webp", content.length);
-        given(fileStoragePort.download(ImageFolderPathResolver.toObjectKey(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp"))).willReturn(storedFile);
+        given(fileStoragePort.download(ImageFolderPathResolver.toObjectKey(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp"), null)).willReturn(storedFile);
 
-        StoredFile result = service.readFile(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp");
+        StoredFile result = service.readFile(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp", null);
 
         assertThat(result).isEqualTo(storedFile);
-        verify(fileStoragePort).download(ImageFolderPathResolver.toObjectKey(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp"));
+        verify(fileStoragePort).download(ImageFolderPathResolver.toObjectKey(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp"), null);
+    }
+
+    @Test
+    @DisplayName("range header가 있으면 저장소 조회에도 전달한다")
+    void readFile_downloadsRangeFromStorage() {
+        byte[] content = "image-data".getBytes();
+        StoredFile storedFile = new StoredFile(new ByteArrayInputStream(content), "image/webp", content.length, true, "bytes 0-4/10");
+        given(fileStoragePort.download(ImageFolderPathResolver.toObjectKey(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp"), "bytes=0-4"))
+                .willReturn(storedFile);
+
+        StoredFile result = service.readFile(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp", "bytes=0-4");
+
+        assertThat(result).isEqualTo(storedFile);
+        verify(fileStoragePort).download(ImageFolderPathResolver.toObjectKey(ImageFolder.PROFILE_IMAGE_FOLDER, "profile.webp"), "bytes=0-4");
     }
 }

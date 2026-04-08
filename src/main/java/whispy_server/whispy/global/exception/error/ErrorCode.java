@@ -67,6 +67,7 @@ public enum ErrorCode {
     EMAIL_ALREADY_SENT(409, "이미 발송된 인증 코드가 있습니다. 발송된 인증 코드를 입력하거나 5분 후 다시 요청해주세요."),
 
     EMAIL_RATE_LIMIT_EXCEEDED(429, "이메일 발송 요청이 너무 빈번합니다. 1분 후 다시 시도해주세요."),
+    FILE_RANGE_NOT_SATISFIABLE(416, "요청한 파일 범위를 처리할 수 없습니다."),
 
     INTERNAL_SERVER_ERROR(500, "서버 오류 발생"),
     FILE_READ_FAILED(500, "파일 조회에 실패했습니다"),

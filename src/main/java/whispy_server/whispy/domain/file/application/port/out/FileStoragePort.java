@@ -21,9 +21,10 @@ public interface FileStoragePort {
      * object key에 해당하는 파일을 다운로드합니다.
      *
      * @param objectKey 조회할 객체 키
+     * @param byteRange HTTP Range 헤더 값. 전체 조회 시 null
      * @return 파일 스트림과 메타데이터
      */
-    StoredFile download(String objectKey);
+    StoredFile download(String objectKey, String byteRange);
 
     /**
      * object key에 해당하는 파일을 삭제합니다.

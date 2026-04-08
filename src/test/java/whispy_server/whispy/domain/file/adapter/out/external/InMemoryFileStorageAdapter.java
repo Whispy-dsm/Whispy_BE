@@ -1,13 +1,17 @@
 package whispy_server.whispy.domain.file.adapter.out.external;
 
 import org.springframework.core.io.InputStreamSource;
+import org.springframework.http.HttpRange;
 import whispy_server.whispy.domain.file.application.port.out.FileStoragePort;
 import whispy_server.whispy.domain.file.application.port.out.StoredFile;
 import whispy_server.whispy.global.exception.domain.file.FileNotFoundException;
+import whispy_server.whispy.global.exception.domain.file.FileRangeNotSatisfiableException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,12 +48,38 @@ public class InMemoryFileStorageAdapter implements FileStoragePort {
      * @return 파일 스트림과 메타데이터
      */
     @Override
-    public StoredFile download(String objectKey) {
+    public StoredFile download(String objectKey, String byteRange) {
         InMemoryFile file = storage.get(objectKey);
         if (file == null) {
             throw FileNotFoundException.EXCEPTION;
         }
-        return new StoredFile(new ByteArrayInputStream(file.content()), file.contentType(), file.content().length);
+
+        if (byteRange == null || byteRange.isBlank()) {
+            return new StoredFile(new ByteArrayInputStream(file.content()), file.contentType(), file.content().length);
+        }
+
+        try {
+            List<HttpRange> ranges = HttpRange.parseRanges(byteRange);
+            if (ranges.size() != 1) {
+                throw FileRangeNotSatisfiableException.EXCEPTION;
+            }
+
+            HttpRange range = ranges.get(0);
+            long start = range.getRangeStart(file.content().length);
+            long end = range.getRangeEnd(file.content().length);
+            byte[] partialContent = Arrays.copyOfRange(file.content(), (int) start, (int) end + 1);
+            String contentRange = "bytes %d-%d/%d".formatted(start, end, file.content().length);
+
+            return new StoredFile(
+                    new ByteArrayInputStream(partialContent),
+                    file.contentType(),
+                    partialContent.length,
+                    true,
+                    contentRange
+            );
+        } catch (IllegalArgumentException exception) {
+            throw FileRangeNotSatisfiableException.EXCEPTION;
+        }
     }
 
     /**

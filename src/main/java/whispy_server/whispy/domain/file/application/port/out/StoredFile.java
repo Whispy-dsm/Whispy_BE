@@ -12,6 +12,11 @@ import java.io.InputStream;
 public record StoredFile(
         InputStream inputStream,
         String contentType,
-        long contentLength
+        long contentLength,
+        boolean partialContent,
+        String contentRange
 ) {
+    public StoredFile(InputStream inputStream, String contentType, long contentLength) {
+        this(inputStream, contentType, contentLength, false, null);
+    }
 }

@@ -20,6 +20,7 @@ import whispy_server.whispy.domain.file.application.port.out.StoredFile;
 import whispy_server.whispy.global.exception.domain.file.FileDeleteFailedException;
 import whispy_server.whispy.global.exception.domain.file.FileNotFoundException;
 import whispy_server.whispy.global.exception.domain.file.FileReadFailedException;
+import whispy_server.whispy.global.exception.domain.file.FileRangeNotSatisfiableException;
 import whispy_server.whispy.global.exception.domain.file.FileUploadFailedException;
 import whispy_server.whispy.global.file.R2Properties;
 
@@ -82,25 +83,32 @@ public class R2FileStorageAdapter implements FileStoragePort {
      * @return 파일 스트림과 메타데이터
      */
     @Override
-    public StoredFile download(String objectKey) {
+    public StoredFile download(String objectKey, String byteRange) {
         try {
-            ResponseInputStream<GetObjectResponse> objectStream = s3Client.getObject(
-                    GetObjectRequest.builder()
-                            .bucket(r2Properties.bucket())
-                            .key(objectKey)
-                            .build()
-            );
+            GetObjectRequest.Builder requestBuilder = GetObjectRequest.builder()
+                    .bucket(r2Properties.bucket())
+                    .key(objectKey);
+            if (byteRange != null && !byteRange.isBlank()) {
+                requestBuilder.range(byteRange);
+            }
+
+            ResponseInputStream<GetObjectResponse> objectStream = s3Client.getObject(requestBuilder.build());
 
             GetObjectResponse response = objectStream.response();
             String contentType = response.contentType() != null ? response.contentType() : DEFAULT_CONTENT_TYPE;
             long contentLength = response.contentLength() != null ? response.contentLength() : -1L;
-            return new StoredFile(objectStream, contentType, contentLength);
+            String contentRange = response.contentRange();
+            boolean partialContent = contentRange != null && !contentRange.isBlank();
+            return new StoredFile(objectStream, contentType, contentLength, partialContent, contentRange);
 
         } catch (NoSuchKeyException e) {
             throw FileNotFoundException.EXCEPTION;
         } catch (S3Exception e) {
             if (e.statusCode() == 404) {
                 throw FileNotFoundException.EXCEPTION;
+            }
+            if (e.statusCode() == 416) {
+                throw FileRangeNotSatisfiableException.EXCEPTION;
             }
             throw new FileReadFailedException(e);
         } catch (RuntimeException e) {

@@ -34,6 +34,7 @@ public interface FileAssetApiDocument {
     })
     ResponseEntity<InputStreamResource> getFile(
             @Parameter(description = "파일이 속한 폴더 경로", required = true) String folder,
-            @Parameter(description = "조회할 파일명", required = true) String fileName
+            @Parameter(description = "조회할 파일명", required = true) String fileName,
+            @Parameter(description = "부분 다운로드를 위한 HTTP Range 헤더", required = false) String rangeHeader
     );
 }

@@ -2,9 +2,11 @@ package whispy_server.whispy.domain.file.adapter.in.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import whispy_server.whispy.domain.file.adapter.in.web.assembler.FileAssetResponseAssembler;
@@ -30,8 +32,9 @@ public class FileAssetController implements FileAssetApiDocument {
     @GetMapping("/{folder}/{fileName:.+}")
     public ResponseEntity<InputStreamResource> getFile(
             @PathVariable String folder,
-            @PathVariable String fileName
+            @PathVariable String fileName,
+            @RequestHeader(value = HttpHeaders.RANGE, required = false) String rangeHeader
     ) {
-        return fileAssetResponseAssembler.toResponse(folder, fileName);
+        return fileAssetResponseAssembler.toResponse(folder, fileName, rangeHeader);
     }
 }
