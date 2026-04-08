@@ -1,4 +1,4 @@
-package whispy_server.whispy.domain.file.adapter.in.web.dto;
+package whispy_server.whispy.domain.file.adapter.in.web.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

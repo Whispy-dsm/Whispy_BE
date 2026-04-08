@@ -81,12 +81,7 @@ public class SecurityConfig {
                         .requestMatchers("/users/password/reset").permitAll()
                         .requestMatchers("/admin/login").permitAll()
                         .requestMatchers("/users/oauth/kakao", "/users/oauth/exchange").permitAll()
-                        .requestMatchers("/file/profile_image_folder/**",
-                                         "/file/music_folder/**",
-                                         "/file/music_banner_image_folder/**",
-                                         "/file/music_video_folder/**",
-                                         "/file/announcement_banner_image_folder/**"
-                        ).permitAll()
+                        .requestMatchers("/file/**").permitAll()
                         .requestMatchers("/auth/email/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
                         .requestMatchers("/webhook/google-play").permitAll()

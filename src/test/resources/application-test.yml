@@ -48,8 +48,12 @@ spring:
 
   whispy:
     file:
-      upload-path: C:\Users\user\Desktop
       base-url: http://localhost:8080
+    r2:
+      account-id: ""
+      access-key-id: ""
+      secret-access-key: ""
+      bucket: ""
 
   discord:
     webhook:

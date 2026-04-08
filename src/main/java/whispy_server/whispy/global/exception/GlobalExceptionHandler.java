@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -56,6 +57,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleTypeMismatchException(MethodArgumentTypeMismatchException e) {
         ErrorResponse response = ErrorResponse.of(400, "요청 파라미터 타입이 올바르지 않습니다");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * JSON 본문 역직렬화 실패를 400 오류로 처리한다.
+     *
+     * 잘못된 enum 값이나 잘못된 JSON 형식이 들어온 경우 발생한다.
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        ErrorResponse response = ErrorResponse.of(400, "요청 본문 형식이 올바르지 않습니다");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 

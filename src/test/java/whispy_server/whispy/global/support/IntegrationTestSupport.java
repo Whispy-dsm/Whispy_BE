@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import whispy_server.whispy.global.config.TestFcmConfig;
+import whispy_server.whispy.global.config.TestFileStorageConfig;
 
 /**
  * 통합 테스트 베이스 클래스.
@@ -27,6 +28,6 @@ import whispy_server.whispy.global.config.TestFcmConfig;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-@Import(TestFcmConfig.class)
+@Import({TestFcmConfig.class, TestFileStorageConfig.class})
 public abstract class IntegrationTestSupport {
 }

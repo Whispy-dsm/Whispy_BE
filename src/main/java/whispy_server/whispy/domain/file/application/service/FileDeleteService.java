@@ -3,15 +3,10 @@ package whispy_server.whispy.domain.file.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import whispy_server.whispy.domain.file.application.port.in.FileDeleteUseCase;
+import whispy_server.whispy.domain.file.application.port.out.FileStoragePort;
+import whispy_server.whispy.domain.file.application.utils.ImageFolderPathResolver;
 import whispy_server.whispy.domain.file.type.ImageFolder;
-import whispy_server.whispy.global.exception.domain.file.FileDeleteFailedException;
-import whispy_server.whispy.global.exception.domain.file.FileNotFoundException;
-import whispy_server.whispy.global.file.FileProperties;
 import whispy_server.whispy.global.annotation.UserAction;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * 파일 삭제 UseCase 구현체.
@@ -20,7 +15,7 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class FileDeleteService implements FileDeleteUseCase {
 
-    private final FileProperties fileProperties;
+    private final FileStoragePort fileStoragePort;
 
     /**
      * 지정된 폴더/파일명을 기반으로 파일을 삭제한다.
@@ -31,14 +26,6 @@ public class FileDeleteService implements FileDeleteUseCase {
     @Override
     @UserAction("파일 삭제")
     public void deleteFile(ImageFolder imageFolder, String fileName){
-
-        try {
-            boolean deleted = Files.deleteIfExists(Paths.get(fileProperties.uploadPath(), imageFolder.toString().toLowerCase(), fileName));
-            if (!deleted) {
-                throw FileNotFoundException.EXCEPTION;
-            }
-        } catch (IOException e) {
-            throw new FileDeleteFailedException(e);
-        }
+        fileStoragePort.delete(ImageFolderPathResolver.toObjectKey(imageFolder, fileName));
     }
 }

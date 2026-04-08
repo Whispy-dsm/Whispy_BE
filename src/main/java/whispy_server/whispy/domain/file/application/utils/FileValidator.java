@@ -6,7 +6,6 @@ import whispy_server.whispy.global.exception.domain.file.FileInvalidExtensionExc
 import whispy_server.whispy.global.exception.domain.file.FileInvalidMimeTypeException;
 import whispy_server.whispy.global.exception.domain.file.FileNameContainsPathException;
 import whispy_server.whispy.global.exception.domain.file.FileNameEmptyException;
-import whispy_server.whispy.global.exception.domain.file.FileNameInvalidCharException;
 import whispy_server.whispy.global.exception.domain.file.FileNameTooLongException;
 import whispy_server.whispy.global.exception.domain.file.FileNoExtensionException;
 import whispy_server.whispy.global.exception.domain.file.FileSizeExceededException;
@@ -52,7 +51,7 @@ public final class FileValidator {
         validateFileName(file);
 
         switch (folder) {
-            case PROFILE_IMAGE_FOLDER, MUSIC_BANNER_IMAGE_FOLDER -> validateImageFile(file);
+            case PROFILE_IMAGE_FOLDER, ANNOUNCEMENT_BANNER_IMAGE_FOLDER, MUSIC_BANNER_IMAGE_FOLDER -> validateImageFile(file);
             case MUSIC_FOLDER -> validateMusicFile(file);
             case MUSIC_VIDEO_FOLDER -> validateVideoFile(file);
         }

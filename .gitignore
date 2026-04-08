@@ -48,3 +48,8 @@ out/
 /.omc
 /document/PROJECT_ARCHITECTURE_RISK_ANALYSIS_2026-02-18.md
 /.sisyphus/
+/.agents/
+/.omx/
+/README.md
+/docs/superpowers/plans/2026-03-23-cloudflare-r2-upload-migration.md
+/tasks/
