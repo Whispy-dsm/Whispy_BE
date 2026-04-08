@@ -64,6 +64,25 @@ class FileAssetControllerIntegrationTest extends IntegrationTestSupport {
     }
 
     @Test
+    @DisplayName("multi-range 요청이면 전체 파일 응답으로 fallback한다")
+    void getFile_returnsFullContent_whenMultiRangeHeaderIsPresent() throws Exception {
+        byte[] content = "music-data".getBytes();
+        fileStoragePort.upload(
+                "music_folder/sample.mp3",
+                "audio/mpeg",
+                () -> new ByteArrayInputStream(content),
+                content.length
+        );
+
+        mockMvc.perform(get("/file/music_folder/sample.mp3").header(HttpHeaders.RANGE, "bytes=0-1,4-5"))
+                .andExpect(status().isOk())
+                .andExpect(header().string(HttpHeaders.ACCEPT_RANGES, "bytes"))
+                .andExpect(header().doesNotExist(HttpHeaders.CONTENT_RANGE))
+                .andExpect(header().longValue("Content-Length", content.length))
+                .andExpect(content().bytes(content));
+    }
+
+    @Test
     @DisplayName("malformed range 요청이면 416을 반환한다")
     void getFile_returnsRangeNotSatisfiable_whenRangeHeaderIsMalformed() throws Exception {
         byte[] content = "music-data".getBytes();

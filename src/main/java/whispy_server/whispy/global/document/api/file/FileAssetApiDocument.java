@@ -27,6 +27,10 @@ public interface FileAssetApiDocument {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "파일 조회 성공",
                     content = @Content(mediaType = "*/*", schema = @Schema(type = "string", format = "binary"))),
+            @ApiResponse(responseCode = "206", description = "부분 파일 조회 성공",
+                    content = @Content(mediaType = "*/*", schema = @Schema(type = "string", format = "binary"))),
+            @ApiResponse(responseCode = "416", description = "처리할 수 없는 파일 범위 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "파일을 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 오류 발생",

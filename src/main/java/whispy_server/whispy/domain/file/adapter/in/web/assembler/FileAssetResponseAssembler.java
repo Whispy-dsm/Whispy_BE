@@ -72,7 +72,7 @@ public class FileAssetResponseAssembler {
         }
 
         if (ranges.size() != 1) {
-            throw FileRangeNotSatisfiableException.EXCEPTION;
+            return null;
         }
 
         return rangeHeader;

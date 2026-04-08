@@ -86,6 +86,21 @@ class FileAssetResponseAssemblerTest {
     }
 
     @Test
+    @DisplayName("multi-range header면 전체 파일 응답으로 fallback한다")
+    void toResponse_returnsFullContent_whenMultiRangeHeaderIsPresent() throws IOException {
+        byte[] content = "music-data".getBytes();
+        StoredFile storedFile = new StoredFile(new ByteArrayInputStream(content), "audio/mpeg", content.length);
+        given(fileReadUseCase.readFile(ImageFolder.MUSIC_FOLDER, "sample.mp3", null)).willReturn(storedFile);
+
+        ResponseEntity<InputStreamResource> response = assembler.toResponse("music_folder", "sample.mp3", "bytes=0-1,4-5");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getHeaders().getFirst(HttpHeaders.CONTENT_RANGE)).isNull();
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getInputStream().readAllBytes()).isEqualTo(content);
+    }
+
+    @Test
     @DisplayName("malformed range header면 416 예외를 던진다")
     void toResponse_throwsRangeNotSatisfiable_whenRangeHeaderIsMalformed() {
         assertThatThrownBy(() -> assembler.toResponse("music_folder", "sample.mp3", "bytes=a-b"))
