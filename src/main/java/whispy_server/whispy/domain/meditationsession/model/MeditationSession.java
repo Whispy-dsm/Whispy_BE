@@ -1,8 +1,8 @@
 package whispy_server.whispy.domain.meditationsession.model;
 
 import whispy_server.whispy.domain.meditationsession.model.types.BreatheMode;
-import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.global.annotation.Aggregate;
+import whispy_server.whispy.global.constants.SessionValidationConstants;
 import whispy_server.whispy.global.exception.domain.meditationsession.InvalidMeditationSessionDurationException;
 import whispy_server.whispy.global.exception.domain.meditationsession.InvalidMeditationSessionTimeRangeException;
 import whispy_server.whispy.global.exception.domain.meditationsession.MeditationSessionDurationExceededException;
@@ -45,7 +45,7 @@ public record MeditationSession(
             throw MeditationSessionDurationExceededException.EXCEPTION;
         }
 
-        if (durationSeconds < TimeConstants.SECONDS_PER_MINUTE) {
+        if (durationSeconds < SessionValidationConstants.MIN_SESSION_DURATION_SECONDS) {
             throw InvalidMeditationSessionDurationException.EXCEPTION;
         }
     }

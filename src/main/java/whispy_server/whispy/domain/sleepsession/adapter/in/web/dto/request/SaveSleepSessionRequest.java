@@ -3,7 +3,7 @@ package whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
+import whispy_server.whispy.global.constants.SessionValidationConstants;
 
 import java.time.LocalDateTime;
 
@@ -28,9 +28,9 @@ public record SaveSleepSessionRequest(
         @NotNull LocalDateTime endedAt,
         /**
          * 수면 지속 시간(초 단위).
-         * 1초 이상이어야 합니다.
+         * 1분 이상이어야 합니다.
          * 예: 28800 (8시간)
          */
         @Schema(description = "지속 시간(초)", example = "28800", requiredMode = Schema.RequiredMode.REQUIRED)
-        @Min(TimeConstants.SECONDS_PER_MINUTE) int durationSeconds
+        @Min(SessionValidationConstants.MIN_SESSION_DURATION_SECONDS) int durationSeconds
 ) { }
