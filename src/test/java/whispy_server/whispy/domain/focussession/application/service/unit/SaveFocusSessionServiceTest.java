@@ -1,5 +1,4 @@
 package whispy_server.whispy.domain.focussession.application.service.unit;
-import whispy_server.whispy.domain.focussession.application.service.SaveFocusSessionService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,29 +9,31 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.focussession.adapter.in.web.dto.request.SaveFocusSessionRequest;
 import whispy_server.whispy.domain.focussession.adapter.in.web.dto.response.FocusSessionResponse;
 import whispy_server.whispy.domain.focussession.application.port.out.FocusSessionSavePort;
+import whispy_server.whispy.domain.focussession.application.service.SaveFocusSessionService;
 import whispy_server.whispy.domain.focussession.model.FocusSession;
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
 import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.QueryFocusStatisticsPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
-import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
+import whispy_server.whispy.global.exception.domain.focussession.InvalidFocusSessionDurationException;
+import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 /**
- * SaveFocusSessionService의 단위 테스트 클래스
+ * SaveFocusSessionService 단위 테스트 클래스.
  *
- * 집중 세션 저장 서비스의 다양한 시나리오를 검증합니다.
- * 집중 세션 생성 및 저장, 오늘의 총 집중 시간 계산을 테스트합니다.
- *
+ * 집중 세션 저장 서비스의 다양한 시나리오를 검증한다.
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SaveFocusSessionService 테스트")
@@ -63,7 +64,7 @@ class SaveFocusSessionServiceTest {
         User user = createUser();
         LocalDateTime startedAt = LocalDateTime.of(2024, 1, 15, 9, 0);
         LocalDateTime endedAt = LocalDateTime.of(2024, 1, 15, 11, 0);
-        int durationSeconds = 2 * 60 * 60; // 2시간
+        int durationSeconds = 2 * 60 * 60;
 
         SaveFocusSessionRequest request = new SaveFocusSessionRequest(
                 startedAt,
@@ -105,7 +106,7 @@ class SaveFocusSessionServiceTest {
         User user = createUser();
         LocalDateTime startedAt = LocalDateTime.of(2024, 1, 15, 14, 0);
         LocalDateTime endedAt = LocalDateTime.of(2024, 1, 15, 15, 0);
-        int durationSeconds = 60 * 60; // 1시간
+        int durationSeconds = 60 * 60;
 
         SaveFocusSessionRequest request = new SaveFocusSessionRequest(
                 startedAt,
@@ -136,8 +137,28 @@ class SaveFocusSessionServiceTest {
         verify(queryFocusStatisticsPort).getTotalMinutes(anyLong(), any(), any());
     }
 
+    @Test
+    @DisplayName("1분 미만 집중 세션을 저장하면 오류가 발생한다")
+    void whenDurationIsLessThanOneMinute_thenThrowsException() {
+        // given
+        User user = createUser();
+        SaveFocusSessionRequest request = new SaveFocusSessionRequest(
+                LocalDateTime.of(2024, 1, 15, 10, 0),
+                LocalDateTime.of(2024, 1, 15, 10, 0, 59),
+                59,
+                FocusTag.WORK
+        );
+
+        given(userFacadeUseCase.currentUser()).willReturn(user);
+
+        // when & then
+        assertThatThrownBy(() -> saveFocusSessionService.execute(request))
+                .isSameAs(InvalidFocusSessionDurationException.EXCEPTION);
+        verifyNoInteractions(focusSessionSavePort, queryFocusStatisticsPort, statisticsCacheVersionManager);
+    }
+
     /**
-     * 테스트용 User 객체를 생성합니다.
+     * 테스트용 User 객체를 생성한다.
      *
      * @return 생성된 User 객체
      */
