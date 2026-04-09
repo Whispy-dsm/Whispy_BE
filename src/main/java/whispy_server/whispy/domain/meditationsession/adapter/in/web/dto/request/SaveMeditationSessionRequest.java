@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import whispy_server.whispy.domain.meditationsession.model.types.BreatheMode;
+import whispy_server.whispy.global.constants.SessionValidationConstants;
 
 import java.time.LocalDateTime;
 
@@ -30,11 +31,11 @@ public record SaveMeditationSessionRequest(
         LocalDateTime endedAt,
         /**
          * 명상 지속 시간(초 단위).
-         * 1초 이상이어야 합니다.
+         * 1분 이상이어야 합니다.
          * 예: 1800 (30분)
          */
         @Schema(description = "지속 시간(초)", example = "1800", requiredMode = Schema.RequiredMode.REQUIRED)
-        @Min(1)
+        @Min(SessionValidationConstants.MIN_SESSION_DURATION_SECONDS)
         int durationSeconds,
         /**
          * 명상 시 사용한 호흡 모드.

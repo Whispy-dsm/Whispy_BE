@@ -1,5 +1,4 @@
 package whispy_server.whispy.domain.sleepsession.application.service.unit;
-import whispy_server.whispy.domain.sleepsession.application.service.SaveSleepSessionService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,26 +9,28 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.request.SaveSleepSessionRequest;
 import whispy_server.whispy.domain.sleepsession.adapter.in.web.dto.response.SleepSessionResponse;
 import whispy_server.whispy.domain.sleepsession.application.port.out.SleepSessionSavePort;
+import whispy_server.whispy.domain.sleepsession.application.service.SaveSleepSessionService;
 import whispy_server.whispy.domain.sleepsession.model.SleepSession;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
-import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
+import whispy_server.whispy.global.exception.domain.sleepsession.InvalidSleepSessionDurationException;
+import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 /**
- * SaveSleepSessionService의 단위 테스트 클래스
+ * SaveSleepSessionService 단위 테스트 클래스.
  *
- * 수면 세션 저장 서비스의 다양한 시나리오를 검증합니다.
- * 수면 세션 생성 및 저장 로직을 테스트합니다.
- *
+ * 수면 세션 저장 서비스의 다양한 시나리오를 검증한다.
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SaveSleepSessionService 테스트")
@@ -57,7 +58,7 @@ class SaveSleepSessionServiceTest {
         User user = createUser();
         LocalDateTime startedAt = LocalDateTime.of(2024, 1, 15, 23, 0);
         LocalDateTime endedAt = LocalDateTime.of(2024, 1, 16, 7, 0);
-        int durationSeconds = 8 * 60 * 60; // 8시간
+        int durationSeconds = 8 * 60 * 60;
 
         SaveSleepSessionRequest request = new SaveSleepSessionRequest(
                 startedAt,
@@ -131,7 +132,7 @@ class SaveSleepSessionServiceTest {
         User user = createUser();
         LocalDateTime startedAt = LocalDateTime.of(2024, 1, 15, 14, 0);
         LocalDateTime endedAt = LocalDateTime.of(2024, 1, 15, 14, 30);
-        int durationSeconds = 30 * 60; // 30분
+        int durationSeconds = 30 * 60;
 
         SaveSleepSessionRequest request = new SaveSleepSessionRequest(
                 startedAt,
@@ -165,7 +166,7 @@ class SaveSleepSessionServiceTest {
         User user = createUser();
         LocalDateTime startedAt = LocalDateTime.of(2024, 1, 15, 22, 0);
         LocalDateTime endedAt = LocalDateTime.of(2024, 1, 16, 10, 0);
-        int durationSeconds = 12 * 60 * 60; // 12시간
+        int durationSeconds = 12 * 60 * 60;
 
         SaveSleepSessionRequest request = new SaveSleepSessionRequest(
                 startedAt,
@@ -192,8 +193,27 @@ class SaveSleepSessionServiceTest {
         assertThat(response.durationSeconds()).isEqualTo(12 * 60 * 60);
     }
 
+    @Test
+    @DisplayName("1분 미만 수면 세션을 저장하면 오류가 발생한다")
+    void whenDurationIsLessThanOneMinute_thenThrowsException() {
+        // given
+        User user = createUser();
+        SaveSleepSessionRequest request = new SaveSleepSessionRequest(
+                LocalDateTime.of(2024, 1, 15, 14, 0),
+                LocalDateTime.of(2024, 1, 15, 14, 0, 59),
+                59
+        );
+
+        given(userFacadeUseCase.currentUser()).willReturn(user);
+
+        // when & then
+        assertThatThrownBy(() -> saveSleepSessionService.execute(request))
+                .isSameAs(InvalidSleepSessionDurationException.EXCEPTION);
+        verifyNoInteractions(sleepSessionSavePort, statisticsCacheVersionManager);
+    }
+
     /**
-     * 테스트용 User 객체를 생성합니다.
+     * 테스트용 User 객체를 생성한다.
      *
      * @return 생성된 User 객체
      */

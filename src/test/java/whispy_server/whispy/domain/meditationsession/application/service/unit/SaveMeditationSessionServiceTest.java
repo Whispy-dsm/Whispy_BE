@@ -1,5 +1,4 @@
 package whispy_server.whispy.domain.meditationsession.application.service.unit;
-import whispy_server.whispy.domain.meditationsession.application.service.SaveMeditationSessionService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,29 +9,31 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.meditationsession.adapter.in.web.dto.request.SaveMeditationSessionRequest;
 import whispy_server.whispy.domain.meditationsession.adapter.in.web.dto.response.MeditationSessionResponse;
 import whispy_server.whispy.domain.meditationsession.application.port.out.MeditationSessionSavePort;
-import whispy_server.whispy.domain.meditationsession.model.types.BreatheMode;
+import whispy_server.whispy.domain.meditationsession.application.service.SaveMeditationSessionService;
 import whispy_server.whispy.domain.meditationsession.model.MeditationSession;
+import whispy_server.whispy.domain.meditationsession.model.types.BreatheMode;
 import whispy_server.whispy.domain.statistics.meditation.daily.application.port.out.QueryMeditationStatisticsPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
-import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
+import whispy_server.whispy.global.exception.domain.meditationsession.InvalidMeditationSessionDurationException;
+import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 /**
- * SaveMeditationSessionService의 단위 테스트 클래스
+ * SaveMeditationSessionService 단위 테스트 클래스.
  *
- * 명상 세션 저장 서비스의 다양한 시나리오를 검증합니다.
- * 명상 세션 생성 및 저장, 오늘의 총 명상 시간 계산을 테스트합니다.
- *
+ * 명상 세션 저장 서비스의 다양한 시나리오를 검증한다.
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SaveMeditationSessionService 테스트")
@@ -63,7 +64,7 @@ class SaveMeditationSessionServiceTest {
         User user = createUser();
         LocalDateTime startedAt = LocalDateTime.of(2024, 1, 15, 7, 0);
         LocalDateTime endedAt = LocalDateTime.of(2024, 1, 15, 7, 30);
-        int durationSeconds = 30 * 60; // 30분
+        int durationSeconds = 30 * 60;
 
         SaveMeditationSessionRequest request = new SaveMeditationSessionRequest(
                 startedAt,
@@ -105,7 +106,7 @@ class SaveMeditationSessionServiceTest {
         User user = createUser();
         LocalDateTime startedAt = LocalDateTime.of(2024, 1, 15, 19, 0);
         LocalDateTime endedAt = LocalDateTime.of(2024, 1, 15, 19, 15);
-        int durationSeconds = 15 * 60; // 15분
+        int durationSeconds = 15 * 60;
 
         SaveMeditationSessionRequest request = new SaveMeditationSessionRequest(
                 startedAt,
@@ -136,8 +137,28 @@ class SaveMeditationSessionServiceTest {
         verify(queryMeditationStatisticsPort).getTotalMinutes(anyLong(), any(), any());
     }
 
+    @Test
+    @DisplayName("1분 미만 명상 세션을 저장하면 오류가 발생한다")
+    void whenDurationIsLessThanOneMinute_thenThrowsException() {
+        // given
+        User user = createUser();
+        SaveMeditationSessionRequest request = new SaveMeditationSessionRequest(
+                LocalDateTime.of(2024, 1, 15, 7, 0),
+                LocalDateTime.of(2024, 1, 15, 7, 0, 59),
+                59,
+                BreatheMode.BOX_BREATHING
+        );
+
+        given(userFacadeUseCase.currentUser()).willReturn(user);
+
+        // when & then
+        assertThatThrownBy(() -> saveMeditationSessionService.execute(request))
+                .isSameAs(InvalidMeditationSessionDurationException.EXCEPTION);
+        verifyNoInteractions(meditationSessionSavePort, queryMeditationStatisticsPort, statisticsCacheVersionManager);
+    }
+
     /**
-     * 테스트용 User 객체를 생성합니다.
+     * 테스트용 User 객체를 생성한다.
      *
      * @return 생성된 User 객체
      */
