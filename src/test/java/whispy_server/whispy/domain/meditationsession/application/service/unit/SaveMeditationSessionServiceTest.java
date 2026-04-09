@@ -16,16 +16,19 @@ import whispy_server.whispy.domain.statistics.meditation.daily.application.port.
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
+import whispy_server.whispy.global.exception.domain.meditationsession.InvalidMeditationSessionDurationException;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 /**
  * SaveMeditationSessionService의 단위 테스트 클래스
@@ -141,6 +144,26 @@ class SaveMeditationSessionServiceTest {
      *
      * @return 생성된 User 객체
      */
+    @Test
+    @DisplayName("1분 미만 명상 세션을 저장하면 오류가 발생한다")
+    void whenDurationIsLessThanOneMinute_thenThrowsException() {
+        // given
+        User user = createUser();
+        SaveMeditationSessionRequest request = new SaveMeditationSessionRequest(
+                LocalDateTime.of(2024, 1, 15, 7, 0),
+                LocalDateTime.of(2024, 1, 15, 7, 0, 59),
+                59,
+                BreatheMode.BOX_BREATHING
+        );
+
+        given(userFacadeUseCase.currentUser()).willReturn(user);
+
+        // when & then
+        assertThatThrownBy(() -> saveMeditationSessionService.execute(request))
+                .isSameAs(InvalidMeditationSessionDurationException.EXCEPTION);
+        verifyNoInteractions(meditationSessionSavePort, queryMeditationStatisticsPort, statisticsCacheVersionManager);
+    }
+
     private User createUser() {
         return new User(
                 TEST_USER_ID,
