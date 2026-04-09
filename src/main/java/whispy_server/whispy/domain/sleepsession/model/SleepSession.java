@@ -1,5 +1,6 @@
 package whispy_server.whispy.domain.sleepsession.model;
 
+import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.global.annotation.Aggregate;
 import whispy_server.whispy.global.exception.domain.sleepsession.InvalidSleepSessionDurationException;
 import whispy_server.whispy.global.exception.domain.sleepsession.InvalidSleepSessionTimeRangeException;
@@ -41,7 +42,7 @@ public record SleepSession(
             throw SleepSessionDurationExceededException.EXCEPTION;
         }
 
-        if (durationSeconds <= 0) {
+        if (durationSeconds < TimeConstants.SECONDS_PER_MINUTE) {
             throw InvalidSleepSessionDurationException.EXCEPTION;
         }
     }

@@ -1,6 +1,7 @@
 package whispy_server.whispy.domain.focussession.model;
 
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
+import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 import whispy_server.whispy.global.annotation.Aggregate;
 import whispy_server.whispy.global.exception.domain.focussession.FocusSessionDurationExceededException;
 import whispy_server.whispy.global.exception.domain.focussession.InvalidFocusSessionDurationException;
@@ -44,7 +45,7 @@ public record FocusSession(
             throw FocusSessionDurationExceededException.EXCEPTION;
         }
 
-        if (durationSeconds <= 0) {
+        if (durationSeconds < TimeConstants.SECONDS_PER_MINUTE) {
             throw InvalidFocusSessionDurationException.EXCEPTION;
         }
     }

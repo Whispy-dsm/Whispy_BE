@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import whispy_server.whispy.domain.focussession.model.types.FocusTag;
+import whispy_server.whispy.domain.statistics.common.constants.TimeConstants;
 
 import java.time.LocalDateTime;
 
@@ -32,7 +33,7 @@ public record SaveFocusSessionRequest(
          * 예: 3600 (1시간)
          */
         @Schema(description = "지속 시간(초)", example = "3600", requiredMode = Schema.RequiredMode.REQUIRED)
-        @Min(1) int durationSeconds,
+        @Min(TimeConstants.SECONDS_PER_MINUTE) int durationSeconds,
         /**
          * 집중 활동 태그.
          * 업무, 공부, 독서, 명상, 스포츠 등으로 분류합니다.
