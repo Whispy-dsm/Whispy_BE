@@ -2,26 +2,37 @@ name: Whispy CI/CD 워크플로우
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - develop
 
 permissions:
   contents: read
 
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
-  CI-CD:
+  ci:
     runs-on: ubuntu-latest
 
+    outputs:
+      sha_short: ${{ steps.vars.outputs.sha_short }}
+      image_name: ${{ steps.image.outputs.image_name }}
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
       - name: Gradle Caching
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -30,36 +41,95 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: make application.yml
-        run: |
-          cd ./src/main/resources
-          touch ./application.yml
-          echo "${{ secrets.YML }}" > ./application.yml
-
       - name: Get Git SHA
         id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Decide image name
+        id: image
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "image_name=whispy_be_prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "image_name=whispy_be_stag" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
+
+      - name: Make application.yml
+        run: |
+          mkdir -p ./src/main/resources
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "${{ secrets.YML_PROD }}" > ./src/main/resources/application.yml
+          else
+            echo "${{ secrets.YML_STAG }}" > ./src/main/resources/application.yml
+          fi
 
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker build & push
         run: |
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/whispy_be:${{ steps.vars.outputs.sha_short }} -t ${{ secrets.DOCKER_REPO }}/whispy_be:latest .
-          docker push ${{ secrets.DOCKER_REPO }}/whispy_be:${{ steps.vars.outputs.sha_short }}
-          docker push ${{ secrets.DOCKER_REPO }}/whispy_be:latest
+          docker build -f Dockerfile \
+            -t ${{ secrets.DOCKER_REPO }}/${{ steps.image.outputs.image_name }}:${{ steps.vars.outputs.sha_short }} \
+            -t ${{ secrets.DOCKER_REPO }}/${{ steps.image.outputs.image_name }}:latest \
+            .
 
-      - name: Deploy to home server
-        uses: appleboy/ssh-action@master
+          docker push ${{ secrets.DOCKER_REPO }}/${{ steps.image.outputs.image_name }}:${{ steps.vars.outputs.sha_short }}
+          docker push ${{ secrets.DOCKER_REPO }}/${{ steps.image.outputs.image_name }}:latest
+
+  deploy-prod:
+    needs: ci
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to PROD EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_EC2_HOST }}
+          username: ${{ secrets.PROD_EC2_USER }}
+          key: ${{ secrets.PROD_EC2_SSH_KEY }}
+          port: ${{ secrets.PROD_EC2_PORT }}
+          script: |
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+            docker service update \
+              --image ${{ secrets.DOCKER_REPO }}/${{ needs.ci.outputs.image_name }}:${{ needs.ci.outputs.sha_short }} \
+              --with-registry-auth \
+              whispy-springboot
+
+            for i in $(seq 1 12); do
+              STATUS=$(docker service ps whispy-springboot --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
+              if echo "$STATUS" | grep -q "Running"; then
+                echo "Service is running"
+                break
+              fi
+              if [ "$i" -eq 12 ]; then
+                echo "Service failed to start"
+                exit 1
+              fi
+              sleep 5
+            done
+
+            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
+            docker image prune -f
+
+  deploy-stag:
+    needs: ci
+    if: github.ref_name == 'develop'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to STAG Home Server
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOME_HOST }}
           username: ${{ secrets.HOME_USER }}
@@ -67,37 +137,83 @@ jobs:
           key: ${{ secrets.HOME_SSH_KEY }}
           port: 2223
           script: |
-            echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
             docker service update \
-              --image ${{ secrets.DOCKER_REPO }}/whispy_be:${{ steps.vars.outputs.sha_short }} \
+              --image ${{ secrets.DOCKER_REPO }}/${{ needs.ci.outputs.image_name }}:${{ needs.ci.outputs.sha_short }} \
               --with-registry-auth \
               whispy-springboot
-            
-            echo "Waiting 5 seconds for old container to stop..."
-            sleep 5
+
+            for i in $(seq 1 12); do
+              STATUS=$(docker service ps whispy-springboot --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
+              if echo "$STATUS" | grep -q "Running"; then
+                echo "Service is running"
+                break
+              fi
+              if [ "$i" -eq 12 ]; then
+                echo "Service failed to start"
+                exit 1
+              fi
+              sleep 5
+            done
 
             docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
             docker image prune -f
 
-      - name: Discord Notification
-        if: always()
+  notify-prod:
+    needs:
+      - ci
+      - deploy-prod
+    if: always() && github.ref_name == 'main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Discord Notification for PROD
         run: |
-          if [ "${{ job.status }}" == "success" ]; then
+          if [ "${{ needs.ci.result }}" = "success" ] && [ "${{ needs.deploy-prod.result }}" = "success" ]; then
             COLOR=3066993
             STATUS="✅ PROD 배포 완료"
           else
             COLOR=15158332
             STATUS="❌ PROD 배포 실패"
           fi
-          
+
           curl -H "Content-Type: application/json" \
                -d "{
                  \"embeds\": [{
                    \"title\": \"${STATUS}\",
-                   \"description\": \"Commit: \`${{ steps.vars.outputs.sha_short }}\`\n브랜치: \`${{ github.ref_name }}\`\",
+                   \"description\": \"Commit: \`${{ needs.ci.outputs.sha_short }}\`\n브랜치: \`${{ github.ref_name }}\`\n이미지: \`${{ needs.ci.outputs.image_name }}\`\",
                    \"color\": ${COLOR},
                    \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)\"
                  }]
                }" \
-               ${{ secrets.DISCORD_WEBHOOK_URL }}
+               "${{ secrets.DISCORD_WEBHOOK_URL_PROD }}"
+
+  notify-stag:
+    needs:
+      - ci
+      - deploy-stag
+    if: always() && github.ref_name == 'develop'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Discord Notification for STAG
+        run: |
+          if [ "${{ needs.ci.result }}" = "success" ] && [ "${{ needs.deploy-stag.result }}" = "success" ]; then
+            COLOR=3066993
+            STATUS="✅ STAG 배포 완료"
+          else
+            COLOR=15158332
+            STATUS="❌ STAG 배포 실패"
+          fi
+
+          curl -H "Content-Type: application/json" \
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"${STATUS}\",
+                   \"description\": \"Commit: \`${{ needs.ci.outputs.sha_short }}\`\n브랜치: \`${{ github.ref_name }}\`\n이미지: \`${{ needs.ci.outputs.image_name }}\`\",
+                   \"color\": ${COLOR},
+                   \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)\"
+                 }]
+               }" \
+               "${{ secrets.DISCORD_WEBHOOK_URL_STAG }}"
