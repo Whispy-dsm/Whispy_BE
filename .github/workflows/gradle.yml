@@ -104,10 +104,10 @@ jobs:
             docker service update \
               --image ${{ secrets.DOCKER_REPO }}/${{ needs.ci.outputs.image_name }}:${{ needs.ci.outputs.sha_short }} \
               --with-registry-auth \
-              whispy-springboot-prod
+              whispy-springboot
 
             for i in $(seq 1 12); do
-              STATUS=$(docker service ps whispy-springboot-prod --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
+              STATUS=$(docker service ps whispy-springboot --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
               if echo "$STATUS" | grep -q "Running"; then
                 echo "Service is running"
                 break
@@ -119,7 +119,7 @@ jobs:
               sleep 5
             done
 
-            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot-prod"
+            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
             docker image prune -f
 
   deploy-stag:
@@ -142,10 +142,10 @@ jobs:
             docker service update \
               --image ${{ secrets.DOCKER_REPO }}/${{ needs.ci.outputs.image_name }}:${{ needs.ci.outputs.sha_short }} \
               --with-registry-auth \
-              whispy-springboot-stag
+              whispy-springboot
 
             for i in $(seq 1 12); do
-              STATUS=$(docker service ps whispy-springboot-stag --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
+              STATUS=$(docker service ps whispy-springboot --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
               if echo "$STATUS" | grep -q "Running"; then
                 echo "Service is running"
                 break
@@ -157,7 +157,7 @@ jobs:
               sleep 5
             done
 
-            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot-stag"
+            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
             docker image prune -f
 
   notify-prod:
