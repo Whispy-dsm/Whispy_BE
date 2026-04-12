@@ -41,15 +41,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Make application.yml
-        run: |
-          mkdir -p ./src/main/resources
-          if [ "${{ github.ref_name }}" = "main" ]; then
-            echo "${{ secrets.YML_PROD }}" > ./src/main/resources/application.yml
-          else
-            echo "${{ secrets.YML_STAG }}" > ./src/main/resources/application.yml
-          fi
-
       - name: Get Git SHA
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
@@ -66,8 +57,20 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
+      - name: Test with Gradle
+        run: ./gradlew clean test
+
+      - name: Make application.yml
+        run: |
+          mkdir -p ./src/main/resources
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "${{ secrets.YML_PROD }}" > ./src/main/resources/application.yml
+          else
+            echo "${{ secrets.YML_STAG }}" > ./src/main/resources/application.yml
+          fi
+
+      - name: Build jar with Gradle
+        run: ./gradlew bootJar -x test
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
