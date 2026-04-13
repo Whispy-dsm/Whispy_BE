@@ -69,6 +69,7 @@ public enum ErrorCode {
     EMAIL_RATE_LIMIT_EXCEEDED(429, "이메일 발송 요청이 너무 빈번합니다. 1분 후 다시 시도해주세요."),
     FILE_RANGE_NOT_SATISFIABLE(416, "요청한 파일 범위를 처리할 수 없습니다."),
 
+    UNSUPPORTED_STATISTICS_CACHE_TARGET(500, "지원하지 않는 statistics cache target 입니다."),
     INTERNAL_SERVER_ERROR(500, "서버 오류 발생"),
     FILE_READ_FAILED(500, "파일 조회에 실패했습니다"),
     FILE_DELETE_FAILED(500, "파일 삭제에 실패했습니다"),

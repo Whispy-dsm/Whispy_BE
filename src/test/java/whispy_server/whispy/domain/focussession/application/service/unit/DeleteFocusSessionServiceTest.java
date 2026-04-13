@@ -14,6 +14,7 @@ import whispy_server.whispy.domain.focussession.model.types.FocusTag;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.exception.domain.focussession.FocusSessionNotFoundException;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
@@ -72,6 +73,7 @@ class DeleteFocusSessionServiceTest {
 
         // then
         verify(deleteFocusSessionPort).deleteById(TEST_SESSION_ID);
+        verify(statisticsCacheVersionManager).bumpUserVersionAfterCommit(TEST_USER_ID, StatisticsCacheDomain.FOCUS);
     }
 
     @Test

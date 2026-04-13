@@ -13,6 +13,7 @@ import whispy_server.whispy.domain.sleepsession.model.SleepSession;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.exception.domain.sleepsession.SleepSessionNotFoundException;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
@@ -71,6 +72,7 @@ class DeleteSleepSessionServiceTest {
 
         // then
         verify(deleteSleepSessionPort).deleteById(TEST_SESSION_ID);
+        verify(statisticsCacheVersionManager).bumpUserVersionAfterCommit(TEST_USER_ID, StatisticsCacheDomain.SLEEP);
     }
 
     @Test

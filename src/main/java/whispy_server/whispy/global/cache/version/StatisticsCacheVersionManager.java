@@ -30,8 +30,8 @@ public class StatisticsCacheVersionManager {
      * @param userId 사용자 ID
      * @return 버전 값 (없으면 0)
      */
-    public long getUserVersion(Long userId) {
-        String rawValue = stringRedisTemplate.opsForValue().get(buildUserVersionKey(userId));
+    public long getUserVersion(Long userId, StatisticsCacheDomain domain) {
+        String rawValue = stringRedisTemplate.opsForValue().get(buildUserVersionKey(userId, domain));
         if (rawValue == null) {
             return INITIAL_VERSION;
         }
@@ -49,8 +49,8 @@ public class StatisticsCacheVersionManager {
      *
      * @param userId 사용자 ID
      */
-    public void bumpUserVersion(Long userId) {
-        String key = buildUserVersionKey(userId);
+    public void bumpUserVersion(Long userId, StatisticsCacheDomain domain) {
+        String key = buildUserVersionKey(userId, domain);
         stringRedisTemplate.opsForValue().increment(key);
         stringRedisTemplate.expire(key, USER_VERSION_KEY_TTL);
     }
@@ -60,21 +60,21 @@ public class StatisticsCacheVersionManager {
      *
      * @param userId 사용자 ID
      */
-    public void bumpUserVersionAfterCommit(Long userId) {
+    public void bumpUserVersionAfterCommit(Long userId, StatisticsCacheDomain domain) {
         if (TransactionSynchronizationManager.isSynchronizationActive()) {
             TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
                 @Override
                 public void afterCommit() {
-                    bumpUserVersion(userId);
+                    bumpUserVersion(userId, domain);
                 }
             });
             return;
         }
 
-        bumpUserVersion(userId);
+        bumpUserVersion(userId, domain);
     }
 
-    private String buildUserVersionKey(Long userId) {
-        return USER_VERSION_KEY_PREFIX + userId;
+    private String buildUserVersionKey(Long userId, StatisticsCacheDomain domain) {
+        return USER_VERSION_KEY_PREFIX + userId + ":" + domain.name().toLowerCase();
     }
 }
