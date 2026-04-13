@@ -8,6 +8,7 @@ import whispy_server.whispy.domain.meditationsession.application.port.out.Delete
 import whispy_server.whispy.domain.meditationsession.application.port.out.QueryMeditationSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.exception.domain.meditationsession.MeditationSessionNotFoundException;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
@@ -40,6 +41,6 @@ public class DeleteMeditationSessionService implements DeleteMeditationSessionUs
                 .orElseThrow(() -> MeditationSessionNotFoundException.EXCEPTION);
 
         deleteMeditationSessionPort.deleteById(meditationSessionId);
-        statisticsCacheVersionManager.bumpUserVersionAfterCommit(userId);
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(userId, StatisticsCacheDomain.MEDITATION);
     }
 }

@@ -11,6 +11,7 @@ import whispy_server.whispy.domain.sleepsession.model.SleepSession;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
 import java.time.LocalDateTime;
@@ -51,7 +52,7 @@ public class SaveSleepSessionService implements SaveSleepSessionUseCase {
         );
 
         SleepSession saved = sleepSessionSavePort.save(sleepSession);
-        statisticsCacheVersionManager.bumpUserVersionAfterCommit(user.id());
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(user.id(), StatisticsCacheDomain.SLEEP);
 
         return SleepSessionResponse.from(saved);
     }

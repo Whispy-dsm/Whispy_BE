@@ -12,6 +12,7 @@ import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.Q
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
 import java.time.LocalDate;
@@ -57,7 +58,7 @@ public class SaveFocusSessionService implements SaveFocusSessionUseCase {
         FocusSession saved = focusSessionSavePort.save(focusSession);
 
         int todayTotalMinutes = calculateTodayTotalMinutes(user.id());
-        statisticsCacheVersionManager.bumpUserVersionAfterCommit(user.id());
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(user.id(), StatisticsCacheDomain.FOCUS);
 
         return FocusSessionResponse.from(saved, todayTotalMinutes);
     }

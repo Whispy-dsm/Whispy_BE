@@ -7,6 +7,7 @@ import whispy_server.whispy.domain.sleepsession.application.port.out.DeleteSleep
 import whispy_server.whispy.domain.sleepsession.application.port.out.QuerySleepSessionPort;
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.exception.domain.sleepsession.SleepSessionNotFoundException;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
@@ -39,6 +40,6 @@ public class DeleteSleepSessionService implements DeleteSleepSessionUseCase {
                 .orElseThrow(() -> SleepSessionNotFoundException.EXCEPTION);
 
         deleteSleepSessionPort.deleteById(sleepSessionId);
-        statisticsCacheVersionManager.bumpUserVersionAfterCommit(userId);
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(userId, StatisticsCacheDomain.SLEEP);
     }
 }

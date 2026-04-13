@@ -12,6 +12,7 @@ import whispy_server.whispy.domain.statistics.meditation.daily.application.port.
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
 import java.time.LocalDate;
@@ -56,7 +57,7 @@ public class SaveMeditationSessionService implements SaveMeditationSessionUseCas
         MeditationSession saved = meditationSessionSavePort.save(meditationSession);
 
         int todayTotalMinutes = calculateTodayTotalMinutes(user.id());
-        statisticsCacheVersionManager.bumpUserVersionAfterCommit(user.id());
+        statisticsCacheVersionManager.bumpUserVersionAfterCommit(user.id(), StatisticsCacheDomain.MEDITATION);
 
         return MeditationSessionResponse.from(saved, todayTotalMinutes);
     }
