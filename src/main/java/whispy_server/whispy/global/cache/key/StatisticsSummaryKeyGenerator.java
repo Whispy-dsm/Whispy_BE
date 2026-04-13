@@ -8,6 +8,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
+import whispy_server.whispy.global.exception.domain.statistics.UnsupportedStatisticsCacheTargetException;
 import whispy_server.whispy.global.security.auth.AuthDetails;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 
@@ -50,6 +51,6 @@ public class StatisticsSummaryKeyGenerator implements KeyGenerator {
             return StatisticsCacheDomain.MEDITATION;
         }
 
-        throw new IllegalArgumentException("Unsupported statistics cache target: " + targetClass.getName());
+        throw UnsupportedStatisticsCacheTargetException.EXCEPTION;
     }
 }
