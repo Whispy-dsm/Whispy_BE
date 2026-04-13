@@ -16,6 +16,7 @@ import whispy_server.whispy.domain.statistics.meditation.daily.application.port.
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 import whispy_server.whispy.global.exception.domain.meditationsession.InvalidMeditationSessionDurationException;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
@@ -97,6 +98,7 @@ class SaveMeditationSessionServiceTest {
         assertThat(response.breatheMode()).isEqualTo(BreatheMode.BOX_BREATHING);
         assertThat(response.todayTotalMinutes()).isEqualTo(30);
         verify(meditationSessionSavePort).save(any(MeditationSession.class));
+        verify(statisticsCacheVersionManager).bumpUserVersionAfterCommit(TEST_USER_ID, StatisticsCacheDomain.MEDITATION);
     }
 
     @Test
@@ -135,6 +137,7 @@ class SaveMeditationSessionServiceTest {
         // then
         assertThat(response.todayTotalMinutes()).isEqualTo(45);
         verify(queryMeditationStatisticsPort).getTotalMinutes(anyLong(), any(), any());
+        verify(statisticsCacheVersionManager).bumpUserVersionAfterCommit(TEST_USER_ID, StatisticsCacheDomain.MEDITATION);
     }
 
     @Test

@@ -16,6 +16,7 @@ import whispy_server.whispy.domain.statistics.focus.daily.application.port.out.Q
 import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
 import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.domain.user.model.types.Gender;
+import whispy_server.whispy.global.cache.version.StatisticsCacheDomain;
 import whispy_server.whispy.global.cache.version.StatisticsCacheVersionManager;
 import whispy_server.whispy.global.exception.domain.focussession.InvalidFocusSessionDurationException;
 import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
@@ -97,6 +98,7 @@ class SaveFocusSessionServiceTest {
         assertThat(response.tag()).isEqualTo(FocusTag.WORK);
         assertThat(response.todayTotalMinutes()).isEqualTo(120);
         verify(focusSessionSavePort).save(any(FocusSession.class));
+        verify(statisticsCacheVersionManager).bumpUserVersionAfterCommit(TEST_USER_ID, StatisticsCacheDomain.FOCUS);
     }
 
     @Test
@@ -135,6 +137,7 @@ class SaveFocusSessionServiceTest {
         // then
         assertThat(response.todayTotalMinutes()).isEqualTo(180);
         verify(queryFocusStatisticsPort).getTotalMinutes(anyLong(), any(), any());
+        verify(statisticsCacheVersionManager).bumpUserVersionAfterCommit(TEST_USER_ID, StatisticsCacheDomain.FOCUS);
     }
 
     @Test
