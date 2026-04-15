@@ -99,11 +99,14 @@ jobs:
           key: ${{ secrets.PROD_EC2_SSH_KEY }}
           port: ${{ secrets.PROD_EC2_PORT }}
           script: |
+            set -e
+
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
             docker service update \
               --image ${{ secrets.DOCKER_REPO }}/${{ needs.ci.outputs.image_name }}:${{ needs.ci.outputs.sha_short }} \
               --with-registry-auth \
+              --detach=false \
               whispy-springboot
 
             for i in $(seq 1 12); do
@@ -119,6 +122,27 @@ jobs:
               sleep 5
             done
 
+            cleanup_stopped_service_containers() {
+              CONTAINERS=$(
+                for STATUS in exited created dead; do
+                  docker ps -aq \
+                    --filter "label=com.docker.swarm.service.name=whispy-springboot" \
+                    --filter "status=${STATUS}"
+                done | sort -u
+              )
+
+              if [ -n "$CONTAINERS" ]; then
+                echo "Removing stopped whispy-springboot containers:"
+                echo "$CONTAINERS"
+                if ! echo "$CONTAINERS" | xargs docker rm; then
+                  echo "Some stopped whispy-springboot containers could not be removed"
+                fi
+              else
+                echo "No stopped whispy-springboot containers to remove"
+              fi
+            }
+
+            cleanup_stopped_service_containers
             docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
             docker image prune -f
 
@@ -137,11 +161,14 @@ jobs:
           key: ${{ secrets.HOME_SSH_KEY }}
           port: 2223
           script: |
+            set -e
+
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
             docker service update \
               --image ${{ secrets.DOCKER_REPO }}/${{ needs.ci.outputs.image_name }}:${{ needs.ci.outputs.sha_short }} \
               --with-registry-auth \
+              --detach=false \
               whispy-springboot
 
             for i in $(seq 1 12); do
@@ -157,6 +184,27 @@ jobs:
               sleep 5
             done
 
+            cleanup_stopped_service_containers() {
+              CONTAINERS=$(
+                for STATUS in exited created dead; do
+                  docker ps -aq \
+                    --filter "label=com.docker.swarm.service.name=whispy-springboot" \
+                    --filter "status=${STATUS}"
+                done | sort -u
+              )
+
+              if [ -n "$CONTAINERS" ]; then
+                echo "Removing stopped whispy-springboot containers:"
+                echo "$CONTAINERS"
+                if ! echo "$CONTAINERS" | xargs docker rm; then
+                  echo "Some stopped whispy-springboot containers could not be removed"
+                fi
+              else
+                echo "No stopped whispy-springboot containers to remove"
+              fi
+            }
+
+            cleanup_stopped_service_containers
             docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
             docker image prune -f
 
