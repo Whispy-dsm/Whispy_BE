@@ -101,16 +101,18 @@ jobs:
           script: |
             set -e
 
+            SERVICE_NAME=whispy-springboot
+
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
             docker service update \
               --image ${{ secrets.DOCKER_REPO }}/${{ needs.ci.outputs.image_name }}:${{ needs.ci.outputs.sha_short }} \
               --with-registry-auth \
               --detach=false \
-              whispy-springboot
+              "$SERVICE_NAME"
 
             for i in $(seq 1 12); do
-              STATUS=$(docker service ps whispy-springboot --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
+              STATUS=$(docker service ps "$SERVICE_NAME" --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
               if echo "$STATUS" | grep -q "Running"; then
                 echo "Service is running"
                 break
@@ -126,7 +128,7 @@ jobs:
               CONTAINERS=$(
                 for STATUS in exited created dead; do
                   docker ps -aq \
-                    --filter "label=com.docker.swarm.service.name=whispy-springboot" \
+                    --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}" \
                     --filter "status=${STATUS}"
                 done | sort -u
               )
@@ -142,8 +144,32 @@ jobs:
               fi
             }
 
-            cleanup_stopped_service_containers
-            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
+            wait_for_service_containers_to_settle() {
+              REPLICAS=$(docker service inspect "$SERVICE_NAME" --format "{{if .Spec.Mode.Replicated}}{{.Spec.Mode.Replicated.Replicas}}{{else}}1{{end}}")
+
+              for i in $(seq 1 24); do
+                cleanup_stopped_service_containers
+
+                TOTAL=$(docker ps -aq --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}" | wc -l | tr -d ' ')
+                RUNNING=$(docker ps -q --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}" --filter "status=running" | wc -l | tr -d ' ')
+
+                if [ "$TOTAL" -le "$REPLICAS" ] && [ "$RUNNING" -eq "$REPLICAS" ]; then
+                  echo "Service containers settled: running=${RUNNING}, total=${TOTAL}, replicas=${REPLICAS}"
+                  return 0
+                fi
+
+                echo "Waiting for old service containers to stop/remove: running=${RUNNING}, total=${TOTAL}, replicas=${REPLICAS}"
+                docker ps -a --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}"
+                sleep 5
+              done
+
+              echo "Service containers did not settle after cleanup retries"
+              docker ps -a --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}"
+              exit 1
+            }
+
+            wait_for_service_containers_to_settle
+            docker container prune -f --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}"
             docker image prune -f
 
   deploy-stag:
@@ -163,16 +189,18 @@ jobs:
           script: |
             set -e
 
+            SERVICE_NAME=whispy-springboot
+
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
             docker service update \
               --image ${{ secrets.DOCKER_REPO }}/${{ needs.ci.outputs.image_name }}:${{ needs.ci.outputs.sha_short }} \
               --with-registry-auth \
               --detach=false \
-              whispy-springboot
+              "$SERVICE_NAME"
 
             for i in $(seq 1 12); do
-              STATUS=$(docker service ps whispy-springboot --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
+              STATUS=$(docker service ps "$SERVICE_NAME" --filter "desired-state=running" --format "{{.CurrentState}}" | head -1)
               if echo "$STATUS" | grep -q "Running"; then
                 echo "Service is running"
                 break
@@ -188,7 +216,7 @@ jobs:
               CONTAINERS=$(
                 for STATUS in exited created dead; do
                   docker ps -aq \
-                    --filter "label=com.docker.swarm.service.name=whispy-springboot" \
+                    --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}" \
                     --filter "status=${STATUS}"
                 done | sort -u
               )
@@ -204,8 +232,32 @@ jobs:
               fi
             }
 
-            cleanup_stopped_service_containers
-            docker container prune -f --filter "label=com.docker.swarm.service.name=whispy-springboot"
+            wait_for_service_containers_to_settle() {
+              REPLICAS=$(docker service inspect "$SERVICE_NAME" --format "{{if .Spec.Mode.Replicated}}{{.Spec.Mode.Replicated.Replicas}}{{else}}1{{end}}")
+
+              for i in $(seq 1 24); do
+                cleanup_stopped_service_containers
+
+                TOTAL=$(docker ps -aq --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}" | wc -l | tr -d ' ')
+                RUNNING=$(docker ps -q --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}" --filter "status=running" | wc -l | tr -d ' ')
+
+                if [ "$TOTAL" -le "$REPLICAS" ] && [ "$RUNNING" -eq "$REPLICAS" ]; then
+                  echo "Service containers settled: running=${RUNNING}, total=${TOTAL}, replicas=${REPLICAS}"
+                  return 0
+                fi
+
+                echo "Waiting for old service containers to stop/remove: running=${RUNNING}, total=${TOTAL}, replicas=${REPLICAS}"
+                docker ps -a --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}"
+                sleep 5
+              done
+
+              echo "Service containers did not settle after cleanup retries"
+              docker ps -a --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}"
+              exit 1
+            }
+
+            wait_for_service_containers_to_settle
+            docker container prune -f --filter "label=com.docker.swarm.service.name=${SERVICE_NAME}"
             docker image prune -f
 
   notify-prod:
