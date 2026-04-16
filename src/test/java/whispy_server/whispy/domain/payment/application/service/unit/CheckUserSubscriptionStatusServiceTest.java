@@ -1,5 +1,4 @@
 package whispy_server.whispy.domain.payment.application.service.unit;
-import whispy_server.whispy.domain.payment.application.service.CheckUserSubscriptionStatusService;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,25 +8,25 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.CheckUserSubscriptionStatusResponse;
 import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
+import whispy_server.whispy.domain.payment.application.service.CheckUserSubscriptionStatusService;
 import whispy_server.whispy.domain.payment.model.Subscription;
 import whispy_server.whispy.domain.payment.model.type.ProductType;
 import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
+import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.domain.user.model.User;
+import whispy_server.whispy.domain.user.model.types.Gender;
+import whispy_server.whispy.global.security.jwt.domain.entity.types.Role;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-/**
- * CheckUserSubscriptionStatusService의 단위 테스트 클래스
- *
- * 사용자 구독 상태 확인 서비스의 다양한 시나리오를 검증합니다.
- * 구독 상태별 활성 여부 판단 로직을 테스트합니다.
- *
- */
 @ExtendWith(MockitoExtension.class)
-@DisplayName("CheckUserSubscriptionStatusService 테스트")
+@DisplayName("CheckUserSubscriptionStatusService unit tests")
 class CheckUserSubscriptionStatusServiceTest {
 
     @InjectMocks
@@ -36,192 +35,218 @@ class CheckUserSubscriptionStatusServiceTest {
     @Mock
     private QuerySubscriptionPort querySubscriptionPort;
 
+    @Mock
+    private UserFacadeUseCase userFacadeUseCase;
+
     private static final String TEST_EMAIL = "test@example.com";
+    private static final String AUTHENTICATED_EMAIL = "authenticated@example.com";
     private static final String TEST_PURCHASE_TOKEN = "test-token-12345";
 
     @Test
-    @DisplayName("활성 구독이 있고 만료 전인 경우 true를 반환한다")
+    @DisplayName("returns true for active subscriptions before expiry")
     void whenActiveSubscriptionExists_thenReturnsTrue() {
-        // given
         Subscription activeSubscription = createSubscription(
+                TEST_EMAIL,
                 SubscriptionState.ACTIVE,
                 LocalDateTime.now().plusDays(30)
         );
 
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.of(activeSubscription));
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isTrue();
     }
 
     @Test
-    @DisplayName("활성 구독이 있지만 만료된 경우 false를 반환한다")
+    @DisplayName("returns false for expired active subscriptions")
     void whenActiveSubscriptionExpired_thenReturnsFalse() {
-        // given
         Subscription expiredSubscription = createSubscription(
+                TEST_EMAIL,
                 SubscriptionState.ACTIVE,
                 LocalDateTime.now().minusDays(1)
         );
 
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.of(expiredSubscription));
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isFalse();
     }
 
     @Test
-    @DisplayName("구독이 없는 경우 false를 반환한다")
+    @DisplayName("returns false when there is no subscription")
     void whenNoSubscriptionExists_thenReturnsFalse() {
-        // given
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.empty());
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isFalse();
     }
 
     @Test
-    @DisplayName("CANCELED 상태이지만 만료 전인 경우 true를 반환한다")
+    @DisplayName("returns true for canceled subscriptions before expiry")
     void whenCanceledButNotExpired_thenReturnsTrue() {
-        // given
         Subscription canceledSubscription = createSubscription(
+                TEST_EMAIL,
                 SubscriptionState.CANCELED,
                 LocalDateTime.now().plusDays(10)
         );
 
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.of(canceledSubscription));
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isTrue();
     }
 
     @Test
-    @DisplayName("GRACE_PERIOD 상태이고 만료 전인 경우 true를 반환한다")
+    @DisplayName("returns true for grace period subscriptions before expiry")
     void whenGracePeriodAndNotExpired_thenReturnsTrue() {
-        // given
         Subscription gracePeriodSubscription = createSubscription(
+                TEST_EMAIL,
                 SubscriptionState.GRACE_PERIOD,
                 LocalDateTime.now().plusDays(3)
         );
 
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.of(gracePeriodSubscription));
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isTrue();
     }
 
     @Test
-    @DisplayName("EXPIRED 상태인 경우 false를 반환한다")
+    @DisplayName("returns false for expired subscriptions")
     void whenExpiredState_thenReturnsFalse() {
-        // given
         Subscription expiredSubscription = createSubscription(
+                TEST_EMAIL,
                 SubscriptionState.EXPIRED,
                 LocalDateTime.now().minusDays(1)
         );
 
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.of(expiredSubscription));
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isFalse();
     }
 
     @Test
-    @DisplayName("PENDING 상태인 경우 false를 반환한다")
+    @DisplayName("returns false for pending subscriptions")
     void whenPendingState_thenReturnsFalse() {
-        // given
         Subscription pendingSubscription = createSubscription(
+                TEST_EMAIL,
                 SubscriptionState.PENDING,
                 LocalDateTime.now().plusDays(30)
         );
 
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.of(pendingSubscription));
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isFalse();
     }
 
     @Test
-    @DisplayName("ON_HOLD 상태인 경우 false를 반환한다")
+    @DisplayName("returns false for on hold subscriptions")
     void whenOnHoldState_thenReturnsFalse() {
-        // given
         Subscription onHoldSubscription = createSubscription(
+                TEST_EMAIL,
                 SubscriptionState.ON_HOLD,
                 LocalDateTime.now().plusDays(30)
         );
 
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.of(onHoldSubscription));
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isFalse();
     }
 
     @Test
-    @DisplayName("REVOKED 상태인 경우 false를 반환한다")
+    @DisplayName("returns false for revoked subscriptions")
     void whenRevokedState_thenReturnsFalse() {
-        // given
         Subscription revokedSubscription = createSubscription(
+                TEST_EMAIL,
                 SubscriptionState.REVOKED,
                 LocalDateTime.now().plusDays(30)
         );
 
-        given(querySubscriptionPort.findActiveSubscriptionByEmail(TEST_EMAIL))
+        given(userFacadeUseCase.currentUser()).willReturn(createUser());
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(TEST_EMAIL))
                 .willReturn(Optional.of(revokedSubscription));
 
-        // when
-        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed();
 
-        // then
         assertThat(response.isSubscribed()).isFalse();
     }
 
-    /**
-     * 테스트용 Subscription 객체를 생성합니다.
-     *
-     * @param state 구독 상태
-     * @param expiryTime 만료 시간
-     * @return 생성된 Subscription 객체
-     */
-    private Subscription createSubscription(SubscriptionState state, LocalDateTime expiryTime) {
+    @Test
+    @DisplayName("uses the authenticated user email for subscription status lookup")
+    void whenCheckingSubscriptionStatus_thenUsesAuthenticatedUserEmail() {
+        Subscription activeSubscription = createSubscription(
+                AUTHENTICATED_EMAIL,
+                SubscriptionState.ACTIVE,
+                LocalDateTime.now().plusDays(30)
+        );
+        given(userFacadeUseCase.currentUser()).willReturn(createUser(AUTHENTICATED_EMAIL));
+        given(querySubscriptionPort.findCurrentSubscriptionByEmail(AUTHENTICATED_EMAIL))
+                .willReturn(Optional.of(activeSubscription));
+
+        CheckUserSubscriptionStatusResponse response = checkUserSubscriptionStatusService.isUserSubscribed(TEST_EMAIL);
+
+        assertThat(response.isSubscribed()).isTrue();
+        verify(userFacadeUseCase).currentUser();
+        verify(querySubscriptionPort).findCurrentSubscriptionByEmail(AUTHENTICATED_EMAIL);
+        verify(querySubscriptionPort, never()).findCurrentSubscriptionByEmail(TEST_EMAIL);
+    }
+
+    private Subscription createSubscription(String email, SubscriptionState state, LocalDateTime expiryTime) {
         return new Subscription(
                 1L,
-                TEST_EMAIL,
+                email,
                 TEST_PURCHASE_TOKEN,
                 ProductType.MONTHLY,
                 LocalDateTime.now().minusDays(15),
                 state,
                 true,
                 expiryTime
+        );
+    }
+
+    private User createUser() {
+        return createUser(TEST_EMAIL);
+    }
+
+    private User createUser(String email) {
+        return new User(
+                1L,
+                email,
+                "password123!",
+                "Test User",
+                "https://example.com/profile.jpg",
+                Gender.FEMALE,
+                Role.USER,
+                "LOCAL",
+                null,
+                LocalDateTime.now().minusDays(30)
         );
     }
 }
