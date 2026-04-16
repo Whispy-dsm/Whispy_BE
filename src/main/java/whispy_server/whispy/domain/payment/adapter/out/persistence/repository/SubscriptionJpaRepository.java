@@ -2,39 +2,35 @@ package whispy_server.whispy.domain.payment.adapter.out.persistence.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import whispy_server.whispy.domain.payment.adapter.out.entity.SubscriptionJpaEntity;
-import whispy_server.whispy.domain.payment.model.type.SubscriptionState;
 
 import java.util.Optional;
 
 /**
- * 구독 JPA 레포지토리.
- *
- * 구독 엔티티에 대한 데이터베이스 접근을 담당하는 Spring Data JPA 레포지토리입니다.
+ * 구독 JPA 리포지토리.
  */
 public interface SubscriptionJpaRepository extends JpaRepository<SubscriptionJpaEntity, Long> {
 
     /**
-     * 구매 토큰으로 구독을 조회합니다.
+     * 구매 토큰으로 구독을 조회한다.
      *
      * @param purchaseToken 구매 토큰
-     * @return 구독 엔티티 (존재하지 않으면 empty)
+     * @return 구독 엔티티
      */
     Optional<SubscriptionJpaEntity> findByPurchaseToken(String purchaseToken);
 
     /**
-     * 이메일로 구독을 조회합니다.
+     * 이메일로 최신 구독을 조회한다.
      *
      * @param email 사용자 이메일
-     * @return 구독 엔티티 (존재하지 않으면 empty)
+     * @return 구독 엔티티
      */
     Optional<SubscriptionJpaEntity> findByEmail(String email);
 
     /**
-     * 이메일과 구독 상태로 구독을 조회합니다.
+     * entitlement 판정에 사용할 가장 최근 만료 시각의 구독을 조회한다.
      *
      * @param email 사용자 이메일
-     * @param state 구독 상태
-     * @return 구독 엔티티 (존재하지 않으면 empty)
+     * @return 현재 구독 엔티티
      */
-    Optional<SubscriptionJpaEntity> findByEmailAndSubscriptionState(String email, SubscriptionState state);
+    Optional<SubscriptionJpaEntity> findFirstByEmailOrderByExpiryTimeDesc(String email);
 }

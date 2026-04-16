@@ -7,14 +7,14 @@ import whispy_server.whispy.domain.payment.adapter.in.web.dto.response.CheckUser
 import whispy_server.whispy.domain.payment.application.port.in.CheckUserSubscriptionStatusUseCase;
 import whispy_server.whispy.domain.payment.application.port.out.QuerySubscriptionPort;
 import whispy_server.whispy.domain.payment.model.Subscription;
+import whispy_server.whispy.domain.user.application.port.in.UserFacadeUseCase;
+import whispy_server.whispy.domain.user.model.User;
 import whispy_server.whispy.global.annotation.UserAction;
 
 import java.util.Optional;
 
 /**
- * 사용자 구독 상태 확인 서비스.
- *
- * 사용자의 현재 구독 상태를 확인하는 유스케이스 구현체입니다.
+ * 현재 사용자 구독 상태 조회 서비스.
  */
 @RequiredArgsConstructor
 @Service
@@ -22,22 +22,27 @@ import java.util.Optional;
 public class CheckUserSubscriptionStatusService implements CheckUserSubscriptionStatusUseCase {
 
     private final QuerySubscriptionPort querySubscriptionPort;
+    private final UserFacadeUseCase userFacadeUseCase;
 
     /**
-     * 사용자의 구독 상태를 확인합니다.
+     * 현재 인증된 사용자의 entitlement 상태를 조회한다.
      *
-     * @param email 사용자 이메일
-     * @return 구독 상태 정보
+     * @param ignoredEmail 이전 계약과의 호환용 파라미터
+     * @return 현재 사용자 구독 상태 응답
      */
     @UserAction("구독 상태 확인")
     @Override
-    public CheckUserSubscriptionStatusResponse isUserSubscribed(String email) {
-
-        Optional<Subscription> activeSubscription = querySubscriptionPort.findActiveSubscriptionByEmail(email);
-        boolean isSubscribed = activeSubscription
+    public CheckUserSubscriptionStatusResponse isUserSubscribed(String ignoredEmail) {
+        User currentUser = userFacadeUseCase.currentUser();
+        Optional<Subscription> currentSubscription = querySubscriptionPort.findCurrentSubscriptionByEmail(currentUser.email());
+        boolean isSubscribed = currentSubscription
                 .map(Subscription::isActive)
                 .orElse(false);
 
         return new CheckUserSubscriptionStatusResponse(isSubscribed);
+    }
+
+    public CheckUserSubscriptionStatusResponse isUserSubscribed() {
+        return isUserSubscribed(null);
     }
 }

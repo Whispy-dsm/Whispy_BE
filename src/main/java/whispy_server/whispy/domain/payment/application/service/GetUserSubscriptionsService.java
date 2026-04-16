@@ -27,6 +27,7 @@ public class GetUserSubscriptionsService implements GetUserSubscriptionsUseCase 
     /**
      * 현재 인증된 사용자의 구독 요약 정보를 조회한다.
      *
+     * @param ignoredEmail 이전 계약과의 호환용 파라미터
      * @return 현재 사용자 구독 응답
      */
     @UserAction("구독 정보 조회")
