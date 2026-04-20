@@ -389,3 +389,21 @@
   - `./gradlew.bat compileJava --no-daemon --console=plain` PASS
   - `./gradlew.bat test --tests "whispy_server.whispy.domain.payment.adapter.in.web.controller.integration.SubscriptionControllerIntegrationTest" --tests "whispy_server.whispy.domain.payment.adapter.in.web.controller.unit.SubscriptionControllerTest" --tests "whispy_server.whispy.domain.payment.adapter.out.persistence.integration.SubscriptionPersistenceAdapterIntegrationTest" --tests "whispy_server.whispy.domain.payment.application.service.unit.GetUserSubscriptionsServiceTest" --tests "whispy_server.whispy.domain.payment.application.service.unit.CheckUserSubscriptionStatusServiceTest" --no-daemon --console=plain` PASS
   - One earlier single-test run failed due Gradle deleting `build/test-results/test/binary/output.bin` while the directory was still in use; rerunning the full focused suite passed.
+
+# 2026-04-20 Announcement list createdAt response
+
+- [x] Inspect announcement list response flow and relevant conventions.
+- [x] Add focused regression test for `createdAt` response value.
+- [x] Add `createdAt` to the announcement list response DTO.
+- [x] Run focused announcement tests and compile verification.
+- [x] Record changed files, verification, and remaining risks.
+
+### Review
+- GitHub issue: `#135` (`https://github.com/Whispy-dsm/Whispy_BE/issues/135`)
+- Changed `QueryAllAnnouncementResponse` to include the source `createdAt` timestamp. With the global Jackson snake_case strategy, clients receive this as `created_at`.
+- Updated `QueryAllAnnouncementServiceTest` to verify list responses preserve the announcement creation time.
+- Verification:
+  - `./gradlew.bat test --tests "whispy_server.whispy.domain.announcement.application.service.unit.QueryAllAnnouncementServiceTest" --no-daemon --console=plain` PASS
+  - `./gradlew.bat test --tests "whispy_server.whispy.domain.announcement.application.service.unit.*" --no-daemon --console=plain` PASS
+  - `git diff --check` PASS
+- Remaining risk: frontend still needs to format `created_at` into display text such as `2일전`.

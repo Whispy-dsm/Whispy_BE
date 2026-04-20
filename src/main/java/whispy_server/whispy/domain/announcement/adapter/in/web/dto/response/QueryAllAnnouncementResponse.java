@@ -3,6 +3,8 @@ package whispy_server.whispy.domain.announcement.adapter.in.web.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import whispy_server.whispy.domain.announcement.model.Announcement;
 
+import java.time.LocalDateTime;
+
 /**
  * 전체 공지사항 조회 응답 DTO.
  *
@@ -11,6 +13,7 @@ import whispy_server.whispy.domain.announcement.model.Announcement;
  * @param id 공지사항 ID
  * @param title 공지사항 제목
  * @param content 공지사항 내용 (마크다운 형식)
+ * @param createdAt 공지사항 생성 일시
  */
 @Schema(description = "전체 공지사항 조회 응답")
 public record QueryAllAnnouncementResponse(
@@ -19,7 +22,9 @@ public record QueryAllAnnouncementResponse(
         @Schema(description = "공지사항 제목", example = "새로운 업데이트 안내")
         String title,
         @Schema(description = "공지사항 내용 (마크다운)", example = "![배너](https://example.com/banner.jpg)\n\n새로운 기능이 추가되었습니다.")
-        String content
+        String content,
+        @Schema(description = "공지사항 생성 일시", example = "2026-04-20T12:00:00")
+        LocalDateTime createdAt
 ) {
 
     /**
@@ -32,7 +37,8 @@ public record QueryAllAnnouncementResponse(
         return new QueryAllAnnouncementResponse(
                 announcement.id(),
                 announcement.title(),
-                announcement.content()
+                announcement.content(),
+                announcement.createdAt()
         );
     }
 }
