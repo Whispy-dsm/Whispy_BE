@@ -22,3 +22,4 @@
 - 2026-04-14: `$team` worker pane이 아예 task protocol에 못 들어가면 먼저 worker CLI 인증 상태를 확인한다. Codex는 로그인 화면, Claude는 `Please run /login` / 401 인증 오류로 멈출 수 있고, 이 경우 ACK/claim 실패를 runtime 버그로만 보면 안 된다.
 - 2026-04-14: OMX team worker launch args는 `config.toml`의 `[env]`만으로는 런타임 shell에 그대로 반영되지 않을 수 있다. worker bypass 플래그가 꼭 필요하면 `OMX_TEAM_WORKER_LAUNCH_ARGS=... omx team ...`처럼 실행 시점 shell env로도 넘겨서 검증한다.
 - 2026-04-16: 이 저장소에서 이슈 기반 작업을 커밋할 때는 한 이슈라도 변경 책임을 가능한 범위에서 쪼갠다. 최소한 `test`, `controller/dto/doc`, `service/port/persistence`는 분리 검토하고, 한 번에 뭉치지 않는다.
+- 2026-04-20: 응답에 표시용 상대 시간이 필요해 보여도 백엔드는 먼저 원천 데이터(`createdAt` 등)를 내려주는 단순한 계약을 검토한다. 클라이언트 표시 정책이면 백엔드에서 `timeAgo` 같은 문구를 만들지 않는다.

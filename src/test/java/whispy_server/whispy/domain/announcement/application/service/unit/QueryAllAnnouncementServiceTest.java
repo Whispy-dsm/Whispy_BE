@@ -44,8 +44,9 @@ class QueryAllAnnouncementServiceTest {
     void whenQueryingAllAnnouncements_thenReturnsPagedResults() {
         // given
         Pageable pageable = PageRequest.of(0, 10);
+        LocalDateTime createdAt = LocalDateTime.of(2026, 4, 20, 12, 0);
         List<Announcement> announcements = List.of(
-                createAnnouncement(1L, "공지사항 1", "내용 1"),
+                createAnnouncement(1L, "공지사항 1", "내용 1", createdAt),
                 createAnnouncement(2L, "공지사항 2", "내용 2"),
                 createAnnouncement(3L, "공지사항 3", "내용 3")
         );
@@ -59,6 +60,7 @@ class QueryAllAnnouncementServiceTest {
         // then
         assertThat(result).isNotNull();
         assertThat(result.getContent()).hasSize(3);
+        assertThat(result.getContent().get(0).createdAt()).isEqualTo(createdAt);
         assertThat(result.getTotalElements()).isEqualTo(3);
         verify(announcementPort).findAllByOrderByCreatedAtDesc(pageable);
     }
@@ -132,11 +134,24 @@ class QueryAllAnnouncementServiceTest {
      * @return 생성된 Announcement 객체
      */
     private Announcement createAnnouncement(Long id, String title, String content) {
+        return createAnnouncement(id, title, content, LocalDateTime.now());
+    }
+
+    /**
+     * 테스트용 Announcement 객체를 생성합니다.
+     *
+     * @param id 공지사항 ID
+     * @param title 공지사항 제목
+     * @param content 공지사항 내용
+     * @param createdAt 생성 일시
+     * @return 생성된 Announcement 객체
+     */
+    private Announcement createAnnouncement(Long id, String title, String content, LocalDateTime createdAt) {
         return new Announcement(
                 id,
                 title,
                 content,
-                LocalDateTime.now()
+                createdAt
         );
     }
 
