@@ -164,6 +164,41 @@ class SaveSleepSessionServiceTest {
     }
 
     @Test
+    @DisplayName("15분 수면 세션을 저장할 수 있다")
+    void whenSleepSessionIsExactlyFifteenMinutes_thenSavesSuccessfully() {
+        // given
+        User user = createUser();
+        LocalDateTime startedAt = LocalDateTime.of(2024, 1, 15, 14, 0);
+        LocalDateTime endedAt = LocalDateTime.of(2024, 1, 15, 14, 15);
+        int durationSeconds = 15 * 60;
+
+        SaveSleepSessionRequest request = new SaveSleepSessionRequest(
+                startedAt,
+                endedAt,
+                durationSeconds
+        );
+
+        SleepSession savedSession = new SleepSession(
+                1L,
+                TEST_USER_ID,
+                startedAt,
+                endedAt,
+                durationSeconds,
+                LocalDateTime.now()
+        );
+
+        given(userFacadeUseCase.currentUser()).willReturn(user);
+        given(sleepSessionSavePort.save(any(SleepSession.class))).willReturn(savedSession);
+
+        // when
+        SleepSessionResponse response = saveSleepSessionService.execute(request);
+
+        // then
+        assertThat(response.durationSeconds()).isEqualTo(15 * 60);
+        verify(statisticsCacheVersionManager).bumpUserVersionAfterCommit(TEST_USER_ID, StatisticsCacheDomain.SLEEP);
+    }
+
+    @Test
     @DisplayName("긴 수면 세션도 저장할 수 있다")
     void whenLongSleepSession_thenSavesSuccessfully() {
         // given
@@ -199,14 +234,14 @@ class SaveSleepSessionServiceTest {
     }
 
     @Test
-    @DisplayName("1분 미만 수면 세션을 저장하면 오류가 발생한다")
-    void whenDurationIsLessThanOneMinute_thenThrowsException() {
+    @DisplayName("15분 미만 수면 세션을 저장하면 오류가 발생한다")
+    void whenDurationIsLessThanFifteenMinutes_thenThrowsException() {
         // given
         User user = createUser();
         SaveSleepSessionRequest request = new SaveSleepSessionRequest(
                 LocalDateTime.of(2024, 1, 15, 14, 0),
-                LocalDateTime.of(2024, 1, 15, 14, 0, 59),
-                59
+                LocalDateTime.of(2024, 1, 15, 14, 14, 59),
+                (15 * 60) - 1
         );
 
         given(userFacadeUseCase.currentUser()).willReturn(user);
