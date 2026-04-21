@@ -10,6 +10,11 @@ public final class SessionValidationConstants {
      */
     public static final int MIN_SESSION_DURATION_SECONDS = 60;
 
+    /**
+     * 저장 가능한 최소 수면 세션 지속 시간(초).
+     */
+    public static final int MIN_SLEEP_SESSION_DURATION_SECONDS = 15 * 60;
+
     private SessionValidationConstants() {
         throw new UnsupportedOperationException("Utility class");
     }

@@ -42,7 +42,7 @@ public record SleepSession(
             throw SleepSessionDurationExceededException.EXCEPTION;
         }
 
-        if (durationSeconds < SessionValidationConstants.MIN_SESSION_DURATION_SECONDS) {
+        if (durationSeconds < SessionValidationConstants.MIN_SLEEP_SESSION_DURATION_SECONDS) {
             throw InvalidSleepSessionDurationException.EXCEPTION;
         }
     }

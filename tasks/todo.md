@@ -407,3 +407,22 @@
   - `./gradlew.bat test --tests "whispy_server.whispy.domain.announcement.application.service.unit.*" --no-daemon --console=plain` PASS
   - `git diff --check` PASS
 - Remaining risk: frontend still needs to format `created_at` into display text such as `2일전`.
+
+## 2026-04-21 Sleep session minimum duration
+
+- [x] Add 15-minute sleep boundary tests.
+- [x] Add sleep-specific minimum duration constant.
+- [x] Apply sleep-specific minimum to request and domain validation.
+- [x] Preserve focus and meditation 60-second validation.
+- [x] Run focused regression tests.
+
+### Review
+- GitHub issue: `#136` (`https://github.com/Whispy-dsm/Whispy_BE/issues/136`)
+- Sleep sessions now require at least 15 minutes.
+- Focus and meditation keep the existing 60-second minimum.
+- Verification:
+  - RED: `.\gradlew.bat test --tests "whispy_server.whispy.domain.sleepsession.application.service.unit.SaveSleepSessionServiceTest" --no-daemon --console=plain` failed on `15분 미만 수면 세션을 저장하면 오류가 발생한다` before production changes.
+  - GREEN: `.\gradlew.bat test --tests "whispy_server.whispy.domain.sleepsession.application.service.unit.SaveSleepSessionServiceTest" --no-daemon --console=plain` PASS.
+  - Regression: `.\gradlew.bat test --tests "whispy_server.whispy.domain.sleepsession.application.service.unit.SaveSleepSessionServiceTest" --tests "whispy_server.whispy.domain.focussession.application.service.unit.SaveFocusSessionServiceTest" --tests "whispy_server.whispy.domain.meditationsession.application.service.unit.SaveMeditationSessionServiceTest" --no-daemon --console=plain` PASS.
+  - `git diff --check` PASS.
+- Remaining risk: frontend may still show old sleep validation copy if it keeps local messages.

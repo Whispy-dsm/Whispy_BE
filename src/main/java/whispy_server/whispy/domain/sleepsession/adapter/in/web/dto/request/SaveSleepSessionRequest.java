@@ -28,9 +28,9 @@ public record SaveSleepSessionRequest(
         @NotNull LocalDateTime endedAt,
         /**
          * 수면 지속 시간(초 단위).
-         * 1분 이상이어야 합니다.
+         * 15분 이상이어야 합니다.
          * 예: 28800 (8시간)
          */
         @Schema(description = "지속 시간(초)", example = "28800", requiredMode = Schema.RequiredMode.REQUIRED)
-        @Min(SessionValidationConstants.MIN_SESSION_DURATION_SECONDS) int durationSeconds
+        @Min(SessionValidationConstants.MIN_SLEEP_SESSION_DURATION_SECONDS) int durationSeconds
 ) { }

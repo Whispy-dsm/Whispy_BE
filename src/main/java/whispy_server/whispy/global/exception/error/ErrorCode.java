@@ -30,7 +30,7 @@ public enum ErrorCode {
     INVALID_FOCUS_SESSION_DURATION(400, "집중시간은 1분 이상이어야 합니다."),
     INVALID_SLEEP_SESSION_TIME_RANGE(400, "종료시간이 시작시간보다 이를 수 없습니다."),
     SLEEP_SESSION_DURATION_EXCEEDED(400, "수면시간이 전체 시간을 초과할 수 없습니다."),
-    INVALID_SLEEP_SESSION_DURATION(400, "수면시간은 1분 이상이어야 합니다."),
+    INVALID_SLEEP_SESSION_DURATION(400, "수면시간은 15분 이상이어야 합니다."),
     INVALID_MEDITATION_SESSION_TIME_RANGE(400, "종료시간이 시작시간보다 이를 수 없습니다."),
     MEDITATION_SESSION_DURATION_EXCEEDED(400, "명상시간이 전체 시간을 초과할 수 없습니다."),
     INVALID_MEDITATION_SESSION_DURATION(400, "명상시간은 1분 이상이어야 합니다."),
