@@ -426,3 +426,14 @@
   - Regression: `.\gradlew.bat test --tests "whispy_server.whispy.domain.sleepsession.application.service.unit.SaveSleepSessionServiceTest" --tests "whispy_server.whispy.domain.focussession.application.service.unit.SaveFocusSessionServiceTest" --tests "whispy_server.whispy.domain.meditationsession.application.service.unit.SaveMeditationSessionServiceTest" --no-daemon --console=plain` PASS.
   - `git diff --check` PASS.
 - Remaining risk: frontend may still show old sleep validation copy if it keeps local messages.
+
+## 2026-04-23 이슈 단위 릴리즈 태그 규칙 문서화
+
+- [x] 로컬 Git 컨벤션 문서에 이슈 단위 완료 후 릴리즈/태그 필수 절차 추가
+- [x] Notion 백엔드 Git 컨벤션 문서에 동일 절차 반영
+- [x] 문서 diff와 Notion 반영 상태 검증
+
+### Review
+- 이슈 단위 작업이 완료되어 PR 병합 또는 배포 가능한 상태가 되면 Notion `백엔드 Relase Note`를 먼저 생성/수정하고, 그 뒤에만 동일 버전의 GitHub 태그를 생성/푸시하도록 규칙을 추가했다.
+- 태그 대상은 단순 `HEAD`가 아니라 해당 이슈 릴리즈 범위의 마지막 커밋 또는 PR merge commit으로 명시했다.
+- 검증: `git diff --check -- docs/conventions/backend/git.md tasks/todo.md` 통과, Notion `git 컨벤션` 페이지 재조회로 반영 확인.

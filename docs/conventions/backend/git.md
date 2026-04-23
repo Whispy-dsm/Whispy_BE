@@ -51,6 +51,29 @@ fix : Rate Limit과 코드 만료 시간의 불일치 해결
 - 커밋은 사용자가 요청할 때만 합니다.
 - 푸시는 사용자가 요청하지 않으면 하지 않습니다.
 
+## 이슈 단위 완료 후 릴리즈 태그 절차
+
+이슈 단위 작업이 완료되어 PR 병합 또는 배포 가능한 상태가 되면 아래 순서를 반드시 지킵니다.
+
+1. 이슈에서 변경된 기능, 수정, 검증 결과, 관련 커밋 범위를 확인합니다.
+2. Notion `백엔드 Relase Note`에 해당 이슈의 릴리즈 노트를 먼저 생성하거나 수정합니다.
+3. 릴리즈 노트에는 버전, 배포 날짜, 상태(`STAG`, `PROD`), 타입, DB 마이그레이션 여부, 검증 결과, 관련 이슈 번호, 관련 커밋을 기록합니다.
+4. Notion 릴리즈 노트 반영을 확인한 뒤에만 GitHub 태그를 생성하고 푸시합니다.
+5. 태그 이름은 Notion 릴리즈 노트의 `버전` 값과 정확히 일치시킵니다.
+6. 태그 대상은 해당 이슈 릴리즈 범위의 마지막 커밋 또는 PR merge commit으로 지정합니다. 후속 커밋이 이미 `main`에 있으면 단순히 `HEAD`에 태그를 달지 않습니다.
+7. 태그 푸시 후 `git ls-remote --tags origin`으로 원격 태그와 peeled ref가 의도한 커밋을 가리키는지 확인합니다.
+
+예시:
+
+```bash
+git fetch --tags origin
+git tag -a v1.1.0 <release-commit> -m "Whispy backend v1.1.0"
+git push origin refs/tags/v1.1.0
+git ls-remote --tags origin "refs/tags/v1.1.0*"
+```
+
+Notion 릴리즈 노트를 갱신하기 전에는 태그를 생성하지 않습니다.
+
 ## Gitmoji 참고
 
 Notion의 `git 컨벤션` 페이지에는 gitmoji 표가 있습니다.
